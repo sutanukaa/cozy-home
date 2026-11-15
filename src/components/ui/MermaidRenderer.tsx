@@ -1,11 +1,36 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { deflate } from 'pako';
+import { fromUint8Array } from 'js-base64';
 
 interface MermaidRendererProps {
   code: string;
   diagramId: string;
   className?: string;
+}
+
+/**
+ * Generate a valid, compressed URL for the Mermaid Live Editor.
+ * Mermaid Live expects state in the hash: `#pako:<url-safe-base64-deflated-json>`.
+ */
+export function getMermaidLiveUrl(code: string): string {
+  try {
+    const state = {
+      code,
+      mermaid: JSON.stringify({ theme: 'default' }),
+      autoSync: true,
+      updateDiagram: true,
+    };
+    const jsonStr = JSON.stringify(state);
+    const data = new TextEncoder().encode(jsonStr);
+    const compressed = deflate(data, { level: 9 });
+    const serialized = fromUint8Array(compressed, true);
+    return `https://mermaid.live/edit#pako:${serialized}`;
+  } catch (err) {
+    console.error('Failed to encode diagram for mermaid.live:', err);
+    return 'https://mermaid.live';
+  }
 }
 
 declare global {
@@ -104,17 +129,8 @@ export default function MermaidRenderer({
   };
 
   const openInMermaidLive = () => {
-    try {
-      const state = {
-        code,
-        mermaid: { theme: 'neutral' },
-      };
-      const json = JSON.stringify(state);
-      const encoded = btoa(encodeURIComponent(json));
-      window.open(`https://mermaid.live/edit#base64:${encoded}`, '_blank');
-    } catch {
-      window.open('https://mermaid.live', '_blank');
-    }
+    const url = getMermaidLiveUrl(code);
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -166,13 +182,14 @@ export default function MermaidRenderer({
           </button>
 
           {/* External mermaid.live */}
-          <button
-            type="button"
-            onClick={openInMermaidLive}
+          <a
+            href={getMermaidLiveUrl(code)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden rounded border border-pink-200 bg-white px-2 py-0.5 text-[10px] font-bold text-ink-soft transition-colors hover:bg-pink-100 sm:inline active:scale-95 dark:border-white/20 dark:bg-white/10 dark:text-white/80"
           >
             [ mermaid.live ↗ ]
-          </button>
+          </a>
         </div>
       </div>
 
@@ -197,13 +214,14 @@ export default function MermaidRenderer({
             <pre className="max-h-48 max-w-full overflow-auto rounded bg-black/5 p-3 text-left text-[10px] text-cocoa dark:bg-black/40 dark:text-pink-200">
               {code}
             </pre>
-            <button
-              type="button"
-              onClick={openInMermaidLive}
+            <a
+              href={getMermaidLiveUrl(code)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-full bg-accent px-4 py-1.5 font-bold text-white hover:bg-rose active:scale-95"
             >
-              [ Open in mermaid.live ]
-            </button>
+              [ Open in mermaid.live ↗ ]
+            </a>
           </div>
         )}
 

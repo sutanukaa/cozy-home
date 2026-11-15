@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import RoomHeading from '@/components/layout/RoomHeading';
+import StudioRetroComputer from '@/components/scene/StudioRetroComputer';
 import PaperCard from '@/components/ui/PaperCard';
 import Sticker from '@/components/ui/Sticker';
 import Button from '@/components/ui/Button';
@@ -11,7 +12,6 @@ export const metadata: Metadata = { title: 'Studio' };
 
 // Positions are % of the illustration. Tune them with /studio?debug
 const hotspots: HotspotDef[] = [
-  { id: 'monitor', label: 'The main monitor', x: 50, y: 42, emoji: '💻', note: 'Where most of the magic (and the bugs) happen.' },
   { id: 'plant', label: 'Desk plant', x: 82, y: 60, emoji: '🪴', note: 'Gets watered more often than my git branches get cleaned.' },
 ];
 
@@ -20,7 +20,8 @@ export default function StudioPage() {
     <div>
       <section className="relative h-screen w-full">
         <RoomScene room="studio" hotspots={hotspots}>
-          <div className="pointer-events-none absolute inset-x-0 top-24 z-20 mx-auto max-w-xl px-4 text-center">
+          <StudioRetroComputer />
+          <div className="pointer-events-none absolute inset-x-0 top-[88px] sm:top-[98px] z-20 mx-auto max-w-xl px-4 text-center">
             <RoomHeading room="studio" title="The studio" />
           </div>
         </RoomScene>

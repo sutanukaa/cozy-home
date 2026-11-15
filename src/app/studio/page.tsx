@@ -3,6 +3,7 @@ import RoomScene from '@/components/scene/RoomScene';
 import RoomReveal from '@/components/scene/RoomReveal';
 import StudioRetroComputer from '@/components/scene/StudioRetroComputer';
 import CoffeeSteam from '@/components/scene/CoffeeSteam';
+import StudioDeskPlant from '@/components/scene/StudioDeskPlant';
 import type { HotspotDef } from '@/components/ui/Hotspot';
 
 export const metadata: Metadata = { title: 'Studio' };
@@ -16,14 +17,6 @@ const hotspots: HotspotDef[] = [
     y: 55.6,
     emoji: '🪴',
     note: 'Basks in the sunlight by the arched window all day.',
-  },
-  {
-    id: 'plant-desk',
-    label: 'Studio Plant',
-    x: 23.4,
-    y: 55.8,
-    emoji: '🌿',
-    note: 'Gets watered more often than my git branches get cleaned.',
   },
   {
     id: 'headphones',
@@ -42,6 +35,7 @@ export default function StudioPage() {
       <RoomScene room="studio" hotspots={hotspots} fit="cover">
         <CoffeeSteam />
         <StudioRetroComputer />
+        <StudioDeskPlant />
       </RoomScene>
 
       {/* Studio Room Heading positioned neatly in the bottom right, right-aligned to leave the desk & monitor completely clear */}

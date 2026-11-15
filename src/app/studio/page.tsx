@@ -17,14 +17,19 @@ const hotspots: HotspotDef[] = [
 
 export default function StudioPage() {
   return (
-    <div>
-      <section className="relative h-screen w-full">
-        <RoomScene room="studio" hotspots={hotspots}>
-          <StudioRetroComputer />
-          <div className="pointer-events-none absolute inset-x-0 top-[88px] sm:top-[98px] z-20 mx-auto max-w-xl px-4 text-center">
-            <RoomHeading room="studio" title="The studio" />
-          </div>
-        </RoomScene>
+    <div className="pt-20 sm:pt-24">
+      {/* Studio Room Heading placed cleanly above the diorama */}
+      <div className="mx-auto max-w-xl px-4 pb-4 text-center">
+        <RoomHeading room="studio" title="The studio" />
+      </div>
+
+      {/* Studio Room Diorama - un-zoomed, showing full room illustration */}
+      <section className="relative mx-auto flex w-full max-w-5xl items-center justify-center px-4">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border-2 border-pink-200/80 shadow-cozy backdrop-blur-xs dark:border-white/15 dark:shadow-2xl">
+          <RoomScene room="studio" hotspots={hotspots} fit="contain">
+            <StudioRetroComputer />
+          </RoomScene>
+        </div>
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-16">

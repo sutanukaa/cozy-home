@@ -10,9 +10,10 @@ interface Props {
   room: RoomSlug;
   hotspots?: HotspotDef[];
   children?: React.ReactNode;
+  fit?: 'cover' | 'contain';
 }
 
-export default function RoomScene({ room, hotspots = [], children }: Props) {
+export default function RoomScene({ room, hotspots = [], children, fit = 'cover' }: Props) {
   const meta = getRoom(room);
   const [debug, setDebug] = useState(false);
   const [picked, setPicked] = useState<{ x: number; y: number } | null>(null);
@@ -29,13 +30,19 @@ export default function RoomScene({ room, hotspots = [], children }: Props) {
     navigator.clipboard?.writeText(`x: ${x}, y: ${y}`).catch(() => {});
   };
 
+  const isCover = fit === 'cover';
+
   return (
     <figure aria-label={`Illustration of the ${meta.name.toLowerCase()}`} className="relative h-full w-full overflow-hidden">
       <div className="relative h-full w-full overflow-hidden bg-wall-deep">
-        {/* Exact 16:9 diorama stage matching object-cover object-center */}
+        {/* Diorama stage: covers viewport for fullscreen rooms (living-room), or perfectly fits container for framed rooms */}
         <div
           onClick={debug ? onDebugClick : undefined}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100vh*16/9)] min-h-[calc(100vw*9/16)] w-full h-full aspect-[16/9] overflow-hidden"
+          className={`absolute overflow-hidden ${
+            isCover
+              ? 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100vh*16/9)] min-h-[calc(100vw*9/16)] w-full h-full aspect-[16/9]'
+              : 'inset-0 h-full w-full'
+          }`}
         >
           {/* 1. placeholder: visible only until real art is dropped into /public/assets/rooms */}
           <div className="absolute inset-0 bg-gradient-to-b from-wall to-wall-deep">
@@ -50,8 +57,8 @@ export default function RoomScene({ room, hotspots = [], children }: Props) {
           </div>
 
           {/* 2. day art, 3. night art (fades in via CSS when <html data-theme="night">) */}
-          <AssetImage src={roomAsset(room, 'day')} className="absolute inset-0 h-full w-full object-cover" />
-          <AssetImage src={roomAsset(room, 'night')} className="variant-night absolute inset-0 h-full w-full object-cover" />
+          <AssetImage src={roomAsset(room, 'day')} className="absolute inset-0 h-full w-full object-cover object-center" />
+          <AssetImage src={roomAsset(room, 'night')} className="variant-night absolute inset-0 h-full w-full object-cover object-center" />
 
           {/* 4. dawn / dusk tint */}
           <div className="phase-tint pointer-events-none absolute inset-0" />

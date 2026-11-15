@@ -42,6 +42,7 @@ export default function SoundToggle() {
 
   return (
     <button
+      id="sound-toggle"
       type="button"
       onClick={toggleSound}
       title={

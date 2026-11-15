@@ -45,7 +45,7 @@ export default function StudioPage() {
       </RoomScene>
 
       {/* Studio Room Heading positioned neatly in the bottom right, right-aligned to leave the desk & monitor completely clear */}
-      <div className="pointer-events-none absolute bottom-14 right-5 sm:bottom-16 sm:right-8 md:bottom-20 md:right-12 z-20 max-w-xs sm:max-w-sm md:max-w-md text-right select-none">
+      <div className="studio-heading pointer-events-none absolute bottom-14 right-5 sm:bottom-16 sm:right-8 md:bottom-20 md:right-12 z-20 max-w-xs sm:max-w-sm md:max-w-md text-right select-none">
         <h1
           className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-md"
           style={{

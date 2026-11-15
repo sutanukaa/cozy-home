@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projects, type Project } from '@/data/projects';
 import {
@@ -18,11 +19,29 @@ interface StudioRetroComputerProps {
 }
 
 export default function StudioRetroComputer({ className = '' }: StudioRetroComputerProps) {
+  const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+
+  // Track hydration for createPortal and clean up body class on unmount
+  useEffect(() => {
+    setMounted(true);
+    return () => {
+      document.body.classList.remove('retro-modal-open');
+    };
+  }, []);
+
+  // When retro computer is open, toggle body class to hide navbar & page headings
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.classList.add('retro-modal-open');
+    } else {
+      document.body.classList.remove('retro-modal-open');
+    }
+  }, [isExpanded]);
 
   // Update clock in retro topbar
   useEffect(() => {
@@ -89,11 +108,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       {/*    Coordinates accurately centered over the monitor display        */}
       {/* ------------------------------------------------------------------ */}
       <div
-        className={`pointer-events-auto absolute left-1/2 -translate-x-1/2 cursor-pointer select-none ${className}`}
+        className={`pointer-events-auto absolute cursor-pointer select-none ${className}`}
         style={{
-          top: '32.8%',
-          width: '16.8%',
-          height: '14.5%',
+          left: '49.15%',
+          top: '33.86%',
+          transform: 'translate(-50%, -50%)',
+          width: '16.5%',
+          height: '20.5%',
         }}
         onClick={openComputer}
         role="button"
@@ -149,16 +170,20 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
 
       {/* ------------------------------------------------------------------ */}
       {/* 2. EXPANDED FULLSCREEN: The Full Retro Computer OS Experience      */}
+      {/*    Portaled to document.body with z-[999] so navbar & text never   */}
+      {/*    render over the computer screen                                 */}
       {/* ------------------------------------------------------------------ */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-md sm:p-5 md:p-8"
-          >
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 p-2 sm:p-5 md:p-8 backdrop-blur-md"
+              >
             {/* Vintage Monitor Chassis Housing */}
             <motion.div
               initial={{ scale: 0.35, y: 40, opacity: 0 }}
@@ -478,7 +503,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+    )}
     </>
   );
 }

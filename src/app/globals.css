@@ -97,6 +97,13 @@ html[data-theme='night'] .ambient-day { display: none; }
   animation: firefly 7s ease-in-out infinite;
 }
 
+/* ---------------- Retro OS Fullscreen Mode ---------------- */
+body.retro-modal-open header,
+body.retro-modal-open .studio-heading,
+body.retro-modal-open #sound-toggle {
+  display: none !important;
+}
+
 /* ---------------- accessibility ---------------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

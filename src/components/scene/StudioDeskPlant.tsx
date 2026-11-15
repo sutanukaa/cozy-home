@@ -169,7 +169,9 @@ export default function StudioDeskPlant() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.9 }}
               transition={{ duration: 0.18 }}
-              className="pointer-events-none absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 z-30 whitespace-nowrap"
+              className={`pointer-events-none absolute left-1/2 -translate-x-1/2 z-30 whitespace-nowrap ${
+                stage === 0 ? 'top-[32%] sm:top-[30%]' : '-top-10 sm:-top-12'
+              }`}
             >
               <div className="relative rounded-full border border-pink-300 bg-white/95 px-2.5 py-1 text-[10px] sm:text-xs font-mono font-bold text-accent shadow-md backdrop-blur-xs dark:border-pink-500/50 dark:bg-[#2A1828]/95 dark:text-pink-200">
                 <span>{getBubbleText()}</span>
@@ -203,10 +205,10 @@ export default function StudioDeskPlant() {
               initial={{ opacity: 0, x: 25, y: -25, rotate: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
-                x: 8,
-                y: -32,
+                x: stage === 0 ? 5 : 8,
+                y: stage === 0 ? -14 : -32,
                 rotate: -24,
-                scale: 1,
+                scale: stage === 0 ? 0.85 : 1,
               }}
               exit={{ opacity: 0, x: 20, y: -20, rotate: 0, scale: 0.8 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
@@ -232,10 +234,15 @@ export default function StudioDeskPlant() {
               {droplets.map((drop) => (
                 <motion.span
                   key={drop.id}
-                  initial={{ opacity: 0, y: -28, x: drop.x, scale: 0.6 }}
+                  initial={{
+                    opacity: 0,
+                    y: stage === 0 ? -12 : -28,
+                    x: stage === 0 ? drop.x * 0.6 : drop.x,
+                    scale: 0.6,
+                  }}
                   animate={{
                     opacity: [0, 1, 1, 0],
-                    y: [-28, 5],
+                    y: stage === 0 ? [-12, 16] : [-28, 5],
                     scale: [0.6, 1, 1, 0.4],
                   }}
                   transition={{
@@ -302,14 +309,16 @@ export default function StudioDeskPlant() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="relative h-full w-full flex items-end justify-center"
+              className={`relative flex items-end justify-center ${
+                stage === 0 ? 'h-[53%] w-[50%] mb-0' : 'h-full w-full'
+              }`}
             >
               <Image
                 src={getPlantAsset()}
                 alt={`Studio desk plant at stage ${stage + 1}`}
-                width={200}
-                height={260}
-                className="h-full w-full object-contain"
+                width={stage === 0 ? 120 : 200}
+                height={stage === 0 ? 150 : 260}
+                className="h-full w-full object-contain object-bottom"
                 priority
               />
             </motion.div>

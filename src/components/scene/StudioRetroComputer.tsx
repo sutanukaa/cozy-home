@@ -565,12 +565,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                       </p>
                                     </div>
                                   </div>
-                                  <div className="shrink-0 flex items-center gap-2 self-start sm:self-center">
+                                  <div className="shrink-0 flex items-center self-start sm:self-center">
                                     <span className="rounded-md border border-amber-300 bg-white/90 px-2.5 py-1 text-[10px] font-bold text-amber-900 dark:border-amber-700 dark:bg-black/40 dark:text-amber-200">
                                       45 TESTS VERIFIED
-                                    </span>
-                                    <span className="rounded-md bg-amber-600 px-2.5 py-1 text-[10px] font-bold text-white">
-                                      1ST / 650 TEAMS
                                     </span>
                                   </div>
                                 </div>

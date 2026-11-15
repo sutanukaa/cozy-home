@@ -162,6 +162,25 @@ html[data-theme='night'] .ambient-day { display: none; }
   }
 }
 
+/* ---------------- Coffee Steam Wisp Animation ---------------- */
+@keyframes wisp-rise {
+  0% {
+    transform: translateY(0) scaleX(0.8) scaleY(0.6);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.6;
+  }
+  60% {
+    transform: translateY(-16px) translateX(3px) scaleX(1.1) scaleY(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-32px) translateX(-2px) scaleX(1.4) scaleY(1.5);
+    opacity: 0;
+  }
+}
+
 /* ---------------- Environmental Living Room Keyframes ---------------- */
 @keyframes cat-breathe {
   0%, 100% {

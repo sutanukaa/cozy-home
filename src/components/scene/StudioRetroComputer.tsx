@@ -91,9 +91,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       <div
         className={`pointer-events-auto absolute left-1/2 -translate-x-1/2 cursor-pointer select-none ${className}`}
         style={{
-          top: '26.2%',
+          top: '25.0%',
           width: '29.0%',
-          height: '21.8%',
+          height: '22.0%',
         }}
         onClick={openComputer}
         role="button"

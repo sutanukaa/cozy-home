@@ -61,14 +61,26 @@ Door hit areas (match to `rooms.ts`): studio ~(17,52), bedroom ~(38,50), library
 After generating, re-measure with `/?debug` and update `door` values.
 
 ### 5.2 Studio (projects): `studio-day.png` / `studio-night.png`
+Target dimensions: **2400x1350** (16:9 landscape). Must be a **wide pulled-back dollhouse cutaway** of the entire room (not a zoomed-in close-up of the desk).
+
 ```
-[STYLE ANCHOR] [ROOM CAMERA BLOCK]
-A cozy creative studio for a software developer. A wide pastel-pink desk in the center with a large glowing monitor showing an
-abstract soft UI of colored shapes (no readable text), a second smaller monitor, a pink mechanical keyboard, a fluffy mouse pad,
-a mug with steam, headphones, sticky notes, a tiny potted plant on the right side of the desk, a cozy chair with a cushion.
-Fairy lights and washi-taped abstract posters on the wall, a shelf with figurines and a tiny cactus, a cat bed under the desk, a cloud-shaped rug.
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft daytime lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+Straight-on wide-angle dollhouse cutaway view of an entire cozy creative workspace room, wide 16:9 landscape composition, camera pulled back so the entire room is visible from the wooden floorboards at the bottom to the top wall and ceiling. Symmetrical and spacious room environment, pulled-back perspective, not a close-up, not zoomed in.
+
+In the center against the back wall sits a cute pastel-pink wooden study desk with a cozy rounded office chair. On the desk sits a vintage-style desktop computer monitor with a completely 100% BLANK, flat, empty, plain pastel screen (strictly zero text, zero code, zero icons, zero illustrations on the monitor screen, purely solid empty screen). On the desk is a pink mechanical keyboard, mousepad, headphones on a stand, and a cute pink ceramic coffee mug with NO steam (plain mug, strictly no smoke, no vapor). The right side of the desk is clear and empty with space for a plant.
+
+The room has a warm wooden plank floor with a fluffy cloud rug, pastel pink walls with washi-taped blank posters and corkboard, wall shelves with tech books and cute figurines, fairy lights strung along the top of the wall, and an arched window on one side with soft sunlight. Wide 16:9 landscape view showing the entire room.
 ```
-Hotspots in code: monitor ~(50,42), plant ~(82,60).
+
+Negative prompt: `close-up, zoomed-in desk, first-person perspective, cropped ceiling, cropped floor, steam, smoke, vapor, text on monitor, graphics on screen, plant on desk, table plant, people, photorealistic, harsh shadows, neon`
+
+**Night edit prompt** (upload Day image as reference):
+```
+Keep the room, desk, furniture, composition, camera distance, and every single object exactly identical to the reference image.
+
+Change ONLY the lighting to night: deep cozy plum and indigo shadows, warm amber fairy lights turned on and casting soft warm light pools over the desk and floor, starry night sky with a crescent moon through the window, subtle magical warm room glow. The computer monitor screen remains completely 100% BLANK, plain, empty, flat surface. No steam from the mug, no plant on the desk, no text, no people. Wide 16:9 landscape.
+```
 
 ### 5.3 Bedroom (about me): `bedroom-day.png` / `bedroom-night.png`
 ```

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { rooms } from '@/data/rooms';
 import { site } from '@/data/site';
 import TimeToggle from './TimeToggle';
+import SoundToggle from './SoundToggle';
 import CozyIcon from '@/components/ui/CozyIcon';
 
 export default function SiteHeader() {
@@ -71,8 +72,9 @@ export default function SiteHeader() {
               })}
             </nav>
 
-            {/* Right: Sky/Clock Toggle */}
-            <div className="flex items-center">
+            {/* Right: Sound & Sky/Clock Controls */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <SoundToggle />
               <TimeToggle />
             </div>
           </div>

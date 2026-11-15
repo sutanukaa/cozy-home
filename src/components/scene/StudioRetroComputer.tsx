@@ -35,6 +35,12 @@ import {
   bloomStages,
   bloomInvariants,
 } from '@/data/bloomArchitecture';
+import {
+  scrapbookDiagrams,
+  scrapbookBudgets,
+  scrapbookInvariants,
+  scrapbookAudioActions,
+} from '@/data/scrapbookArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
 
 interface StudioRetroComputerProps {
@@ -55,6 +61,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     | 'etl-schema'
     | 'tickease-invariants'
     | 'bloom-invariants'
+    | 'scrapbook-invariants'
+    | 'scrapbook-audio'
   >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
@@ -65,7 +73,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const isGithubEtl = activeProject?.slug === 'github-etl';
   const isTickease = activeProject?.slug === 'tickease';
   const isBloom = activeProject?.slug === 'bloom-for-youu';
-  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom;
+  const isScrapbook = activeProject?.slug === 'a-little-scrapbook';
+  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom || isScrapbook;
 
   const currentSyntactiqBlueprint =
     syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
@@ -77,6 +86,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     tickeaseDiagrams.find((d) => d.id === activeBlueprintDiagram) || tickeaseDiagrams[0];
   const currentBloomBlueprint =
     bloomDiagrams.find((d) => d.id === activeBlueprintDiagram) || bloomDiagrams[0];
+  const currentScrapbookBlueprint =
+    scrapbookDiagrams.find((d) => d.id === activeBlueprintDiagram) || scrapbookDiagrams[0];
 
   const diagramCount = isSyntactiq
     ? syntactiqDiagrams.length
@@ -88,6 +99,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     ? tickeaseDiagrams.length
     : isBloom
     ? bloomDiagrams.length
+    : isScrapbook
+    ? scrapbookDiagrams.length
     : 0;
 
   // Track hydration for createPortal and clean up body class on unmount
@@ -311,7 +324,12 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     <span
                       onClick={() => {
                         const target =
-                          activeProject?.slug === 'syntactiq' || activeProject?.slug === 'rag-document-qa'
+                          activeProject?.slug === 'syntactiq' ||
+                          activeProject?.slug === 'rag-document-qa' ||
+                          activeProject?.slug === 'github-etl' ||
+                          activeProject?.slug === 'tickease' ||
+                          activeProject?.slug === 'bloom-for-youu' ||
+                          activeProject?.slug === 'a-little-scrapbook'
                             ? activeProject
                             : projects.find((p) => p.slug === 'syntactiq') || projects[0];
                         if (target) {
@@ -1876,6 +1894,372 @@ end $$;
 create trigger plants_guard before update on public.plants
   for each row execute function public.plants_guard();`}
                                         </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: A Little Scrapbook --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isScrapbook && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Spatial Physics Engine &amp; Procedural Web Audio Synthesis
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    A Little Scrapbook Architectural Specification
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Three interactive system diagrams covering Framer Motion spring physics with rotated AABB clamping, real-time procedural Web Audio synthesis graphs, and multi-page IndexedDB draft sync with OffscreenCanvas worker export.
+                                  </p>
+                                </div>
+
+                                {/* Choice Band in the Middle */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {scrapbookDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('scrapbook-invariants');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'scrapbook-invariants'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Invariants &amp; Budgets ]
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('scrapbook-audio');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'scrapbook-audio'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Audio Synthesis &amp; Math ]
+                                  </button>
+                                </div>
+
+                                {/* Display Area */}
+                                {activeExtraTab === 'none' ? (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentScrapbookBlueprint.id} of 03
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentScrapbookBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="rounded-full bg-pink-100/80 px-3 py-1 font-mono text-xs font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                        {currentScrapbookBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid Diagram Box */}
+                                    <div className="rounded-2xl border-2 border-pink-200/80 bg-white p-4 shadow-sm dark:border-white/15 dark:bg-[#1E1226]">
+                                      <MermaidRenderer
+                                        code={currentScrapbookBlueprint.mermaid}
+                                        diagramId={`scrapbook-diagram-${currentScrapbookBlueprint.id}`}
+                                      />
+                                    </div>
+
+                                    {/* Deep Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="rounded-xl border border-pink-200/80 bg-paper/60 p-4 font-mono text-xs dark:border-white/10 dark:bg-white/5">
+                                        <span className="font-bold text-accent dark:text-pink-300 uppercase tracking-wider block mb-1">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="leading-relaxed text-cocoa dark:text-pink-100 text-[11px]">
+                                          {currentScrapbookBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="rounded-xl border border-pink-200/80 bg-paper/60 p-4 font-mono text-xs dark:border-white/10 dark:bg-white/5">
+                                        <span className="font-bold text-accent dark:text-pink-300 uppercase tracking-wider block mb-1">
+                                          Failure Modes &amp; Recovery
+                                        </span>
+                                        <p className="leading-relaxed text-cocoa dark:text-pink-100 text-[11px]">
+                                          {currentScrapbookBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="rounded-xl border border-pink-200/80 bg-paper/60 p-4 font-mono text-xs dark:border-white/10 dark:bg-white/5">
+                                        <span className="font-bold text-accent dark:text-pink-300 uppercase tracking-wider block mb-1">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="leading-relaxed text-cocoa dark:text-pink-100 text-[11px]">
+                                          {currentScrapbookBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : activeExtraTab === 'scrapbook-invariants' ? (
+                                  <div className="flex flex-col gap-6">
+                                    {/* System Budgets Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Rigorous Production Budgets (Hard Limits)
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-4 py-2.5 font-bold">Budget Domain</th>
+                                              <th className="px-4 py-2.5 font-bold">Hard Limit</th>
+                                              <th className="px-4 py-2.5 font-bold">Production Enforcement Policy</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {scrapbookBudgets.map((b) => (
+                                              <tr key={b.budget} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                  {b.budget}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-accent dark:text-pink-300 font-bold">
+                                                  {b.limit}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                  {b.policy}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* System Invariants Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Seven Core System Invariants
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-4 py-2.5 font-bold">#</th>
+                                              <th className="px-4 py-2.5 font-bold">Invariant Name</th>
+                                              <th className="px-4 py-2.5 font-bold">Runtime Enforcement Rule</th>
+                                              <th className="px-4 py-2.5 font-bold">Failure Impact Mitigated</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {scrapbookInvariants.map((inv) => (
+                                              <tr key={inv.id} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-3 py-2.5 font-bold text-accent dark:text-pink-300">
+                                                  0{inv.id}
+                                                </td>
+                                                <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                  {inv.invariant}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-accent dark:text-pink-300 text-[11px] leading-relaxed">
+                                                  {inv.enforcement}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                  {inv.failureImpact}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Serialized Schema & AABB Clamping Code Snippets */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Serialized Schema Definition (Data Model)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`type Album = {
+  schemaVersion: 1;
+  id: string; // uuid
+  title: string;
+  pageSize: { w: number; h: number };
+  pageIds: string[]; // page order
+  revision: number;  // monotonic, bumped on write
+};
+
+type Page = {
+  id: string;
+  revision: number;  // used for If-Match
+  updatedAt: string;
+  background: { kind: 'color' | 'texture'; value: string };
+  items: Item[];     // bottom to top (array order = z-order)
+};
+
+type Base = {
+  id: string;
+  cx: number; cy: number; // logical units, quantized to 0.1
+  w: number; h: number;   // at least 16
+  rotation: number;       // degrees in [-180, 180)
+  scale: number;          // in [0.25, 4]
+  locked?: boolean;
+};`}
+                                        </pre>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Rotated AABB Boundary Solver (MIN_VISIBLE)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`export function aabbHalf(w: number, h: number, s: number, deg: number) {
+  const r = (deg * Math.PI) / 180;
+  const c = Math.abs(Math.cos(r)), n = Math.abs(Math.sin(r));
+  return {
+    hx: (s / 2) * (w * c + h * n),
+    hy: (s / 2) * (w * n + h * c),
+  };
+}
+
+// Limits for item CENTER ensuring minVis (32px) remains visible
+export function centerLimits(page: { w: number; h: number }, hx: number, hy: number, minVis = 32) {
+  const vx = Math.min(minVis, 2 * hx), vy = Math.min(minVis, 2 * hy);
+  return {
+    minX: vx - hx,
+    maxX: page.w - vx + hx,
+    minY: vy - hy,
+    maxY: page.h - vy + hy,
+  };
+}`}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* activeExtraTab === 'scrapbook-audio' */
+                                  <div className="flex flex-col gap-6">
+                                    {/* Audio Synthesizer Voice Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Web Audio API Procedural Oscillator &amp; Spatial Schema
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-3 py-2.5 font-bold">Action</th>
+                                              <th className="px-3 py-2.5 font-bold">Interaction Trigger</th>
+                                              <th className="px-3 py-2.5 font-bold">Source Nodes</th>
+                                              <th className="px-3 py-2.5 font-bold">Filter Specification</th>
+                                              <th className="px-3 py-2.5 font-bold">Envelope (t60)</th>
+                                              <th className="px-3 py-2.5 font-bold">Spatial Transform</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {scrapbookAudioActions.map((aud) => (
+                                              <tr key={aud.action} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-3 py-2.5 font-bold text-accent dark:text-pink-300">
+                                                  {aud.action}
+                                                </td>
+                                                <td className="px-3 py-2.5 font-bold text-ink dark:text-white text-[11px]">
+                                                  {aud.trigger}
+                                                </td>
+                                                <td className="px-3 py-2.5 text-cocoa dark:text-pink-100 text-[10px] leading-snug">
+                                                  {aud.sourceNodes}
+                                                </td>
+                                                <td className="px-3 py-2.5 text-cocoa dark:text-white/85 text-[10px] leading-snug">
+                                                  {aud.filter}
+                                                </td>
+                                                <td className="px-3 py-2.5 text-accent dark:text-pink-300 text-[10px]">
+                                                  {aud.envelope}
+                                                </td>
+                                                <td className="px-3 py-2.5 text-cocoa dark:text-pink-100 text-[10px]">
+                                                  {aud.spatialTransform}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Transform Matrix & Spring Physics Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Item Transform Matrix &amp; 3D Page Flip Matrix
+                                        </span>
+                                        <div className="space-y-2 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <p className="font-bold">Item-Local to Page Coordinate Matrix:</p>
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            M = T(cx, cy) · R(θ) · S(s) · T(-w/2, -h/2)
+                                          </code>
+                                          <p className="pt-1 font-bold">3D Perspective Page Flip Matrix:</p>
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            M3D = P(d) · Ry(φ)  [d = 1800px, φ: 0° → -180°]
+                                          </code>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70 pt-1">
+                                            DOM Framer Motion transforms and OffscreenCanvas export worker execute this identical composition, ensuring 100% pixel parity.
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Damped Harmonic Oscillator &amp; Velocity Sway
+                                        </span>
+                                        <div className="space-y-2 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <p className="font-bold">Damped Harmonic Oscillator Equation:</p>
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            m·x&apos;&apos; + c·x&apos; + k·(x - target) = 0,  ζ = c / (2·√(k·m))
+                                          </code>
+                                          <div className="grid grid-cols-2 gap-2 text-[10px] pt-1">
+                                            <div className="rounded bg-white/60 p-1.5 dark:bg-black/30">
+                                              <span className="font-bold text-accent">Position Settle:</span>
+                                              <p>k=420, c=32, m=1 (ζ=0.78, tactile paper settle)</p>
+                                            </div>
+                                            <div className="rounded bg-white/60 p-1.5 dark:bg-black/30">
+                                              <span className="font-bold text-accent">Lift / Drop Scale:</span>
+                                              <p>k=500, c=30, m=1 (ζ=0.67, quick responsive bounce)</p>
+                                            </div>
+                                          </div>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70">
+                                            Dynamic velocity sway: sway = spring(clamp(vx / 60, -6, 6)) adds organic physical tilt without altering persistent saved coordinates.
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

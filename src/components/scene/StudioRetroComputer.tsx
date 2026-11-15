@@ -11,6 +11,7 @@ import {
   PixelFlower,
   PixelServer,
   PixelTicket,
+  PixelDatabase,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
@@ -113,6 +114,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
         return <PixelCode size={size} />;
       case 'tickease':
         return <PixelTicket size={size} />;
+      case 'github-etl':
+        return <PixelDatabase size={size} />;
       case 'bloom-for-youu':
         return <PixelFlower size={size} />;
       case 'a-little-scrapbook':
@@ -309,8 +312,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     }}
                   />
 
-                  {/* Desktop Icons Grid - All 6 Projects in a clean retro row */}
-                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-6 md:gap-5">
+                  {/* Desktop Icons Grid - All Projects in a clean retro row */}
+                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-3">
                     {/* Project Icons */}
                     {projects.map((p) => {
                       const isSelected = selectedIcon === p.slug;

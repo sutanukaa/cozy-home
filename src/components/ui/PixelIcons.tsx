@@ -326,3 +326,55 @@ export function PixelTicket({ size = 48, className = '' }: IconProps) {
     </svg>
   );
 }
+
+// 10. Pixel Database / ETL Pipeline (for GitHub ETL)
+export function PixelDatabase({ size = 48, className = '' }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+    >
+      {/* Top Disk */}
+      <rect x="5" y="2" width="14" height="6" fill="#FCE7EC" />
+      <rect x="6" y="2" width="12" height="1" fill="#E86A92" />
+      <rect x="5" y="3" width="1" height="4" fill="#E86A92" />
+      <rect x="18" y="3" width="1" height="4" fill="#C95478" />
+      <rect x="6" y="7" width="12" height="1" fill="#C95478" />
+      <rect x="7" y="3" width="10" height="2" fill="#FFF2F5" />
+      <rect x="8" y="5" width="2" height="1" fill="#A9C7A0" />
+      <rect x="14" y="5" width="2" height="1" fill="#FFE29A" />
+
+      {/* Middle Disk */}
+      <rect x="5" y="9" width="14" height="6" fill="#FCE7EC" />
+      <rect x="6" y="9" width="12" height="1" fill="#E86A92" />
+      <rect x="5" y="10" width="1" height="4" fill="#E86A92" />
+      <rect x="18" y="10" width="1" height="4" fill="#C95478" />
+      <rect x="6" y="14" width="12" height="1" fill="#C95478" />
+      <rect x="7" y="10" width="10" height="2" fill="#FFF2F5" />
+      <rect x="8" y="12" width="2" height="1" fill="#A9C7A0" />
+      <rect x="14" y="12" width="2" height="1" fill="#FFE29A" />
+
+      {/* Bottom Disk */}
+      <rect x="5" y="16" width="14" height="6" fill="#FCE7EC" />
+      <rect x="6" y="16" width="12" height="1" fill="#E86A92" />
+      <rect x="5" y="17" width="1" height="4" fill="#E86A92" />
+      <rect x="18" y="17" width="1" height="4" fill="#C95478" />
+      <rect x="6" y="21" width="12" height="1" fill="#C95478" />
+      <rect x="7" y="17" width="10" height="2" fill="#FFF2F5" />
+      <rect x="8" y="19" width="2" height="1" fill="#A9C7A0" />
+      <rect x="14" y="19" width="2" height="1" fill="#FFE29A" />
+
+      {/* Pipeline side dataflow connectors */}
+      <rect x="3" y="5" width="2" height="2" fill="#E86A92" />
+      <rect x="2" y="6" width="1" height="11" fill="#E86A92" />
+      <rect x="3" y="16" width="2" height="2" fill="#E86A92" />
+      <rect x="19" y="8" width="3" height="1" fill="#FF8BA7" />
+      <rect x="21" y="9" width="1" height="6" fill="#FF8BA7" />
+      <rect x="19" y="14" width="3" height="1" fill="#FF8BA7" />
+    </svg>
+  );
+}

@@ -76,6 +76,39 @@ export const projects: Project[] = [
     status: 'Production',
   },
   {
+    slug: 'github-etl',
+    title: 'GitHub Activity ETL Pipeline',
+    tagline: 'Automated batch ETL pipeline extracting GitHub telemetry with SQLite upserts and SQL analytics.',
+    overview:
+      'A daily scheduled batch ETL pipeline engineered in Python and SQLite that extracts repository commits, pull requests, and engagement metrics from public GitHub repositories via REST APIs. Transforms nested JSON payloads into tidy relational tables with derived metrics such as hours_to_merge, enforces idempotent loads (INSERT OR IGNORE for commits, ON CONFLICT DO UPDATE for PRs), and executes analytical window function queries. Deployed with automated daily GitHub Actions cron workflows and paired with an interactive Next.js analytics dashboard.',
+    architecture: [
+      'Extract & Rate-Limit Handling: Paginated REST API extraction with token authentication (5,000 req/hr ceiling) targeting watchlist repositories.',
+      'Transform & Feature Derivation: JSON normalization, ISO timestamp parsing to UTC, and derived features (e.g. hours_to_merge computed at transform time).',
+      'Idempotent Load: SQLite relational schemas with composite primary keys (sha for commits, id for PRs) ensuring zero duplicate writes on repeated runs.',
+      'Analytical Window Queries: Advanced SQL analytics computing running totals, rolling averages, and top contributors per repository using ROW_NUMBER() and SUM() OVER partition windows.',
+      'Automated CI/CD Cron: GitHub Actions scheduled workflow running daily at 06:00 UTC with persistent database artifact caching.',
+    ],
+    technicalHighlights: [
+      'Idempotent batch ingestion: Safe to re-run at any time without duplicating historical records or corrupting running aggregations.',
+      'SQL window functions for multi-dimensional repository analytics and contributor velocity ranking.',
+      'Automated headless orchestration using GitHub Actions cron with database state caching between runs.',
+      'Interactive Next.js analytics dashboard powered by Better-SQLite3 and Tailwind CSS.',
+    ],
+    keyFeatures: [
+      'Paginated GitHub REST API extraction',
+      'Idempotent SQLite upserts (ON CONFLICT DO UPDATE)',
+      'Derived transform fields (hours_to_merge)',
+      'Advanced SQL analytics with window functions',
+      'Daily GitHub Actions cron scheduling',
+      'Next.js analytical dashboard interface',
+    ],
+    tags: ['Python', 'SQLite', 'GitHub Actions', 'ETL', 'SQL', 'Next.js', 'REST API', 'Data Engineering'],
+    links: {
+      code: 'https://github.com/sutanukaa/github-etl',
+    },
+    status: 'Production',
+  },
+  {
     slug: 'tickease',
     title: 'Tickease',
     tagline: 'Event management platform with automated site generation and embedded conversational AI assistants.',

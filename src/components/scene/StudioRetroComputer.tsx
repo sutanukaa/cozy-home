@@ -91,9 +91,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       <div
         className={`pointer-events-auto absolute left-1/2 -translate-x-1/2 cursor-pointer select-none ${className}`}
         style={{
-          top: '25.0%',
-          width: '29.0%',
-          height: '22.0%',
+          top: '32.8%',
+          width: '16.8%',
+          height: '14.5%',
         }}
         onClick={openComputer}
         role="button"
@@ -106,7 +106,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
           }
         }}
       >
-        <div className="group relative h-full w-full overflow-hidden rounded-[8px] sm:rounded-[12px] p-2 transition-all duration-300">
+        <div className="group relative h-full w-full overflow-hidden rounded-[6px] sm:rounded-[10px] p-1.5 sm:p-2 transition-all duration-300">
           {/* CRT scanline texture overlay */}
           <div
             aria-hidden
@@ -123,21 +123,21 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
           {/* Centered blinking prompt on the screen */}
           <div className="relative z-20 flex h-full w-full flex-col items-center justify-center text-center">
             {/* Retro title badge */}
-            <span className="font-mono text-[9px] font-bold tracking-widest text-[#5C3246] sm:text-[11px] md:text-xs dark:text-pink-200">
+            <span className="font-mono text-[8px] font-bold tracking-wider text-[#5C3246] sm:text-[10px] md:text-xs dark:text-pink-200">
               ✦ SUTANUKA OS ✦
             </span>
 
             {/* Glowing Call to action */}
-            <div className="mt-1 flex items-center gap-1 rounded-md border border-pink-300/80 bg-white/70 px-2 py-1 shadow-sm backdrop-blur-[2px] transition-transform duration-200 group-hover:scale-105 group-hover:bg-white dark:border-white/20 dark:bg-black/50 dark:group-hover:bg-black/70">
-              <span className="text-xs sm:text-sm">💻</span>
-              <span className="font-mono text-[10px] font-bold tracking-tight text-ink sm:text-xs md:text-sm dark:text-white">
-                Click to explore my projects
+            <div className="mt-0.5 sm:mt-1 flex items-center gap-1 rounded-md border border-pink-300/80 bg-white/80 px-1.5 py-0.5 sm:px-2 sm:py-1 shadow-xs backdrop-blur-[2px] transition-transform duration-200 group-hover:scale-105 group-hover:bg-white dark:border-white/20 dark:bg-black/60 dark:group-hover:bg-black/80">
+              <span className="text-[10px] sm:text-xs">💻</span>
+              <span className="font-mono text-[8px] sm:text-[10px] md:text-xs font-bold tracking-tight text-ink dark:text-white">
+                Explore my projects
               </span>
               <span className="inline-block animate-pulse font-mono font-bold text-accent">_</span>
             </div>
 
             {/* Subtle retro hint */}
-            <span className="mt-1 hidden font-hand text-[11px] font-bold text-ink-soft/90 sm:block dark:text-white/80">
+            <span className="mt-0.5 hidden font-hand text-[9px] sm:text-[11px] font-bold text-ink-soft/90 md:block dark:text-white/80">
               [tap to expand]
             </span>
           </div>

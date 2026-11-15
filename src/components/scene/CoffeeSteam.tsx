@@ -9,10 +9,10 @@ export default function CoffeeSteam() {
       aria-hidden
       className="pointer-events-none absolute select-none"
       style={{
-        left: '32.5%',
-        top: '45.5%',
-        width: '4%',
-        height: '8%',
+        left: '61.2%',
+        top: '43.2%',
+        width: '3.5%',
+        height: '7.5%',
       }}
     >
       <div className="relative h-full w-full">

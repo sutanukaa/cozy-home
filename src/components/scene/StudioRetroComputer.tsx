@@ -110,8 +110,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       <div
         className={`pointer-events-auto absolute cursor-pointer select-none ${className}`}
         style={{
-          left: '50.8%',
-          top: '38.0%',
+          left: '50.9%',
+          top: '38.5%',
           transform: 'translate(-50%, -50%)',
           width: '18.0%',
           height: '13.0%',
@@ -142,23 +142,22 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
           <div className="absolute inset-0 bg-gradient-to-b from-[#2B1B3A]/30 via-[#FFDFE7]/25 to-[#2B1B3A]/40 transition-colors duration-500 group-hover:from-[#E86A92]/30 group-hover:to-[#FFE29A]/30 dark:from-black/40 dark:via-[#4A2E59]/40 dark:to-black/50" />
 
           {/* Centered blinking prompt on the screen */}
-          <div className="relative z-20 flex h-full w-full flex-col items-center justify-center text-center">
+          <div className="relative z-20 flex h-full w-full flex-col items-center justify-center gap-1 sm:gap-1.5 text-center">
             {/* Retro title badge */}
             <span className="font-mono text-[8px] font-bold tracking-wider text-[#5C3246] sm:text-[10px] md:text-xs dark:text-pink-200">
               ✦ SUTANUKA OS ✦
             </span>
 
-            {/* Glowing Call to action */}
-            <div className="mt-0.5 sm:mt-1 flex items-center gap-1 rounded-md border border-pink-300/80 bg-white/80 px-1.5 py-0.5 sm:px-2 sm:py-1 shadow-xs backdrop-blur-[2px] transition-transform duration-200 group-hover:scale-105 group-hover:bg-white dark:border-white/20 dark:bg-black/60 dark:group-hover:bg-black/80">
-              <span className="text-[10px] sm:text-xs">💻</span>
-              <span className="font-mono text-[8px] sm:text-[10px] md:text-xs font-bold tracking-tight text-ink dark:text-white">
+            {/* Glowing Call to action - laptop emoji removed */}
+            <div className="flex items-center justify-center rounded-md border border-pink-300/80 bg-white/85 px-3 py-1 sm:px-3.5 sm:py-1.5 shadow-xs backdrop-blur-[2px] transition-transform duration-200 group-hover:scale-105 group-hover:bg-white dark:border-white/20 dark:bg-black/60 dark:group-hover:bg-black/80">
+              <span className="font-mono text-[9px] sm:text-[11px] md:text-xs font-bold tracking-tight text-ink dark:text-white">
                 Explore my projects
               </span>
-              <span className="inline-block animate-pulse font-mono font-bold text-accent">_</span>
+              <span className="ml-1 inline-block animate-pulse font-mono font-bold text-accent">_</span>
             </div>
 
             {/* Subtle retro hint */}
-            <span className="mt-0.5 hidden font-hand text-[9px] sm:text-[11px] font-bold text-ink-soft/90 md:block dark:text-white/80">
+            <span className="hidden font-hand text-[9px] sm:text-[11px] font-bold text-ink-soft/90 md:block dark:text-white/80">
               [tap to expand]
             </span>
           </div>

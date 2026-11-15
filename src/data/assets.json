@@ -85,6 +85,26 @@
     "size": "1200x300, transparent"
   },
   {
+    "path": "public/assets/objects/studio-plant-tiny.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
+    "path": "public/assets/objects/studio-plant-growing.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
+    "path": "public/assets/objects/studio-plant-full.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
+    "path": "public/assets/objects/studio-watering-can.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
     "path": "public/assets/patterns/wallpaper-day.png",
     "kind": "pattern",
     "size": "1024x1024, seamless tile"

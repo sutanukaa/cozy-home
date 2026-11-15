@@ -298,3 +298,59 @@ Add this block at the end of every prompt:
 - [ ] No readable text or faces inside the art
 - [ ] Doors, monitor, mailbox, etc. are clearly visible where the hotspots will sit
 - [ ] Center-bottom of each scene stays uncluttered (tooltips and the mascot sit there)
+
+---
+
+## 11. Studio Interactive Desk Plant & Watering Can
+Output directory: `public/assets/objects/`
+- `studio-plant-tiny.png` (512x512, transparent PNG): Tiny baby sprout in pot
+- `studio-plant-growing.png` (512x512, transparent PNG): Medium half-grown leafy plant in identical pot
+- `studio-plant-full.png` (512x512, transparent PNG): Fully grown flourishing & blooming plant in identical pot
+- `studio-watering-can.png` (512x512, transparent PNG): Cute pastel pink watering can
+
+### 11.1 Plant Stage 1 - Tiny Sprout (`studio-plant-tiny.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+A tiny, adorable baby indoor plant sprout just beginning to emerge from rich dark potting soil. Only two small, tender round pastel sage-green baby leaves on a tiny delicate stem. Planted inside a cute rounded miniature ceramic flowerpot in soft blush pink with a delicate scalloped fluted rim and a tiny hand-painted heart motif.
+
+Centered, slightly elevated 3/4 front angle tabletop perspective (approx. 25-degree downward tilt) matching a cozy wooden studio desk. Die-cut sticker format with crisp clean silhouette, isolated on a solid plain white background for easy cutout, 512x512 square, high resolution, no ground shadow, no background clutter.
+```
+
+### 11.2 Plant Stage 2 - Half-Grown Foliage (`studio-plant-growing.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+The exact same indoor houseplant, now adolescent and thriving in its middle growth stage. A healthy cluster of 5 to 6 rounded, fleshy pastel sage-green leaves (peperomia or pilea style) on arching tender stems spreading outward and upward happily from the soil. Planted inside the EXACT SAME rounded miniature ceramic flowerpot in soft blush pink with a scalloped fluted rim and tiny hand-painted heart motif.
+
+Identical scale, identical pot size, identical camera angle and tabletop perspective as Stage 1 so the pot perfectly aligns during visual transition. Die-cut sticker format with crisp clean silhouette, isolated on a solid plain white background for easy cutout, 512x512 square, high resolution, no ground shadow, no background clutter.
+```
+
+### 11.3 Plant Stage 3 - Fully Grown & Blooming (`studio-plant-full.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+The exact same indoor houseplant, now in full magnificent bloom and peak lushness. Dense, flourishing, vibrant pastel sage-green leaves cascading softly over the edges of the pot, crowned with 3 to 4 delicate, tiny blooming star-shaped blossoms in soft blush pink and butter yellow centers, surrounded by subtle magical fairy sparkles. Planted inside the EXACT SAME rounded miniature ceramic flowerpot in soft blush pink with a scalloped fluted rim and tiny hand-painted heart motif.
+
+Identical pot dimensions, identical pot alignment and tabletop perspective as Stage 1 and Stage 2. Die-cut sticker format with crisp clean silhouette, isolated on a solid plain white background for easy cutout, 512x512 square, high resolution, no ground shadow, no background clutter.
+```
+
+### 11.4 Watering Can (`studio-watering-can.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+A charming miniature vintage indoor watering can. Rounded barrel body in soft pastel rose-pink enamel with a tiny cream heart painted on the side, an elegant arched overhead handle, a slender curved pour spout pointing to the left, and a cute polished brass sprinkler rosette tip. Clean, delightful, whimsical retro aesthetic.
+
+Side 3/4 perspective, slightly tilted forward ready to pour, isolated on a solid plain white background, die-cut sticker format with crisp clean silhouette for easy transparent cutout, 512x512 square, high resolution, no ground shadow, no water droplets in the asset itself (water droplets are animated dynamically via code).
+```
+
+### 11.5 Single-Sheet 3-Stage Progression (Consistency Method for Midjourney / DALL-E)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+A horizontal sequence showing three stages of the same indoor potted houseplant growing, displayed side by side in a row against a solid plain white background:
+- Left: Stage 1, a tiny cute green seedling sprout with two baby leaves in a small blush pink scalloped ceramic pot.
+- Middle: Stage 2, the same plant grown into a healthy young plant with 5 rounded sage green leaves in the identical blush pink pot.
+- Right: Stage 3, the same plant fully grown, lush, bushy with cascading leaves and tiny blooming pink and butter flowers in the identical blush pink pot.
+All three pots are completely identical in size, design, and camera angle. Wide landscape 16:9 composition, isolated cutout style, plain white background.
+```

@@ -110,11 +110,11 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       <div
         className={`pointer-events-auto absolute cursor-pointer select-none ${className}`}
         style={{
-          left: '49.15%',
-          top: '33.86%',
+          left: '50.8%',
+          top: '38.0%',
           transform: 'translate(-50%, -50%)',
-          width: '16.5%',
-          height: '20.5%',
+          width: '18.0%',
+          height: '13.0%',
         }}
         onClick={openComputer}
         role="button"

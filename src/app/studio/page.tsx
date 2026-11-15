@@ -62,7 +62,7 @@ export default function StudioPage() {
               '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',
           }}
         >
-          Where the pixels get pushed.
+          Where the lines get pushed.
         </p>
       </div>
     </div>

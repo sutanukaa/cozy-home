@@ -251,3 +251,37 @@ export function PixelTrash({ size = 48, className = '' }: IconProps) {
     </svg>
   );
 }
+
+// 8. Pixel Server Rack (for C HTTP Server)
+export function PixelServer({ size = 48, className = '' }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+    >
+      {/* Server Rack Body */}
+      <rect x="4" y="3" width="16" height="18" fill="#FCE7EC" />
+      <rect x="3" y="4" width="18" height="16" fill="#FCE7EC" />
+      <rect x="4" y="3" width="16" height="1" fill="#E86A92" />
+      <rect x="3" y="4" width="1" height="16" fill="#E86A92" />
+      <rect x="20" y="4" width="1" height="16" fill="#C95478" />
+      <rect x="4" y="20" width="16" height="1" fill="#C95478" />
+      {/* Unit 1 */}
+      <rect x="6" y="5" width="12" height="4" fill="#3D2947" />
+      <rect x="8" y="7" width="2" height="1" fill="#A9C7A0" />
+      <rect x="11" y="7" width="2" height="1" fill="#A9C7A0" />
+      {/* Unit 2 */}
+      <rect x="6" y="10" width="12" height="4" fill="#3D2947" />
+      <rect x="8" y="12" width="2" height="1" fill="#FFE29A" />
+      <rect x="11" y="12" width="2" height="1" fill="#FFE29A" />
+      {/* Unit 3 */}
+      <rect x="6" y="15" width="12" height="4" fill="#3D2947" />
+      <rect x="8" y="17" width="2" height="1" fill="#FF8BA7" />
+      <rect x="11" y="17" width="2" height="1" fill="#FF8BA7" />
+    </svg>
+  );
+}

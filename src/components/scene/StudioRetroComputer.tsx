@@ -11,6 +11,7 @@ import {
   PixelFlower,
   PixelNotepad,
   PixelTrash,
+  PixelServer,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 
@@ -92,10 +93,12 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
         return <PixelRobot size={size} />;
       case 'syntactiq':
         return <PixelCode size={size} />;
-      case 'a-little-scrapbook':
-        return <PixelScrapbook size={size} />;
       case 'bloom-for-youu':
         return <PixelFlower size={size} />;
+      case 'a-little-scrapbook':
+        return <PixelScrapbook size={size} />;
+      case 'http-server':
+        return <PixelServer size={size} />;
       default:
         return <PixelCode size={size} />;
     }
@@ -194,7 +197,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
               {/* Monitor Top Badge */}
               <div className="mb-2 flex items-center justify-between px-2">
                 <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-[#8A566C] dark:text-pink-300">
-                  <span>🌸</span>
+                  <span className="rounded bg-pink-200/80 px-1 py-0.2 text-[10px] font-bold text-[#5C3246] dark:bg-white/10 dark:text-pink-200">SYS</span>
                   <span className="tracking-widest">SUTANUKA-STATION 2000</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -232,8 +235,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                 {/* --- Retro OS Top Menu Bar --- */}
                 <div className="relative z-30 flex h-7 items-center justify-between border-b-2 border-pink-200/80 bg-[#FFF9FA] px-3 font-mono text-xs font-bold text-ink shadow-xs dark:border-white/10 dark:bg-[#281832] dark:text-white">
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <span className="flex items-center gap-1 text-accent">
-                      <span>🍑</span>
+                    <span className="flex items-center gap-1 text-accent font-bold">
+                      <span className="rounded bg-accent/15 px-1 py-0.2 text-[10px]">OS</span>
                       <span className="tracking-tight">CozyOS</span>
                     </span>
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">File</span>
@@ -248,7 +251,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="hidden text-[11px] opacity-75 sm:inline">🔋 100%</span>
+                    <span className="hidden text-[11px] opacity-75 sm:inline">PWR: 100%</span>
                     <span className="rounded bg-pink-100/80 px-1.5 py-0.5 text-[11px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
                       {currentTime}
                     </span>
@@ -256,7 +259,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                 </div>
 
                 {/* --- Retro OS Desktop Workspace --- */}
-                <div className="relative flex flex-1 flex-col overflow-y-auto p-4 sm:p-6">
+                <div className="retro-scroll relative flex flex-1 flex-col overflow-y-auto p-4 sm:p-6">
                   {/* Subtle pixel grid pattern on desktop wallpaper */}
                   <div
                     aria-hidden
@@ -269,7 +272,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                   />
 
                   {/* Desktop Icons Grid */}
-                  <div className="relative z-20 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6 md:grid-cols-6">
+                  <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-4 md:grid-cols-7">
                     {/* Project Icons */}
                     {projects.map((p) => {
                       const isSelected = selectedIcon === p.slug;
@@ -331,7 +334,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                       onClick={() => {
                         soundscape.playClickSound();
                         setSelectedIcon('trash');
-                        alert('Recycle Bin: 0 bugs found! Everything is cozy and working ✨');
+                        alert('Recycle Bin: 0 bugs found. Automated test suites and CI pipelines passing cleanly.');
                       }}
                       className="group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all hover:bg-white/60 dark:hover:bg-white/10"
                     >
@@ -352,19 +355,19 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     {activeProject && (
                       <motion.div
                         key={activeProject.slug}
-                        initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                        initial={{ scale: 0.95, y: 15, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
-                        exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                        className="relative z-30 mx-auto mt-6 w-full max-w-2xl rounded-2xl border-2 border-pink-300/80 bg-paper/95 shadow-xl backdrop-blur-sm dark:border-white/20 dark:bg-[#25182E]/95"
+                        exit={{ scale: 0.95, y: 15, opacity: 0 }}
+                        className="relative z-30 mx-auto mt-4 w-full max-w-3xl flex flex-col rounded-2xl border-2 border-pink-300/80 bg-paper/98 shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#25182E]/98"
                       >
                         {/* Retro Window Titlebar */}
-                        <div className="flex items-center justify-between border-b-2 border-pink-200/80 bg-gradient-to-r from-blush via-paper to-blush px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
+                        <div className="flex shrink-0 items-center justify-between border-b-2 border-pink-200/80 bg-gradient-to-r from-blush via-paper to-blush px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
                           <div className="flex items-center gap-2">
                             <span className="h-3 w-3 rounded-full border border-rose/80 bg-rose" />
                             <span className="h-3 w-3 rounded-full border border-butter/80 bg-butter" />
                             <span className="h-3 w-3 rounded-full border border-sage/80 bg-sage" />
                             <span className="ml-2 font-mono text-xs font-bold text-cocoa dark:text-pink-100">
-                              {activeProject.slug}.app
+                              {activeProject.slug}.app - Technical Specification
                             </span>
                           </div>
                           <button
@@ -377,62 +380,128 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                           </button>
                         </div>
 
-                        {/* Window Content */}
-                        <div className="flex flex-col gap-4 p-5 sm:p-6">
-                          <div className="flex items-start justify-between gap-4">
+                        {/* Scrollable Window Content Pane */}
+                        <div className="retro-scroll flex max-h-[50vh] sm:max-h-[54vh] flex-col gap-5 overflow-y-auto p-5 sm:p-6 text-ink dark:text-white">
+                          {/* Header Block */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pink-200/60 pb-4 dark:border-white/10">
                             <div className="flex items-center gap-3">
                               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-100/80 p-1 shadow-inner dark:bg-white/10">
-                                {getProjectPixelIcon(activeProject.slug, 36)}
+                                {getProjectPixelIcon(activeProject.slug, 38)}
                               </span>
                               <div>
-                                <h3 className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl dark:text-white">
+                                <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
                                   {activeProject.title}
                                 </h3>
-                                <span className="font-mono text-xs font-semibold text-accent dark:text-pink-300">
-                                  {activeProject.status === 'shipped' ? '● Shipped & Live' : '○ Building in progress'}
-                                </span>
+                                <p className="font-mono text-xs text-ink-soft dark:text-pink-200">
+                                  {activeProject.tagline}
+                                </p>
                               </div>
+                            </div>
+                            <span className="self-start sm:self-center shrink-0 rounded-md border border-pink-300/70 bg-pink-100/70 px-2.5 py-1 font-mono text-[10px] font-bold text-accent dark:border-pink-800/80 dark:bg-pink-950/60 dark:text-pink-300">
+                              STATUS: {activeProject.status.toUpperCase()}
+                            </span>
+                          </div>
+
+                          {/* Technical Overview Section */}
+                          <div className="space-y-1.5">
+                            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                              System Overview
+                            </h4>
+                            <p className="font-sans text-xs sm:text-sm leading-relaxed text-ink/90 dark:text-white/90">
+                              {activeProject.overview}
+                            </p>
+                          </div>
+
+                          {/* Architecture & Pipeline */}
+                          {activeProject.architecture && activeProject.architecture.length > 0 && (
+                            <div className="space-y-2">
+                              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                System Architecture &amp; Pipeline
+                              </h4>
+                              <div className="space-y-1.5 rounded-xl border border-pink-200/70 bg-white/60 p-3 sm:p-4 font-mono text-xs text-ink/90 dark:border-white/10 dark:bg-black/25 dark:text-white/85">
+                                {activeProject.architecture.map((arch, idx) => (
+                                  <div key={idx} className="flex items-start gap-2.5 leading-relaxed">
+                                    <span className="shrink-0 font-bold text-accent dark:text-pink-300">
+                                      0{idx + 1} |
+                                    </span>
+                                    <span>{arch}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Technical Highlights */}
+                          {activeProject.technicalHighlights && activeProject.technicalHighlights.length > 0 && (
+                            <div className="space-y-2">
+                              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                Key Engineering Decisions &amp; Highlights
+                              </h4>
+                              <ul className="space-y-1.5 rounded-xl border border-pink-200/70 bg-white/60 p-3 sm:p-4 font-mono text-xs text-ink/90 dark:border-white/10 dark:bg-black/25 dark:text-white/85">
+                                {activeProject.technicalHighlights.map((hl, idx) => (
+                                  <li key={idx} className="flex items-start gap-2.5 leading-relaxed">
+                                    <span className="shrink-0 font-bold text-accent">&gt;</span>
+                                    <span>{hl}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Key Capabilities */}
+                          {activeProject.keyFeatures && activeProject.keyFeatures.length > 0 && (
+                            <div className="space-y-2">
+                              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                Core Capabilities
+                              </h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {activeProject.keyFeatures.map((feat, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 rounded-lg border border-pink-200/60 bg-white/50 px-2.5 py-1.5 font-mono text-[11px] text-ink/85 dark:border-white/10 dark:bg-black/20 dark:text-white/85">
+                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                                    <span>{feat}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Tech Stack Tags */}
+                          <div className="space-y-1.5">
+                            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                              Technologies
+                            </h4>
+                            <div className="flex flex-wrap gap-1.5">
+                              {activeProject.tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="rounded-md border border-pink-200/70 bg-white/90 px-2.5 py-1 font-mono text-xs font-medium text-cocoa shadow-2xs dark:border-white/15 dark:bg-black/40 dark:text-white/90"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
                             </div>
                           </div>
 
-                          <p className="font-sans text-sm leading-relaxed text-ink/85 sm:text-base dark:text-white/85">
-                            {activeProject.blurb}
-                          </p>
-
-                          {/* Tech Stack Pills */}
-                          <div className="flex flex-wrap gap-1.5 pt-1">
-                            {activeProject.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="rounded-md border border-pink-200/70 bg-white/80 px-2 py-0.5 font-mono text-xs font-semibold text-cocoa shadow-2xs dark:border-white/15 dark:bg-black/30 dark:text-white/80"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-
-                          {/* Action Buttons */}
-                          <div className="mt-2 flex flex-wrap gap-3 pt-2">
-                            {activeProject.links.live && (
-                              <a
-                                href={activeProject.links.live}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 rounded-full border border-pink-300 bg-accent px-4 py-2 font-display text-sm font-bold text-white shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-pink-200/50"
-                              >
-                                <span>🌐</span>
-                                <span>Launch Live Project</span>
-                              </a>
-                            )}
+                          {/* Action Links (Zero Emojis) */}
+                          <div className="flex flex-wrap items-center gap-3 border-t border-pink-200/60 pt-4 dark:border-white/10">
                             {activeProject.links.code && (
                               <a
                                 href={activeProject.links.code}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 rounded-full border border-pink-200/80 bg-white px-4 py-2 font-display text-sm font-bold text-ink shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-white/20 dark:bg-white/15 dark:text-white"
+                                className="flex items-center gap-1.5 rounded-full border border-pink-300 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-pink-200/50"
                               >
-                                <span>💻</span>
-                                <span>View Source Code</span>
+                                <span>[ View GitHub Repository ]</span>
+                              </a>
+                            )}
+                            {activeProject.links.live && (
+                              <a
+                                href={activeProject.links.live}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 rounded-full border border-pink-200/80 bg-white px-4 py-2 font-mono text-xs sm:text-sm font-bold text-ink shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-white/20 dark:bg-white/15 dark:text-white"
+                              >
+                                <span>[ Launch Live Application ]</span>
                               </a>
                             )}
                           </div>
@@ -441,7 +510,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     )}
                   </AnimatePresence>
 
-                  {/* --- Floating README Note Window --- */}
+                  {/* --- Floating README Note Window (Zero Emojis) --- */}
                   <AnimatePresence>
                     {showReadme && (
                       <motion.div
@@ -452,7 +521,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                       >
                         <div className="flex items-center justify-between border-b-2 border-pink-200/80 bg-butter/60 px-4 py-2 dark:border-white/10 dark:bg-[#3D2947]">
                           <span className="font-mono text-xs font-bold text-cocoa dark:text-pink-100">
-                            README.txt - Notepad
+                            README.txt - Technical Portfolio Guide
                           </span>
                           <button
                             type="button"
@@ -462,13 +531,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             ✕
                           </button>
                         </div>
-                        <div className="space-y-2 p-5 font-mono text-xs leading-relaxed text-cocoa sm:text-sm dark:text-pink-100">
-                          <p className="font-bold text-accent">Welcome to Sutanuka&apos;s Retro Studio!</p>
+                        <div className="space-y-3 p-5 font-mono text-xs leading-relaxed text-cocoa sm:text-sm dark:text-pink-100">
+                          <p className="font-bold text-accent">[ SYSTEM SPECIFICATION &amp; ARCHITECTURE GUIDE ]</p>
                           <p>
-                            Here you can explore my favorite engineering projects — from RAG &amp; AI agents to full-stack web platforms and interactive experiments.
+                            Welcome to Sutanuka&apos;s Engineering Portfolio. This workstation highlights production systems, autonomous multi-agent pipelines, retrieval-augmented generation architectures, and systems programming.
                           </p>
-                          <p className="pt-2 text-ink-soft dark:text-white/60">
-                            💡 Tip: Click any pixel icon on the desktop to preview that project&apos;s architecture and live demo.
+                          <p className="pt-2 text-ink-soft dark:text-white/70">
+                            Select any application icon on the desktop workspace to inspect architectural pipelines, technical decisions, CI verification harnesses, and GitHub source code repositories.
                           </p>
                         </div>
                       </motion.div>

@@ -14,6 +14,11 @@ import {
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
+import {
+  syntactiqDiagrams,
+  syntactiqStateSchema,
+  syntactiqVerificationMatrix,
+} from '@/data/syntactiqArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
 
 interface StudioRetroComputerProps {
@@ -26,12 +31,18 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [showBlueprints, setShowBlueprints] = useState(false);
   const [activeBlueprintDiagram, setActiveBlueprintDiagram] = useState<number>(1);
-  const [showBlueprintConstants, setShowBlueprintConstants] = useState<boolean>(false);
+  const [activeExtraTab, setActiveExtraTab] = useState<'none' | 'constants' | 'schema' | 'verification'>('none');
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
-  const currentBlueprint: ArchitectureDiagram =
+  const isSyntactiq = activeProject?.slug === 'syntactiq';
+  const isRag = activeProject?.slug === 'rag-document-qa';
+  const hasBlueprints = isSyntactiq || isRag;
+
+  const currentSyntactiqBlueprint =
+    syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
+  const currentRagBlueprint =
     ragDiagrams.find((d) => d.id === activeBlueprintDiagram) || ragDiagrams[0];
 
   // Track hydration for createPortal and clean up body class on unmount
@@ -252,15 +263,20 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">Edit</span>
                     <span
                       onClick={() => {
-                        const rag = projects.find((p) => p.slug === 'rag-document-qa');
-                        if (rag) {
-                          setActiveProject(rag);
-                          setSelectedIcon('rag-document-qa');
+                        const target =
+                          activeProject?.slug === 'syntactiq' || activeProject?.slug === 'rag-document-qa'
+                            ? activeProject
+                            : projects.find((p) => p.slug === 'syntactiq') || projects[0];
+                        if (target) {
+                          setActiveProject(target);
+                          setSelectedIcon(target.slug);
                           setShowBlueprints(true);
+                          setActiveExtraTab('none');
+                          setActiveBlueprintDiagram(1);
                         }
                       }}
                       className="cursor-pointer text-accent underline opacity-85 hover:opacity-100"
-                      title="View RAG Architecture Blueprints & 6 System Diagrams"
+                      title="View Architecture Blueprints & System Diagrams"
                     >
                       Blueprints
                     </span>
@@ -307,6 +323,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             soundscape.playClickSound();
                             setSelectedIcon(p.slug);
                             setActiveProject(p);
+                            setShowBlueprints(false);
+                            setActiveExtraTab('none');
+                            setActiveBlueprintDiagram(1);
                           }}
                           className={`group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all ${
                             isSelected || isOpen
@@ -351,7 +370,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             <span className="h-3 w-3 rounded-full border border-butter/80 bg-butter" />
                             <span className="h-3 w-3 rounded-full border border-sage/80 bg-sage" />
                             <span className="ml-2 font-mono text-xs font-bold text-cocoa dark:text-pink-100">
-                              {activeProject.slug}.app - {showBlueprints && activeProject.slug === 'rag-document-qa' ? 'Architecture Blueprints & Technical Specification' : 'Technical Specification'}
+                              {activeProject.slug}.app - {showBlueprints && hasBlueprints ? 'Architecture Blueprints & Technical Specification' : 'Technical Specification'}
                             </span>
                           </div>
                           <button
@@ -359,6 +378,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             onClick={() => {
                               setActiveProject(null);
                               setShowBlueprints(false);
+                              setActiveExtraTab('none');
                             }}
                             title="Close Window"
                             className="flex h-5 w-5 items-center justify-center rounded-full border border-pink-300 bg-white font-mono text-xs font-bold text-ink hover:bg-rose hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-white"
@@ -477,12 +497,14 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
 
                           {/* Action Links (Zero Emojis) */}
                           <div className="flex flex-wrap items-center gap-3 border-t border-pink-200/60 pt-4 dark:border-white/10">
-                            {activeProject.slug === 'rag-document-qa' && (
+                            {hasBlueprints && (
                               <button
                                 type="button"
                                 onClick={() => {
                                   soundscape.playClickSound();
                                   setShowBlueprints(!showBlueprints);
+                                  setActiveExtraTab('none');
+                                  setActiveBlueprintDiagram(1);
                                 }}
                                 className="flex items-center gap-1.5 rounded-full border border-pink-400 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:bg-rose active:scale-95 dark:border-pink-300/60"
                               >
@@ -515,9 +537,335 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             )}
                           </div>
 
-                          {/* --- Expandable Architecture Blueprint Viewer within Same Window --- */}
+                          {/* --- Expandable Architecture Blueprint Viewer: Syntactiq --- */}
                           <AnimatePresence>
-                            {showBlueprints && activeProject.slug === 'rag-document-qa' && (
+                            {showBlueprints && isSyntactiq && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* In-Progress Workstation Alert Banner */}
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border-2 border-amber-300/90 bg-amber-50/95 p-4 font-mono text-xs shadow-xs dark:border-amber-600/80 dark:bg-amber-950/50">
+                                  <div className="flex items-start sm:items-center gap-3">
+                                    <span className="mt-0.5 sm:mt-0 flex h-3 w-3 shrink-0 rounded-full bg-amber-500 animate-pulse" />
+                                    <div>
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-bold text-amber-900 dark:text-amber-200">
+                                          PROJECT STATUS: IN ACTIVE DEVELOPMENT
+                                        </span>
+                                        <span className="rounded bg-amber-200/90 px-1.5 py-0.2 text-[9px] font-bold text-amber-900 dark:bg-amber-900/80 dark:text-amber-100">
+                                          CURRENTLY BUILDING
+                                        </span>
+                                      </div>
+                                      <p className="mt-1 text-[11px] leading-relaxed text-amber-900/90 dark:text-amber-200/90">
+                                        Core multi-agent LangGraph workflow, dual-tier Docker sandboxing, and Coder agent are built and verified (44/45 unit tests passing). Automated GitHub Fork-and-PR egress and distributed Celery cluster deployment are actively being finalized.
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="shrink-0 flex items-center gap-2 self-start sm:self-center">
+                                    <span className="rounded-md border border-amber-300 bg-white/90 px-2.5 py-1 text-[10px] font-bold text-amber-900 dark:border-amber-700 dark:bg-black/40 dark:text-amber-200">
+                                      45 TESTS VERIFIED
+                                    </span>
+                                    <span className="rounded-md bg-amber-600 px-2.5 py-1 text-[10px] font-bold text-white">
+                                      1ST / 650 TEAMS
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Engineering Blueprints &amp; Multi-Agent Specifications
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    Syntactiq Architecture &amp; Multi-Agent Pipeline
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Six system diagrams detailing distributed infrastructure, compiled StateGraph self-healing, Tree-sitter AST decomposition, Docker sandboxing, GitHub egress, and real-time SSE telemetry.
+                                  </p>
+                                </div>
+
+                                {/* --- Choice Band in the Middle --- */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {syntactiqDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        <span>{d.tabLabel}</span>
+                                        <span className={`ml-1 text-[9px] ${d.status === 'Built & Verified' ? 'text-emerald-500' : 'text-amber-500'}`}>
+                                          {d.status === 'Built & Verified' ? '●' : '○'}
+                                        </span>
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('schema');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'schema'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ State Schema &amp; Invariants ]
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('verification');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'verification'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Implementation Status (45 Tests) ]
+                                  </button>
+                                </div>
+
+                                {/* --- Display Area: Selected Diagram --- */}
+                                {activeExtraTab === 'none' && (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentSyntactiqBlueprint.id} of 06
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentSyntactiqBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
+                                        <span className="rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                          {currentSyntactiqBlueprint.badge}
+                                        </span>
+                                        <span
+                                          className={`rounded-md border px-2.5 py-1 font-mono text-[10px] font-bold ${
+                                            currentSyntactiqBlueprint.status === 'Built & Verified'
+                                              ? 'border-emerald-300/80 bg-emerald-100/80 text-emerald-900 dark:border-emerald-700/80 dark:bg-emerald-950/60 dark:text-emerald-200'
+                                              : 'border-amber-300/80 bg-amber-100/80 text-amber-900 dark:border-amber-700/80 dark:bg-amber-950/60 dark:text-amber-200'
+                                          }`}
+                                        >
+                                          STATUS: {currentSyntactiqBlueprint.status.toUpperCase()}
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <MermaidRenderer
+                                      code={currentSyntactiqBlueprint.mermaid}
+                                      diagramId={`syntactiq-diagram-${currentSyntactiqBlueprint.id}`}
+                                    />
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentSyntactiqBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Invariants
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentSyntactiqBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentSyntactiqBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* --- Display Area: State Schema View --- */}
+                                {activeExtraTab === 'schema' && (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        LangGraph State Schema
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        MigrationState Channels &amp; Architecture Color Legend
+                                      </h5>
+                                    </div>
+
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Field Name</th>
+                                            <th className="px-4 py-2.5 font-bold">Python Type</th>
+                                            <th className="px-4 py-2.5 font-bold">Role &amp; Invariants</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {syntactiqStateSchema.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                {item.field}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-accent dark:text-pink-300 font-semibold">
+                                                {item.type}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-cocoa dark:text-white/85">
+                                                {item.role}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Color Legend Card */}
+                                    <div className="rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                      <span className="font-bold text-accent dark:text-pink-300">
+                                        System Architecture Diagram Color Legend
+                                      </span>
+                                      <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                                        <div className="flex items-center gap-2 rounded border border-blue-200 bg-[#DBEAFE]/70 p-2 text-[#1E3A8A]">
+                                          <span className="h-3 w-3 rounded-full bg-[#2563EB]" />
+                                          <span className="font-semibold">Client (Next.js)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-emerald-200 bg-[#DCFCE7]/70 p-2 text-[#14532D]">
+                                          <span className="h-3 w-3 rounded-full bg-[#16A34A]" />
+                                          <span className="font-semibold">API (FastAPI)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-orange-200 bg-[#FFEDD5]/70 p-2 text-[#7C2D12]">
+                                          <span className="h-3 w-3 rounded-full bg-[#EA580C]" />
+                                          <span className="font-semibold">Broker (Redis)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-teal-200 bg-[#CCFBF1]/70 p-2 text-[#134E4A]">
+                                          <span className="h-3 w-3 rounded-full bg-[#0D9488]" />
+                                          <span className="font-semibold">Workers (Celery)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-purple-200 bg-[#EDE9FE]/70 p-2 text-[#4C1D95]">
+                                          <span className="h-3 w-3 rounded-full bg-[#7C3AED]" />
+                                          <span className="font-semibold">Agents (LangGraph)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-rose-200 bg-[#FFE4E6]/70 p-2 text-[#881337]">
+                                          <span className="h-3 w-3 rounded-full bg-[#E11D48]" />
+                                          <span className="font-semibold">Sandbox (Docker)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-amber-200 bg-[#FEF3C7]/70 p-2 text-[#78350F]">
+                                          <span className="h-3 w-3 rounded-full bg-[#D97706]" />
+                                          <span className="font-semibold">DB (PostgreSQL)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded border border-slate-200 bg-[#F1F5F9]/70 p-2 text-[#0F172A]">
+                                          <span className="h-3 w-3 rounded-full bg-[#475569]" />
+                                          <span className="font-semibold">External (Gemini/GH)</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* --- Display Area: Verification Status View --- */}
+                                {activeExtraTab === 'verification' && (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Repository Audit &amp; Verification Matrix
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        Subsystem Verification Breakdown (45 Automated Tests)
+                                      </h5>
+                                    </div>
+
+                                    <div className="rounded-xl border border-pink-200/80 bg-white/80 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/30">
+                                      <div className="flex items-center justify-between border-b border-pink-100 pb-2 dark:border-white/10">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Pytest Execution Summary (backend/app/agents/ &amp; backend/app/sandbox/)
+                                        </span>
+                                        <span className="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200">
+                                          44 PASSED, 1 SKIPPED (47.01s)
+                                        </span>
+                                      </div>
+                                      <p className="mt-2 text-[11px] leading-relaxed text-ink/80 dark:text-white/80">
+                                        Command: <code className="bg-black/5 px-1 py-0.5 rounded dark:bg-white/10">py -3.12 -m pytest backend/app/agents/ backend/app/sandbox/ -v</code>. Verified across commits e87d466 (LangGraph StateGraph), 2dbf144 (Docker sandbox), 3c4676a (pytest runner), 2bfaab8 (self-healing retry loop), and a54b9d1 (Gemini integration).
+                                      </p>
+                                    </div>
+
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Subsystem Component</th>
+                                            <th className="px-4 py-2.5 font-bold">Status</th>
+                                            <th className="px-4 py-2.5 font-bold">Test Coverage</th>
+                                            <th className="px-4 py-2.5 font-bold">Implementation Detail &amp; Verification Evidence</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {syntactiqVerificationMatrix.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                {item.subsystem}
+                                              </td>
+                                              <td className="px-4 py-2.5">
+                                                <span
+                                                  className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                                                    item.status === 'Built & Verified'
+                                                      ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-200'
+                                                      : 'bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-200'
+                                                  }`}
+                                                >
+                                                  {item.status}
+                                                </span>
+                                              </td>
+                                              <td className="px-4 py-2.5 font-semibold text-accent dark:text-pink-300">
+                                                {item.testCoverage}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                <div>{item.implementationDetail}</div>
+                                                <div className="mt-1 text-ink-soft dark:text-white/60 italic">{item.verificationEvidence}</div>
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: RAG Document QA --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isRag && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
@@ -541,14 +889,14 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 {/* --- Choice Band in the Middle --- */}
                                 <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
                                   {ragDiagrams.map((d) => {
-                                    const isActive = !showBlueprintConstants && activeBlueprintDiagram === d.id;
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
                                     return (
                                       <button
                                         key={d.id}
                                         type="button"
                                         onClick={() => {
                                           soundscape.playClickSound();
-                                          setShowBlueprintConstants(false);
+                                          setActiveExtraTab('none');
                                           setActiveBlueprintDiagram(d.id);
                                         }}
                                         className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
@@ -565,10 +913,10 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                     type="button"
                                     onClick={() => {
                                       soundscape.playClickSound();
-                                      setShowBlueprintConstants(true);
+                                      setActiveExtraTab('constants');
                                     }}
                                     className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
-                                      showBlueprintConstants
+                                      activeExtraTab === 'constants'
                                         ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
                                         : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
                                     }`}
@@ -578,27 +926,27 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 </div>
 
                                 {/* --- Display Area: Selected Diagram or Constants --- */}
-                                {!showBlueprintConstants ? (
+                                {activeExtraTab === 'none' ? (
                                   <div className="flex flex-col gap-5">
                                     {/* Diagram Title and Badge */}
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
                                       <div>
                                         <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
-                                          Diagram 0{currentBlueprint.id} of 06
+                                          Diagram 0{currentRagBlueprint.id} of 06
                                         </span>
                                         <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
-                                          {currentBlueprint.title}
+                                          {currentRagBlueprint.title}
                                         </h5>
                                       </div>
                                       <span className="self-start sm:self-center rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
-                                        {currentBlueprint.badge}
+                                        {currentRagBlueprint.badge}
                                       </span>
                                     </div>
 
                                     {/* Mermaid Vector Diagram */}
                                     <MermaidRenderer
-                                      code={currentBlueprint.mermaid}
-                                      diagramId={`blueprint-diagram-${currentBlueprint.id}`}
+                                      code={currentRagBlueprint.mermaid}
+                                      diagramId={`rag-diagram-${currentRagBlueprint.id}`}
                                     />
 
                                     {/* 3 Technical Deep-Dive Cards */}
@@ -608,7 +956,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                           Data Flow &amp; Interactions
                                         </span>
                                         <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
-                                          {currentBlueprint.interactions}
+                                          {currentRagBlueprint.interactions}
                                         </p>
                                       </div>
 
@@ -617,7 +965,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                           Failure Modes &amp; Degradation
                                         </span>
                                         <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
-                                          {currentBlueprint.failureModes}
+                                          {currentRagBlueprint.failureModes}
                                         </p>
                                       </div>
 
@@ -626,7 +974,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                           Trade-Offs &amp; Scale Limits
                                         </span>
                                         <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
-                                          {currentBlueprint.tradeOffs}
+                                          {currentRagBlueprint.tradeOffs}
                                         </p>
                                       </div>
                                     </div>

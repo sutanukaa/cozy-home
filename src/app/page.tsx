@@ -28,38 +28,39 @@ export default function HomePage() {
         <WindowCurtains />
         <FairyLightOverlay />
         <LivingRoomElements />
-        {/* Clean hero text without box */}
-        <div className="pointer-events-none absolute inset-x-0 top-20 sm:top-24 z-20 mx-auto max-w-xl px-4 text-center">
-          <p
-            className="font-hand text-2xl font-bold tracking-wide text-white sm:text-3xl"
-            style={{
-              textShadow:
-                '0 3px 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 180, 200, 0.75), 0 1px 3px rgba(0, 0, 0, 0.9)',
-              WebkitTextStroke: '0.5px rgba(91, 58, 71, 0.6)',
-            }}
-          >
-            hi, I&apos;m {site.shortName} and this is my home
-          </p>
-          <h1
-            className="mt-1 font-display text-4xl font-extrabold tracking-tight text-white sm:text-6xl"
-            style={{
-              textShadow:
-                '0 3px 12px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 140, 180, 0.7), 0 2px 4px rgba(0,0,0,0.8)',
-            }}
-          >
-            {site.role}
-          </h1>
-          <p
-            className="mx-auto mt-2 font-hand text-xl font-bold text-white/95 sm:text-2xl"
-            style={{
-              textShadow:
-                '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 14px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.7)',
-            }}
-          >
-            {site.tagline}
-          </p>
-        </div>
       </RoomScene>
+
+      {/* Clean hero text anchored safely below the fixed navbar */}
+      <div className="pointer-events-none absolute inset-x-0 top-[78px] sm:top-[88px] md:top-[96px] z-20 mx-auto max-w-xl px-4 text-center">
+        <p
+          className="font-hand text-xl sm:text-2xl md:text-3xl font-bold tracking-wide text-white"
+          style={{
+            textShadow:
+              '0 3px 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 180, 200, 0.75), 0 1px 3px rgba(0, 0, 0, 0.9)',
+            WebkitTextStroke: '0.5px rgba(91, 58, 71, 0.6)',
+          }}
+        >
+          hi, I&apos;m {site.shortName} and this is my home
+        </p>
+        <h1
+          className="mt-0.5 sm:mt-1 font-display text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white"
+          style={{
+            textShadow:
+              '0 3px 12px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 140, 180, 0.7), 0 2px 4px rgba(0,0,0,0.8)',
+          }}
+        >
+          {site.role}
+        </h1>
+        <p
+          className="mx-auto mt-1 sm:mt-1.5 font-hand text-base sm:text-xl md:text-2xl font-bold text-white/95"
+          style={{
+            textShadow:
+              '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 14px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.7)',
+          }}
+        >
+          {site.tagline}
+        </p>
+      </div>
     </div>
   );
 }

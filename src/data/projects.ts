@@ -8,10 +8,40 @@ export interface Project {
   keyFeatures: string[];
   tags: string[];
   links: { live?: string; code?: string };
-  status: 'Production' | 'Shipped' | 'Active';
+  status: 'Production' | 'Shipped' | 'Active' | 'Currently Building';
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'syntactiq',
+    title: 'Syntactiq Code Modernization',
+    tagline: 'Autonomous multi-agent platform for AST-driven legacy codebase refactoring and automated pull requests.',
+    overview:
+      'An asynchronous multi-agent engine engineered to decompose, analyze, and modernize legacy software repositories. Parses source code into Concrete Syntax Trees using Tree-sitter, constructs an acyclic dependency graph with NetworkX, and schedules refactoring tasks leaf-first. Persists intermediate diffs and AST metrics to PostgreSQL and automates GitHub pull requests. Winner of the 100Agents Global Hackathon (1st out of 650 teams worldwide).',
+    architecture: [
+      'AST & Syntax Analysis: Tree-sitter and native Python AST parsing to extract function signatures, control flows, and module dependencies.',
+      'Dependency Graph Decomposition: NetworkX Directed Acyclic Graph (DAG) construction with cycle-breaking algorithms and topological sorting.',
+      'Asynchronous Agent Pipeline: Distributed Celery task queue backed by Redis with a shared typed state machine coordinating Architect, Coder, and Test Generator agents.',
+      'Verification & Telemetry: In-memory syntax verification, automated fork-branch-push workflows, and Next.js / React Flow visual telemetry dashboard.',
+    ],
+    technicalHighlights: [
+      'Winner of 100Agents Global Hackathon (Ranked 1st among 650 international teams).',
+      'Topological execution order with operator-defined edge overrides taking precedence over inferred dependencies.',
+      'Automated fork-and-PR pipeline verified by opening a real pull request on python-validators/validators.',
+    ],
+    keyFeatures: [
+      'Tree-sitter Concrete Syntax Tree (CST) parsing',
+      'NetworkX DAG dependency analysis with cycle breaking',
+      'Celery and Redis asynchronous multi-agent coordination',
+      'Automated pytest scaffold generation and verification',
+      'React Flow interactive graph dashboard',
+    ],
+    tags: ['Python', 'FastAPI', 'Celery', 'Redis', 'PostgreSQL', 'Tree-sitter', 'NetworkX', 'Next.js', 'Docker'],
+    links: {
+      code: 'https://github.com/sutanukaa',
+    },
+    status: 'Currently Building',
+  },
   {
     slug: 'rag-document-qa',
     title: 'RAG Document Q&A Engine',
@@ -41,36 +71,6 @@ export const projects: Project[] = [
       code: 'https://github.com/sutanukaa/rag-chatbot',
     },
     status: 'Production',
-  },
-  {
-    slug: 'syntactiq',
-    title: 'Syntactiq Code Modernization',
-    tagline: 'Autonomous multi-agent platform for AST-driven legacy codebase refactoring and automated pull requests.',
-    overview:
-      'An asynchronous multi-agent engine engineered to decompose, analyze, and modernize legacy software repositories. Parses source code into Concrete Syntax Trees using Tree-sitter, constructs an acyclic dependency graph with NetworkX, and schedules refactoring tasks leaf-first. Persists intermediate diffs and AST metrics to PostgreSQL and automates GitHub pull requests. Winner of the 100Agents Global Hackathon (1st out of 650 teams worldwide).',
-    architecture: [
-      'AST & Syntax Analysis: Tree-sitter and native Python AST parsing to extract function signatures, control flows, and module dependencies.',
-      'Dependency Graph Decomposition: NetworkX Directed Acyclic Graph (DAG) construction with cycle-breaking algorithms and topological sorting.',
-      'Asynchronous Agent Pipeline: Distributed Celery task queue backed by Redis with a shared typed state machine coordinating Architect, Coder, and Test Generator agents.',
-      'Verification & Telemetry: In-memory syntax verification, automated fork-branch-push workflows, and Next.js / React Flow visual telemetry dashboard.',
-    ],
-    technicalHighlights: [
-      'Winner of 100Agents Global Hackathon (Ranked 1st among 650 international teams).',
-      'Topological execution order with operator-defined edge overrides taking precedence over inferred dependencies.',
-      'Automated fork-and-PR pipeline verified by opening a real pull request on python-validators/validators.',
-    ],
-    keyFeatures: [
-      'Tree-sitter Concrete Syntax Tree (CST) parsing',
-      'NetworkX DAG dependency analysis with cycle breaking',
-      'Celery and Redis asynchronous multi-agent coordination',
-      'Automated pytest scaffold generation and verification',
-      'React Flow interactive graph dashboard',
-    ],
-    tags: ['Python', 'FastAPI', 'Celery', 'Redis', 'PostgreSQL', 'Tree-sitter', 'NetworkX', 'Next.js', 'Docker'],
-    links: {
-      code: 'https://github.com/sutanukaa',
-    },
-    status: 'Shipped',
   },
   {
     slug: 'tickease',

@@ -299,7 +299,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                           <span className="mt-1.5 line-clamp-2 max-w-[100px] font-mono text-xs font-bold leading-tight text-ink dark:text-white">
                             {p.slug}.app
                           </span>
-                          <span className="mt-0.5 rounded-full bg-pink-200/70 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-accent dark:bg-pink-900/60 dark:text-pink-200">
+                          <span
+                            className={`mt-0.5 rounded-full px-1.5 py-0.2 font-mono text-[9px] font-semibold ${
+                              p.status === 'Currently Building'
+                                ? 'bg-amber-100 text-amber-900 border border-amber-300/80 dark:bg-amber-950/70 dark:text-amber-200 dark:border-amber-700/60'
+                                : 'bg-pink-200/70 text-accent dark:bg-pink-900/60 dark:text-pink-200'
+                            }`}
+                          >
                             {p.status}
                           </span>
                         </div>
@@ -354,7 +360,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 </p>
                               </div>
                             </div>
-                            <span className="self-start sm:self-center shrink-0 rounded-md border border-pink-300/70 bg-pink-100/70 px-2.5 py-1 font-mono text-[10px] font-bold text-accent dark:border-pink-800/80 dark:bg-pink-950/60 dark:text-pink-300">
+                            <span
+                              className={`self-start sm:self-center shrink-0 rounded-md border px-2.5 py-1 font-mono text-[10px] font-bold ${
+                                activeProject.status === 'Currently Building'
+                                  ? 'border-amber-300/80 bg-amber-100/80 text-amber-900 dark:border-amber-700/80 dark:bg-amber-950/60 dark:text-amber-200'
+                                  : 'border-pink-300/70 bg-pink-100/70 text-accent dark:border-pink-800/80 dark:bg-pink-950/60 dark:text-pink-300'
+                              }`}
+                            >
                               STATUS: {activeProject.status.toUpperCase()}
                             </span>
                           </div>

@@ -40,10 +40,10 @@ export default function SiteHeader() {
               </span>
               <div className="flex flex-col">
                 <span className="font-display text-sm sm:text-base font-bold tracking-tight text-ink transition-colors group-hover:text-accent dark:text-white dark:group-hover:text-pink-200">
-                  {site.shortName}&apos;s little home
+                  {site.name}
                 </span>
-                <span className="hidden font-hand text-xs font-bold leading-none text-ink-soft/90 md:block dark:text-white/70">
-                  cozy web portfolio
+                <span className="hidden font-sans text-xs font-semibold leading-none text-ink-soft/90 md:block dark:text-white/70">
+                  {site.role}
                 </span>
               </div>
             </Link>

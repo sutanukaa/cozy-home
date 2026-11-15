@@ -13,6 +13,7 @@ import {
   PixelTicket,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
+import RagBlueprintModal from './RagBlueprintModal';
 
 interface StudioRetroComputerProps {
   className?: string;
@@ -22,6 +23,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [showBlueprints, setShowBlueprints] = useState(false);
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
@@ -185,15 +187,15 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 p-2 sm:p-5 md:p-8 backdrop-blur-md"
+                className="fixed inset-0 z-[999] flex items-center justify-center bg-black/95 p-1 sm:p-2 md:p-2.5 backdrop-blur-md overflow-hidden"
               >
-            {/* Vintage Monitor Chassis Housing */}
+            {/* Vintage Monitor Chassis Housing - Full Screen Edge-to-Edge */}
             <motion.div
-              initial={{ scale: 0.35, y: 40, opacity: 0 }}
+              initial={{ scale: 0.85, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.35, y: 40, opacity: 0 }}
+              exit={{ scale: 0.85, y: 20, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative flex h-full max-h-[92vh] w-full max-w-5xl flex-col rounded-[2rem] border-[10px] border-[#FBE8EC] bg-[#FBE8EC] p-3 shadow-2xl sm:rounded-[2.5rem] sm:border-[16px] sm:p-4 md:border-[20px] dark:border-[#33203E] dark:bg-[#33203E]"
+              className="relative flex h-full w-full flex-col rounded-xl border-4 border-[#FBE8EC] bg-[#FBE8EC] p-2 shadow-2xl sm:rounded-2xl sm:border-[8px] sm:p-2.5 md:border-[10px] dark:border-[#33203E] dark:bg-[#33203E]"
             >
               {/* Monitor Top Badge */}
               <div className="mb-2 flex items-center justify-between px-2">
@@ -218,7 +220,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
               </div>
 
               {/* CRT Glass Monitor Screen Frame */}
-              <div className="relative flex flex-1 flex-col overflow-hidden rounded-2xl border-4 border-[#3D2947] bg-[#FFF2F5] shadow-inner dark:bg-[#1E1226]">
+              <div className="relative flex flex-1 flex-col overflow-hidden rounded-lg sm:rounded-xl border-2 sm:border-4 border-[#3D2947] bg-[#FFF2F5] shadow-inner dark:bg-[#1E1226]">
                 {/* CRT Scanline and Glass Glare Texture */}
                 <div
                   aria-hidden
@@ -242,10 +244,16 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     </span>
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">File</span>
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">Edit</span>
-                    <span className="hidden opacity-60 hover:opacity-100 sm:inline">Projects</span>
+                    <span
+                      onClick={() => setShowBlueprints(true)}
+                      className="cursor-pointer text-accent underline opacity-85 hover:opacity-100"
+                      title="View RAG Architecture Blueprints & 6 System Diagrams"
+                    >
+                      Blueprints
+                    </span>
                     <span
                       onClick={() => setShowReadme(true)}
-                      className="cursor-pointer text-accent underline opacity-80 hover:opacity-100"
+                      className="cursor-pointer opacity-70 hover:opacity-100"
                     >
                       About
                     </span>
@@ -321,7 +329,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         initial={{ scale: 0.95, y: 15, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
                         exit={{ scale: 0.95, y: 15, opacity: 0 }}
-                        className="relative z-30 mx-auto mt-4 w-full max-w-3xl flex flex-col rounded-2xl border-2 border-pink-300/80 bg-paper/98 shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#25182E]/98"
+                        className="relative z-30 mx-auto mt-2 w-full max-w-5xl flex flex-col rounded-2xl border-2 border-pink-300/80 bg-paper/98 shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#25182E]/98"
                       >
                         {/* Retro Window Titlebar */}
                         <div className="flex shrink-0 items-center justify-between border-b-2 border-pink-200/80 bg-gradient-to-r from-blush via-paper to-blush px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
@@ -344,7 +352,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         </div>
 
                         {/* Scrollable Window Content Pane */}
-                        <div className="retro-scroll flex max-h-[50vh] sm:max-h-[54vh] flex-col gap-5 overflow-y-auto p-5 sm:p-6 text-ink dark:text-white">
+                        <div className="retro-scroll flex max-h-[64vh] sm:max-h-[68vh] md:max-h-[72vh] flex-col gap-5 overflow-y-auto p-5 sm:p-6 text-ink dark:text-white">
                           {/* Header Block */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pink-200/60 pb-4 dark:border-white/10">
                             <div className="flex items-center gap-3">
@@ -453,12 +461,21 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
 
                           {/* Action Links (Zero Emojis) */}
                           <div className="flex flex-wrap items-center gap-3 border-t border-pink-200/60 pt-4 dark:border-white/10">
+                            {activeProject.slug === 'rag-document-qa' && (
+                              <button
+                                type="button"
+                                onClick={() => setShowBlueprints(true)}
+                                className="flex items-center gap-1.5 rounded-full border border-pink-400 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 dark:border-pink-300/60"
+                              >
+                                <span>[ View Architecture Blueprints (6 Diagrams) ]</span>
+                              </button>
+                            )}
                             {activeProject.links.code && (
                               <a
                                 href={activeProject.links.code}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 rounded-full border border-pink-300 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-pink-200/50"
+                                className="flex items-center gap-1.5 rounded-full border border-pink-300 bg-white px-4 py-2 font-mono text-xs sm:text-sm font-bold text-ink shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-white/20 dark:bg-white/15 dark:text-white"
                               >
                                 <span>[ View GitHub Repository ]</span>
                               </a>
@@ -476,6 +493,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                           </div>
                         </div>
                       </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* --- Floating Architecture Blueprints Modal --- */}
+                  <AnimatePresence>
+                    {showBlueprints && (
+                      <RagBlueprintModal onClose={() => setShowBlueprints(false)} />
                     )}
                   </AnimatePresence>
 

@@ -1,0 +1,102 @@
+[
+  {
+    "path": "public/assets/rooms/living-room-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/living-room-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/studio-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/studio-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/bedroom-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/bedroom-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/library-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/library-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/kitchen-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/kitchen-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/porch-day.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/rooms/porch-night.png",
+    "kind": "room",
+    "size": "2400x1350 (16:9), opaque"
+  },
+  {
+    "path": "public/assets/objects/mascot-cat.png",
+    "kind": "object",
+    "size": "1024x1024, transparent"
+  },
+  {
+    "path": "public/assets/objects/mascot-cat-sleep.png",
+    "kind": "object",
+    "size": "1024x1024, transparent"
+  },
+  {
+    "path": "public/assets/objects/sticker-heart.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
+    "path": "public/assets/objects/sticker-star.png",
+    "kind": "object",
+    "size": "512x512, transparent"
+  },
+  {
+    "path": "public/assets/objects/washi-tape.png",
+    "kind": "object",
+    "size": "1200x300, transparent"
+  },
+  {
+    "path": "public/assets/patterns/wallpaper-day.png",
+    "kind": "pattern",
+    "size": "1024x1024, seamless tile"
+  },
+  {
+    "path": "public/assets/patterns/wallpaper-night.png",
+    "kind": "pattern",
+    "size": "1024x1024, seamless tile"
+  },
+  {
+    "path": "public/assets/og/og-image.png",
+    "kind": "og",
+    "size": "1200x630"
+  }
+]

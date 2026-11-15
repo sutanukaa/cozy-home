@@ -1,0 +1,7 @@
+---
+description: Cozy pink home portfolio. Project rules
+alwaysApply: true
+---
+Follow /AGENTS.md (golden rules, definition of done) and /docs/ARCHITECTURE.md, /docs/DESIGN_SYSTEM.md.
+Content lives in src/data. Colours use theme tokens. Images go through AssetImage. The site must work with zero assets.
+Day/night is driven by <html data-theme> and CSS; never read window/localStorage during render.

@@ -1,0 +1,271 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Theme tokens. Day is default; night is set on <html data-theme>.    */
+/* Values are "R G B" triplets so Tailwind can apply /alpha.           */
+/* ------------------------------------------------------------------ */
+:root {
+  --wall: 249 198 211;
+  --wall-deep: 243 168 189;
+  --paper: 255 246 236;
+  --ink: 91 58 71;
+  --ink-soft: 128 88 103;
+  --accent: 214 70 118;
+  --glow: 255 226 154;
+  --sage: 169 199 160;
+  --lamp-alpha: 0;
+  --wallpaper: url('/assets/patterns/wallpaper-day.png');
+  color-scheme: light;
+}
+
+html[data-theme='night'] {
+  --wall: 78 52 96;
+  --wall-deep: 56 36 74;
+  --paper: 62 42 80;
+  --ink: 255 235 240;
+  --ink-soft: 219 190 204;
+  --accent: 255 143 177;
+  --glow: 255 196 107;
+  --sage: 140 175 150;
+  --lamp-alpha: 0.28;
+  --wallpaper: url('/assets/patterns/wallpaper-night.png');
+  color-scheme: dark;
+}
+
+@layer base {
+  html { scroll-behavior: auto; }
+  body {
+    @apply font-body text-ink antialiased;
+    background-color: rgb(var(--wall));
+    background-image: none;
+    transition: background-color 1.2s ease, color 1.2s ease;
+  }
+  /* warm lamp glow in the corner, visible at night */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(60rem 40rem at 8% -5%, rgb(var(--glow) / var(--lamp-alpha)), transparent 70%);
+    transition: background 1.2s ease;
+  }
+  :focus-visible {
+    outline: 3px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 0.75rem;
+  }
+  ::selection { background: rgb(var(--accent) / 0.35); }
+}
+
+/* ---------------- day / night helpers (pure CSS, no flash) ---------------- */
+.only-night { display: none; }
+html[data-theme='night'] .only-night { display: block; }
+html[data-theme='night'] .only-day { display: none; }
+
+/* Night art fades in over day art; if the night file is missing the day art stays. */
+.variant-night { opacity: 0; transition: opacity 1.4s ease; }
+html[data-theme='night'] .variant-night { opacity: 1; }
+
+/* dawn / dusk warm tint over scenes */
+.phase-tint { transition: background 1.4s ease; }
+html[data-phase='dawn'] .phase-tint { background: linear-gradient(to top, rgb(255 160 190 / 0.30), rgb(255 220 180 / 0.08)); }
+html[data-phase='dusk'] .phase-tint { background: linear-gradient(to top, rgb(255 140 90 / 0.30), rgb(255 120 160 / 0.10)); }
+
+/* ---------------- ambient particles ---------------- */
+.ambient-night { display: none; }
+html[data-theme='night'] .ambient-night { display: block; }
+html[data-theme='night'] .ambient-day { display: none; }
+
+.petal {
+  position: absolute; top: 0; border-radius: 80% 0 80% 0;
+  background: rgb(255 255 255 / 0.75);
+  box-shadow: 0 0 0 1px rgb(244 143 177 / 0.25) inset;
+  animation: petal-fall 16s linear infinite;
+  background-image: linear-gradient(135deg, #ffd1de, #ff9fbd);
+}
+.star {
+  position: absolute; border-radius: 9999px; background: #fff7d6;
+  box-shadow: 0 0 8px 2px rgb(255 247 214 / 0.7);
+  animation: twinkle 3s ease-in-out infinite;
+}
+.firefly {
+  position: absolute; width: 6px; height: 6px; border-radius: 9999px;
+  background: #ffe9a8; box-shadow: 0 0 12px 4px rgb(255 226 140 / 0.7);
+  animation: firefly 7s ease-in-out infinite;
+}
+
+/* ---------------- accessibility ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .petal, .star, .firefly { display: none !important; }
+}
+
+/* vertical book spines in the library */
+.spine { writing-mode: vertical-rl; text-orientation: mixed; }
+
+@keyframes fairy-pulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.82;
+    filter: drop-shadow(0 0 6px rgba(255, 220, 130, 0.7));
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(255, 235, 160, 0.95)) drop-shadow(0 0 24px rgba(255, 200, 100, 0.6));
+  }
+}
+
+@keyframes speck-twinkle {
+  0%, 100% {
+    transform: scale(0.6);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(255, 245, 180, 0.9));
+  }
+}
+
+/* Daytime sun-catcher prism glints and soft sun motes */
+@keyframes sun-prism-glint {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.35;
+    filter: brightness(1);
+  }
+  45% {
+    transform: scale(1.15) rotate(4deg);
+    opacity: 0.85;
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+  }
+}
+
+@keyframes sun-mote-drift {
+  0%, 100% {
+    transform: translateY(0px) scale(0.7);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-4px) scale(1.1);
+    opacity: 0.7;
+    filter: drop-shadow(0 0 4px rgba(255, 240, 200, 0.8));
+  }
+}
+
+/* ---------------- Environmental Living Room Keyframes ---------------- */
+@keyframes cat-breathe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.012) translateY(-0.75px);
+  }
+}
+
+@keyframes cat-purr {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes lamp-warmth {
+  0%, 100% {
+    opacity: 0.88;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes monstera-sway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(1.2deg);
+  }
+  75% {
+    transform: rotate(-0.9deg);
+  }
+}
+
+/* ---------------- Natural Sheer Window Curtain Wind Physics & Morphing ---------------- */
+.curtain-morph-left {
+  animation: wind-billow-left 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.curtain-crease-left {
+  animation: wind-crease-left 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.curtain-morph-right {
+  animation: wind-billow-right 9s cubic-bezier(0.4, 0, 0.2, 1) infinite -2s;
+}
+
+/* 
+  Left curtain swells into the room:
+  - Base: hangs relatively straight down (M 25,0 ... L 5,420)
+  - Gust peak: expands out to the left towards x=-55, billowing high into the room
+*/
+@keyframes wind-billow-left {
+  0%, 100% {
+    d: path("M 30,0 C 50,0 80,6 85,15 C 75,100 65,220 75,320 C 80,370 70,410 60,430 L 15,430 C 25,360 22,230 18,120 Z");
+  }
+  30% {
+    /* Gentle preliminary swell */
+    d: path("M 30,0 C 50,0 80,6 85,15 C 60,110 35,210 35,310 C 35,365 25,400 10,415 L -25,415 C -15,350 2,230 10,120 Z");
+  }
+  55% {
+    /* Full inward billow: wind pushes deep into the room */
+    d: path("M 30,0 C 50,0 80,6 85,15 C 40,110 -15,190 -25,290 C -35,355 -40,390 -55,405 L -95,405 C -75,340 -40,210 -5,120 Z");
+  }
+  75% {
+    /* Soft relaxing float back down */
+    d: path("M 30,0 C 50,0 80,6 85,15 C 55,105 10,205 10,305 C 10,360 0,405 -15,420 L -50,420 C -35,355 -10,225 5,120 Z");
+  }
+}
+
+@keyframes wind-crease-left {
+  0%, 100% {
+    d: path("M 45,15 C 55,110 52,220 58,320 C 62,370 54,410 42,430 L 36,430 C 46,370 42,220 36,110 Z");
+  }
+  30% {
+    d: path("M 45,15 C 40,110 25,210 25,310 C 25,365 15,400 0,415 L -6,415 C 8,365 18,210 26,110 Z");
+  }
+  55% {
+    d: path("M 45,15 C 25,110 -8,190 -16,290 C -22,355 -28,390 -40,405 L -48,405 C -36,355 -18,190 12,110 Z");
+  }
+  75% {
+    d: path("M 45,15 C 32,105 5,205 5,305 C 5,360 -4,405 -15,420 L -22,420 C -12,360 -2,205 20,110 Z");
+  }
+}
+
+/* Right curtain follows with a complementary inward billow */
+@keyframes wind-billow-right {
+  0%, 100% {
+    d: path("M 270,0 C 250,0 220,6 215,15 C 225,100 235,220 225,320 C 220,370 230,410 240,430 L 285,430 C 275,360 278,230 282,120 Z");
+  }
+  40% {
+    /* Wind catches the right drape, blowing it across the frame */
+    d: path("M 270,0 C 250,0 220,6 215,15 C 190,110 160,200 150,300 C 145,355 140,390 130,410 L 175,410 C 185,355 205,215 250,120 Z");
+  }
+  65% {
+    /* Lingering float inward into the room */
+    d: path("M 270,0 C 250,0 220,6 215,15 C 205,105 185,210 180,310 C 175,360 178,400 185,420 L 230,420 C 225,360 230,220 265,120 Z");
+  }
+}

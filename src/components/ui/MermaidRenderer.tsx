@@ -179,7 +179,7 @@ export default function MermaidRenderer({
       {/* Diagram Canvas Body */}
       <div
         ref={containerRef}
-        className="retro-scroll relative flex min-h-[340px] max-h-[500px] w-full items-center justify-center overflow-auto p-4 transition-all"
+        className="retro-scroll relative flex min-h-[300px] w-full flex-col items-center justify-center overflow-x-auto p-4 sm:p-6 transition-all"
       >
         {loading && (
           <div className="flex flex-col items-center justify-center gap-2 font-mono text-xs text-ink-soft dark:text-pink-200">
@@ -211,10 +211,10 @@ export default function MermaidRenderer({
           <div
             style={{
               transform: `scale(${zoom})`,
-              transformOrigin: 'center center',
+              transformOrigin: 'top center',
               transition: 'transform 0.15s ease-out',
             }}
-            className="flex w-full items-center justify-center py-2"
+            className="flex w-full min-w-full justify-center py-2 [&>svg]:max-w-full [&>svg]:h-auto [&>svg]:mx-auto"
             dangerouslySetInnerHTML={{ __html: svg }}
           />
         )}

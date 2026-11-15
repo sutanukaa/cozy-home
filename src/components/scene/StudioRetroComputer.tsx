@@ -13,7 +13,8 @@ import {
   PixelTicket,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
-import RagBlueprintModal from './RagBlueprintModal';
+import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
+import MermaidRenderer from '@/components/ui/MermaidRenderer';
 
 interface StudioRetroComputerProps {
   className?: string;
@@ -24,9 +25,14 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [showBlueprints, setShowBlueprints] = useState(false);
+  const [activeBlueprintDiagram, setActiveBlueprintDiagram] = useState<number>(1);
+  const [showBlueprintConstants, setShowBlueprintConstants] = useState<boolean>(false);
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+
+  const currentBlueprint: ArchitectureDiagram =
+    ragDiagrams.find((d) => d.id === activeBlueprintDiagram) || ragDiagrams[0];
 
   // Track hydration for createPortal and clean up body class on unmount
   useEffect(() => {
@@ -245,7 +251,14 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">File</span>
                     <span className="hidden opacity-60 hover:opacity-100 sm:inline">Edit</span>
                     <span
-                      onClick={() => setShowBlueprints(true)}
+                      onClick={() => {
+                        const rag = projects.find((p) => p.slug === 'rag-document-qa');
+                        if (rag) {
+                          setActiveProject(rag);
+                          setSelectedIcon('rag-document-qa');
+                          setShowBlueprints(true);
+                        }
+                      }}
                       className="cursor-pointer text-accent underline opacity-85 hover:opacity-100"
                       title="View RAG Architecture Blueprints & 6 System Diagrams"
                     >
@@ -329,7 +342,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         initial={{ scale: 0.95, y: 15, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
                         exit={{ scale: 0.95, y: 15, opacity: 0 }}
-                        className="relative z-30 mx-auto mt-2 w-full max-w-5xl flex flex-col rounded-2xl border-2 border-pink-300/80 bg-paper/98 shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#25182E]/98"
+                        className="relative z-30 mx-auto mt-2 w-full max-w-6xl flex flex-col rounded-2xl border-2 border-pink-300/80 bg-paper/98 shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#25182E]/98"
                       >
                         {/* Retro Window Titlebar */}
                         <div className="flex shrink-0 items-center justify-between border-b-2 border-pink-200/80 bg-gradient-to-r from-blush via-paper to-blush px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
@@ -338,12 +351,15 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             <span className="h-3 w-3 rounded-full border border-butter/80 bg-butter" />
                             <span className="h-3 w-3 rounded-full border border-sage/80 bg-sage" />
                             <span className="ml-2 font-mono text-xs font-bold text-cocoa dark:text-pink-100">
-                              {activeProject.slug}.app - Technical Specification
+                              {activeProject.slug}.app - {showBlueprints && activeProject.slug === 'rag-document-qa' ? 'Architecture Blueprints & Technical Specification' : 'Technical Specification'}
                             </span>
                           </div>
                           <button
                             type="button"
-                            onClick={() => setActiveProject(null)}
+                            onClick={() => {
+                              setActiveProject(null);
+                              setShowBlueprints(false);
+                            }}
                             title="Close Window"
                             className="flex h-5 w-5 items-center justify-center rounded-full border border-pink-300 bg-white font-mono text-xs font-bold text-ink hover:bg-rose hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-white"
                           >
@@ -352,7 +368,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         </div>
 
                         {/* Scrollable Window Content Pane */}
-                        <div className="retro-scroll flex max-h-[64vh] sm:max-h-[68vh] md:max-h-[72vh] flex-col gap-5 overflow-y-auto p-5 sm:p-6 text-ink dark:text-white">
+                        <div className="retro-scroll flex max-h-[66vh] sm:max-h-[70vh] md:max-h-[74vh] flex-col gap-5 overflow-y-auto p-5 sm:p-6 text-ink dark:text-white">
                           {/* Header Block */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pink-200/60 pb-4 dark:border-white/10">
                             <div className="flex items-center gap-3">
@@ -464,10 +480,17 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             {activeProject.slug === 'rag-document-qa' && (
                               <button
                                 type="button"
-                                onClick={() => setShowBlueprints(true)}
-                                className="flex items-center gap-1.5 rounded-full border border-pink-400 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 dark:border-pink-300/60"
+                                onClick={() => {
+                                  soundscape.playClickSound();
+                                  setShowBlueprints(!showBlueprints);
+                                }}
+                                className="flex items-center gap-1.5 rounded-full border border-pink-400 bg-accent px-4 py-2 font-mono text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:bg-rose active:scale-95 dark:border-pink-300/60"
                               >
-                                <span>[ View Architecture Blueprints (6 Diagrams) ]</span>
+                                <span>
+                                  {showBlueprints
+                                    ? '[ Hide Architecture Diagrams ▲ ]'
+                                    : '[ View Architecture Diagrams (6) ▼ ]'}
+                                </span>
                               </button>
                             )}
                             {activeProject.links.code && (
@@ -491,15 +514,217 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                               </a>
                             )}
                           </div>
+
+                          {/* --- Expandable Architecture Blueprint Viewer within Same Window --- */}
+                          <AnimatePresence>
+                            {showBlueprints && activeProject.slug === 'rag-document-qa' && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Architecture Blueprints &amp; Vector Specifications
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    RAG Engine Architectural Blueprint
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Detailed vector diagrams, data flows, fallback invariants, and production API contracts across all 6 core sub-systems.
+                                  </p>
+                                </div>
+
+                                {/* --- Choice Band in the Middle --- */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {ragDiagrams.map((d) => {
+                                    const isActive = !showBlueprintConstants && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setShowBlueprintConstants(false);
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setShowBlueprintConstants(true);
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      showBlueprintConstants
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Constants &amp; Contracts ]
+                                  </button>
+                                </div>
+
+                                {/* --- Display Area: Selected Diagram or Constants --- */}
+                                {!showBlueprintConstants ? (
+                                  <div className="flex flex-col gap-5">
+                                    {/* Diagram Title and Badge */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentBlueprint.id} of 06
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="self-start sm:self-center rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                        {currentBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <MermaidRenderer
+                                      code={currentBlueprint.mermaid}
+                                      diagramId={`blueprint-diagram-${currentBlueprint.id}`}
+                                    />
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Data Flow &amp; Interactions
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Degradation
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Trade-Offs &amp; Scale Limits
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* Constants & Contracts View */
+                                  <div className="flex flex-col gap-5">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        System Invariants
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        Configuration Parameters &amp; API Schemas
+                                      </h5>
+                                    </div>
+
+                                    {/* Constants Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Parameter / Invariant</th>
+                                            <th className="px-4 py-2.5 font-bold">Production Configuration</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {ragConstants.map((param, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                {param.name}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-accent dark:text-pink-300">
+                                                {param.value}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* API Contracts */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          POST /ask/stream (SSE Protocol)
+                                        </span>
+                                        <pre className="max-h-60 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`// Headers:
+// x-user: <authenticated-id>
+// x-chats-secret: <shared-secret>
+
+// Request Body:
+{
+  "question": "What is the hybrid retrieval formula?",
+  "chat_id": "c-9f8a2b",
+  "source_filter": "system-spec.pdf"
+}
+
+// SSE Stream Events:
+// event: sources
+// data: [{"id":"chk-12","score":0.031,"source":"..."}]
+//
+// event: token
+// data: {"text": "Reciprocal"}
+//
+// event: done
+// data: {"status": "complete", "total_tokens": 142}`}
+                                        </pre>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          POST /ingest (Multipart Upload)
+                                        </span>
+                                        <pre className="max-h-60 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`// Multipart Form Data:
+// file: <binary PDF payload>
+
+// Response Body (200 OK):
+{
+  "filename": "quarterly-report.pdf",
+  "num_pages": 14,
+  "num_chunks": 48,
+  "embedding_model": "gemini-embedding-001",
+  "dimensions": 768,
+  "bm25_rebuilt": true,
+  "duration_ms": 1480
+}`}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
                       </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* --- Floating Architecture Blueprints Modal --- */}
-                  <AnimatePresence>
-                    {showBlueprints && (
-                      <RagBlueprintModal onClose={() => setShowBlueprints(false)} />
                     )}
                   </AnimatePresence>
 

@@ -73,6 +73,37 @@ export const projects: Project[] = [
     status: 'Shipped',
   },
   {
+    slug: 'tickease',
+    title: 'Tickease',
+    tagline: 'Event management platform with automated site generation and embedded conversational AI assistants.',
+    overview:
+      'A full-stack event lifecycle and ticketing platform designed for event organizers to launch, manage, and monetize events. Features automated dynamic landing page generation from event metadata schemas, embedded AI chatbots providing real-time attendee support and conversion telemetry, cryptographically secure QR ticket validation, and live analytics dashboards.',
+    architecture: [
+      'Automated Page Generation: Next.js dynamic routing and template compilation that instantly provisions customized, SEO-optimized event landing pages upon event creation.',
+      'Embedded Conversational Assistant: Context-aware AI chatbot widget embedded into each event site to resolve attendee questions, session schedules, and ticketing queries.',
+      'Cryptographic Ticketing & QR Verification: Server-generated secure ticket tokens with unique QR code verification payloads, validated via transactional Supabase PostgreSQL records.',
+      'Live Telemetry & Analytics: Real-time event analytics tracking registration velocity, ticket tier inventory quotas, and attendee engagement metrics.',
+    ],
+    technicalHighlights: [
+      'Automated site compilation transforming structured event parameters into production-ready web interfaces.',
+      'Embedded context-aware AI chatbot handling attendee support and collecting conversion telemetry.',
+      'Tamper-resistant QR ticket verification with instantaneous check-in validation.',
+      'Transactional database backend with Supabase Row-Level Security (RLS) guaranteeing data isolation.',
+    ],
+    keyFeatures: [
+      'Instant automated event website generation',
+      'Embedded conversational AI attendee assistant',
+      'Multi-tier ticket inventory and checkout workflows',
+      'Real-time registration analytics and sales metrics',
+      'Mobile-optimized QR code ticket check-in',
+    ],
+    tags: ['Next.js', 'React Native', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'AI Chatbots', 'Expo'],
+    links: {
+      code: 'https://github.com/sutanukaa',
+    },
+    status: 'Shipped',
+  },
+  {
     slug: 'bloom-for-youu',
     title: 'Bloom For You',
     tagline: 'State-driven digital flower lifecycle engine with tamper-proof temporal secret delivery.',

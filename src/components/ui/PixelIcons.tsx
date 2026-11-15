@@ -285,3 +285,44 @@ export function PixelServer({ size = 48, className = '' }: IconProps) {
     </svg>
   );
 }
+
+// 9. Pixel Ticket / Pass (for Tickease)
+export function PixelTicket({ size = 48, className = '' }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+    >
+      {/* Ticket Body with classic notched sides */}
+      <rect x="3" y="6" width="18" height="12" fill="#FCE7EC" />
+      {/* Outer Border */}
+      <rect x="3" y="5" width="18" height="1" fill="#E86A92" />
+      <rect x="3" y="18" width="18" height="1" fill="#C95478" />
+      <rect x="2" y="6" width="1" height="4" fill="#E86A92" />
+      <rect x="2" y="14" width="1" height="4" fill="#E86A92" />
+      <rect x="21" y="6" width="1" height="4" fill="#C95478" />
+      <rect x="21" y="14" width="1" height="4" fill="#C95478" />
+      {/* Left Notch Cutout */}
+      <rect x="2" y="10" width="3" height="4" fill="#E86A92" />
+      <rect x="2" y="11" width="2" height="2" fill="#FFF2F5" />
+      {/* Right Notch Cutout */}
+      <rect x="19" y="10" width="3" height="4" fill="#C95478" />
+      <rect x="20" y="11" width="2" height="2" fill="#FFF2F5" />
+      {/* Perforation line */}
+      <rect x="9" y="7" width="1" height="2" fill="#FF8BA7" />
+      <rect x="9" y="11" width="1" height="2" fill="#FF8BA7" />
+      <rect x="9" y="15" width="1" height="2" fill="#FF8BA7" />
+      {/* Golden Star / Emblem badge */}
+      <rect x="14" y="9" width="3" height="3" fill="#FFE29A" />
+      <rect x="15" y="8" width="1" height="5" fill="#FFD15C" />
+      <rect x="13" y="10" width="5" height="1" fill="#FFD15C" />
+      {/* Mini barcode lines on stub */}
+      <rect x="5" y="8" width="1" height="8" fill="#3D2947" />
+      <rect x="7" y="8" width="1" height="8" fill="#3D2947" />
+    </svg>
+  );
+}

@@ -9,9 +9,8 @@ import {
   PixelCode,
   PixelScrapbook,
   PixelFlower,
-  PixelNotepad,
-  PixelTrash,
   PixelServer,
+  PixelTicket,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 
@@ -93,6 +92,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
         return <PixelRobot size={size} />;
       case 'syntactiq':
         return <PixelCode size={size} />;
+      case 'tickease':
+        return <PixelTicket size={size} />;
       case 'bloom-for-youu':
         return <PixelFlower size={size} />;
       case 'a-little-scrapbook':
@@ -271,8 +272,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     }}
                   />
 
-                  {/* Desktop Icons Grid */}
-                  <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-4 md:grid-cols-7">
+                  {/* Desktop Icons Grid - All 6 Projects in a clean retro row */}
+                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-6 md:gap-5">
                     {/* Project Icons */}
                     {projects.map((p) => {
                       const isSelected = selectedIcon === p.slug;
@@ -304,50 +305,6 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         </div>
                       );
                     })}
-
-                    {/* Extra Cute Desktop Icon: Readme.txt */}
-                    <div
-                      onClick={() => {
-                        soundscape.playClickSound();
-                        setSelectedIcon('readme');
-                        setShowReadme(true);
-                      }}
-                      className={`group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all ${
-                        selectedIcon === 'readme' || showReadme
-                          ? 'bg-blush/60 ring-2 ring-accent dark:bg-white/15'
-                          : 'hover:bg-white/60 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
-                        <PixelNotepad size={48} />
-                      </div>
-                      <span className="mt-1.5 font-mono text-xs font-bold text-ink dark:text-white">
-                        README.txt
-                      </span>
-                      <span className="mt-0.5 rounded-full bg-butter/80 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-cocoa">
-                        note
-                      </span>
-                    </div>
-
-                    {/* Extra Cute Desktop Icon: Bugs / Recycle Bin */}
-                    <div
-                      onClick={() => {
-                        soundscape.playClickSound();
-                        setSelectedIcon('trash');
-                        alert('Recycle Bin: 0 bugs found. Automated test suites and CI pipelines passing cleanly.');
-                      }}
-                      className="group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all hover:bg-white/60 dark:hover:bg-white/10"
-                    >
-                      <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
-                        <PixelTrash size={48} />
-                      </div>
-                      <span className="mt-1.5 font-mono text-xs font-bold text-ink dark:text-white">
-                        Bugs.trash
-                      </span>
-                      <span className="mt-0.5 rounded-full bg-sage/80 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-cocoa">
-                        empty
-                      </span>
-                    </div>
                   </div>
 
                   {/* --- Floating Active Project Window --- */}

@@ -20,6 +20,16 @@ import {
   syntactiqStateSchema,
   syntactiqVerificationMatrix,
 } from '@/data/syntactiqArchitecture';
+import {
+  githubEtlDiagrams,
+  githubEtlTables,
+  githubEtlDerivedFields,
+} from '@/data/githubEtlArchitecture';
+import {
+  tickeaseDiagrams,
+  tickeaseInvariants,
+  tickeaseTables,
+} from '@/data/tickeaseArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
 
 interface StudioRetroComputerProps {
@@ -32,19 +42,37 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [showBlueprints, setShowBlueprints] = useState(false);
   const [activeBlueprintDiagram, setActiveBlueprintDiagram] = useState<number>(1);
-  const [activeExtraTab, setActiveExtraTab] = useState<'none' | 'constants' | 'schema' | 'verification'>('none');
+  const [activeExtraTab, setActiveExtraTab] = useState<
+    'none' | 'constants' | 'schema' | 'verification' | 'etl-schema' | 'tickease-invariants'
+  >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   const isSyntactiq = activeProject?.slug === 'syntactiq';
   const isRag = activeProject?.slug === 'rag-document-qa';
-  const hasBlueprints = isSyntactiq || isRag;
+  const isGithubEtl = activeProject?.slug === 'github-etl';
+  const isTickease = activeProject?.slug === 'tickease';
+  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease;
 
   const currentSyntactiqBlueprint =
     syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
   const currentRagBlueprint =
     ragDiagrams.find((d) => d.id === activeBlueprintDiagram) || ragDiagrams[0];
+  const currentGithubEtlBlueprint =
+    githubEtlDiagrams.find((d) => d.id === activeBlueprintDiagram) || githubEtlDiagrams[0];
+  const currentTickeaseBlueprint =
+    tickeaseDiagrams.find((d) => d.id === activeBlueprintDiagram) || tickeaseDiagrams[0];
+
+  const diagramCount = isSyntactiq
+    ? syntactiqDiagrams.length
+    : isRag
+    ? ragDiagrams.length
+    : isGithubEtl
+    ? githubEtlDiagrams.length
+    : isTickease
+    ? tickeaseDiagrams.length
+    : 0;
 
   // Track hydration for createPortal and clean up body class on unmount
   useEffect(() => {
@@ -514,7 +542,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 <span>
                                   {showBlueprints
                                     ? '[ Hide Architecture Diagrams ▲ ]'
-                                    : '[ View Architecture Diagrams (6) ▼ ]'}
+                                    : `[ View Architecture Diagrams (${diagramCount}) ▼ ]`}
                                 </span>
                               </button>
                             )}
@@ -1063,6 +1091,517 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   "bm25_rebuilt": true,
   "duration_ms": 1480
 }`}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: GitHub Activity ETL --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isGithubEtl && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Data Engineering Blueprints &amp; Batch Pipeline Specifications
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    GitHub Activity ETL Pipeline Architecture
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Four system diagrams detailing daily GitHub Actions cron orchestration, idempotent SQLite loads, automated SQL anomaly alerts, and window-function analytical queries.
+                                  </p>
+                                </div>
+
+                                {/* Choice Band in the Middle */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {githubEtlDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('etl-schema');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'etl-schema'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Schema &amp; Derived Fields ]
+                                  </button>
+                                </div>
+
+                                {/* Display Area: Selected Diagram or Schema */}
+                                {activeExtraTab === 'none' ? (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentGithubEtlBlueprint.id} of 04
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentGithubEtlBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="self-start sm:self-center rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                        {currentGithubEtlBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <MermaidRenderer
+                                      code={currentGithubEtlBlueprint.mermaid}
+                                      diagramId={`github-etl-diagram-${currentGithubEtlBlueprint.id}`}
+                                    />
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentGithubEtlBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Invariants
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentGithubEtlBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentGithubEtlBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* Schema & Derived Fields View */
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Database Architecture
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        SQLite Tables, Write Strategies &amp; Derived Metrics
+                                      </h5>
+                                    </div>
+
+                                    {/* Tables Schema Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Table</th>
+                                            <th className="px-4 py-2.5 font-bold">Primary Key</th>
+                                            <th className="px-4 py-2.5 font-bold">Write Strategy</th>
+                                            <th className="px-4 py-2.5 font-bold">Business Rationale</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {githubEtlTables.map((t) => (
+                                            <tr key={t.table} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                <code>{t.table}</code>
+                                              </td>
+                                              <td className="px-4 py-2.5 font-bold text-accent dark:text-pink-300">
+                                                <code>{t.primaryKey}</code>
+                                              </td>
+                                              <td className="px-4 py-2.5">
+                                                <span className="rounded bg-pink-100 px-1.5 py-0.5 text-[10px] font-bold text-accent dark:bg-pink-950 dark:text-pink-300">
+                                                  {t.writeStrategy}
+                                                </span>
+                                              </td>
+                                              <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                {t.rationale}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Derived Fields Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Derived &amp; Computed Fields (Feature Engineering)
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-4 py-2.5 font-bold">Field</th>
+                                              <th className="px-4 py-2.5 font-bold">Where Computed</th>
+                                              <th className="px-4 py-2.5 font-bold">Definition</th>
+                                              <th className="px-4 py-2.5 font-bold">Notes</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {githubEtlDerivedFields.map((f) => (
+                                              <tr key={f.field} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                  <code>{f.field}</code>
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[11px] text-accent dark:text-pink-300">
+                                                  {f.computedWhere}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[11px] text-cocoa dark:text-white/80">
+                                                  <code>{f.definition}</code>
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[11px] leading-relaxed text-ink-soft dark:text-white/70">
+                                                  {f.notes}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* SQL Snippets */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Idempotent Upsert Strategy (pipeline.py)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`-- Immutable facts: known sha is skipped
+INSERT OR IGNORE INTO commits (sha, repo, author, message, committed_at)
+VALUES (?, ?, ?, ?, ?);
+
+-- State-shifting facts: latest values overwrite mutable fields
+INSERT INTO pull_requests
+  (id, repo, number, title, author, state, created_at, merged_at, hours_to_merge)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+  title          = excluded.title,
+  state          = excluded.state,
+  merged_at      = excluded.merged_at,
+  hours_to_merge = excluded.hours_to_merge;`}
+                                        </pre>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          SQL Heuristic Anomaly Evaluation (alerts.py)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`-- Rule 1: Inactivity detection (30+ days idle)
+SELECT repo,
+       julianday('now') - julianday(MAX(committed_at)) AS days_idle
+FROM commits
+GROUP BY repo
+HAVING days_idle > 30;
+
+-- Rule 2: Merge slowdown (recent vs historical mean)
+SELECT repo,
+       AVG(CASE WHEN merged_at >= datetime('now', '-30 days')
+                THEN hours_to_merge END) AS recent_avg,
+       AVG(hours_to_merge)               AS overall_avg
+FROM pull_requests
+WHERE merged_at IS NOT NULL
+GROUP BY repo
+HAVING recent_avg > 2 * overall_avg;`}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: Tickease --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isTickease && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Full-Stack Architecture &amp; Cryptographic Invariants
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    Tickease Production Architecture
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Three comprehensive diagrams covering full-stack system topology, cryptographic HMAC-SHA256 QR ticket check-ins, and grounded conversational AI assistant pipelines.
+                                  </p>
+                                </div>
+
+                                {/* Choice Band in the Middle */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {tickeaseDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('tickease-invariants');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'tickease-invariants'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Invariants &amp; Relational Schema ]
+                                  </button>
+                                </div>
+
+                                {/* Display Area: Selected Diagram or Invariants */}
+                                {activeExtraTab === 'none' ? (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentTickeaseBlueprint.id} of 03
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentTickeaseBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="self-start sm:self-center rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                        {currentTickeaseBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <MermaidRenderer
+                                      code={currentTickeaseBlueprint.mermaid}
+                                      diagramId={`tickease-diagram-${currentTickeaseBlueprint.id}`}
+                                    />
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentTickeaseBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Invariants
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentTickeaseBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentTickeaseBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* Invariants & Relational Schema View */
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Cryptographic &amp; Relational Guarantees
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        System Invariants, PostgreSQL Schema &amp; Security RPCs
+                                      </h5>
+                                    </div>
+
+                                    {/* Invariants Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Invariant</th>
+                                            <th className="px-4 py-2.5 font-bold">Database &amp; Protocol Enforcement</th>
+                                            <th className="px-4 py-2.5 font-bold">Failure Impact Mitigated</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {tickeaseInvariants.map((inv) => (
+                                            <tr key={inv.id} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                0{inv.id}. {inv.invariant}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-accent dark:text-pink-300 text-[11px] leading-relaxed">
+                                                {inv.enforcement}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                {inv.failureImpact}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Core Relational Schema Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Supabase PostgreSQL Core Schema &amp; Row-Level Security (RLS)
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-4 py-2.5 font-bold">Table</th>
+                                              <th className="px-4 py-2.5 font-bold">Columns &amp; Keys</th>
+                                              <th className="px-4 py-2.5 font-bold">Constraints</th>
+                                              <th className="px-4 py-2.5 font-bold">RLS Policies</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {tickeaseTables.map((tbl) => (
+                                              <tr key={tbl.table} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                  <code>{tbl.table}</code>
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[11px] text-cocoa dark:text-white/80">
+                                                  {tbl.columns}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[10px] text-accent dark:text-pink-300">
+                                                  <code>{tbl.constraints}</code>
+                                                </td>
+                                                <td className="px-4 py-2.5 text-[10px] leading-relaxed text-ink-soft dark:text-white/70">
+                                                  {tbl.rlsPolicies}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Security Definer RPC Code Snippets */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Atomic Ticket Reservation RPC (reserve_tickets)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`create function reserve_tickets(p_tier uuid, p_qty int, p_key text, p_email text)
+returns uuid language plpgsql security definer set search_path = public as $$
+declare t ticket_tiers; o uuid;
+begin
+  select id into o from orders where idempotency_key = p_key;
+  if found then return o; end if;
+  select * into t from ticket_tiers where id = p_tier for update;
+  if not found or now() not between t.sales_start and t.sales_end then
+    raise exception 'tier_closed' using errcode = 'P0002'; end if;
+  if t.sold + p_qty > t.capacity then
+    raise exception 'sold_out' using errcode = 'P0001'; end if;
+  update ticket_tiers set sold = sold + p_qty where id = p_tier;
+  insert into orders(event_id, tier_id, quantity, status, idempotency_key, buyer_email,
+                     total_minor, expires_at)
+  values (t.event_id, p_tier, p_qty, 'pending', p_key, p_email,
+          t.price_minor * p_qty, now() + interval '10 minutes')
+  returning id into o;
+  return o;
+end $$;`}
+                                        </pre>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Atomic Check-in &amp; Audit Log RPC (check_in_ticket)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`create function check_in_ticket(p_ticket uuid, p_event uuid, p_version smallint,
+                                p_scan uuid, p_seq bigint)
+returns table(outcome text, checked_in_at timestamptz)
+language plpgsql security definer set search_path = public as $$
+declare t tickets; prior check_in_logs;
+begin
+  if not is_event_staff(p_event) then raise exception 'forbidden' using errcode='42501'; end if;
+  select * into prior from check_in_logs where scan_id = p_scan;
+  if found then
+    return query select prior.outcome, (select tk.checked_in_at from tickets tk where tk.id = p_ticket);
+    return;
+  end if;
+  select * into t from tickets where id = p_ticket for update;
+  if not found then outcome := 'unknown_ticket';
+  elsif t.event_id <> p_event then outcome := 'wrong_event';
+  elsif t.status = 'void' or t.token_version <> p_version then outcome := 'void';
+  elsif t.status = 'checked_in' then outcome := 'already_used';
+  else
+    update tickets set status='checked_in', checked_in_at=now(), checked_in_by=auth.uid() where id=p_ticket;
+    outcome := 'accepted';
+  end if;
+  insert into check_in_logs(scan_id, ticket_id, event_id, scanner_id, outcome, device_seq)
+  values (p_scan, case when t.id is null then null else p_ticket end, p_event, auth.uid(), outcome, p_seq);
+  return query select outcome, (select tk.checked_in_at from tickets tk where tk.id = p_ticket);
+end $$;`}
                                         </pre>
                                       </div>
                                     </div>

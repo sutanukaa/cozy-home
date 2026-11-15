@@ -30,6 +30,11 @@ import {
   tickeaseInvariants,
   tickeaseTables,
 } from '@/data/tickeaseArchitecture';
+import {
+  bloomDiagrams,
+  bloomStages,
+  bloomInvariants,
+} from '@/data/bloomArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
 
 interface StudioRetroComputerProps {
@@ -43,7 +48,13 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [showBlueprints, setShowBlueprints] = useState(false);
   const [activeBlueprintDiagram, setActiveBlueprintDiagram] = useState<number>(1);
   const [activeExtraTab, setActiveExtraTab] = useState<
-    'none' | 'constants' | 'schema' | 'verification' | 'etl-schema' | 'tickease-invariants'
+    | 'none'
+    | 'constants'
+    | 'schema'
+    | 'verification'
+    | 'etl-schema'
+    | 'tickease-invariants'
+    | 'bloom-invariants'
   >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
@@ -53,7 +64,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const isRag = activeProject?.slug === 'rag-document-qa';
   const isGithubEtl = activeProject?.slug === 'github-etl';
   const isTickease = activeProject?.slug === 'tickease';
-  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease;
+  const isBloom = activeProject?.slug === 'bloom-for-youu';
+  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom;
 
   const currentSyntactiqBlueprint =
     syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
@@ -63,6 +75,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     githubEtlDiagrams.find((d) => d.id === activeBlueprintDiagram) || githubEtlDiagrams[0];
   const currentTickeaseBlueprint =
     tickeaseDiagrams.find((d) => d.id === activeBlueprintDiagram) || tickeaseDiagrams[0];
+  const currentBloomBlueprint =
+    bloomDiagrams.find((d) => d.id === activeBlueprintDiagram) || bloomDiagrams[0];
 
   const diagramCount = isSyntactiq
     ? syntactiqDiagrams.length
@@ -72,6 +86,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     ? githubEtlDiagrams.length
     : isTickease
     ? tickeaseDiagrams.length
+    : isBloom
+    ? bloomDiagrams.length
     : 0;
 
   // Track hydration for createPortal and clean up body class on unmount
@@ -1602,6 +1618,263 @@ begin
   values (p_scan, case when t.id is null then null else p_ticket end, p_event, auth.uid(), outcome, p_seq);
   return query select outcome, (select tk.checked_in_at from tickets tk where tk.id = p_ticket);
 end $$;`}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: Bloom For You --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isBloom && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    Temporal State Machine &amp; Cryptographic Sealing
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    Bloom For You Architectural Specification
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Three system diagrams detailing server-side secret sealing via capability URLs, zero-cron deterministic growth state resolution, and transactional watering micro-interactions.
+                                  </p>
+                                </div>
+
+                                {/* Choice Band in the Middle */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {bloomDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('bloom-invariants');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'bloom-invariants'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Stages &amp; System Invariants ]
+                                  </button>
+                                </div>
+
+                                {/* Display Area: Selected Diagram or Invariants */}
+                                {activeExtraTab === 'none' ? (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentBloomBlueprint.id} of 03
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentBloomBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="self-start sm:self-center rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                        {currentBloomBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <MermaidRenderer
+                                      code={currentBloomBlueprint.mermaid}
+                                      diagramId={`bloom-diagram-${currentBloomBlueprint.id}`}
+                                    />
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBloomBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Invariants
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBloomBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentBloomBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* Stages & System Invariants View */
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Temporal Lifecycles &amp; Security Controls
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        Growth Stages, Invariant Guarantees &amp; Database Gates
+                                      </h5>
+                                    </div>
+
+                                    {/* Stages Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Stage</th>
+                                            <th className="px-4 py-2.5 font-bold">Elapsed Window</th>
+                                            <th className="px-4 py-2.5 font-bold">Duration</th>
+                                            <th className="px-4 py-2.5 font-bold">SVG Visual State</th>
+                                            <th className="px-4 py-2.5 font-bold">Note Sealing Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {bloomStages.map((stg) => (
+                                            <tr key={stg.stage} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                {stg.stage}
+                                              </td>
+                                              <td className="px-4 py-2.5 font-bold text-accent dark:text-pink-300">
+                                                <code>{stg.window}</code>
+                                              </td>
+                                              <td className="px-4 py-2.5 text-cocoa dark:text-white/80 text-[11px]">
+                                                {stg.duration}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-[11px] text-ink-soft dark:text-white/70 leading-relaxed">
+                                                {stg.visualState}
+                                              </td>
+                                              <td className="px-4 py-2.5 text-[11px] leading-relaxed">
+                                                <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                                                  stg.stage === 'Bloom'
+                                                    ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200'
+                                                    : 'bg-rose/10 text-rose dark:bg-rose/20 dark:text-pink-300'
+                                                }`}>
+                                                  {stg.noteStatus}
+                                                </span>
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Invariants Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <h6 className="font-mono text-xs font-bold text-ink dark:text-white uppercase tracking-wider">
+                                        Core Threat Model &amp; System Invariants
+                                      </h6>
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead>
+                                            <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                              <th className="px-4 py-2.5 font-bold">Invariant</th>
+                                              <th className="px-4 py-2.5 font-bold">Enforcement Mechanism</th>
+                                              <th className="px-4 py-2.5 font-bold">Failure Impact Mitigated</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {bloomInvariants.map((inv) => (
+                                              <tr key={inv.id} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-4 py-2.5 font-bold text-ink dark:text-white">
+                                                  0{inv.id}. {inv.invariant}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-accent dark:text-pink-300 text-[11px] leading-relaxed">
+                                                  {inv.enforcement}
+                                                </td>
+                                                <td className="px-4 py-2.5 text-cocoa dark:text-white/85 text-[11px] leading-relaxed">
+                                                  {inv.failureImpact}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* SQL Time Gate & Trigger Snippets */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          PostgreSQL Time Gate RPC (get_plant)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`-- Time gate evaluated strictly in SQL on database clock
+create function public.get_plant(p_id uuid)
+returns table (
+  plant_id uuid, planted_at timestamptz, server_now timestamptz, elapsed_ms bigint,
+  variety text, sender_name text, water_count bigint, note text)
+language sql stable security definer set search_path = '' as $$
+  select p.id,
+         p.created_at,
+         now(),
+         floor(extract(epoch from (now() - p.created_at)) * 1000)::bigint,
+         p.variety, p.sender_name, p.water_count,
+         case when now() >= p.created_at + interval '72 hours' then s.note end
+    from public.plants p
+    left join public.plant_secrets s on s.plant_id = p.id
+   where p.id = p_id;
+$$;`}
+                                        </pre>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Immutable Birth &amp; Monotonic Guard (plants_guard)
+                                        </span>
+                                        <pre className="max-h-56 overflow-auto rounded bg-black/5 p-3 text-[11px] leading-snug text-cocoa dark:bg-black/40 dark:text-pink-100">
+{`-- Enforces created_at immutability and water_count monotonicity
+create function public.plants_guard() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  if new.created_at is distinct from old.created_at then
+    raise exception 'created_at is immutable' using errcode = '23514';
+  end if;
+  if new.water_count < old.water_count then
+    raise exception 'water_count is monotonic' using errcode = '23514';
+  end if;
+  return new;
+end $$;
+
+create trigger plants_guard before update on public.plants
+  for each row execute function public.plants_guard();`}
                                         </pre>
                                       </div>
                                     </div>

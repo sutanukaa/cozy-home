@@ -59,10 +59,10 @@ export default function StudioDeskPlant() {
     setIsWatering(true);
     soundscape.playClickSound();
 
-    // Spawn 5 sequential falling droplets
+    // Spawn 5 sequential falling droplets targeted at pot soil
     const newDroplets: Droplet[] = Array.from({ length: 5 }, (_, i) => ({
       id: Date.now() + i,
-      x: -10 + i * 5, // spread across pot
+      x: -8 + i * 4, // spread nicely across the pot soil
       delay: i * 0.12,
     }));
     setDroplets(newDroplets);
@@ -89,7 +89,7 @@ export default function StudioDeskPlant() {
         setShowSparkles(true);
         setTimeout(() => setShowSparkles(false), 2400);
       } else {
-        // Stage 2: fully bloomed, just a refreshing sprinkle with sparkles
+        // Stage 2: fully bloomed, refreshing sprinkle with sparkles
         setShowSparkles(true);
         setTimeout(() => setShowSparkles(false), 1600);
       }
@@ -141,10 +141,10 @@ export default function StudioDeskPlant() {
     <div
       className="absolute pointer-events-auto select-none"
       style={{
-        left: '67.2%',
-        top: '44.8%',
-        width: '6.4%',
-        aspectRatio: '1 / 1.3',
+        left: '63.8%',
+        bottom: '48.2%',
+        width: '13.2%',
+        aspectRatio: '1 / 1',
         zIndex: 15,
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -170,7 +170,7 @@ export default function StudioDeskPlant() {
               exit={{ opacity: 0, y: 4, scale: 0.9 }}
               transition={{ duration: 0.18 }}
               className={`pointer-events-none absolute left-1/2 -translate-x-1/2 z-30 whitespace-nowrap ${
-                stage === 0 ? 'top-[32%] sm:top-[30%]' : '-top-10 sm:-top-12'
+                stage === 0 ? 'bottom-[74%]' : 'bottom-[102%]'
               }`}
             >
               <div className="relative rounded-full border border-pink-300 bg-white/95 px-2.5 py-1 text-[10px] sm:text-xs font-mono font-bold text-accent shadow-md backdrop-blur-xs dark:border-pink-500/50 dark:bg-[#2A1828]/95 dark:text-pink-200">
@@ -202,24 +202,24 @@ export default function StudioDeskPlant() {
         <AnimatePresence>
           {isWatering && (
             <motion.div
-              initial={{ opacity: 0, x: 25, y: -25, rotate: 0, scale: 0.8 }}
+              initial={{ opacity: 0, x: 30, y: -20, rotate: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
-                x: stage === 0 ? 5 : 8,
-                y: stage === 0 ? -14 : -32,
+                x: 10,
+                y: -10,
                 rotate: -24,
-                scale: stage === 0 ? 0.85 : 1,
+                scale: 0.95,
               }}
-              exit={{ opacity: 0, x: 20, y: -20, rotate: 0, scale: 0.8 }}
+              exit={{ opacity: 0, x: 25, y: -15, rotate: 0, scale: 0.8 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="pointer-events-none absolute -top-10 left-3 z-30 w-12 sm:w-16 md:w-20"
+              className="pointer-events-none absolute top-[30%] -right-[15%] z-30 w-14 sm:w-18 md:w-22"
               style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' }}
             >
               <Image
                 src="/assets/objects/studio-watering-can.png"
                 alt="Pastel watering can"
-                width={120}
-                height={120}
+                width={140}
+                height={140}
                 className="h-auto w-full object-contain"
                 priority
               />
@@ -236,13 +236,13 @@ export default function StudioDeskPlant() {
                   key={drop.id}
                   initial={{
                     opacity: 0,
-                    y: stage === 0 ? -12 : -28,
-                    x: stage === 0 ? drop.x * 0.6 : drop.x,
+                    y: 5,
+                    x: drop.x,
                     scale: 0.6,
                   }}
                   animate={{
                     opacity: [0, 1, 1, 0],
-                    y: stage === 0 ? [-12, 16] : [-28, 5],
+                    y: [5, 45],
                     scale: [0.6, 1, 1, 0.4],
                   }}
                   transition={{
@@ -263,7 +263,7 @@ export default function StudioDeskPlant() {
         {/* --- 4. SPARKLES / CELEBRATION BURST --- */}
         <AnimatePresence>
           {showSparkles && (
-            <div className="pointer-events-none absolute -top-8 inset-x-0 z-25 flex items-center justify-center">
+            <div className="pointer-events-none absolute top-[35%] inset-x-0 z-25 flex items-center justify-center">
               {[-16, -6, 8, 18].map((offset, idx) => (
                 <motion.span
                   key={idx}
@@ -290,8 +290,8 @@ export default function StudioDeskPlant() {
           animate={
             isWatering
               ? {
-                  scale: [1, 1.08, 0.98, 1],
-                  rotate: [0, -1.5, 1.5, 0],
+                  scale: [1, 1.06, 0.98, 1],
+                  rotate: [0, -1.2, 1.2, 0],
                 }
               : {
                   scale: 1,
@@ -301,23 +301,21 @@ export default function StudioDeskPlant() {
           transition={{ duration: 0.45 }}
           className="relative h-full w-full flex items-end justify-center filter drop-shadow-sm transition-transform duration-200 hover:scale-105"
         >
-          {/* Cross-fading Plant Asset Image */}
+          {/* Cross-fading Plant Asset Image (1400x1400 unified baseline canvas) */}
           <AnimatePresence mode="wait">
             <motion.div
               key={stage}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4 }}
-              className={`relative flex items-end justify-center ${
-                stage === 0 ? 'h-[53%] w-[50%] mb-0' : 'h-full w-full'
-              }`}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.35 }}
+              className="relative h-full w-full flex items-end justify-center"
             >
               <Image
                 src={getPlantAsset()}
                 alt={`Studio desk plant at stage ${stage + 1}`}
-                width={stage === 0 ? 120 : 200}
-                height={stage === 0 ? 150 : 260}
+                width={350}
+                height={350}
                 className="h-full w-full object-contain object-bottom"
                 priority
               />

@@ -1,58 +1,93 @@
 'use client';
 
-// Precisely mapped to the three draped garland swags in the new background artwork
+// Exact coordinates of all 59 painted fairy light garland bulbs across the room artwork
 export const FAIRY_LIGHTS: [number, number][] = [
-  // Swag 1: Left drape above the couch (dipping from corner down over the studio door)
-  [3.8, 6.5],
-  [6.5, 11.6],
-  [9.0, 15.4],
-  [11.2, 18.1],
-  [13.8, 19.5],
-  [16.2, 18.5],
-  [18.5, 19.2],
-  [21.0, 20.2],
+  // Left drape above couch & over studio door
+  [1.3, 2.4],
+  [3.6, 6.6],
+  [5.9, 9.9],
+  [8.3, 13.3],
+  [10.9, 13.1],
+  [12.0, 16.7],
+  [13.4, 12.8],
+  [15.8, 16.4],
+  [18.5, 15.9],
 
-  // Swag 2: Center drape curving over the doorways
-  [35.3, 19.3],
-  [38.3, 18.5],
-  [41.0, 16.5],
-  [43.4, 13.9],
-  [45.8, 10.9],
-  [48.1, 7.3],
-  [52.0, 8.2],
-  [54.8, 14.5],
-  [57.0, 18.2],
-  [59.6, 20.2],
+  // Scallop over bedroom door
+  [21.1, 19.5],
+  [23.8, 20.5],
+  [25.3, 17.1],
+  [26.8, 21.2],
+  [29.0, 16.7],
+  [29.5, 21.1],
+  [32.4, 20.1],
 
-  // Swag 3: Right drape leading to the arched window & monstera
-  [66.8, 8.3],
-  [69.8, 10.4],
-  [72.5, 11.6],
-  [75.8, 14.5],
-  [79.0, 16.8],
-  [81.8, 17.2],
-  [85.2, 16.8],
-  [88.4, 15.2],
-  [91.3, 12.7],
-  [94.3, 9.9],
-  [97.0, 7.5],
+  // Upper drape above central bookcase
+  [34.3, 14.7],
+  [37.9, 12.5],
+  [40.4, 10.6],
+  [43.0, 8.0],
+  [45.7, 4.4],
+  [53.6, 4.5],
+  [55.5, 8.6],
+  [57.4, 11.9],
+  [60.1, 15.5],
+
+  // Main drape across bookcase & kitchen door
+  [34.8, 19.0],
+  [37.2, 17.0],
+  [39.6, 16.6],
+  [41.8, 18.5],
+  [44.4, 19.8],
+  [47.0, 20.6],
+  [50.0, 21.1],
+  [52.9, 20.7],
+  [55.5, 19.7],
+  [58.2, 18.1],
+  [61.4, 16.3],
+
+  // Drape leading over the porch front door
+  [63.7, 18.4],
+  [66.0, 19.8],
+  [68.5, 20.9],
+  [71.3, 21.2],
+  [74.2, 20.9],
+  [76.8, 19.7],
+  [79.5, 17.7],
+  [82.9, 16.3],
+  [86.0, 15.3],
+  [87.8, 14.2],
+  [89.7, 13.0],
+  [92.1, 11.2],
+  [94.6, 9.0],
+  [97.6, 5.0],
+
+  // Ceiling garland swag high above window & monstera
+  [71.5, 3.6],
+  [74.6, 5.2],
+  [78.0, 6.6],
+  [81.5, 7.5],
+  [84.8, 7.9],
+  [88.3, 7.5],
+  [91.5, 6.7],
+  [94.8, 4.8],
 ];
 
-// Soft ambient room sparkles & sun dust motes
+// Soft ambient room sparkles & dust motes floating peacefully in the air
 export const ROOM_SPECKS: [number, number][] = [
   [8.5, 26.0], [14.0, 28.5], [22.0, 32.0], [38.0, 26.5], [44.0, 24.0],
-  [62.0, 28.0], [74.0, 25.5], [82.0, 29.0], [89.0, 24.5], [93.5, 28.0],
-  [16.5, 52.0], [18.0, 68.0], [80.5, 58.0], [86.0, 68.0]
+  [62.0, 28.0], [74.0, 25.5], [82.0, 29.0], [89.0, 24.5],
+  [16.5, 52.0], [80.5, 58.0], [86.0, 68.0]
 ];
 
 export default function FairyLightOverlay() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
-      {/* 1. DAYTIME: Prismatic Glass Sun-Catchers & Sun Motes */}
+      {/* 1. DAYTIME: Soft Prismatic Glass Sun-Catchers */}
       <div className="only-day h-full w-full">
         {FAIRY_LIGHTS.map(([x, y], i) => {
-          const delay = (i * 0.23) % 3.5;
-          const duration = 3.5 + ((i * 7) % 15) * 0.15;
+          const delay = (i * 0.17) % 3.2;
+          const duration = 3.2 + ((i * 7) % 15) * 0.12;
           return (
             <div
               key={`prism-${i}`}
@@ -64,8 +99,8 @@ export default function FairyLightOverlay() {
                 animationDelay: `${delay}s`,
               }}
             >
-              <span className="block h-2 w-2 rounded-full border border-white/60 bg-white/40 shadow-[0_1px_4px_rgba(255,255,255,0.7)] backdrop-blur-[1px]" />
-              <span className="absolute -inset-1 rounded-full bg-gradient-to-tr from-pink-300/30 via-amber-200/20 to-sky-300/30 blur-[2px]" />
+              <span className="block h-1.5 w-1.5 rounded-full border border-white/50 bg-white/35 shadow-[0_1px_3px_rgba(255,255,255,0.6)] backdrop-blur-[1px]" />
+              <span className="absolute -inset-1 rounded-full bg-gradient-to-tr from-pink-300/25 via-amber-200/15 to-sky-300/25 blur-[1.5px]" />
             </div>
           );
         })}
@@ -84,17 +119,17 @@ export default function FairyLightOverlay() {
                 animationDelay: `${delay}s`,
               }}
             >
-              <span className="block h-1.5 w-1.5 rounded-full bg-white/70 shadow-[0_0_6px_rgba(255,230,170,0.6)]" />
+              <span className="block h-1 w-1 rounded-full bg-white/60 shadow-[0_0_5px_rgba(255,230,170,0.5)]" />
             </div>
           );
         })}
       </div>
 
-      {/* 2. NIGHTTIME: Warm Amber Glowing Fairy Lights */}
+      {/* 2. NIGHTTIME: Warm Amber Glowing Fairy Lights directly on bulbs */}
       <div className="only-night h-full w-full">
         {FAIRY_LIGHTS.map(([x, y], i) => {
-          const delay = (i * 0.19) % 2.5;
-          const duration = 2.4 + ((i * 11) % 15) * 0.1;
+          const delay = (i * 0.13) % 2.8;
+          const duration = 2.2 + ((i * 9) % 12) * 0.15;
           return (
             <div
               key={`fairy-${i}`}
@@ -106,10 +141,10 @@ export default function FairyLightOverlay() {
                 animationDelay: `${delay}s`,
               }}
             >
-              {/* Hot core center */}
-              <span className="block h-2.5 w-2.5 rounded-full bg-[#FFFBEA] shadow-[0_0_10px_3px_#FFE79A,0_0_18px_6px_rgba(255,200,100,0.7)]" />
-              {/* Radial warm aura */}
-              <span className="absolute -inset-2 rounded-full bg-gradient-radial from-amber-200/40 via-amber-300/15 to-transparent blur-sm" />
+              {/* Soft warm glowing bulb center */}
+              <span className="block h-2 w-2 rounded-full bg-[#FFFDE8] shadow-[0_0_8px_2px_#FFE28A,0_0_14px_4px_rgba(255,190,80,0.55)]" />
+              {/* Soft ambient aura */}
+              <span className="absolute -inset-1.5 rounded-full bg-gradient-radial from-amber-200/35 via-amber-300/10 to-transparent blur-[2px]" />
             </div>
           );
         })}
@@ -128,7 +163,7 @@ export default function FairyLightOverlay() {
                 animationDelay: `${delay}s`,
               }}
             >
-              <span className="block h-1.5 w-1.5 rounded-full bg-[#FFFFFF] shadow-[0_0_6px_2px_#FFF3B0,0_0_12px_4px_rgba(255,220,120,0.5)]" />
+              <span className="block h-1 w-1 rounded-full bg-[#FFFFFF] shadow-[0_0_5px_2px_#FFF3B0,0_0_10px_3px_rgba(255,220,120,0.4)]" />
             </div>
           );
         })}

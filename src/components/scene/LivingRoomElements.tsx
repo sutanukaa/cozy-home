@@ -222,17 +222,17 @@ export default function LivingRoomElements() {
 
       {/* ------------------------------------------------------------------ */}
       {/* 2. Basket Cat Overlay: Resting firmly on the wooden floorboards    */}
-      {/*    in front of the couch base (left: 19.8%, bottom: 2.5%)          */}
+      {/*    in front of the couch base (left: 20.2%, bottom: 10.5%)         */}
       {/* ------------------------------------------------------------------ */}
       <div
         onClick={pokeCat}
         title="Pet the cozy kitten"
         className="pointer-events-auto group absolute -translate-x-1/2 cursor-pointer transition-transform duration-150 active:scale-95"
         style={{
-          left: '19.8%',
-          bottom: '2.5%',
-          width: '12.5%',
-          height: '16.5%',
+          left: '20.2%',
+          bottom: '10.5%',
+          width: '12%',
+          height: '15.5%',
         }}
       >
         <div className="relative h-full w-full">

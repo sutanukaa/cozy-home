@@ -6,7 +6,6 @@ import Ambient from '@/components/scene/Ambient';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 import ScrollReset from '@/components/layout/ScrollReset';
-import SoundToggle from '@/components/layout/SoundToggle';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -63,7 +62,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Ambient />
           <SiteHeader />
           <main className="relative z-10 w-full">{children}</main>
-          <SoundToggle />
           <SiteFooter />
         </TimeProvider>
       </body>

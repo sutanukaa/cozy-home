@@ -141,9 +141,10 @@ export default function StudioDeskPlant() {
     <div
       className="absolute pointer-events-auto select-none"
       style={{
-        left: '63.8%',
-        bottom: '48.2%',
-        width: '13.2%',
+        left: '70.0%',
+        top: '53.0%',
+        transform: 'translate(-50%, -98.6%)',
+        width: '6.5%',
         aspectRatio: '1 / 1',
         zIndex: 15,
       }}
@@ -170,7 +171,7 @@ export default function StudioDeskPlant() {
               exit={{ opacity: 0, y: 4, scale: 0.9 }}
               transition={{ duration: 0.18 }}
               className={`pointer-events-none absolute left-1/2 -translate-x-1/2 z-30 whitespace-nowrap ${
-                stage === 0 ? 'bottom-[74%]' : 'bottom-[102%]'
+                stage === 0 ? '-top-9 sm:-top-10' : '-top-10 sm:-top-12'
               }`}
             >
               <div className="relative rounded-full border border-pink-300 bg-white/95 px-2.5 py-1 text-[10px] sm:text-xs font-mono font-bold text-accent shadow-md backdrop-blur-xs dark:border-pink-500/50 dark:bg-[#2A1828]/95 dark:text-pink-200">
@@ -202,24 +203,24 @@ export default function StudioDeskPlant() {
         <AnimatePresence>
           {isWatering && (
             <motion.div
-              initial={{ opacity: 0, x: 30, y: -20, rotate: 0, scale: 0.8 }}
+              initial={{ opacity: 0, x: 20, y: -20, rotate: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
-                x: 10,
-                y: -10,
+                x: 6,
+                y: -12,
                 rotate: -24,
                 scale: 0.95,
               }}
-              exit={{ opacity: 0, x: 25, y: -15, rotate: 0, scale: 0.8 }}
+              exit={{ opacity: 0, x: 18, y: -16, rotate: 0, scale: 0.8 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="pointer-events-none absolute top-[30%] -right-[15%] z-30 w-14 sm:w-18 md:w-22"
+              className="pointer-events-none absolute -top-4 -right-10 z-30 w-12 sm:w-14"
               style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' }}
             >
               <Image
                 src="/assets/objects/studio-watering-can.png"
                 alt="Pastel watering can"
-                width={140}
-                height={140}
+                width={100}
+                height={100}
                 className="h-auto w-full object-contain"
                 priority
               />
@@ -236,13 +237,13 @@ export default function StudioDeskPlant() {
                   key={drop.id}
                   initial={{
                     opacity: 0,
-                    y: 5,
+                    y: 10,
                     x: drop.x,
                     scale: 0.6,
                   }}
                   animate={{
                     opacity: [0, 1, 1, 0],
-                    y: [5, 45],
+                    y: [10, 36],
                     scale: [0.6, 1, 1, 0.4],
                   }}
                   transition={{
@@ -250,7 +251,7 @@ export default function StudioDeskPlant() {
                     delay: drop.delay,
                     ease: 'easeIn',
                   }}
-                  className="absolute block h-2 w-1 rounded-full bg-sky-400 shadow-xs"
+                  className="absolute block h-1.5 w-1 rounded-full bg-sky-400 shadow-xs"
                   style={{
                     boxShadow: '0 0 4px rgba(56, 189, 248, 0.7)',
                   }}
@@ -298,6 +299,7 @@ export default function StudioDeskPlant() {
                   rotate: 0,
                 }
           }
+          style={{ transformOrigin: 'bottom center' }}
           transition={{ duration: 0.45 }}
           className="relative h-full w-full flex items-end justify-center filter drop-shadow-sm transition-transform duration-200 hover:scale-105"
         >

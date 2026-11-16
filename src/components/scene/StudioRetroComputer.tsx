@@ -12,6 +12,7 @@ import {
   PixelServer,
   PixelTicket,
   PixelDatabase,
+  PixelGamepad,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
@@ -65,6 +66,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     | 'scrapbook-audio'
   >('none');
   const [showReadme, setShowReadme] = useState(false);
+  const [showGame, setShowGame] = useState(false);
+  const [coinCount, setCoinCount] = useState(0);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
@@ -140,6 +143,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
         setIsExpanded(false);
         setActiveProject(null);
         setShowReadme(false);
+        setShowGame(false);
       }
     };
     window.addEventListener('keydown', onKeyDown);
@@ -150,16 +154,17 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     soundscape.playClickSound();
     setIsExpanded(true);
     // By default, open the first project or readme so the desktop feels lively
-    if (!activeProject && !showReadme && projects.length > 0) {
+    if (!activeProject && !showReadme && !showGame && projects.length > 0) {
       setActiveProject(projects[0]);
     }
-  }, [activeProject, showReadme]);
+  }, [activeProject, showReadme, showGame]);
 
   const closeComputer = useCallback(() => {
     soundscape.playClickSound();
     setIsExpanded(false);
     setActiveProject(null);
     setShowReadme(false);
+    setShowGame(false);
   }, []);
 
   // Map project slug to its custom pixel icon
@@ -239,8 +244,24 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
               <span className="ml-1 inline-block animate-pulse font-mono font-bold text-accent">_</span>
             </div>
 
+            {/* Playful Game Time Button on Desk Monitor */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                soundscape.playClickSound();
+                setIsExpanded(true);
+                setShowGame(true);
+                setActiveProject(null);
+                setShowReadme(false);
+              }}
+              className="mt-0.5 flex items-center gap-1 rounded-full border border-butter/90 bg-butter/85 px-2.5 py-0.5 font-mono text-[8px] sm:text-[9px] font-bold text-cocoa shadow-xs backdrop-blur-[1px] transition-all hover:scale-105 hover:bg-butter active:scale-95 dark:border-butter/50 dark:bg-butter/30 dark:text-butter"
+            >
+              <span>Scratch this, game time!</span>
+            </button>
+
             {/* Subtle retro hint */}
-            <span className="hidden font-hand text-[9px] sm:text-[11px] font-bold text-ink-soft/90 md:block dark:text-white/80">
+            <span className="hidden font-hand text-[8px] sm:text-[10px] font-bold text-ink-soft/90 md:block dark:text-white/80">
               [tap to expand]
             </span>
           </div>
@@ -345,6 +366,19 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     >
                       Blueprints
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        soundscape.playClickSound();
+                        setShowGame(true);
+                        setActiveProject(null);
+                        setShowReadme(false);
+                      }}
+                      className="cursor-pointer rounded-full border border-butter/90 bg-butter/40 px-2.5 py-0.5 text-[10px] sm:text-xs font-mono font-bold text-cocoa hover:bg-butter hover:text-ink transition-all dark:border-butter/50 dark:bg-butter/25 dark:text-butter"
+                      title="Scratch this, game time! Open the Cozy Arcade mini-game station"
+                    >
+                      Scratch this, game time!
+                    </button>
                     <span
                       onClick={() => setShowReadme(true)}
                       className="cursor-pointer opacity-70 hover:opacity-100"
@@ -374,8 +408,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     }}
                   />
 
-                  {/* Desktop Icons Grid - All Projects in a clean retro row */}
-                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-3">
+                  {/* Desktop Icons Grid - All Projects + Game Time in a clean retro row */}
+                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-8 md:gap-2.5">
                     {/* Project Icons */}
                     {projects.map((p) => {
                       const isSelected = selectedIcon === p.slug;
@@ -389,6 +423,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                             setSelectedIcon(p.slug);
                             setActiveProject(p);
                             setShowBlueprints(false);
+                            setShowGame(false);
                             setActiveExtraTab('none');
                             setActiveBlueprintDiagram(1);
                           }}
@@ -416,6 +451,33 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         </div>
                       );
                     })}
+
+                    {/* Game Time App Icon */}
+                    <div
+                      onClick={() => {
+                        soundscape.playClickSound();
+                        setSelectedIcon('gametime');
+                        setShowGame(true);
+                        setActiveProject(null);
+                        setShowBlueprints(false);
+                        setShowReadme(false);
+                      }}
+                      className={`group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all ${
+                        showGame || selectedIcon === 'gametime'
+                          ? 'bg-butter/60 ring-2 ring-butter shadow-sm dark:bg-white/15'
+                          : 'hover:bg-white/60 dark:hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
+                        <PixelGamepad size={48} />
+                      </div>
+                      <span className="mt-1.5 line-clamp-2 max-w-[100px] font-mono text-xs font-bold leading-tight text-ink dark:text-white">
+                        gametime.app
+                      </span>
+                      <span className="mt-0.5 rounded-full border border-butter/80 bg-butter/70 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-cocoa dark:bg-butter/25 dark:text-butter dark:border-butter/40">
+                        Mini-Game
+                      </span>
+                    </div>
                   </div>
 
                   {/* --- Floating Active Project Window --- */}
@@ -600,6 +662,18 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 <span>[ Launch Live Application ]</span>
                               </a>
                             )}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                soundscape.playClickSound();
+                                setShowGame(true);
+                                setActiveProject(null);
+                              }}
+                              className="flex items-center gap-1.5 rounded-full border border-butter/90 bg-butter/40 px-4 py-2 font-mono text-xs sm:text-sm font-bold text-cocoa shadow-xs transition-all hover:bg-butter hover:text-ink active:scale-95 dark:border-butter/50 dark:bg-butter/25 dark:text-butter"
+                              title="Scratch this, game time! Take a break and launch the arcade"
+                            >
+                              <span>[ Scratch this, game time! ]</span>
+                            </button>
                           </div>
 
                           {/* --- Expandable Architecture Blueprint Viewer: Syntactiq --- */}
@@ -2301,6 +2375,112 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
                           <p className="pt-2 text-ink-soft dark:text-white/70">
                             Select any application icon on the desktop workspace to inspect architectural pipelines, technical decisions, CI verification harnesses, and GitHub source code repositories.
                           </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* --- Floating Game Station Retro Window (Mini-Game Station) --- */}
+                  <AnimatePresence>
+                    {showGame && (
+                      <motion.div
+                        key="game-station-window"
+                        initial={{ scale: 0.95, y: 15, opacity: 0 }}
+                        animate={{ scale: 1, y: 0, opacity: 1 }}
+                        exit={{ scale: 0.95, y: 15, opacity: 0 }}
+                        className="relative z-30 mx-auto mt-4 w-full max-w-2xl flex flex-col rounded-2xl border-2 border-butter/90 bg-[#FFFDF8] shadow-2xl backdrop-blur-md dark:border-butter/50 dark:bg-[#25182E]"
+                      >
+                        {/* Titlebar */}
+                        <div className="flex shrink-0 items-center justify-between border-b-2 border-butter/80 bg-gradient-to-r from-butter/60 via-paper to-butter/60 px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
+                          <div className="flex items-center gap-2">
+                            <span className="h-3 w-3 rounded-full border border-rose/80 bg-rose" />
+                            <span className="h-3 w-3 rounded-full border border-butter/80 bg-butter" />
+                            <span className="h-3 w-3 rounded-full border border-sage/80 bg-sage" />
+                            <span className="ml-2 font-mono text-xs font-bold text-cocoa dark:text-pink-100">
+                              gametime.app - Cozy Arcade Station
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setShowGame(false)}
+                            title="Close Game Station"
+                            className="flex h-5 w-5 items-center justify-center rounded-full border border-pink-300 bg-white font-mono text-xs font-bold text-ink hover:bg-rose hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-white"
+                          >
+                            ✕
+                          </button>
+                        </div>
+
+                        {/* Arcade Game Canvas Preview Area */}
+                        <div className="p-6 sm:p-8 flex flex-col items-center text-center gap-4">
+                          <div className="flex items-center gap-2 rounded-full border border-butter/80 bg-butter/30 px-3 py-1 font-mono text-xs font-bold text-cocoa dark:bg-butter/20 dark:text-butter">
+                            <span className="relative flex h-2 w-2">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                              <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
+                            </span>
+                            <span>ARCADE MODE · IN DEVELOPMENT</span>
+                          </div>
+
+                          <div className="relative flex flex-col items-center justify-center w-full max-w-lg rounded-2xl border-4 border-[#3D2947] bg-[#1E1226] p-8 text-white shadow-2xl overflow-hidden">
+                            {/* CRT scanline texture */}
+                            <div
+                              aria-hidden
+                              className="pointer-events-none absolute inset-0 opacity-20"
+                              style={{
+                                backgroundImage:
+                                  'repeating-linear-gradient(0deg, rgba(0,0,0,0.4) 0px, rgba(0,0,0,0.4) 1px, transparent 1px, transparent 3px)',
+                              }}
+                            />
+
+                            <PixelGamepad size={64} className="mb-3 animate-bounce" />
+
+                            <h4 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-pink-200">
+                              Scratch this, game time!
+                            </h4>
+
+                            <p className="mt-2 font-mono text-xs sm:text-sm text-pink-100/80 max-w-sm leading-relaxed">
+                              Take a break from software architecture, code reviews, and pipelines. A cozy retro arcade mini-game is currently baking in the oven!
+                            </p>
+
+                            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  soundscape.playClickSound();
+                                  setCoinCount((c) => c + 1);
+                                }}
+                                className="rounded-lg border border-pink-400/80 bg-rose px-3.5 py-1.5 font-bold text-white shadow-md hover:bg-pink-500 active:scale-95 transition-all"
+                              >
+                                [ INSERT COIN {coinCount > 0 ? `(${coinCount} CREDITS)` : ''} ]
+                              </button>
+                              <div className="rounded-lg border border-white/20 bg-black/40 px-3 py-1.5 text-white/70">
+                                Controls: Arrow Keys + Space
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                soundscape.playClickSound();
+                                setShowGame(false);
+                                if (projects.length > 0) setActiveProject(projects[0]);
+                              }}
+                              className="rounded-full border border-pink-300 bg-white px-4 py-1.5 font-mono text-xs font-bold text-ink shadow-xs hover:bg-rose hover:text-white transition-all dark:border-white/20 dark:bg-white/10 dark:text-white"
+                            >
+                              Back to projects
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                soundscape.playClickSound();
+                                setShowGame(false);
+                              }}
+                              className="rounded-full border border-pink-200 bg-transparent px-3 py-1.5 font-mono text-xs font-medium text-ink-soft hover:text-ink transition-all dark:text-white/60 dark:hover:text-white"
+                            >
+                              Close to desktop
+                            </button>
+                          </div>
                         </div>
                       </motion.div>
                     )}

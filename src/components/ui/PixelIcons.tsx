@@ -378,3 +378,46 @@ export function PixelDatabase({ size = 48, className = '' }: IconProps) {
     </svg>
   );
 }
+
+// 11. Pixel Gamepad / Arcade Console (for Game Time / Mini-Game)
+export function PixelGamepad({ size = 48, className = '' }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+    >
+      {/* Top cord / antenna */}
+      <rect x="11" y="3" width="2" height="3" fill="#E86A92" />
+      {/* Gamepad Main Body */}
+      <rect x="4" y="6" width="16" height="12" fill="#FCE7EC" />
+      <rect x="3" y="8" width="18" height="8" fill="#FCE7EC" />
+      {/* Outer Border */}
+      <rect x="5" y="5" width="14" height="1" fill="#E86A92" />
+      <rect x="3" y="7" width="2" height="1" fill="#E86A92" />
+      <rect x="19" y="7" width="2" height="1" fill="#E86A92" />
+      <rect x="2" y="8" width="1" height="8" fill="#E86A92" />
+      <rect x="21" y="8" width="1" height="8" fill="#C95478" />
+      <rect x="3" y="16" width="2" height="1" fill="#C95478" />
+      <rect x="19" y="16" width="2" height="1" fill="#C95478" />
+      <rect x="5" y="18" width="14" height="1" fill="#C95478" />
+      {/* Grip Gripper Notches */}
+      <rect x="4" y="10" width="1" height="4" fill="#FF8BA7" />
+      <rect x="19" y="10" width="1" height="4" fill="#FF8BA7" />
+      {/* D-Pad (Left) */}
+      <rect x="6" y="11" width="5" height="2" fill="#3D2947" />
+      <rect x="7" y="10" width="3" height="4" fill="#3D2947" />
+      <rect x="8" y="11" width="1" height="2" fill="#FFE29A" />
+      {/* Center Select / Start buttons */}
+      <rect x="11" y="14" width="2" height="1" fill="#A9C7A0" />
+      {/* Action Buttons (Right) - Butter Yellow & Rose Red */}
+      <rect x="15" y="10" width="2" height="2" fill="#FFE29A" />
+      <rect x="17" y="12" width="2" height="2" fill="#E86A92" />
+      <rect x="15" y="12" width="2" height="2" fill="#FF8BA7" />
+      <rect x="17" y="10" width="2" height="2" fill="#FFE29A" />
+    </svg>
+  );
+}

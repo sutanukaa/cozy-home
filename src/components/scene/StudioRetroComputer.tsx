@@ -244,24 +244,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
               <span className="ml-1 inline-block animate-pulse font-mono font-bold text-accent">_</span>
             </div>
 
-            {/* Playful Game Time Button on Desk Monitor */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                soundscape.playClickSound();
-                setIsExpanded(true);
-                setShowGame(true);
-                setActiveProject(null);
-                setShowReadme(false);
-              }}
-              className="mt-0.5 flex items-center gap-1 rounded-full border border-butter/90 bg-butter/85 px-2.5 py-0.5 font-mono text-[8px] sm:text-[9px] font-bold text-cocoa shadow-xs backdrop-blur-[1px] transition-all hover:scale-105 hover:bg-butter active:scale-95 dark:border-butter/50 dark:bg-butter/30 dark:text-butter"
-            >
-              <span>Scratch this, game time!</span>
-            </button>
-
             {/* Subtle retro hint */}
-            <span className="hidden font-hand text-[8px] sm:text-[10px] font-bold text-ink-soft/90 md:block dark:text-white/80">
+            <span className="hidden font-hand text-[9px] sm:text-[11px] font-bold text-ink-soft/90 md:block dark:text-white/80">
               [tap to expand]
             </span>
           </div>

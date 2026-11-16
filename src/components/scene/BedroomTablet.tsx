@@ -27,6 +27,7 @@ export default function BedroomTablet() {
   const { spotifyPlaylist, currentlyReading, blogs } = tabletData;
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string>(blogs[0]?.slug ?? '');
   const [mobileTab, setMobileTab] = useState<'blogs' | 'music' | 'reading'>('blogs');
+  const [isBlogDrawerOpen, setIsBlogDrawerOpen] = useState<boolean>(false);
 
   // Song of the day rotation (based on calendar day of the year)
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
@@ -119,6 +120,7 @@ export default function BedroomTablet() {
       audioRef.current.pause();
     }
     setIsPlaying(false);
+    setIsBlogDrawerOpen(false);
     setIsOpen(false);
   };
 
@@ -475,10 +477,30 @@ export default function BedroomTablet() {
                         </button>
                       </div>
 
-                      <div className="hidden md:flex items-center gap-1.5 font-mono text-[10px] text-ink-soft">
-                        <span>Wi-Fi</span>
-                        <span className="text-accent font-bold">●●●●</span>
-                        <span>100%</span>
+                      <div className="flex items-center gap-2">
+                        <div className="hidden lg:flex items-center gap-1.5 font-mono text-[10px] text-ink-soft mr-1">
+                          <span>Wi-Fi</span>
+                          <span className="text-accent font-bold">●●●●</span>
+                          <span>100%</span>
+                        </div>
+
+                        {/* Hamburger Menu button: opens the pink bubble textured blog drawer */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            soundscape.playSparkleSound();
+                            setIsBlogDrawerOpen((prev) => !prev);
+                          }}
+                          aria-label="Open Blogs Menu"
+                          className="group flex items-center gap-1.5 rounded-full border border-pink-300/80 bg-white/95 px-2.5 py-0.5 sm:py-1 text-ink shadow-xs hover:bg-[#FFF0F5] hover:border-pink-400 active:scale-95 transition-all"
+                        >
+                          <span className="font-hand text-xs font-bold text-accent">Blogs</span>
+                          <div className="flex flex-col justify-center gap-0.5 w-3.5 h-3">
+                            <span className="h-0.5 w-full rounded-full bg-accent transition-all" />
+                            <span className="h-0.5 w-full rounded-full bg-accent transition-all" />
+                            <span className="h-0.5 w-full rounded-full bg-accent transition-all" />
+                          </div>
+                        </button>
                       </div>
                     </div>
 
@@ -649,88 +671,40 @@ export default function BedroomTablet() {
                             )}
                           </div>
                         </div>
-
-                        {/* 3. BLOGS LIST */}
-                        <div className="flex-1 flex flex-col min-h-0">
-                          <div className="flex items-center justify-between mb-1 pt-0.5">
-                            <h3 className="font-display text-xs sm:text-sm font-extrabold text-ink flex items-center gap-1.5">
-                              <svg
-                                className="h-3.5 w-3.5 text-accent shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                              >
-                                <path d="M12 20h9" />
-                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                              </svg>
-                              Blogs
-                            </h3>
-                            <span className="font-mono text-[10px] text-ink-soft font-semibold">
-                              {blogs.length} {blogs.length === 1 ? 'post' : 'posts'}
-                            </span>
-                          </div>
-
-                          <div className="space-y-1.5 overflow-y-auto diary-scroll pr-1">
-                            {blogs.map((b) => {
-                              const isSelected = b.slug === selectedBlogSlug;
-                              return (
-                                <div
-                                  key={b.slug}
-                                  onClick={() => {
-                                    setSelectedBlogSlug(b.slug);
-                                    setMobileTab('blogs');
-                                  }}
-                                  role="button"
-                                  tabIndex={0}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                      setSelectedBlogSlug(b.slug);
-                                    }
-                                  }}
-                                  className={`p-2 rounded-lg border transition-all text-left cursor-pointer ${
-                                    isSelected
-                                      ? 'border-pink-300 bg-[#FFF0F5] shadow-xs'
-                                      : 'border-pink-200/60 bg-white hover:bg-[#FFF9FB] hover:border-pink-300/80'
-                                  }`}
-                                >
-                                  <div className="flex items-center justify-between gap-1 mb-0.5">
-                                    <span className="rounded-full bg-[#FFE29A]/50 px-1.5 py-0.2 font-mono text-[9px] font-bold text-ink">
-                                      {b.tag}
-                                    </span>
-                                    <span className="font-mono text-[9px] text-ink-soft">
-                                      {b.readTime}
-                                    </span>
-                                  </div>
-                                  <h4 className="font-display text-xs font-bold text-ink leading-tight truncate">
-                                    {b.title}
-                                  </h4>
-                                  <p className="mt-0.5 font-sans text-[10px] text-ink-soft line-clamp-2 leading-tight">
-                                    {b.snippet}
-                                  </p>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
                       </div>
 
                       {/* RIGHT MAIN PANE: Active Blog Reader Screen */}
                       <div
-                        className={`flex-1 p-3.5 sm:p-5 md:p-6 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0 ${
+                        className={`flex-1 p-3.5 sm:p-5 md:p-6 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0 relative ${
                           mobileTab === 'blogs' ? 'flex' : 'hidden md:flex'
                         }`}
                       >
                         {selectedBlog ? (
                           <div className="space-y-3 max-w-xl mx-auto w-full">
-                            {/* Meta & Tags */}
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent">
-                                {selectedBlog.tag}
-                              </span>
-                              <span className="font-mono text-[10px] text-ink-soft">
-                                {selectedBlog.date} · {selectedBlog.readTime}
-                              </span>
+                            {/* Meta & Tags + Browse Blogs button */}
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent">
+                                  {selectedBlog.tag}
+                                </span>
+                                <span className="font-mono text-[10px] text-ink-soft">
+                                  {selectedBlog.date} · {selectedBlog.readTime}
+                                </span>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  soundscape.playSparkleSound();
+                                  setIsBlogDrawerOpen(true);
+                                }}
+                                className="inline-flex items-center gap-1 rounded-full border border-pink-200/80 bg-[#FFF5F8] px-2 py-0.5 font-hand text-xs font-bold text-accent hover:bg-pink-100/80 transition-colors"
+                              >
+                                <span>Browse blogs</span>
+                                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                  <path d="M9 18l6-6-6-6" />
+                                </svg>
+                              </button>
                             </div>
 
                             {/* Title */}
@@ -765,11 +739,134 @@ export default function BedroomTablet() {
                         ) : (
                           <div className="flex flex-col items-center justify-center h-full text-center text-ink-soft">
                             <p className="font-hand text-lg font-bold text-ink">
-                              Pick a blog from the sidebar to start reading!
+                              Pick a blog to start reading!
                             </p>
                           </div>
                         )}
                       </div>
+
+                      {/* 4. PINK BUBBLE TEXTURED BLOGS SIDEBAR OVERLAY */}
+                      <AnimatePresence>
+                        {isBlogDrawerOpen && (
+                          <>
+                            {/* Translucent Backdrop */}
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              onClick={() => setIsBlogDrawerOpen(false)}
+                              className="absolute inset-0 z-40 bg-black/25 backdrop-blur-[2px]"
+                              aria-hidden="true"
+                            />
+
+                            {/* Bubble Textured Drawer */}
+                            <motion.div
+                              initial={{ x: '100%' }}
+                              animate={{ x: 0 }}
+                              exit={{ x: '100%' }}
+                              transition={{ type: 'spring', damping: 26, stiffness: 290 }}
+                              className="absolute inset-y-0 right-0 z-50 w-full sm:w-[320px] md:w-[350px] border-l-2 border-pink-300/80 bg-gradient-to-br from-[#FFF5F8] via-[#FFEBF2] to-[#FFDDEB] shadow-[-10px_0_30px_rgba(214,70,118,0.22)] flex flex-col overflow-hidden"
+                            >
+                              {/* Whimsical Glossy Floating Bubble Texture Elements */}
+                              <div className="pointer-events-none absolute inset-0 overflow-hidden select-none">
+                                <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full border border-white/60 bg-gradient-to-br from-white/70 via-pink-200/40 to-pink-300/20 shadow-inner blur-[0.5px]" />
+                                <div className="absolute top-1/4 -left-6 h-24 w-24 rounded-full border border-white/50 bg-gradient-to-tr from-white/60 via-pink-100/30 to-purple-200/20 shadow-inner blur-[0.5px]" />
+                                <div className="absolute top-1/2 right-3 h-16 w-16 rounded-full border border-white/40 bg-gradient-to-br from-white/50 via-pink-200/30 to-pink-300/10 shadow-xs" />
+                                <div className="absolute bottom-10 -left-6 h-28 w-28 rounded-full border border-white/60 bg-gradient-to-tr from-white/60 via-pink-200/40 to-pink-400/20 shadow-inner blur-[0.5px]" />
+                                <div className="absolute bottom-2 right-6 h-12 w-12 rounded-full border border-white/40 bg-gradient-to-br from-white/50 via-pink-100/30 to-purple-300/10" />
+                              </div>
+
+                              {/* Drawer Header */}
+                              <div className="relative z-10 flex items-center justify-between border-b border-pink-200/80 bg-white/70 backdrop-blur-sm px-4 py-3 shrink-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="flex h-2.5 w-2.5 rounded-full bg-accent animate-pulse" />
+                                  <h3 className="font-display text-sm sm:text-base font-extrabold text-ink">
+                                    All Blogs &amp; Stories
+                                  </h3>
+                                  <span className="rounded-full bg-[#FFF0F5] px-2 py-0.5 font-mono text-[10px] font-bold text-accent border border-pink-200/80">
+                                    {blogs.length}
+                                  </span>
+                                </div>
+
+                                {/* Close Bubble Button */}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    soundscape.playSparkleSound();
+                                    setIsBlogDrawerOpen(false);
+                                  }}
+                                  aria-label="Close Blog Drawer"
+                                  className="group flex h-7 w-7 items-center justify-center rounded-full border border-pink-300 bg-white/90 text-ink shadow-xs hover:bg-[#FF4D88] hover:text-white hover:scale-105 active:scale-95 transition-all"
+                                >
+                                  <svg
+                                    className="h-3.5 w-3.5 transition-transform group-hover:rotate-90"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                  >
+                                    <path d="M18 6L6 18" />
+                                    <path d="M6 6l12 12" />
+                                  </svg>
+                                </button>
+                              </div>
+
+                              {/* Drawer Blog Posts List */}
+                              <div className="relative z-10 flex-1 p-3 overflow-y-auto diary-scroll space-y-2.5">
+                                {blogs.map((b) => {
+                                  const isSelected = b.slug === selectedBlogSlug;
+                                  return (
+                                    <div
+                                      key={b.slug}
+                                      onClick={() => {
+                                        setSelectedBlogSlug(b.slug);
+                                        setMobileTab('blogs');
+                                        setIsBlogDrawerOpen(false);
+                                        soundscape.playSparkleSound();
+                                      }}
+                                      role="button"
+                                      tabIndex={0}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                          setSelectedBlogSlug(b.slug);
+                                          setIsBlogDrawerOpen(false);
+                                        }
+                                      }}
+                                      className={`p-3 rounded-xl border transition-all text-left cursor-pointer group relative overflow-hidden backdrop-blur-xs ${
+                                        isSelected
+                                          ? 'border-pink-400 bg-white/95 shadow-sm ring-2 ring-pink-300/60'
+                                          : 'border-pink-200/80 bg-white/80 hover:bg-white hover:border-pink-300 hover:shadow-xs'
+                                      }`}
+                                    >
+                                      <div className="flex items-center justify-between gap-1 mb-1">
+                                        <span className="rounded-full bg-[#FFE29A]/60 px-2 py-0.5 font-mono text-[9px] font-bold text-ink border border-amber-200/60">
+                                          {b.tag}
+                                        </span>
+                                        <span className="font-mono text-[10px] text-ink-soft">
+                                          {b.readTime}
+                                        </span>
+                                      </div>
+                                      <h4 className="font-display text-xs sm:text-sm font-bold text-ink leading-snug group-hover:text-accent transition-colors">
+                                        {b.title}
+                                      </h4>
+                                      <p className="mt-1 font-sans text-[11px] text-ink-soft line-clamp-2 leading-relaxed">
+                                        {b.snippet}
+                                      </p>
+                                      <div className="mt-2 pt-1.5 border-t border-pink-100/70 flex items-center justify-between text-[10px] font-hand font-bold text-accent">
+                                        <span>{b.date}</span>
+                                        <span className="group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                                          Read story →
+                                        </span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          </>
+                        )}
+                      </AnimatePresence>
 
                       {/* Mobile Dedicated Music Tab */}
                       {mobileTab === 'music' && (

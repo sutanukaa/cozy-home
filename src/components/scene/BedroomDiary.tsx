@@ -380,8 +380,8 @@ export default function BedroomDiary() {
                     </div>
 
                     {/* RIGHT PAGE: Bio + Loves + Fun Facts + Resume Button (Centered with ribbon & margin clearance, scrollable) */}
-                    <div className="flex flex-col justify-center pl-6 sm:pl-9 md:pl-12 pr-6 sm:pr-8 md:pr-10 py-1 text-left">
-                      <div className="diary-scroll flex flex-col space-y-3 max-h-[70vh] md:max-h-[64vh] overflow-y-auto pr-2.5">
+                    <div className="flex flex-col justify-center pl-8 sm:pl-12 md:pl-16 pr-8 sm:pr-12 md:pr-16 py-2 text-left">
+                      <div className="diary-scroll flex flex-col space-y-3 max-h-[68vh] md:max-h-[60vh] overflow-y-auto pr-3 pt-1 pb-10 sm:pb-14">
                         <div>
                           <h2 className="font-display text-lg sm:text-2xl font-extrabold text-ink leading-tight">
                             Hello, I&apos;m {site.shortName}
@@ -427,8 +427,8 @@ export default function BedroomDiary() {
                           </ul>
                         </div>
 
-                        {/* Resume Download Button: High-contrast, rich rose-pink pill with glow */}
-                        <div className="pt-2 pb-1">
+                        {/* Resume Download Button: High-contrast, rich rose-pink pill with generous bottom padding */}
+                        <div className="pt-3 pb-4">
                           <a
                             href={site.resumeUrl}
                             target="_blank"

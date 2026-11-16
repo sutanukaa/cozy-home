@@ -289,13 +289,13 @@ export default function BedroomDiary() {
                   aria-hidden="true"
                 />
 
-                {/* Open Diary Container */}
+                {/* DESKTOP / TABLET TWO-PAGE SPREAD VIEW (md and up) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.65, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 15 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative z-10 w-full max-w-4xl aspect-[2222/1248] max-h-[88vh] flex items-center justify-center"
+                  className="hidden md:flex relative z-10 w-full max-w-4xl aspect-[2222/1248] max-h-[88vh] items-center justify-center"
                 >
                   {/* Background Open Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
@@ -465,6 +465,179 @@ export default function BedroomDiary() {
                             <span>Download my resume</span>
                           </a>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* MOBILE SINGLE-PAGE VIEW (< md screens) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.85, y: 15 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex md:hidden relative z-10 w-full max-w-[390px] xs:max-w-[420px] aspect-[1372/1908] max-h-[92vh] items-center justify-center"
+                >
+                  {/* Background Single-Page Mobile Diary Image */}
+                  <div className="absolute inset-0 pointer-events-none select-none">
+                    <Image
+                      src="/assets/objects/bedroom-diary-mobile.png"
+                      alt="Suto's Diary page"
+                      fill
+                      sizes="(max-width: 768px) 94vw, 420px"
+                      className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
+                      priority
+                    />
+                  </div>
+
+                  {/* Close Button: Glossy Pink Bubble in Top Right */}
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    aria-label="Close Diary"
+                    className="group absolute -top-2.5 right-0.5 z-40 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 active:scale-95 focus:outline-none"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute top-1 left-1.5 h-2 w-2.5 rounded-full bg-white/50 blur-[0.3px] -rotate-12"
+                    />
+                    <svg
+                      className="h-5 w-5 transition-transform duration-200"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 6L6 18" />
+                      <path d="M6 6l12 12" />
+                    </svg>
+                  </button>
+
+                  {/* Single-Page Scrollable Content bounded inside cream parchment (left: 9%, right: 11%, top: 8%, bottom: 12%) */}
+                  <div className="absolute left-[9%] right-[11%] top-[8%] bottom-[12%] z-20 text-ink select-text">
+                    <div className="diary-scroll flex flex-col space-y-3 h-full overflow-y-auto px-2 py-2 text-center">
+                      {/* Polaroid Photo Frame */}
+                      <div className="relative w-28 xs:w-32 mx-auto rotate-[-1.5deg] rounded-lg bg-white p-2 shadow-[0_4px_14px_rgba(0,0,0,0.16)] shrink-0">
+                        {/* Washi Tape on Top of Polaroid */}
+                        <div
+                          aria-hidden="true"
+                          className="absolute -top-2 left-1/2 -translate-x-1/2 h-4 w-14 rounded-xs bg-[#FFC5D3]/85 shadow-xs -rotate-2"
+                          style={{
+                            backgroundImage:
+                              'repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.4) 4px, rgba(255,255,255,0.4) 8px)',
+                          }}
+                        />
+                        <div className="relative aspect-square w-full overflow-hidden rounded-md bg-[#FFF0F4]">
+                          <Image
+                            src="/images/me.jpeg"
+                            alt={site.name}
+                            fill
+                            sizes="140px"
+                            className="object-cover"
+                            priority
+                          />
+                        </div>
+                        <div className="mt-1 text-center">
+                          <p className="font-hand text-base font-bold text-ink leading-tight">
+                            {site.name}
+                          </p>
+                          <p className="mt-0.5 font-sans text-[7.5px] tracking-wide uppercase text-ink/65 font-semibold leading-tight">
+                            <span>Software Development</span>
+                            <br />
+                            <span>Engineer</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Social links row */}
+                      <div className="flex flex-wrap items-center justify-center gap-1.5 shrink-0">
+                        {site.socials.map((s) => (
+                          <a
+                            key={s.label}
+                            href={s.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded-full border border-pink-300/80 bg-white/95 px-2.5 py-0.5 font-hand text-xs font-bold text-ink shadow-xs backdrop-blur-xs transition hover:scale-105 hover:bg-blush/40"
+                          >
+                            {s.label}
+                          </a>
+                        ))}
+                      </div>
+
+                      {/* Heading & Subtitle */}
+                      <div className="text-left pt-1">
+                        <h2 className="font-display text-lg xs:text-xl font-extrabold text-ink leading-tight">
+                          Hello, I&apos;m {site.shortName}
+                        </h2>
+                        <p className="mt-0.5 font-hand text-xs text-accent font-semibold">
+                          Welcome to my diary &amp; personal space!
+                        </p>
+                      </div>
+
+                      {/* Bio Paragraphs */}
+                      <div className="space-y-1.5 font-sans text-xs leading-relaxed text-ink/85 text-left">
+                        {about.paragraphs.map((p, i) => (
+                          <p key={i}>{p}</p>
+                        ))}
+                      </div>
+
+                      {/* Things I Love Stickers */}
+                      <div className="text-left">
+                        <h3 className="font-hand text-sm font-bold text-ink/90">
+                          Things I love:
+                        </h3>
+                        <div className="mt-1 flex flex-wrap gap-1.5">
+                          {about.loves.map((love) => (
+                            <span
+                              key={love}
+                              className="rounded-full border border-pink-200/90 bg-[#FFF5F8] px-2.5 py-0.5 font-sans text-[11px] font-medium text-ink shadow-xs"
+                            >
+                              {love}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Fun Facts */}
+                      <div className="text-left">
+                        <h3 className="font-hand text-sm font-bold text-ink/90">
+                          Fun facts:
+                        </h3>
+                        <ul className="mt-1 space-y-1 font-sans text-[11px] text-ink/80 list-disc list-inside">
+                          {about.funFacts.map((fact) => (
+                            <li key={fact}>{fact}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Resume Download Button */}
+                      <div className="pt-2 pb-5 text-center">
+                        <a
+                          href={site.resumeUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group/btn inline-flex items-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#E8507D] via-[#D83A6F] to-[#BF2156] px-5 py-2 font-hand text-base font-bold text-white shadow-[0_4px_14px_rgba(216,58,111,0.45)] transition-all duration-200 hover:scale-105 hover:shadow-[0_6px_20px_rgba(216,58,111,0.65)] hover:from-[#D83A6F] hover:to-[#A31644] active:scale-95"
+                        >
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/25">
+                            <svg
+                              className="h-3.5 w-3.5 text-white"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                              <polyline points="7 10 12 15 17 10" />
+                              <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                          </span>
+                          <span>Download my resume</span>
+                        </a>
                       </div>
                     </div>
                   </div>

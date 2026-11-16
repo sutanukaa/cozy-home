@@ -354,3 +354,27 @@ A horizontal sequence showing three stages of the same indoor potted houseplant 
 - Right: Stage 3, the same plant fully grown, lush, bushy with cascading leaves and tiny blooming pink and butter flowers in the identical blush pink pot.
 All three pots are completely identical in size, design, and camera angle. Wide landscape 16:9 composition, isolated objects on a plain white background, strictly no white outlines, no sticker borders, no white halos.
 ```
+
+---
+
+## 12. Bedroom Interactive Suto's Diary
+Output directory: `public/assets/objects/`
+- `bedroom-diary-closed.png` (approx. 1140x1652 portrait, transparent PNG): Closed cute pastel pink diary resting on the nightstand
+- `bedroom-diary-open.png` (approx. 2222x1248 landscape 16:9, transparent PNG): Full two-page open book spread for desktop/tablets
+- `bedroom-diary-open-mobile.png` (approx. 1200x1800 portrait 2:3, transparent PNG): Single tall open page / notebook for mobile screens
+
+### 12.1 Mobile Single-Page Open Diary (`bedroom-diary-open-mobile.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+Top-down flat-lay view of a single open portrait page of a charming pastel pink scrapbook diary journal. Vertical composition (2:3 aspect ratio).
+The diary has a thick, soft blush-pink leatherette or cloth cover visible as an outer border with delicate cream-white hand-stitched hem around the edges.
+Inside rests a single, tall, wide page of warm textured cream parchment paper (#FFFDF8) with gentle deckled or softly torn organic edges.
+Along the top or upper corner, a small strip of pastel floral or striped washi tape pins down a delicate golden-yellow satin ribbon bookmark that curves naturally along the right edge. Tiny subtle hand-painted pastel pink cherry blossom petals and miniature golden star doodles accent the outer margins.
+
+CRITICAL REQUIREMENT: The central main body of the cream parchment page must be 100% COMPLETELY BLANK, plain, clean, and empty (strictly zero text, zero writing, zero drawn portraits, zero lines, zero doodles in the middle).
+Isolated object centered on a solid plain flat white background, strictly no white sticker border, no white halo, natural organic edges, 1200x1800 portrait resolution, ready for background transparency.
+```
+
+Negative prompt: `text, letters, words, writing, handwriting, scribbles, lined paper, grid, photo in middle, portrait, face, people, dirty paper, dark background, sticker outline, drop shadow on white background, 3D render`
+

@@ -140,26 +140,32 @@ export default function BedroomDiary() {
               priority
             />
 
-            {/* Glowing pink bubble click indicator floating on the diary */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center">
-                {/* Pulsing breathing ring */}
+            {/* Prominent Glowing Hotspot Button floating on the diary cover */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+              <div className="relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center">
+                {/* Outer pulsing radiant halo */}
                 <span
                   aria-hidden="true"
-                  className="absolute inset-0 rounded-full bg-pink-300/60 opacity-60 transition-opacity animate-ping-soft group-hover:opacity-90 dark:bg-pink-400/40"
+                  className="absolute inset-0 rounded-full bg-[#FF3377]/55 animate-ping-soft"
                 />
 
-                {/* Pink bubble button */}
-                <span className="relative flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 group-hover:scale-110">
-                  {/* Glossy bubble highlight */}
+                {/* Secondary breathing ring */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0.5 rounded-full bg-white/70 animate-pulse"
+                />
+
+                {/* Main vibrant rose-berry button */}
+                <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF4D88] via-[#E81E63] to-[#B7004B] text-white shadow-[0_0_14px_rgba(232,30,99,0.7),0_4px_10px_rgba(0,0,0,0.3)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_20px_rgba(255,77,136,0.95)]">
+                  {/* Glossy top-left bubble highlight */}
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-0.5 left-1 h-1.5 w-2 rounded-full bg-white/50 blur-[0.3px] -rotate-12"
+                    className="pointer-events-none absolute top-0.5 left-1 h-2 w-2.5 rounded-full bg-white/60 blur-[0.3px] -rotate-12"
                   />
 
-                  {/* Sparkle / Diary Book Icon */}
+                  {/* Sparkle Book Icon */}
                   <svg
-                    className="h-3 w-3 sm:h-3.5 sm:w-3.5 drop-shadow-sm transition-transform duration-200 group-hover:rotate-12"
+                    className="h-4 w-4 sm:h-4.5 sm:w-4.5 drop-shadow-sm text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -170,16 +176,16 @@ export default function BedroomDiary() {
                   >
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                    <path d="M12 6l1.5 2.5L16 9l-2.5 1.5L12 13l-1.5-2.5L8 9l2.5-1.5L12 6z" />
+                    <path d="M12 6l1.2 2L15 9.2l-1.8 1.2L12 13l-1.2-2.6L9 9.2l1.8-1.2L12 6z" fill="currentColor" fillOpacity="0.4" />
                   </svg>
                 </span>
               </div>
+            </div>
 
-              {/* Tooltip on hover */}
-              <span
-                role="tooltip"
-                className="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-200/90 bg-paper/95 px-2.5 py-0.5 font-hand text-xs sm:text-sm font-bold text-ink opacity-0 shadow-md backdrop-blur-xs transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0.5 dark:border-white/20 dark:bg-[#25182E]/95 dark:text-pink-100"
-              >
+            {/* Prominent Callout Pill Badge directly under the diary */}
+            <div className="absolute -bottom-8 sm:-bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none z-10">
+              <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-pink-300/95 bg-white/95 px-2.5 py-0.5 sm:px-3 sm:py-1 font-hand text-xs sm:text-sm font-bold text-ink shadow-[0_4px_14px_rgba(0,0,0,0.15)] backdrop-blur-xs transition-all duration-300 group-hover:scale-108 group-hover:border-[#E81E63] group-hover:bg-[#FFF0F6] group-hover:text-[#C2185B] dark:border-pink-400/50 dark:bg-[#25182E]/95 dark:text-pink-100">
+                <span className="h-2 w-2 rounded-full bg-[#E81E63] animate-pulse" />
                 Open Suto&apos;s Diary
               </span>
             </div>

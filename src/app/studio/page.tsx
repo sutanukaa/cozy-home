@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
+import RoomReveal from '@/components/scene/RoomReveal';
 import StudioRetroComputer from '@/components/scene/StudioRetroComputer';
 import CoffeeSteam from '@/components/scene/CoffeeSteam';
 import StudioDeskPlant from '@/components/scene/StudioDeskPlant';
@@ -10,6 +11,7 @@ export const metadata: Metadata = { title: 'Studio' };
 export default function StudioPage() {
   return (
     <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
+      <RoomReveal />
       <RoomScene room="studio" fit="cover">
         <CoffeeSteam />
         <StudioRetroComputer />

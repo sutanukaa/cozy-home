@@ -2,7 +2,6 @@ import RoomScene from '@/components/scene/RoomScene';
 import FairyLightOverlay from '@/components/scene/FairyLightOverlay';
 import LivingRoomElements from '@/components/scene/LivingRoomElements';
 import WindowCurtains from '@/components/scene/WindowCurtains';
-import RoomReveal from '@/components/scene/RoomReveal';
 import { rooms } from '@/data/rooms';
 import { site } from '@/data/site';
 import type { HotspotDef } from '@/components/ui/Hotspot';
@@ -23,7 +22,6 @@ const doors: HotspotDef[] = rooms
 export default function HomePage() {
   return (
     <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
-      <RoomReveal />
       <RoomScene room="living-room" hotspots={doors}>
         <WindowCurtains />
         <FairyLightOverlay />

@@ -349,6 +349,33 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play a swift, cozy wooden door transition sound
+   */
+  public playDoorSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.14);
+    } catch {
+      // AudioContext might be paused or restricted
+    }
+  }
+
+  /**
    * Starts or resumes the soundscape
    */
   public async start(): Promise<void> {

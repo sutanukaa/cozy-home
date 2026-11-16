@@ -227,13 +227,13 @@ export default function BedroomTablet() {
             {/* Glowing Hotspot Button positioned in lower center of tablet screen */}
             <div
               className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
-              style={{ top: '64%', left: '50%' }}
+              style={{ top: '71%', left: '50%' }}
             >
               <div className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center">
-                {/* Outer pulsing radiant halo */}
+                {/* Outer pulsing radiant pink halo */}
                 <span
                   aria-hidden="true"
-                  className="absolute inset-0 rounded-full bg-[#E879F9]/50 animate-ping-soft"
+                  className="absolute inset-0 rounded-full bg-[#FF699E]/50 animate-ping-soft"
                 />
 
                 {/* Secondary breathing ring */}
@@ -242,8 +242,8 @@ export default function BedroomTablet() {
                   className="absolute inset-0.5 rounded-full bg-white/70 animate-pulse"
                 />
 
-                {/* Main vibrant lavender-rose button */}
-                <span className="relative flex h-6.5 w-6.5 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#F472B6] via-[#D946EF] to-[#9333EA] text-white shadow-[0_0_12px_rgba(217,70,239,0.7),0_3px_8px_rgba(0,0,0,0.28)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_18px_rgba(244,114,182,0.95)]">
+                {/* Main vibrant pink button */}
+                <span className="relative flex h-6.5 w-6.5 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF9EC0] via-[#FF699E] to-[#E83E8C] text-white shadow-[0_0_12px_rgba(255,105,158,0.7),0_3px_8px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_18px_rgba(255,105,158,0.95)]">
                   {/* Glossy top-left bubble highlight */}
                   <span
                     aria-hidden="true"
@@ -436,7 +436,7 @@ export default function BedroomTablet() {
                       <div className="flex items-center gap-2">
                         <span className="flex h-2.5 w-2.5 rounded-full bg-[#FF4D88] animate-pulse" />
                         <span className="font-display text-xs sm:text-sm font-bold text-ink">
-                          Suto&apos;s iPad · Cozy Corner
+                          Suto&apos;s iPad
                         </span>
                       </div>
 
@@ -598,17 +598,16 @@ export default function BedroomTablet() {
                               type="button"
                               onClick={togglePlay}
                               aria-label={isPlaying ? 'Pause' : 'Play'}
-                              className={`flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-sm hover:scale-105 active:scale-95 transition-all ${
-                                isPlaying ? 'ring-2 ring-pink-300' : ''
-                              }`}
+                              style={{ backgroundColor: '#FF4D88' }}
+                              className="flex h-8 w-8 items-center justify-center rounded-full text-white shadow-md hover:bg-[#E81E63] hover:scale-105 active:scale-95 transition-all ring-2 ring-pink-300/80"
                             >
                               {isPlaying ? (
-                                <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
-                                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="#FFFFFF">
+                                  <path fill="#FFFFFF" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                                 </svg>
                               ) : (
-                                <svg className="h-3 w-3 fill-current ml-0.5" viewBox="0 0 24 24">
-                                  <path d="M8 5v14l11-7z" />
+                                <svg className="h-3.5 w-3.5 text-white ml-0.5" viewBox="0 0 24 24" fill="#FFFFFF">
+                                  <path fill="#FFFFFF" d="M8 5v14l11-7z" />
                                 </svg>
                               )}
                             </button>
@@ -681,30 +680,14 @@ export default function BedroomTablet() {
                       >
                         {selectedBlog ? (
                           <div className="space-y-3 max-w-xl mx-auto w-full">
-                            {/* Meta & Tags + Browse Blogs button */}
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent">
-                                  {selectedBlog.tag}
-                                </span>
-                                <span className="font-mono text-[10px] text-ink-soft">
-                                  {selectedBlog.date} · {selectedBlog.readTime}
-                                </span>
-                              </div>
-
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  soundscape.playSparkleSound();
-                                  setIsBlogDrawerOpen(true);
-                                }}
-                                className="inline-flex items-center gap-1 rounded-full border border-pink-200/80 bg-[#FFF5F8] px-2 py-0.5 font-hand text-xs font-bold text-accent hover:bg-pink-100/80 transition-colors"
-                              >
-                                <span>Browse blogs</span>
-                                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                  <path d="M9 18l6-6-6-6" />
-                                </svg>
-                              </button>
+                            {/* Meta & Tags */}
+                            <div className="flex items-center gap-2">
+                              <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent">
+                                {selectedBlog.tag}
+                              </span>
+                              <span className="font-mono text-[10px] text-ink-soft">
+                                {selectedBlog.date} · {selectedBlog.readTime}
+                              </span>
                             </div>
 
                             {/* Title */}
@@ -712,10 +695,10 @@ export default function BedroomTablet() {
                               {selectedBlog.title}
                             </h2>
 
-                            {/* Divider with cute tea icon */}
+                            {/* Divider with soft floral petal separator */}
                             <div className="flex items-center gap-2 py-1">
                               <div className="h-px bg-pink-200/80 flex-1" />
-                              <span className="text-accent text-xs">☕</span>
+                              <span className="h-1.5 w-1.5 rounded-full bg-pink-300" />
                               <div className="h-px bg-pink-200/80 flex-1" />
                             </div>
 
@@ -729,7 +712,7 @@ export default function BedroomTablet() {
                             {/* Sign-off box */}
                             <div className="mt-4 rounded-xl border border-pink-200/80 bg-[#FFF5F8] p-3 text-center">
                               <p className="font-hand text-sm sm:text-base font-bold text-ink">
-                                Thanks for reading! ✨
+                                Thanks for reading!
                               </p>
                               <p className="font-sans text-[11px] text-ink-soft mt-0.5">
                                 More blogs &amp; essays will be posted here soon.

@@ -93,12 +93,16 @@ Hotspots in code: bed ~(30,62), window ~(74,30).
 
 ### 5.4 Library (skills): `library-day.png` / `library-night.png`
 ```
-[STYLE ANCHOR] [ROOM CAMERA BLOCK]
-A magical cozy home library. Floor-to-ceiling bookshelves full of colorful pastel books along the back wall, a rolling wooden ladder,
-a round arched window, a plush reading armchair with a blanket and a small tea tray in the lower left, a globe, a stack of books
-as a side table, hanging plants, floating tiny sparkles, a patterned rug, lanterns.
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), warm light wood, sage green (#A9C7A0), and butter yellow (#FFE29A), warm soft daytime lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+Straight-on wide-angle dollhouse cutaway view of a cozy home library room, 16:9 landscape composition, camera pulled back so the entire room is visible from the wooden floorboards to the ceiling.
+
+Dominating the center and back wall is a grand, charming wooden bookshelf with multiple spacious horizontal shelves and cubby compartments. The shelves are COMPLETELY EMPTY and CLEAN—strictly zero books, empty wooden shelf surfaces with open space ready to hold items, no clutter on the shelves. 
+
+To the side of the bookshelf is a cute wooden rolling ladder and a trailing potted vine on the top ledge. In the cozy corner of the room sits a plush rounded armchair with a pastel throw pillow and blanket. Warm wooden plank floorboards with a soft round rug, fairy lights strung gently along the top beam, and an arched window on one side letting in soft golden morning sunlight. Wide 16:9 perspective.
 ```
-Hotspot in code: reading nook ~(24,66).
+Negative prompt: `books on shelves, filled bookshelves, cluttered shelves, pre-drawn books, text, letters, titles, logos, people, human figures, photo, photorealistic, harsh shadows, neon, 3d render`
+Hotspots in code: reading nook ~(78.5, 74), rolling ladder ~(62.5, 62), sunlit window ~(89.5, 38).
 
 ### 5.5 Kitchen (experience): `kitchen-day.png` / `kitchen-night.png`
 ```

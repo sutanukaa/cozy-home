@@ -9,7 +9,30 @@ import type { HotspotDef } from '@/components/ui/Hotspot';
 export const metadata: Metadata = { title: 'Library' };
 
 const hotspots: HotspotDef[] = [
-  { id: 'reading', label: 'Reading nook', x: 24, y: 66, emoji: '📖', note: 'Currently reading: Designing Data-Intensive Applications & cozy fiction.' },
+  {
+    id: 'reading',
+    label: 'Reading nook',
+    x: 78.5,
+    y: 74,
+    emoji: '📖',
+    note: 'Currently reading: Designing Data-Intensive Applications & cozy fiction.',
+  },
+  {
+    id: 'ladder',
+    label: 'Rolling ladder',
+    x: 62.5,
+    y: 62,
+    emoji: '🪜',
+    note: 'For reaching the top shelves and hidden gems.',
+  },
+  {
+    id: 'window',
+    label: 'Sunlit window',
+    x: 89.5,
+    y: 38,
+    emoji: '☀️',
+    note: 'Soft golden light for afternoon reading.',
+  },
 ];
 
 // soft book-spine colours (fixed, readable in both themes)

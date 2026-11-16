@@ -12,7 +12,6 @@ import {
   PixelServer,
   PixelTicket,
   PixelDatabase,
-  PixelGamepad,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
 import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
@@ -43,6 +42,7 @@ import {
   scrapbookAudioActions,
 } from '@/data/scrapbookArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
+import CozyRunner from '@/components/game/CozyRunner';
 
 interface StudioRetroComputerProps {
   className?: string;
@@ -67,7 +67,6 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [showGame, setShowGame] = useState(false);
-  const [coinCount, setCoinCount] = useState(0);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
@@ -2364,54 +2363,10 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
                         </div>
 
                         {/* Arcade Game Canvas Preview Area */}
-                        <div className="p-6 sm:p-8 flex flex-col items-center text-center gap-4">
-                          <div className="flex items-center gap-2 rounded-full border border-butter/80 bg-butter/30 px-3 py-1 font-mono text-xs font-bold text-cocoa dark:bg-butter/20 dark:text-butter">
-                            <span className="relative flex h-2 w-2">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-                              <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
-                            </span>
-                            <span>ARCADE MODE · IN DEVELOPMENT</span>
-                          </div>
+                        <div className="p-4 sm:p-6 flex flex-col items-center text-center gap-3">
+                          <CozyRunner />
 
-                          <div className="relative flex flex-col items-center justify-center w-full max-w-lg rounded-2xl border-4 border-[#3D2947] bg-[#1E1226] p-8 text-white shadow-2xl overflow-hidden">
-                            {/* CRT scanline texture */}
-                            <div
-                              aria-hidden
-                              className="pointer-events-none absolute inset-0 opacity-20"
-                              style={{
-                                backgroundImage:
-                                  'repeating-linear-gradient(0deg, rgba(0,0,0,0.4) 0px, rgba(0,0,0,0.4) 1px, transparent 1px, transparent 3px)',
-                              }}
-                            />
-
-                            <PixelGamepad size={64} className="mb-3 animate-bounce" />
-
-                            <h4 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-pink-200">
-                              Scratch this, game time!
-                            </h4>
-
-                            <p className="mt-2 font-mono text-xs sm:text-sm text-pink-100/80 max-w-sm leading-relaxed">
-                              Take a break from software architecture, code reviews, and pipelines. A cozy retro arcade mini-game is currently baking in the oven!
-                            </p>
-
-                            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  soundscape.playClickSound();
-                                  setCoinCount((c) => c + 1);
-                                }}
-                                className="rounded-lg border border-pink-400/80 bg-rose px-3.5 py-1.5 font-bold text-white shadow-md hover:bg-pink-500 active:scale-95 transition-all"
-                              >
-                                [ INSERT COIN {coinCount > 0 ? `(${coinCount} CREDITS)` : ''} ]
-                              </button>
-                              <div className="rounded-lg border border-white/20 bg-black/40 px-3 py-1.5 text-white/70">
-                                Controls: Arrow Keys + Space
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 pt-2">
                             <button
                               type="button"
                               onClick={() => {

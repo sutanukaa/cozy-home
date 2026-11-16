@@ -184,14 +184,6 @@ export default function BedroomDiary() {
                 </span>
               </div>
             </div>
-
-            {/* Prominent Callout Pill Badge directly under the diary */}
-            <div className="absolute -bottom-8 sm:-bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none z-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-pink-300/95 bg-white/95 px-2.5 py-0.5 sm:px-3 sm:py-1 font-hand text-xs sm:text-sm font-bold text-ink shadow-[0_4px_14px_rgba(0,0,0,0.15)] backdrop-blur-xs transition-all duration-300 group-hover:scale-108 group-hover:border-[#E81E63] group-hover:bg-[#FFF0F6] group-hover:text-[#C2185B] dark:border-pink-400/50 dark:bg-[#25182E]/95 dark:text-pink-100">
-                <span className="h-2 w-2 rounded-full bg-[#E81E63] animate-pulse" />
-                Open Suto&apos;s Diary
-              </span>
-            </div>
           </div>
         </div>
       )}

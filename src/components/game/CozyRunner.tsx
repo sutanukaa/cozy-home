@@ -804,22 +804,28 @@ export default function CozyRunner() {
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full cursor-pointer"
         tabIndex={0}
+        onClick={() => {
+          if (phaseR.current === 'idle' || phaseR.current === 'over') start();
+          else if (phaseR.current === 'running') doJump();
+        }}
         aria-label="Cozy Runner game. Press Space or tap to jump."
       />
       {/* Floating controls hint */}
-      <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full border border-cocoa/10 bg-white/70 px-3 py-1 font-mono text-[10px] text-cocoa/60 backdrop-blur-sm dark:border-white/10 dark:bg-black/50 dark:text-white/70">
-        <span className="rounded border border-cocoa/15 bg-cocoa/5 px-1 py-0.5 dark:border-white/15 dark:bg-white/10">
-          SPACE
+      <div className="pointer-events-none absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2 rounded-full border border-cocoa/10 bg-white/80 px-2.5 sm:px-3 py-0.5 sm:py-1 font-mono text-[9px] sm:text-[10px] text-cocoa/70 backdrop-blur-sm whitespace-nowrap dark:border-white/10 dark:bg-black/60 dark:text-white/80">
+        <span className="hidden sm:inline-flex items-center gap-1">
+          <span className="rounded border border-cocoa/15 bg-cocoa/5 px-1 py-0.5 dark:border-white/15 dark:bg-white/10">
+            SPACE
+          </span>
+          <span>/</span>
+          <span className="rounded border border-cocoa/15 bg-cocoa/5 px-1 py-0.5 dark:border-white/15 dark:bg-white/10">
+            UP
+          </span>
+          <span>to jump</span>
+          <span className="text-cocoa/25 dark:text-white/20 mx-1">|</span>
         </span>
-        <span>/</span>
-        <span className="rounded border border-cocoa/15 bg-cocoa/5 px-1 py-0.5 dark:border-white/15 dark:bg-white/10">
-          UP
-        </span>
-        <span>to jump</span>
-        <span className="text-cocoa/25 dark:text-white/20">|</span>
-        <span>Tap on mobile</span>
+        <span>Tap or click to jump</span>
       </div>
       {/* Score display in React layer */}
       <div className="pointer-events-none absolute top-2 left-3 font-mono text-xs font-bold text-cocoa/80 dark:text-pink-200">

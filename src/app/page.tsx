@@ -31,9 +31,9 @@ export default function HomePage() {
       </RoomScene>
 
       {/* Clean professional hero text anchored safely below the fixed navbar */}
-      <div className="pointer-events-none absolute inset-x-0 top-[88px] sm:top-[98px] md:top-[108px] z-20 mx-auto max-w-2xl px-4 text-center">
+      <div className="pointer-events-none absolute inset-x-0 top-18 sm:top-24 md:top-28 z-20 mx-auto max-w-2xl px-4 text-center">
         <h1
-          className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white"
+          className="font-display text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white"
           style={{
             textShadow:
               '0 3px 14px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 140, 180, 0.75), 0 2px 4px rgba(0,0,0,0.85)',
@@ -42,7 +42,7 @@ export default function HomePage() {
           {site.role}
         </h1>
         <p
-          className="mx-auto mt-2 max-w-xl font-hand text-xl sm:text-2xl md:text-3xl font-bold text-white/95"
+          className="mx-auto mt-1 sm:mt-2 max-w-xl font-hand text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white/95"
           style={{
             textShadow:
               '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',

@@ -14,7 +14,7 @@ export default function SiteHeader() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-all duration-300">
+      <header className="fixed inset-x-0 top-0 z-50 px-2 sm:px-3 pt-2 sm:pt-3 transition-all duration-300">
         <div className="relative mx-auto max-w-5xl">
           {/* Whimsical washi tape strips pinned to top corners */}
           <span
@@ -29,14 +29,14 @@ export default function SiteHeader() {
           />
 
           {/* Main header plaque: warm paper by day, transparent frosted glass at night */}
-          <div className="relative flex items-center justify-between gap-3 sm:gap-4 rounded-full border-2 border-pink-200/70 bg-paper/90 px-3 sm:px-5 py-2 shadow-cozy backdrop-blur-md transition-all duration-300 dark:border-white/15 dark:bg-black/25 dark:shadow-lg">
+          <div className="relative flex items-center justify-between gap-2 sm:gap-4 rounded-full border-2 border-pink-200/70 bg-paper/90 px-2.5 sm:px-5 py-1.5 sm:py-2 shadow-cozy backdrop-blur-md transition-all duration-300 dark:border-white/15 dark:bg-black/25 dark:shadow-lg">
             {/* Logo: clean large home icon directly beside brand name */}
             <Link
               href="/"
-              className="group flex items-center gap-2 rounded-full py-0.5 pr-2 transition-transform duration-200 hover:scale-[1.02]"
+              className="group flex items-center gap-1.5 sm:gap-2 rounded-full py-0.5 pr-2 transition-transform duration-200 hover:scale-[1.02]"
             >
               <span className="shrink-0 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-3">
-                <CozyIcon name="home" fallback="🏡" size={32} />
+                <CozyIcon name="home" fallback="🏡" size={28} />
               </span>
               <div className="flex flex-col">
                 <span className="font-display text-sm sm:text-base font-bold tracking-tight text-ink transition-colors group-hover:text-accent dark:text-white dark:group-hover:text-pink-200">
@@ -80,8 +80,8 @@ export default function SiteHeader() {
       </header>
 
       {/* Mobile: bottom tab bar */}
-      <nav aria-label="Rooms" className="fixed inset-x-4 bottom-3 z-50 md:hidden">
-        <ul className="flex items-center justify-between rounded-full border-2 border-pink-200/70 bg-paper/95 px-3 py-2 shadow-cozy backdrop-blur-md transition-all duration-300 dark:border-white/15 dark:bg-black/30 dark:shadow-lg">
+      <nav aria-label="Rooms" className="fixed inset-x-2 sm:inset-x-4 bottom-3 z-50 md:hidden">
+        <ul className="flex items-center justify-between rounded-full border-2 border-pink-200/70 bg-paper/95 px-2 sm:px-3 py-1.5 sm:py-2 shadow-cozy backdrop-blur-md transition-all duration-300 dark:border-white/15 dark:bg-black/30 dark:shadow-lg">
           {rooms.map((r) => {
             const active = isActive(r.href);
             return (
@@ -91,13 +91,13 @@ export default function SiteHeader() {
                   aria-label={r.name}
                   aria-current={active ? 'page' : undefined}
                   className={clsx(
-                    'flex h-10 w-10 items-center justify-center rounded-full transition-all active:scale-95',
+                    'flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full transition-all active:scale-95',
                     active
                       ? 'bg-blush/60 dark:bg-white/25'
                       : 'hover:bg-blush/20 dark:hover:bg-white/10'
                   )}
                 >
-                  <CozyIcon name={r.slug} fallback={r.emoji} size={22} />
+                  <CozyIcon name={r.slug} fallback={r.emoji} size={20} />
                 </Link>
               </li>
             );

@@ -61,12 +61,12 @@ export default function BedroomDiary() {
     soundscape.playSparkleSound();
     setIsFloating(true);
 
-    // Generate sparkle trail along trajectory from bedside table (x: 65%, y: 46%) to center (x: 50%, y: 50%)
+    // Generate sparkle trail along trajectory from bedside table (x: 67.2%, y: 52.5%) to center (x: 50%, y: 50%)
     const newSparkles: SparkleParticle[] = Array.from({ length: 18 }).map((_, i) => {
       const progress = i / 17;
       // Interpolate with a natural gentle curve
-      const baseX = 65 - progress * 15;
-      const baseY = 46 + Math.sin(progress * Math.PI) * -8 + progress * 4;
+      const baseX = 67.2 - progress * 17.2;
+      const baseY = 52.5 + Math.sin(progress * Math.PI) * -8 + progress * -2.5;
       const jitterX = (Math.random() - 0.5) * 6;
       const jitterY = (Math.random() - 0.5) * 6;
       const colors = ['#FFE28A', '#FFB8CE', '#FFFFFF', '#F482A5', '#FFF3B0'];
@@ -107,13 +107,13 @@ export default function BedroomDiary() {
         <div
           className="group absolute z-20 cursor-pointer select-none"
           style={{
-            left: '65%',
-            top: '46.5%',
+            left: '67.2%',
+            top: '52.5%',
             width: '6.5%',
             maxWidth: '82px',
             minWidth: '48px',
             aspectRatio: '1140 / 1652',
-            transform: 'translate(-50%, -50%) rotate(-2deg)',
+            transform: 'translate(-50%, -50%) rotate(-1.5deg)',
           }}
           onClick={handleOpen}
           role="button"
@@ -229,12 +229,12 @@ export default function BedroomDiary() {
             {/* Closed diary floating from nightstand into screen center */}
             <motion.div
               initial={{
-                left: '65%',
-                top: '46.5%',
+                left: '67.2%',
+                top: '52.5%',
                 x: '-50%',
                 y: '-50%',
                 scale: 1,
-                rotate: -2,
+                rotate: -1.5,
               }}
               animate={{
                 left: '50%',
@@ -242,7 +242,7 @@ export default function BedroomDiary() {
                 x: '-50%',
                 y: '-50%',
                 scale: [1, 1.8, 3.2],
-                rotate: [-2, 4, 0],
+                rotate: [-1.5, 4, 0],
               }}
               transition={{
                 duration: 0.58,

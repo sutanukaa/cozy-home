@@ -1,9 +1,9 @@
 export const site = {
   name: 'Sutanuka Chakraborty',
   shortName: 'Sutanuka',
-  role: 'Software Developer',
+  role: 'Software Development Engineer',
   tagline: 'I build cozy, curious little things for the web.',
-  description: 'The personal portfolio of Sutanuka Chakraborty, a software developer. Step inside and look around.',
+  description: 'The personal portfolio of Sutanuka Chakraborty, a software development engineer. Step inside and look around.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sutanuka.vercel.app',
   email: 'sutanukachakraborty004@gmail.com',
   resumeUrl: '/resume.pdf',
@@ -14,9 +14,8 @@ export const site = {
   ],
   about: {
     paragraphs: [
-      "Hi! I'm Sutanuka, a software developer and computer science student who loves crafting thoughtful web applications, playful interfaces, and intelligent systems.",
-      "I spend my time building full-stack platforms, experimenting with AI-grounded agents, and designing cozy corners of the internet with React, Next.js, and TypeScript.",
-      "When I am not debugging late into the night, you can find me brainstorming new project ideas, exploring whimsical design details, or sipping a warm cup of chai.",
+      "Hi, I’m Sutanuka. I’m a full-stack software development engineer and Computer Science student in Kolkata who builds intelligent systems end to end. That means automation workflows, servers, AI agents, and the heavy frontend that makes all of it feel good to use. I like problems people actually run into in real life, and I like having fun while I solve them.",
+      "I’m endlessly curious about technology, people, and how the world fits together, and that curiosity is how I end up learning something new on every project. Most of my work happens in React, Next.js, and TypeScript, with a growing soft spot for grounded, trustworthy AI. When I’m not building, I’m sketching new ideas, fussing over small design details, or sipping a warm cup of chai.",
     ],
     loves: ['clean UI', 'pink aesthetics', 'tiny animations', 'chai', 'AI agents', 'late-night debugging'],
     funFacts: [

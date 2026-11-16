@@ -5,7 +5,7 @@ Read this file fully, then `docs/ARCHITECTURE.md` and `docs/DESIGN_SYSTEM.md` be
 Work from `docs/ROADMAP.md` (pick the next unchecked task, finish it, tick it off).
 
 ## The concept (never lose this)
-- Owner: Sutanuka Chakraborty, a software developer. Tone: warm, soft, whimsical, a bit funny, very personal.
+- Owner: Sutanuka Chakraborty, a software development engineer. Tone: warm, soft, whimsical, a bit funny, very personal.
 - Pink walls, handmade scrapbook feel, tiny delightful details. Think "dollhouse cutaway", not "SaaS landing page".
 - Rooms = pages: Living room `/` (hub), Studio `/studio` (projects), Bedroom `/bedroom` (about), Library `/library` (skills),
   Kitchen `/kitchen` (experience/education), Porch `/porch` (contact).

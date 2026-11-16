@@ -349,6 +349,38 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play a magical, delicate sparkle chime when opening the diary
+   */
+  public playSparkleSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const freqs = [523.25, 659.25, 783.99, 1046.5, 1318.51]; // C5, E5, G5, C6, E6
+
+      freqs.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const noteTime = now + idx * 0.07;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, noteTime);
+
+        gain.gain.setValueAtTime(0.035, noteTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 0.35);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(noteTime);
+        osc.stop(noteTime + 0.36);
+      });
+    } catch {
+      // AudioContext might be paused or restricted
+    }
+  }
+
+  /**
    * Starts or resumes the soundscape
    */
   public async start(): Promise<void> {

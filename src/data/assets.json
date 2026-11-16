@@ -105,6 +105,16 @@
     "size": "512x512, transparent"
   },
   {
+    "path": "public/assets/objects/bedroom-diary-closed.png",
+    "kind": "object",
+    "size": "1140x1652, transparent"
+  },
+  {
+    "path": "public/assets/objects/bedroom-diary-open.png",
+    "kind": "object",
+    "size": "2222x1248 (16:9), transparent"
+  },
+  {
     "path": "public/assets/patterns/wallpaper-day.png",
     "kind": "pattern",
     "size": "1024x1024, seamless tile"

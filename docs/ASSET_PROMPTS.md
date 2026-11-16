@@ -389,12 +389,14 @@ Output directory: `public/assets/objects/`
 ```
 Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
 
-A cute slim modern digital tablet (iPad) resting on a wooden nightstand tabletop. The tablet is in a charming pastel silicone protective case in soft blush pink with rounded bumper corners, and a pastel stylus pen (Apple Pencil) magnetically snapped to its top edge.
-Angled 3/4 tabletop perspective (approx. 25-degree downward tilt) to sit naturally beside a journal. The screen shows a soft, dreamy ambient pastel gradient wallpaper in blush and butter yellow with subtle tiny stardust specks, but strictly no readable text, no app icons, no clocks.
-Isolated object centered on a solid plain flat white background, strictly no white sticker border, no white halo, natural organic painted edges, 512x512 square, high resolution, no ground shadow.
+A single isolated modern digital tablet (iPad) floating completely alone. The tablet is encased in a charming pastel silicone protective bumper case in soft blush pink with cute puffy rounded shockproof corners, and a slim pastel stylus pen (Apple Pencil) snapped to its top edge.
+Tilted at a gentle 25-degree isometric tabletop angle, floating alone in mid-air with strictly NO table, NO desk, NO wood, NO surface, and NO floor beneath it.
+The screen shows a soft, dreamy ambient pastel gradient wallpaper in blush pink and warm butter yellow with subtle tiny stardust specks (strictly zero text, zero icons, zero clocks).
+
+CRITICAL REQUIREMENT: Single isolated cut-out object centered on a completely solid, plain, flat white background (#FFFFFF). Strictly zero furniture, zero table, zero wooden surface, zero stand, zero props, zero ground shadow, no sticker border, no white halo.
 ```
 
-Negative prompt: `text, numbers, clock, app icons, user interface, letters, watermark, people, hands holding tablet, photorealistic, harsh shadows, neon, sticker border`
+Negative prompt: `table, desk, wood, wooden tabletop, wooden surface, nightstand, furniture, floor, ground, stand, holder, background objects, room, text, numbers, clock, app icons, user interface, letters, watermark, people, hands, photorealistic, harsh shadows, neon, sticker border, 3D render`
 
 ### 13.2 Open / Expanded Tablet Screen Frame (`bedroom-ipad-open.png`)
 ```

@@ -87,6 +87,133 @@ function sfxGameOver(ctx: AudioContext) {
   osc.start(t); osc.stop(t + 0.4);
 }
 
+/* ──────────────────── cityscape data ───────────────────────────── */
+// Each building: { x offset within tile, w, h, color, windows? }
+interface Building {
+  x: number;
+  w: number;
+  h: number;
+  color: string;
+  roofColor: string;
+  hasWindows: boolean;
+  windowColor: string;
+  windowLitColor: string;
+  // deterministic "lit" seed per building
+  litSeed: number;
+}
+
+// Far layer: tall pastel towers (slow parallax)
+const FAR_TILE_W = 900;
+const FAR_BUILDINGS: Building[] = [
+  { x: 0,   w: 50, h: 110, color: '#F0D4DC', roofColor: '#E8B8C8', hasWindows: true, windowColor: '#E8C0CC', windowLitColor: '#FFE29A', litSeed: 3 },
+  { x: 60,  w: 38, h: 140, color: '#E8C5CE', roofColor: '#D4A0B0', hasWindows: true, windowColor: '#D9B0BB', windowLitColor: '#FFD88A', litSeed: 7 },
+  { x: 108, w: 55, h: 95,  color: '#F5E0E0', roofColor: '#EAC8D0', hasWindows: true, windowColor: '#EACCD5', windowLitColor: '#FFE8A0', litSeed: 11 },
+  { x: 172, w: 32, h: 125, color: '#EACCD8', roofColor: '#DDB0C0', hasWindows: true, windowColor: '#E0B8C5', windowLitColor: '#FFE29A', litSeed: 5 },
+  { x: 215, w: 60, h: 80,  color: '#F2D8DC', roofColor: '#E5C0CC', hasWindows: true, windowColor: '#E8C8D0', windowLitColor: '#FFDFA0', litSeed: 2 },
+  { x: 285, w: 40, h: 150, color: '#E5BCC8', roofColor: '#D8A5B5', hasWindows: true, windowColor: '#DAB0BC', windowLitColor: '#FFE29A', litSeed: 9 },
+  { x: 335, w: 48, h: 100, color: '#F0D0D8', roofColor: '#E4B8C5', hasWindows: true, windowColor: '#E6C0CA', windowLitColor: '#FFD898', litSeed: 4 },
+  { x: 395, w: 35, h: 130, color: '#E8C0D0', roofColor: '#DDA8B8', hasWindows: true, windowColor: '#DFB5C0', windowLitColor: '#FFE4A5', litSeed: 6 },
+  { x: 442, w: 56, h: 88,  color: '#F3DDE0', roofColor: '#E8C5D0', hasWindows: true, windowColor: '#EBD0D5', windowLitColor: '#FFE8B0', litSeed: 8 },
+  { x: 510, w: 42, h: 118, color: '#EACAD5', roofColor: '#DDAFBE', hasWindows: true, windowColor: '#E0B8C2', windowLitColor: '#FFE09A', litSeed: 1 },
+  { x: 565, w: 50, h: 72,  color: '#F0D5DB', roofColor: '#E5BFC9', hasWindows: true, windowColor: '#E8C5CE', windowLitColor: '#FFDC95', litSeed: 10 },
+  { x: 628, w: 38, h: 135, color: '#E6C2CC', roofColor: '#D9A8B8', hasWindows: true, windowColor: '#DCB2BE', windowLitColor: '#FFE29A', litSeed: 13 },
+  { x: 678, w: 52, h: 90,  color: '#F2D9DD', roofColor: '#E8C2CC', hasWindows: true, windowColor: '#EACAD2', windowLitColor: '#FFE5A8', litSeed: 12 },
+  { x: 742, w: 44, h: 108, color: '#E9C8D2', roofColor: '#DDB0C0', hasWindows: true, windowColor: '#E0BAC4', windowLitColor: '#FFE09A', litSeed: 14 },
+  { x: 800, w: 55, h: 78,  color: '#F0D2D8', roofColor: '#E5BBC6', hasWindows: true, windowColor: '#E7C2CB', windowLitColor: '#FFDDA0', litSeed: 15 },
+];
+
+// Near layer: shorter, chunkier buildings (faster parallax)
+const NEAR_TILE_W = 700;
+const NEAR_BUILDINGS: Building[] = [
+  { x: 0,   w: 44, h: 55, color: '#E0B0BE', roofColor: '#D498A8', hasWindows: true, windowColor: '#D4A0AD', windowLitColor: '#FFE8B0', litSeed: 17 },
+  { x: 55,  w: 60, h: 40, color: '#D8A5B5', roofColor: '#CC90A2', hasWindows: false, windowColor: '', windowLitColor: '', litSeed: 0 },
+  { x: 128, w: 36, h: 65, color: '#E5B8C5', roofColor: '#D8A0B2', hasWindows: true, windowColor: '#DAA8B5', windowLitColor: '#FFE4A8', litSeed: 19 },
+  { x: 178, w: 52, h: 38, color: '#DDA8B8', roofColor: '#D095A5', hasWindows: true, windowColor: '#D5A0AD', windowLitColor: '#FFE09A', litSeed: 22 },
+  { x: 245, w: 40, h: 58, color: '#E2B2C0', roofColor: '#D69AAC', hasWindows: true, windowColor: '#D8A5B2', windowLitColor: '#FFE5B0', litSeed: 20 },
+  { x: 300, w: 55, h: 32, color: '#D5A0B0', roofColor: '#C88E9E', hasWindows: false, windowColor: '', windowLitColor: '', litSeed: 0 },
+  { x: 368, w: 42, h: 50, color: '#E0AEC0', roofColor: '#D498AA', hasWindows: true, windowColor: '#D6A2B0', windowLitColor: '#FFE29A', litSeed: 23 },
+  { x: 425, w: 58, h: 42, color: '#DBA5B5', roofColor: '#CF92A4', hasWindows: true, windowColor: '#D39AAA', windowLitColor: '#FFDFA0', litSeed: 21 },
+  { x: 498, w: 38, h: 60, color: '#E3B5C2', roofColor: '#D69DB0', hasWindows: true, windowColor: '#D8A5B5', windowLitColor: '#FFE4A5', litSeed: 18 },
+  { x: 550, w: 50, h: 35, color: '#D8A2B2', roofColor: '#CC8EA0', hasWindows: false, windowColor: '', windowLitColor: '', litSeed: 0 },
+  { x: 615, w: 45, h: 48, color: '#E1B0BC', roofColor: '#D598AA', hasWindows: true, windowColor: '#D7A0B0', windowLitColor: '#FFE2A0', litSeed: 24 },
+];
+
+const PX = 4; // pixel block size for retro look
+
+function drawCityLayer(
+  ctx: CanvasRenderingContext2D,
+  buildings: Building[],
+  tileW: number,
+  offset: number,
+  baseY: number,
+  alpha: number,
+) {
+  ctx.globalAlpha = alpha;
+  const scrollOff = offset % tileW;
+
+  // Draw two tiles to cover the screen seamlessly
+  for (let tile = -1; tile <= 1; tile++) {
+    const tileX = tile * tileW - scrollOff;
+    for (const b of buildings) {
+      const bx = tileX + b.x;
+      // Skip buildings entirely off-screen
+      if (bx + b.w < -10 || bx > WORLD_W + 10) continue;
+
+      const by = baseY - b.h;
+
+      // Building body (pixel blocks)
+      ctx.fillStyle = b.color;
+      for (let r = 0; r < b.h; r += PX) {
+        for (let c = 0; c < b.w; c += PX) {
+          ctx.fillRect(bx + c, by + r, PX - 1, PX - 1);
+        }
+      }
+
+      // Roof accent (top row darker)
+      ctx.fillStyle = b.roofColor;
+      for (let c = 0; c < b.w; c += PX) {
+        ctx.fillRect(bx + c, by, PX - 1, PX - 1);
+        ctx.fillRect(bx + c, by + PX, PX - 1, PX - 1);
+      }
+
+      // Roof cap overhang
+      ctx.fillStyle = b.roofColor;
+      ctx.fillRect(bx - 2, by - 2, b.w + 4, 3);
+
+      // Windows (3-col grid)
+      if (b.hasWindows && b.h > 30) {
+        const winW = 6;
+        const winH = 6;
+        const winGapX = 12;
+        const winGapY = 14;
+        const marginX = 6;
+        const startY = by + 14;
+        const cols = Math.floor((b.w - marginX * 2 + (winGapX - winW)) / winGapX);
+        const rows = Math.floor((b.h - 20) / winGapY);
+
+        for (let wr = 0; wr < rows; wr++) {
+          for (let wc = 0; wc < cols; wc++) {
+            const wx = bx + marginX + wc * winGapX;
+            const wy = startY + wr * winGapY;
+            // Deterministic "lit" pattern using seed
+            const isLit = ((b.litSeed * (wr + 1) * (wc + 3)) % 7) < 3;
+            ctx.fillStyle = isLit ? b.windowLitColor : b.windowColor;
+            // Draw window as pixel blocks
+            ctx.fillRect(wx, wy, winW, winH);
+            // Tiny highlight on lit windows
+            if (isLit) {
+              ctx.fillStyle = 'rgba(255,255,255,0.4)';
+              ctx.fillRect(wx, wy, 2, 2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ctx.globalAlpha = 1;
+}
+
 /* ──────────────────── draw helpers ─────────────────────────────── */
 function drawCactus(ctx: CanvasRenderingContext2D, x: number, y: number, kind: ObstacleKind) {
   const def = OB_DEFS[kind];
@@ -277,6 +404,12 @@ export default function CozyRunner() {
       sky.addColorStop(1, '#FFDFE7');
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, WORLD_W, GROUND_Y);
+
+      /* ── parallax cityscape ── */
+      // Far buildings (slow scroll, faded)
+      drawCityLayer(ctx, FAR_BUILDINGS, FAR_TILE_W, gndOff.current * 0.12, GROUND_Y, 0.35);
+      // Near buildings (faster scroll, more opaque)
+      drawCityLayer(ctx, NEAR_BUILDINGS, NEAR_TILE_W, gndOff.current * 0.3, GROUND_Y, 0.5);
 
       /* ground */
       ctx.fillStyle = '#E8C5CE';

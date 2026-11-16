@@ -486,44 +486,66 @@ export default function BedroomTablet() {
                     <div className="flex flex-1 overflow-hidden min-h-0">
                       {/* LEFT SIDEBAR: Song of the Day + Currently Reading + Blogs List */}
                       <div
-                        className={`w-full md:w-[42%] lg:w-[38%] border-r border-pink-200/60 bg-[#FFFAF9] p-2.5 sm:p-3 overflow-y-auto diary-scroll flex flex-col gap-3 min-h-0 shrink-0 ${
+                        className={`w-full md:w-[44%] lg:w-[42%] max-w-[340px] border-r border-pink-200/60 bg-[#FFFAF9] p-2.5 sm:p-3 overflow-y-auto overflow-x-hidden diary-scroll flex flex-col gap-2.5 min-h-0 shrink-0 ${
                           mobileTab === 'blogs' ? 'flex' : 'hidden md:flex'
                         }`}
                       >
-                        {/* 1. SONG OF THE DAY MINI PLAYER - FULLY PLAYABLE */}
+                        {/* 1. SONG OF THE DAY MINI PLAYER */}
                         <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs transition-shadow hover:shadow-sm">
-                          <div className="flex items-center justify-between mb-1.5">
-                            <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent">
+                          {/* Card Header */}
+                          <div className="flex items-center justify-between gap-1 mb-2">
+                            <div className="flex items-center gap-1.5 min-w-0">
                               <svg
-                                className={`h-3.5 w-3.5 text-accent ${isPlaying ? 'animate-spin-slow' : ''}`}
+                                className={`h-3.5 w-3.5 text-accent shrink-0 ${isPlaying ? 'animate-spin-slow' : ''}`}
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
                               >
                                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                               </svg>
-                              Song of the day
-                            </span>
-                            <span className="rounded-full bg-[#FFF0F5] px-1.5 py-0.2 font-mono text-[9px] font-bold text-accent">
-                              Daily rotation
-                            </span>
+                              <span className="font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
+                                Song of the day
+                              </span>
+                            </div>
+
+                            <a
+                              href={currentSong.spotifyUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 rounded-full border border-green-300/80 bg-[#1DB954]/10 px-2 py-0.5 font-sans text-[9px] font-bold text-[#1DB954] hover:bg-[#1DB954]/20 shrink-0 transition-colors"
+                              title="Listen on Spotify"
+                            >
+                              <span>Spotify</span>
+                              <svg
+                                className="h-2 w-2"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                              >
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                              </svg>
+                            </a>
                           </div>
 
+                          {/* Song Content Row */}
                           <div className="flex items-center gap-2.5">
-                            {/* Playlist / Album Artwork */}
-                            <div className="relative h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden border border-pink-200 shrink-0 shadow-xs">
-                              <Image
-                                src={spotifyPlaylist.coverImage}
-                                alt={spotifyPlaylist.title}
-                                fill
-                                className="object-cover"
+                            {/* Individual Song Album Artwork */}
+                            <div className="relative h-12 w-12 sm:h-13 sm:w-13 rounded-lg overflow-hidden border border-pink-200 shrink-0 shadow-xs bg-pink-50">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={currentSong.coverImage || spotifyPlaylist.coverImage}
+                                alt={currentSong.title}
+                                className="h-full w-full object-cover"
                               />
                               {isPlaying && (
                                 <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
-                                  <div className="flex items-end gap-0.5 h-3.5">
-                                    <span className="w-1 bg-white animate-pulse h-3.5 rounded-full" />
-                                    <span className="w-1 bg-white animate-pulse h-2 rounded-full delay-75" />
-                                    <span className="w-1 bg-white animate-pulse h-4 rounded-full delay-150" />
-                                    <span className="w-1 bg-white animate-pulse h-2.5 rounded-full delay-200" />
+                                  <div className="flex items-end gap-0.5 h-3">
+                                    <span className="w-1 bg-white animate-pulse h-3 rounded-full" />
+                                    <span className="w-1 bg-white animate-pulse h-1.5 rounded-full delay-75" />
+                                    <span className="w-1 bg-white animate-pulse h-3.5 rounded-full delay-150" />
+                                    <span className="w-1 bg-white animate-pulse h-2 rounded-full delay-200" />
                                   </div>
                                 </div>
                               )}
@@ -534,13 +556,13 @@ export default function BedroomTablet() {
                               <p className="font-display text-xs sm:text-sm font-bold text-ink truncate leading-tight">
                                 {currentSong.title}
                               </p>
-                              <p className="font-sans text-[10px] sm:text-[11px] text-ink-soft truncate">
+                              <p className="font-sans text-[10px] text-ink-soft truncate mt-0.5">
                                 {currentSong.artist} · {currentSong.album}
                               </p>
 
-                              {/* Controls Row */}
+                              {/* Controls row */}
                               <div className="mt-1.5 flex items-center justify-between">
-                                <div className="flex items-center gap-1.5">
+                                <div className="flex items-center gap-2">
                                   {/* Prev */}
                                   <button
                                     type="button"
@@ -558,16 +580,16 @@ export default function BedroomTablet() {
                                     type="button"
                                     onClick={togglePlay}
                                     aria-label={isPlaying ? 'Pause' : 'Play'}
-                                    className={`flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-xs hover:scale-105 active:scale-95 transition-all ${
+                                    className={`flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-xs hover:scale-105 active:scale-95 transition-all ${
                                       isPlaying ? 'ring-2 ring-pink-300' : ''
                                     }`}
                                   >
                                     {isPlaying ? (
-                                      <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                                      <svg className="h-2.5 w-2.5 fill-current" viewBox="0 0 24 24">
                                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                                       </svg>
                                     ) : (
-                                      <svg className="h-3 w-3 fill-current ml-0.5" viewBox="0 0 24 24">
+                                      <svg className="h-2.5 w-2.5 fill-current ml-0.5" viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z" />
                                       </svg>
                                     )}
@@ -586,34 +608,16 @@ export default function BedroomTablet() {
                                   </button>
                                 </div>
 
-                                {/* Open in Spotify */}
-                                <a
-                                  href={currentSong.spotifyUrl}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="inline-flex items-center gap-1 rounded-full border border-green-300/80 bg-[#1DB954]/10 px-2 py-0.5 font-sans text-[9px] font-bold text-[#1DB954] hover:bg-[#1DB954]/20 transition-colors"
-                                  title="Listen on Spotify"
-                                >
-                                  <span>Spotify</span>
-                                  <svg
-                                    className="h-2.5 w-2.5"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                  >
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
-                                  </svg>
-                                </a>
+                                <span className="rounded-full bg-[#FFF0F5] px-1.5 py-0.2 font-mono text-[9px] font-bold text-accent shrink-0">
+                                  Daily rotation
+                                </span>
                               </div>
                             </div>
                           </div>
 
                           {/* Progress bar scrubber */}
-                          <div className="mt-2 pt-1 border-t border-pink-100 flex items-center gap-2">
-                            <span className="font-mono text-[9px] text-ink-soft shrink-0">
+                          <div className="mt-2 pt-1.5 border-t border-pink-100 flex items-center gap-1.5">
+                            <span className="font-mono text-[9px] text-ink-soft shrink-0 w-6 text-right">
                               {formatTime(currentTime)}
                             </span>
                             <div
@@ -627,7 +631,7 @@ export default function BedroomTablet() {
                                 }}
                               />
                             </div>
-                            <span className="font-mono text-[9px] text-ink-soft shrink-0">
+                            <span className="font-mono text-[9px] text-ink-soft shrink-0 w-6">
                               {formatTime(duration)}
                             </span>
                           </div>
@@ -635,10 +639,10 @@ export default function BedroomTablet() {
 
                         {/* 2. CURRENTLY READING */}
                         <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs">
-                          <div className="flex items-center justify-between mb-1.5">
-                            <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent">
+                          <div className="flex items-center justify-between gap-1 mb-1.5">
+                            <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
                               <svg
-                                className="h-3.5 w-3.5 text-accent"
+                                className="h-3.5 w-3.5 text-accent shrink-0"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -649,14 +653,14 @@ export default function BedroomTablet() {
                               </svg>
                               Currently Reading
                             </span>
-                            <span className="rounded-full bg-[#EBF5FB] px-1.5 py-0.2 font-mono text-[9px] font-bold text-[#2980B9]">
+                            <span className="rounded-full bg-[#EBF5FB] px-1.5 py-0.2 font-mono text-[9px] font-bold text-[#2980B9] shrink-0">
                               {currentlyReading.status}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2.5">
                             {/* Book Thumbnail */}
-                            <div className="relative h-14 w-10 sm:h-16 sm:w-11 rounded-sm overflow-hidden border border-pink-200 shadow-sm shrink-0 bg-[#FFF5F8]">
+                            <div className="relative h-13 w-9 sm:h-14 sm:w-10 rounded-sm overflow-hidden border border-pink-200 shadow-sm shrink-0 bg-[#FFF5F8]">
                               <Image
                                 src={currentlyReading.coverImage}
                                 alt={currentlyReading.title}
@@ -670,11 +674,11 @@ export default function BedroomTablet() {
                               <p className="font-display text-xs sm:text-sm font-bold text-ink leading-tight truncate">
                                 {currentlyReading.title}
                               </p>
-                              <p className="font-sans text-[10px] sm:text-[11px] font-semibold text-accent truncate">
+                              <p className="font-sans text-[10px] sm:text-[11px] font-semibold text-accent truncate mt-0.5">
                                 by {currentlyReading.author}
                               </p>
                               {currentlyReading.note && (
-                                <p className="mt-0.5 font-hand text-[11px] text-ink-soft leading-snug line-clamp-2">
+                                <p className="mt-0.5 font-hand text-[10.5px] text-ink-soft leading-snug line-clamp-2">
                                   &ldquo;{currentlyReading.note}&rdquo;
                                 </p>
                               )}
@@ -684,10 +688,10 @@ export default function BedroomTablet() {
 
                         {/* 3. BLOGS LIST */}
                         <div className="flex-1 flex flex-col min-h-0">
-                          <div className="flex items-center justify-between mb-1 pt-1">
+                          <div className="flex items-center justify-between mb-1 pt-0.5">
                             <h3 className="font-display text-xs sm:text-sm font-extrabold text-ink flex items-center gap-1.5">
                               <svg
-                                className="h-3.5 w-3.5 text-accent"
+                                className="h-3.5 w-3.5 text-accent shrink-0"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -806,12 +810,12 @@ export default function BedroomTablet() {
                       {/* Mobile Dedicated Music Tab */}
                       {mobileTab === 'music' && (
                         <div className="md:hidden flex-1 p-4 overflow-y-auto diary-scroll flex flex-col items-center justify-center text-center">
-                          <div className="relative h-28 w-28 rounded-xl overflow-hidden border-2 border-pink-200 shadow-md mb-3">
-                            <Image
-                              src={spotifyPlaylist.coverImage}
-                              alt={spotifyPlaylist.title}
-                              fill
-                              className="object-cover"
+                          <div className="relative h-28 w-28 rounded-xl overflow-hidden border-2 border-pink-200 shadow-md mb-3 bg-pink-50">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={currentSong.coverImage || spotifyPlaylist.coverImage}
+                              alt={currentSong.title}
+                              className="h-full w-full object-cover"
                             />
                             {isPlaying && (
                               <div className="absolute inset-0 bg-black/35 flex items-center justify-center">

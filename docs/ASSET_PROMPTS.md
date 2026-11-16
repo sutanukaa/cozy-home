@@ -382,10 +382,10 @@ Negative prompt: `text, letters, words, writing, handwriting, scribbles, lined p
 
 ## 13. Bedroom Interactive Tablet / iPad (Non-Tech Life, Blogs & Currently Reading)
 Output directory: `public/assets/objects/`
-- `bedroom-ipad.png` (tabletop resting view, transparent PNG, 512x512)
-- `bedroom-ipad-open.png` (full-screen overlay tablet frame, transparent PNG, 2048x1536)
+- `bedroom-tablet.png` (tabletop resting view, transparent PNG)
+- `bedroom-tablet-open.png` (straight-facing open frame view for overlay, transparent PNG, 2048x1536)
 
-### 13.1 Tabletop Resting iPad (`bedroom-ipad.png`)
+### 13.1 Tabletop Resting Tablet (`bedroom-tablet.png`)
 ```
 Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
 
@@ -398,17 +398,17 @@ CRITICAL REQUIREMENT: Single isolated cut-out object centered on a completely so
 
 Negative prompt: `table, desk, wood, wooden tabletop, wooden surface, nightstand, furniture, floor, ground, stand, holder, background objects, room, text, numbers, clock, app icons, user interface, letters, watermark, people, hands, photorealistic, harsh shadows, neon, sticker border, 3D render`
 
-### 13.2 Open / Expanded Tablet Screen Frame (`bedroom-ipad-open.png`)
+### 13.2 Straight-Facing Tablet Screen Frame (`bedroom-tablet-open.png`)
 ```
 Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
 
-Straight-on front flat-lay view of an expanded digital tablet (iPad) in landscape orientation (4:3 aspect ratio).
-The tablet is housed in a lovely pastel blush-pink or lavender protective bumper case with cute rounded corners, a tiny camera lens dot centered on the top bezel, and delicate hand-drawn star or heart stickers subtly decorating the outer case bezel.
+Direct straight-on, perfectly symmetrical, front flat-lay view of a modern digital tablet (iPad) in landscape orientation (approx. 4:3 or 16:10 aspect ratio). Zero tilt, zero angle, facing directly straight forward towards the viewer.
+The tablet is housed inside an adorable pastel blush-pink protective silicone bumper case with puffy rounded shockproof corners. A sleek pastel stylus pen (Apple Pencil) is magnetically docked along the top edge of the case. The inner bezel is thin and rounded with a tiny camera dot centered at the top.
 
-CRITICAL REQUIREMENT: The inner glass screen area must be 100% COMPLETELY BLANK, plain, clean, and solid flat cream-white (#FFFBF5) (strictly zero text, zero app icons, zero UI windows, zero drawn graphics, zero reflections in the center screen).
-Isolated object centered on a solid plain flat white background, strictly no white sticker border, no white halo, 2048x1536 resolution landscape, ready for transparency.
+CRITICAL REQUIREMENT: The center display screen must be 100% COMPLETELY BLANK, plain, empty, flat, solid light cream-white (#FFFDF8) (strictly zero text, zero app icons, zero UI windows, zero drawn graphics, zero reflections, zero glare on the screen).
+Single isolated object centered on a solid plain flat white background (#FFFFFF), strictly no background objects, no furniture, no table, no desk, no hands, no sticker border, no white halo, 2048x1536 resolution landscape, ready for transparency.
 ```
 
-Negative prompt: `text, apps, icons, browser, interface, buttons, keyboard, web page, glare, reflections, photos on screen, hands, people, 3D render`
+Negative prompt: `angled view, isometric, 3D tilt, table, desk, wood, surface, text, apps, icons, widgets, clock, browser, user interface, keyboard, glare, reflections, photos on screen, hands, people, photorealistic, harsh shadows, neon, 3D render`
 
 

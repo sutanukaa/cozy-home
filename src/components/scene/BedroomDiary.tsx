@@ -326,11 +326,11 @@ export default function BedroomDiary() {
                   </button>
 
                   {/* Two-page Content Layout Inside Open Book */}
-                  <div className="relative z-20 grid h-full w-full grid-cols-1 md:grid-cols-2 px-6 py-6 sm:px-10 sm:py-8 md:px-14 md:py-10 text-ink">
-                    {/* LEFT PAGE: Photo Polaroid + Name + Social Links */}
-                    <div className="flex flex-col items-center justify-center text-center p-1 sm:p-3 md:pr-6">
+                  <div className="relative z-20 grid h-full w-full grid-cols-1 md:grid-cols-2 px-6 py-6 sm:px-10 sm:py-8 md:px-12 md:py-10 text-ink">
+                    {/* LEFT PAGE: Photo Polaroid + Name + Social Links (Shifted up to give pills breathing room) */}
+                    <div className="flex flex-col items-center justify-start pt-3 sm:pt-6 md:pt-8 text-center p-1 sm:p-2 md:pr-6">
                       {/* Polaroid Frame */}
-                      <div className="relative w-36 sm:w-48 md:w-56 rotate-[-2deg] rounded-lg bg-white p-2.5 sm:p-3.5 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
+                      <div className="relative w-32 sm:w-44 md:w-50 rotate-[-2deg] rounded-lg bg-white p-2 sm:p-3 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
                         {/* Cute Washi Tape on Top of Polaroid */}
                         <div
                           aria-hidden="true"
@@ -346,15 +346,15 @@ export default function BedroomDiary() {
                             src="/images/me.jpeg"
                             alt={site.name}
                             fill
-                            sizes="240px"
+                            sizes="220px"
                             className="object-cover"
                             priority
                           />
                         </div>
 
                         {/* Polaroid Caption */}
-                        <div className="mt-2 sm:mt-2.5 text-center">
-                          <p className="font-hand text-lg sm:text-xl md:text-2xl font-bold text-ink">
+                        <div className="mt-1.5 sm:mt-2 text-center">
+                          <p className="font-hand text-lg sm:text-xl font-bold text-ink">
                             {site.name}
                           </p>
                           <p className="font-sans text-[10px] sm:text-xs tracking-wider uppercase text-ink/65 font-semibold">
@@ -363,7 +363,7 @@ export default function BedroomDiary() {
                         </div>
                       </div>
 
-                      {/* Social links row */}
+                      {/* Social links row: fits comfortably within bottom page cream area */}
                       <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
                         {site.socials.map((s) => (
                           <a
@@ -371,7 +371,7 @@ export default function BedroomDiary() {
                             href={s.href}
                             target="_blank"
                             rel="noreferrer"
-                            className="rounded-full border border-pink-200/80 bg-paper/90 px-2.5 py-0.5 sm:px-3 sm:py-1 font-hand text-xs sm:text-sm font-bold text-ink shadow-xs backdrop-blur-xs transition hover:scale-105 hover:bg-blush/40"
+                            className="rounded-full border border-pink-300/80 bg-white/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-ink shadow-xs backdrop-blur-xs transition hover:scale-105 hover:bg-blush/40"
                           >
                             {s.label}
                           </a>
@@ -379,77 +379,81 @@ export default function BedroomDiary() {
                       </div>
                     </div>
 
-                    {/* RIGHT PAGE: Bio + Loves + Fun Facts + Resume Button */}
-                    <div className="flex flex-col justify-center space-y-2 sm:space-y-3 p-1 sm:p-3 md:pl-6 text-left max-h-[82vh] md:max-h-[72vh] overflow-y-auto">
-                      <div>
-                        <h2 className="font-display text-lg sm:text-2xl md:text-3xl font-extrabold text-ink leading-tight">
-                          Hello, I&apos;m {site.shortName}
-                        </h2>
-                        <p className="mt-0.5 font-hand text-sm sm:text-base md:text-lg text-accent font-semibold">
-                          Welcome to my diary &amp; personal space!
-                        </p>
-                      </div>
+                    {/* RIGHT PAGE: Bio + Loves + Fun Facts + Resume Button (Centered with ribbon & margin clearance, scrollable) */}
+                    <div className="flex flex-col justify-center pl-6 sm:pl-9 md:pl-12 pr-6 sm:pr-8 md:pr-10 py-1 text-left">
+                      <div className="diary-scroll flex flex-col space-y-3 max-h-[70vh] md:max-h-[64vh] overflow-y-auto pr-2.5">
+                        <div>
+                          <h2 className="font-display text-lg sm:text-2xl font-extrabold text-ink leading-tight">
+                            Hello, I&apos;m {site.shortName}
+                          </h2>
+                          <p className="mt-0.5 font-hand text-sm sm:text-base text-accent font-semibold">
+                            Welcome to my diary &amp; personal space!
+                          </p>
+                        </div>
 
-                      {/* Bio Paragraphs */}
-                      <div className="space-y-1.5 font-sans text-xs sm:text-[13px] md:text-sm leading-relaxed text-ink/85">
-                        {about.paragraphs.map((p, i) => (
-                          <p key={i}>{p}</p>
-                        ))}
-                      </div>
-
-                      {/* Things I Love Stickers */}
-                      <div>
-                        <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
-                          Things I love:
-                        </h3>
-                        <div className="mt-0.5 flex flex-wrap gap-1 sm:gap-1.5">
-                          {about.loves.map((love) => (
-                            <span
-                              key={love}
-                              className="rounded-full border border-pink-200/90 bg-[#FFF5F8] px-2 py-0.5 font-sans text-[11px] sm:text-xs font-medium text-ink shadow-xs"
-                            >
-                              {love}
-                            </span>
+                        {/* Bio Paragraphs */}
+                        <div className="space-y-2 font-sans text-xs sm:text-[13px] leading-relaxed text-ink/85">
+                          {about.paragraphs.map((p, i) => (
+                            <p key={i}>{p}</p>
                           ))}
                         </div>
-                      </div>
 
-                      {/* Fun Facts */}
-                      <div>
-                        <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
-                          Fun facts:
-                        </h3>
-                        <ul className="mt-0.5 space-y-0.5 font-sans text-[11px] sm:text-xs text-ink/80 list-disc list-inside">
-                          {about.funFacts.map((fact) => (
-                            <li key={fact}>{fact}</li>
-                          ))}
-                        </ul>
-                      </div>
+                        {/* Things I Love Stickers */}
+                        <div>
+                          <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
+                            Things I love:
+                          </h3>
+                          <div className="mt-1 flex flex-wrap gap-1.5">
+                            {about.loves.map((love) => (
+                              <span
+                                key={love}
+                                className="rounded-full border border-pink-200/90 bg-[#FFF5F8] px-2.5 py-0.5 font-sans text-[11px] sm:text-xs font-medium text-ink shadow-xs"
+                              >
+                                {love}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
 
-                      {/* Resume Download Button */}
-                      <div className="pt-1">
-                        <a
-                          href={site.resumeUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border-2 border-white/80 bg-gradient-to-r from-[#FFB8CE] to-[#F482A5] px-3.5 py-1 sm:px-4 sm:py-1.5 font-hand text-sm sm:text-base font-bold text-white shadow-cozy transition-transform hover:scale-105 active:scale-95"
-                        >
-                          <svg
-                            className="h-3.5 w-3.5 sm:h-4 sm:w-4"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
+                        {/* Fun Facts */}
+                        <div>
+                          <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
+                            Fun facts:
+                          </h3>
+                          <ul className="mt-1 space-y-1 font-sans text-[11px] sm:text-xs text-ink/80 list-disc list-inside">
+                            {about.funFacts.map((fact) => (
+                              <li key={fact}>{fact}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Resume Download Button: High-contrast, rich rose-pink pill with glow */}
+                        <div className="pt-2 pb-1">
+                          <a
+                            href={site.resumeUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="group/btn inline-flex items-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#E8507D] via-[#D83A6F] to-[#BF2156] px-5 py-2 font-hand text-base sm:text-lg font-bold text-white shadow-[0_4px_14px_rgba(216,58,111,0.45)] transition-all duration-200 hover:scale-105 hover:shadow-[0_6px_20px_rgba(216,58,111,0.65)] hover:from-[#D83A6F] hover:to-[#A31644] active:scale-95"
                           >
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                          </svg>
-                          Download my resume
-                        </a>
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/25 transition-transform group-hover/btn:-translate-y-0.5">
+                              <svg
+                                className="h-3.5 w-3.5 text-white"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                              </svg>
+                            </span>
+                            <span>Download my resume</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>

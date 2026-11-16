@@ -491,132 +491,53 @@ export default function BedroomTablet() {
                         }`}
                       >
                         {/* 1. SONG OF THE DAY MINI PLAYER */}
-                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs transition-shadow hover:shadow-sm">
-                          {/* Card Header */}
-                          <div className="flex items-center justify-between gap-1 mb-2">
-                            <div className="flex items-center gap-1.5 min-w-0">
-                              <svg
-                                className={`h-3.5 w-3.5 text-accent shrink-0 ${isPlaying ? 'animate-spin-slow' : ''}`}
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-                              </svg>
-                              <span className="font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
-                                Song of the day
-                              </span>
-                            </div>
-
-                            <a
-                              href={currentSong.spotifyUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 rounded-full border border-green-300/80 bg-[#1DB954]/10 px-2 py-0.5 font-sans text-[9px] font-bold text-[#1DB954] hover:bg-[#1DB954]/20 shrink-0 transition-colors"
-                              title="Listen on Spotify"
+                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-3 shadow-xs transition-shadow hover:shadow-sm flex flex-col items-center text-center">
+                          {/* Card Title */}
+                          <div className="flex items-center gap-1.5 mb-2.5">
+                            <svg
+                              className={`h-3.5 w-3.5 text-accent shrink-0 ${isPlaying ? 'animate-spin-slow' : ''}`}
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
                             >
-                              <span>Spotify</span>
-                              <svg
-                                className="h-2 w-2"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                              >
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                <polyline points="15 3 21 3 21 9" />
-                                <line x1="10" y1="14" x2="21" y2="3" />
-                              </svg>
-                            </a>
+                              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                            </svg>
+                            <span className="font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
+                              Song of the day
+                            </span>
                           </div>
 
-                          {/* Song Content Row */}
-                          <div className="flex items-center gap-2.5">
-                            {/* Individual Song Album Artwork */}
-                            <div className="relative h-12 w-12 sm:h-13 sm:w-13 rounded-lg overflow-hidden border border-pink-200 shrink-0 shadow-xs bg-pink-50">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={currentSong.coverImage || spotifyPlaylist.coverImage}
-                                alt={currentSong.title}
-                                className="h-full w-full object-cover"
-                              />
-                              {isPlaying && (
-                                <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
-                                  <div className="flex items-end gap-0.5 h-3">
-                                    <span className="w-1 bg-white animate-pulse h-3 rounded-full" />
-                                    <span className="w-1 bg-white animate-pulse h-1.5 rounded-full delay-75" />
-                                    <span className="w-1 bg-white animate-pulse h-3.5 rounded-full delay-150" />
-                                    <span className="w-1 bg-white animate-pulse h-2 rounded-full delay-200" />
-                                  </div>
+                          {/* Song Album Cover Thumbnail at top */}
+                          <div className="relative h-24 w-24 sm:h-28 sm:w-28 rounded-xl overflow-hidden border border-pink-200/90 shadow-sm shrink-0 bg-pink-50 mb-2">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={currentSong.coverImage || spotifyPlaylist.coverImage}
+                              alt={currentSong.title}
+                              className="h-full w-full object-cover"
+                            />
+                            {isPlaying && (
+                              <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                                <div className="flex items-end gap-1 h-5">
+                                  <span className="w-1 bg-white animate-pulse h-5 rounded-full" />
+                                  <span className="w-1 bg-white animate-pulse h-3 rounded-full delay-75" />
+                                  <span className="w-1 bg-white animate-pulse h-6 rounded-full delay-150" />
+                                  <span className="w-1 bg-white animate-pulse h-4 rounded-full delay-200" />
                                 </div>
-                              )}
-                            </div>
-
-                            {/* Song Meta & Playback Controls */}
-                            <div className="flex-1 min-w-0">
-                              <p className="font-display text-xs sm:text-sm font-bold text-ink truncate leading-tight">
-                                {currentSong.title}
-                              </p>
-                              <p className="font-sans text-[10px] text-ink-soft truncate mt-0.5">
-                                {currentSong.artist} · {currentSong.album}
-                              </p>
-
-                              {/* Controls row */}
-                              <div className="mt-1.5 flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  {/* Prev */}
-                                  <button
-                                    type="button"
-                                    onClick={handlePrevSong}
-                                    aria-label="Previous Song"
-                                    className="p-1 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30 transition-colors"
-                                  >
-                                    <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
-                                      <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-                                    </svg>
-                                  </button>
-
-                                  {/* Play / Pause Toggle Button */}
-                                  <button
-                                    type="button"
-                                    onClick={togglePlay}
-                                    aria-label={isPlaying ? 'Pause' : 'Play'}
-                                    className={`flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-xs hover:scale-105 active:scale-95 transition-all ${
-                                      isPlaying ? 'ring-2 ring-pink-300' : ''
-                                    }`}
-                                  >
-                                    {isPlaying ? (
-                                      <svg className="h-2.5 w-2.5 fill-current" viewBox="0 0 24 24">
-                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                                      </svg>
-                                    ) : (
-                                      <svg className="h-2.5 w-2.5 fill-current ml-0.5" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                      </svg>
-                                    )}
-                                  </button>
-
-                                  {/* Next */}
-                                  <button
-                                    type="button"
-                                    onClick={handleNextSong}
-                                    aria-label="Next Song"
-                                    className="p-1 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30 transition-colors"
-                                  >
-                                    <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
-                                      <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-                                    </svg>
-                                  </button>
-                                </div>
-
-                                <span className="rounded-full bg-[#FFF0F5] px-1.5 py-0.2 font-mono text-[9px] font-bold text-accent shrink-0">
-                                  Daily rotation
-                                </span>
                               </div>
-                            </div>
+                            )}
                           </div>
 
-                          {/* Progress bar scrubber */}
-                          <div className="mt-2 pt-1.5 border-t border-pink-100 flex items-center gap-1.5">
+                          {/* Song Name & Details below thumbnail - No truncation! */}
+                          <div className="w-full px-1">
+                            <p className="font-display text-xs sm:text-sm font-bold text-ink leading-snug">
+                              {currentSong.title}
+                            </p>
+                            <p className="font-sans text-[11px] text-ink-soft mt-0.5 leading-tight">
+                              {currentSong.artist} · {currentSong.album}
+                            </p>
+                          </div>
+
+                          {/* Scrubber progress bar */}
+                          <div className="w-full mt-2.5 pt-1.5 border-t border-pink-100 flex items-center gap-1.5">
                             <span className="font-mono text-[9px] text-ink-soft shrink-0 w-6 text-right">
                               {formatTime(currentTime)}
                             </span>
@@ -631,58 +552,101 @@ export default function BedroomTablet() {
                                 }}
                               />
                             </div>
-                            <span className="font-mono text-[9px] text-ink-soft shrink-0 w-6">
+                            <span className="font-mono text-[9px] text-ink-soft shrink-0 w-6 text-left">
                               {formatTime(duration)}
                             </span>
+                          </div>
+
+                          {/* Playback Controls Row centered */}
+                          <div className="flex items-center justify-center gap-3 mt-2">
+                            {/* Prev */}
+                            <button
+                              type="button"
+                              onClick={handlePrevSong}
+                              aria-label="Previous Song"
+                              className="p-1.5 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30 transition-colors"
+                            >
+                              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+                              </svg>
+                            </button>
+
+                            {/* Play / Pause Toggle Button */}
+                            <button
+                              type="button"
+                              onClick={togglePlay}
+                              aria-label={isPlaying ? 'Pause' : 'Play'}
+                              className={`flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-sm hover:scale-105 active:scale-95 transition-all ${
+                                isPlaying ? 'ring-2 ring-pink-300' : ''
+                              }`}
+                            >
+                              {isPlaying ? (
+                                <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                </svg>
+                              ) : (
+                                <svg className="h-3 w-3 fill-current ml-0.5" viewBox="0 0 24 24">
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                              )}
+                            </button>
+
+                            {/* Next */}
+                            <button
+                              type="button"
+                              onClick={handleNextSong}
+                              aria-label="Next Song"
+                              className="p-1.5 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30 transition-colors"
+                            >
+                              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
 
                         {/* 2. CURRENTLY READING */}
-                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs">
-                          <div className="flex items-center justify-between gap-1 mb-1.5">
-                            <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
-                              <svg
-                                className="h-3.5 w-3.5 text-accent shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                              >
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                              </svg>
+                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-3 shadow-xs transition-shadow hover:shadow-sm flex flex-col items-center text-center">
+                          {/* Card Title */}
+                          <div className="flex items-center gap-1.5 mb-2.5">
+                            <svg
+                              className="h-3.5 w-3.5 text-accent shrink-0"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                            </svg>
+                            <span className="font-hand text-xs sm:text-sm font-bold text-accent whitespace-nowrap">
                               Currently Reading
-                            </span>
-                            <span className="rounded-full bg-[#EBF5FB] px-1.5 py-0.2 font-mono text-[9px] font-bold text-[#2980B9] shrink-0">
-                              {currentlyReading.status}
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-2.5">
-                            {/* Book Thumbnail */}
-                            <div className="relative h-13 w-9 sm:h-14 sm:w-10 rounded-sm overflow-hidden border border-pink-200 shadow-sm shrink-0 bg-[#FFF5F8]">
-                              <Image
-                                src={currentlyReading.coverImage}
-                                alt={currentlyReading.title}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
+                          {/* Book Cover Thumbnail at top */}
+                          <div className="relative h-28 w-20 sm:h-32 sm:w-22 rounded-md overflow-hidden border border-pink-200/90 shadow-sm shrink-0 bg-[#FFF5F8] mb-2">
+                            <Image
+                              src={currentlyReading.coverImage}
+                              alt={currentlyReading.title}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
 
-                            {/* Book Meta */}
-                            <div className="flex-1 min-w-0">
-                              <p className="font-display text-xs sm:text-sm font-bold text-ink leading-tight truncate">
-                                {currentlyReading.title}
+                          {/* Book Name & Details below thumbnail - No truncation! */}
+                          <div className="w-full px-1">
+                            <p className="font-display text-xs sm:text-sm font-bold text-ink leading-snug">
+                              {currentlyReading.title}
+                            </p>
+                            <p className="font-sans text-[11px] font-semibold text-accent mt-0.5">
+                              by {currentlyReading.author}
+                            </p>
+                            {currentlyReading.note && (
+                              <p className="mt-1 font-hand text-[11px] text-ink-soft leading-snug">
+                                &ldquo;{currentlyReading.note}&rdquo;
                               </p>
-                              <p className="font-sans text-[10px] sm:text-[11px] font-semibold text-accent truncate mt-0.5">
-                                by {currentlyReading.author}
-                              </p>
-                              {currentlyReading.note && (
-                                <p className="mt-0.5 font-hand text-[10.5px] text-ink-soft leading-snug line-clamp-2">
-                                  &ldquo;{currentlyReading.note}&rdquo;
-                                </p>
-                              )}
-                            </div>
+                            )}
                           </div>
                         </div>
 
@@ -872,25 +836,6 @@ export default function BedroomTablet() {
                               </svg>
                             </button>
                           </div>
-                          <a
-                            href={currentSong.spotifyUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-green-300 bg-[#1DB954]/15 px-3.5 py-1.5 font-sans text-xs font-bold text-[#1DB954]"
-                          >
-                            <span>Open in Spotify</span>
-                            <svg
-                              className="h-3 w-3"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                            >
-                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                              <polyline points="15 3 21 3 21 9" />
-                              <line x1="10" y1="14" x2="21" y2="3" />
-                            </svg>
-                          </a>
                         </div>
                       )}
 
@@ -905,9 +850,6 @@ export default function BedroomTablet() {
                               className="object-cover"
                             />
                           </div>
-                          <span className="rounded-full bg-[#EBF5FB] px-2 py-0.5 font-mono text-[10px] font-bold text-[#2980B9] mb-1">
-                            {currentlyReading.status}
-                          </span>
                           <h3 className="font-display text-base font-bold text-ink">
                             {currentlyReading.title}
                           </h3>

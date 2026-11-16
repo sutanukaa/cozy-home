@@ -5,15 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CozyIcon from '@/components/ui/CozyIcon';
 import { soundscape } from '@/lib/soundEngine';
 
-export type BookColor = 'pink' | 'sage' | 'butter' | 'lavender' | 'rose' | 'cream' | 'sky';
-export type BookOrnament = 'star' | 'diamond' | 'dots' | 'lines' | 'flower' | 'leaf';
+export type BookColor = 'rose' | 'sage' | 'ochre' | 'plum' | 'slate' | 'parchment' | 'terracotta';
+export type BookOrnament = 'star' | 'diamond' | 'dots' | 'lines';
 
 export interface BookDef {
   name: string;
   color: BookColor;
   width: number; // percentage width in 16:9 stage
   height: number; // percentage height in 16:9 stage
-  tilt?: number; // degrees of tilt, e.g. -1.0 or 1.2
+  tilt?: number; // degrees of tilt, e.g. -0.8 or 1.2
   hasRibbon?: boolean;
   ornament?: BookOrnament;
 }
@@ -25,12 +25,12 @@ interface ShelfCategoryDef {
   emoji: string;
   plaqueX: number; // % from left of stage
   plaqueY: number; // % from top of stage
-  floorY: number; // % from top where the shelf floor plank sits
-  startX: number; // % from left where the first book begins
+  floorY: number; // % from top where shelf floor plank sits
+  startX: number; // % from left where first book begins
   books: BookDef[];
 }
 
-// Gouache watercolor hardcover color palettes
+// Muted, dusty gouache watercolor palettes matching the cozy room background
 const PALETTES: Record<
   BookColor,
   {
@@ -40,71 +40,63 @@ const PALETTES: Record<
     textColor: string;
     goldColor: string;
     ribbonColor: string;
-    accentColor: string;
   }
 > = {
-  pink: {
-    coverLight: '#FBB6C8',
-    coverMid: '#F08DA7',
-    coverDark: '#D46985',
-    textColor: '#4A1220',
-    goldColor: '#FCE588',
-    ribbonColor: '#FF6584',
-    accentColor: '#F79FB5',
+  rose: {
+    coverLight: '#B8727D',
+    coverMid: '#9B5863',
+    coverDark: '#7A3D47',
+    textColor: '#FFF0F2',
+    goldColor: '#E5C170',
+    ribbonColor: '#C97A86',
   },
   sage: {
-    coverLight: '#BCE0C3',
-    coverMid: '#9BCAA3',
-    coverDark: '#75A57E',
-    textColor: '#17361D',
-    goldColor: '#FCE788',
-    ribbonColor: '#81C784',
-    accentColor: '#A9D4B1',
+    coverLight: '#7C9882',
+    coverMid: '#627E68',
+    coverDark: '#49624E',
+    textColor: '#F2F8F3',
+    goldColor: '#E5C170',
+    ribbonColor: '#82A388',
   },
-  butter: {
-    coverLight: '#FEEAA2',
-    coverMid: '#F9D86F',
-    coverDark: '#DFB543',
-    textColor: '#422806',
-    goldColor: '#E09F25',
-    ribbonColor: '#FFCA28',
-    accentColor: '#FCE082',
+  ochre: {
+    coverLight: '#D1A95E',
+    coverMid: '#B88F44',
+    coverDark: '#936E2A',
+    textColor: '#FFFDF5',
+    goldColor: '#F5DC94',
+    ribbonColor: '#C99E4A',
   },
-  lavender: {
-    coverLight: '#DACDF2',
-    coverMid: '#BEADE3',
-    coverDark: '#9782C4',
-    textColor: '#291745',
-    goldColor: '#FDEAA8',
-    ribbonColor: '#BA68C8',
-    accentColor: '#CBBCE9',
+  plum: {
+    coverLight: '#8A677B',
+    coverMid: '#704E61',
+    coverDark: '#563647',
+    textColor: '#FAF2F7',
+    goldColor: '#E5C170',
+    ribbonColor: '#9A748A',
   },
-  rose: {
-    coverLight: '#F8B5AE',
-    coverMid: '#EA9289',
-    coverDark: '#CD6A60',
-    textColor: '#451612',
-    goldColor: '#FDE496',
-    ribbonColor: '#E57373',
-    accentColor: '#F2A49B',
+  slate: {
+    coverLight: '#6A879E',
+    coverMid: '#526E84',
+    coverDark: '#3A5266',
+    textColor: '#F0F6FA',
+    goldColor: '#E5C170',
+    ribbonColor: '#7594AB',
   },
-  cream: {
-    coverLight: '#FFFDF9',
-    coverMid: '#F5ECDB',
-    coverDark: '#DFCEB3',
-    textColor: '#3D2A18',
-    goldColor: '#D49F30',
-    ribbonColor: '#C9B596',
-    accentColor: '#FAF3E7',
+  parchment: {
+    coverLight: '#DFD4C2',
+    coverMid: '#C8BAA3',
+    coverDark: '#A89981',
+    textColor: '#382A1B',
+    goldColor: '#B88E36',
+    ribbonColor: '#B0A087',
   },
-  sky: {
-    coverLight: '#BDE3F8',
-    coverMid: '#96CEF0',
-    coverDark: '#6AAED6',
-    textColor: '#122D42',
-    goldColor: '#FDE78A',
-    ribbonColor: '#64B5F6',
-    accentColor: '#A8D9F4',
+  terracotta: {
+    coverLight: '#BD7660',
+    coverMid: '#A25C47',
+    coverDark: '#81412E',
+    textColor: '#FFF5F2',
+    goldColor: '#E5C170',
+    ribbonColor: '#CB826B',
   },
 };
 
@@ -115,18 +107,18 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-frontend',
     emoji: '🎀',
     plaqueX: 18.0,
-    plaqueY: 22.5,
-    floorY: 32.3,
+    plaqueY: 28.0,
+    floorY: 38.6,
     startX: 32.2,
     books: [
-      { name: 'TypeScript', color: 'butter', width: 3.3, height: 10.6, tilt: -0.8, hasRibbon: true, ornament: 'star' },
-      { name: 'JavaScript', color: 'butter', width: 3.0, height: 10.2, ornament: 'lines' },
-      { name: 'Next.js', color: 'cream', width: 3.4, height: 11.0, hasRibbon: true, ornament: 'diamond' },
-      { name: 'React.js', color: 'sky', width: 3.4, height: 10.5, ornament: 'star' },
-      { name: 'React Native', color: 'lavender', width: 3.3, height: 10.3, ornament: 'lines' },
-      { name: 'Tailwind CSS', color: 'sky', width: 3.5, height: 10.8, ornament: 'dots' },
-      { name: 'Framer Motion', color: 'pink', width: 3.5, height: 10.9, hasRibbon: true, ornament: 'flower' },
-      { name: 'Polaris', color: 'sage', width: 3.1, height: 10.0, tilt: 1.2, ornament: 'lines' },
+      { name: 'TypeScript', color: 'ochre', width: 3.3, height: 11.8, tilt: -0.8, hasRibbon: true, ornament: 'star' },
+      { name: 'JavaScript', color: 'ochre', width: 3.0, height: 11.2, ornament: 'lines' },
+      { name: 'Next.js', color: 'parchment', width: 3.4, height: 12.2, hasRibbon: true, ornament: 'diamond' },
+      { name: 'React.js', color: 'slate', width: 3.4, height: 11.6, ornament: 'star' },
+      { name: 'React Native', color: 'plum', width: 3.3, height: 11.4, ornament: 'lines' },
+      { name: 'Tailwind CSS', color: 'slate', width: 3.5, height: 12.0, ornament: 'dots' },
+      { name: 'Framer Motion', color: 'rose', width: 3.5, height: 12.1, hasRibbon: true, ornament: 'star' },
+      { name: 'Polaris', color: 'sage', width: 3.1, height: 11.0, tilt: 1.2, ornament: 'lines' },
     ],
   },
   {
@@ -135,19 +127,19 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-backend',
     emoji: '🧁',
     plaqueX: 18.0,
-    plaqueY: 37.8,
-    floorY: 45.4,
+    plaqueY: 44.5,
+    floorY: 51.6,
     startX: 32.2,
     books: [
-      { name: 'FastAPI', color: 'sage', width: 3.1, height: 10.5, ornament: 'diamond' },
-      { name: 'Node.js', color: 'sage', width: 2.9, height: 10.1, ornament: 'lines' },
-      { name: 'Express.js', color: 'cream', width: 3.1, height: 10.6, hasRibbon: true, ornament: 'star' },
-      { name: 'Celery', color: 'sky', width: 2.8, height: 9.9, ornament: 'lines' },
-      { name: 'Redis', color: 'rose', width: 3.1, height: 10.8, ornament: 'dots' },
-      { name: 'PostgreSQL', color: 'sky', width: 3.4, height: 11.0, ornament: 'diamond' },
-      { name: 'Prisma', color: 'lavender', width: 3.0, height: 10.2, ornament: 'lines' },
-      { name: 'MongoDB', color: 'sage', width: 3.2, height: 10.6, hasRibbon: true, ornament: 'leaf' },
-      { name: 'Supabase', color: 'sage', width: 3.1, height: 10.7, tilt: 1.2, ornament: 'star' },
+      { name: 'FastAPI', color: 'sage', width: 3.1, height: 9.8, ornament: 'diamond' },
+      { name: 'Node.js', color: 'sage', width: 2.9, height: 9.4, ornament: 'lines' },
+      { name: 'Express.js', color: 'parchment', width: 3.1, height: 9.9, hasRibbon: true, ornament: 'star' },
+      { name: 'Celery', color: 'slate', width: 2.8, height: 9.2, ornament: 'lines' },
+      { name: 'Redis', color: 'rose', width: 3.1, height: 10.0, ornament: 'dots' },
+      { name: 'PostgreSQL', color: 'slate', width: 3.4, height: 10.2, ornament: 'diamond' },
+      { name: 'Prisma', color: 'plum', width: 3.0, height: 9.5, ornament: 'lines' },
+      { name: 'MongoDB', color: 'sage', width: 3.2, height: 9.9, hasRibbon: true, ornament: 'star' },
+      { name: 'Supabase', color: 'sage', width: 3.1, height: 10.0, tilt: 1.2, ornament: 'star' },
     ],
   },
   {
@@ -156,16 +148,16 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-ai',
     emoji: '🪄',
     plaqueX: 18.0,
-    plaqueY: 50.8,
-    floorY: 57.7,
+    plaqueY: 57.5,
+    floorY: 63.9,
     startX: 32.2,
     books: [
-      { name: 'Gemini API', color: 'sky', width: 3.7, height: 10.8, tilt: -0.8, ornament: 'star' },
-      { name: 'RAG', color: 'lavender', width: 3.4, height: 10.3, ornament: 'lines' },
-      { name: 'Vector Embeddings', color: 'rose', width: 4.1, height: 11.2, hasRibbon: true, ornament: 'diamond' },
-      { name: 'ChromaDB', color: 'butter', width: 3.5, height: 10.5, ornament: 'dots' },
-      { name: 'Vercel AI SDK', color: 'cream', width: 3.9, height: 11.0, ornament: 'lines' },
-      { name: 'ETL Pipelines', color: 'sage', width: 3.6, height: 10.4, tilt: 1.2, ornament: 'leaf' },
+      { name: 'Gemini API', color: 'slate', width: 3.7, height: 9.4, tilt: -0.8, ornament: 'star' },
+      { name: 'RAG', color: 'plum', width: 3.4, height: 9.0, ornament: 'lines' },
+      { name: 'Vector Embeddings', color: 'rose', width: 4.1, height: 9.6, hasRibbon: true, ornament: 'diamond' },
+      { name: 'ChromaDB', color: 'ochre', width: 3.5, height: 9.2, ornament: 'dots' },
+      { name: 'Vercel AI SDK', color: 'parchment', width: 3.9, height: 9.5, ornament: 'lines' },
+      { name: 'ETL Pipelines', color: 'sage', width: 3.6, height: 9.1, tilt: 1.2, ornament: 'star' },
     ],
   },
   {
@@ -174,16 +166,16 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-tools',
     emoji: '🧰',
     plaqueX: 18.0,
-    plaqueY: 63.8,
-    floorY: 70.6,
+    plaqueY: 70.0,
+    floorY: 76.9,
     startX: 32.2,
     books: [
-      { name: 'Docker', color: 'sky', width: 3.7, height: 10.7, tilt: -1.0, ornament: 'diamond' },
-      { name: 'Git & GitHub', color: 'rose', width: 3.8, height: 11.0, hasRibbon: true, ornament: 'star' },
-      { name: 'GitHub Actions', color: 'butter', width: 3.9, height: 10.5, ornament: 'lines' },
-      { name: 'Google Cloud Run', color: 'sky', width: 4.1, height: 11.1, ornament: 'dots' },
-      { name: 'Vercel', color: 'cream', width: 3.5, height: 10.6, ornament: 'lines' },
-      { name: 'Postman', color: 'rose', width: 3.5, height: 10.4, tilt: 1.5, ornament: 'flower' },
+      { name: 'Docker', color: 'slate', width: 3.7, height: 10.2, tilt: -1.0, ornament: 'diamond' },
+      { name: 'Git & GitHub', color: 'terracotta', width: 3.8, height: 10.4, hasRibbon: true, ornament: 'star' },
+      { name: 'GitHub Actions', color: 'ochre', width: 3.9, height: 9.9, ornament: 'lines' },
+      { name: 'Google Cloud Run', color: 'slate', width: 4.1, height: 10.5, ornament: 'dots' },
+      { name: 'Vercel', color: 'parchment', width: 3.5, height: 10.0, ornament: 'lines' },
+      { name: 'Postman', color: 'rose', width: 3.5, height: 9.8, tilt: 1.5, ornament: 'star' },
     ],
   },
 ];
@@ -216,11 +208,11 @@ export default function LibraryVectorBookshelf() {
 
         return (
           <div key={cat.id}>
-            {/* 1. Wooden Category Plaque in Left Cubby */}
+            {/* 1. Wooden Category Plaque in Left Shelf Cubby */}
             <a
               href={`#${cat.id}`}
-              title={`Jump to ${cat.name} shelf section below`}
-              className="pointer-events-auto absolute flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#5A341B]/95 hover:bg-[#6E3F21] border border-[#8A522C] shadow-[0_2px_6px_rgba(30,12,6,0.45)] backdrop-blur-[1px] transition-all hover:scale-105 active:scale-95 group"
+              title={`Jump to ${cat.name} shelf section`}
+              className="pointer-events-auto absolute flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#4A2A1A]/95 hover:bg-[#5C3420] border border-[#754329] shadow-[0_2px_6px_rgba(20,10,15,0.5)] backdrop-blur-[1px] transition-all hover:scale-105 active:scale-95 group"
               style={{
                 left: `${cat.plaqueX}%`,
                 top: `${cat.plaqueY}%`,
@@ -243,7 +235,7 @@ export default function LibraryVectorBookshelf() {
               </span>
             </a>
 
-            {/* 2. Realistic Handcrafted Vector Books Standing Side-by-Side */}
+            {/* 2. Realistic Handcrafted Vector Books Sitting Flush on Shelf Plank */}
             {cat.books.map((book, bookIdx) => {
               const bookLeft = currentX;
               currentX += book.width;
@@ -252,6 +244,9 @@ export default function LibraryVectorBookshelf() {
               const isTapped = tappedSkill === book.name;
               const gradId = `spine-grad-${catIdx}-${bookIdx}`;
               const goldId = `gold-grad-${catIdx}-${bookIdx}`;
+
+              const isLightText =
+                palette.textColor.startsWith('#F') || palette.textColor.startsWith('#f');
 
               return (
                 <div
@@ -287,162 +282,138 @@ export default function LibraryVectorBookshelf() {
                     }}
                     className="relative w-full h-full transition-transform duration-200 group-hover:-translate-y-2 group-hover:scale-[1.04]"
                   >
-                    {/* SVG 3D Book Spine with Arched Perspective */}
+                    {/* SVG 3D Book Spine Background */}
                     <svg
                       viewBox="0 0 100 300"
                       preserveAspectRatio="none"
-                      className="w-full h-full drop-shadow-[0_2px_4px_rgba(30,12,6,0.35)]"
+                      className="w-full h-full drop-shadow-[0_2px_4px_rgba(20,10,15,0.4)]"
                     >
                       <defs>
                         {/* 3D Cylindrical Spine Gradient */}
                         <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor={palette.coverDark} />
-                          <stop offset="12%" stopColor={palette.coverMid} />
-                          <stop offset="32%" stopColor={palette.coverLight} />
+                          <stop offset="14%" stopColor={palette.coverMid} />
+                          <stop offset="34%" stopColor={palette.coverLight} />
                           <stop offset="68%" stopColor={palette.coverMid} />
                           <stop offset="90%" stopColor={palette.coverMid} />
                           <stop offset="100%" stopColor={palette.coverDark} />
                         </linearGradient>
 
-                        {/* Gold Foil Emboss Gradient */}
+                        {/* Antique Gold Foil Gradient */}
                         <linearGradient id={goldId} x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#C98B18" />
-                          <stop offset="25%" stopColor="#FDE888" />
-                          <stop offset="60%" stopColor="#FFF5B8" />
-                          <stop offset="85%" stopColor="#E2A62B" />
-                          <stop offset="100%" stopColor="#996308" />
+                          <stop offset="0%" stopColor="#A67B24" />
+                          <stop offset="35%" stopColor={palette.goldColor} />
+                          <stop offset="70%" stopColor="#FFF3B0" />
+                          <stop offset="100%" stopColor="#8A6315" />
                         </linearGradient>
                       </defs>
 
-                      {/* Headband / Exposed Striped Cloth Top */}
+                      {/* Headband Cloth Top */}
                       <path
                         d="M 6,10 Q 50,4 94,10 L 94,18 Q 50,12 6,18 Z"
-                        fill="#FBF3E6"
-                        stroke="#D1B898"
+                        fill="#E8DEC9"
+                        stroke="#B8A88E"
                         strokeWidth="1.2"
                       />
-                      <line x1="30" y1="7" x2="30" y2="15" stroke="#A93B50" strokeWidth="2" />
-                      <line x1="50" y1="5.5" x2="50" y2="13.5" stroke="#A93B50" strokeWidth="2" />
-                      <line x1="70" y1="7" x2="70" y2="15" stroke="#A93B50" strokeWidth="2" />
 
                       {/* Main Arched 3D Hardcover Spine */}
                       <path
-                        d="M 4,12 Q 50,6 96,12 L 96,290 Q 50,296 4,290 Z"
+                        d="M 4,12 Q 50,6 96,12 L 96,294 Q 50,299 4,294 Z"
                         fill={`url(#${gradId})`}
                         stroke={palette.coverDark}
-                        strokeWidth="1.8"
+                        strokeWidth="1.6"
                         strokeLinejoin="round"
                       />
 
                       {/* Left Hinge Crease Groove (Physical Book Depth) */}
-                      <path d="M 10,12 L 10,290" stroke="rgba(0,0,0,0.22)" strokeWidth="2.5" />
-                      <path d="M 12.5,12 L 12.5,290" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" />
-
-                      {/* Right Edge Highlight */}
-                      <path d="M 91,12 L 91,290" stroke="rgba(255,255,255,0.25)" strokeWidth="1.2" />
+                      <line x1="10" y1="12" x2="10" y2="294" stroke="rgba(0,0,0,0.25)" strokeWidth="2.5" />
+                      <line x1="12.5" y1="12" x2="12.5" y2="294" stroke="rgba(255,255,255,0.25)" strokeWidth="1.2" />
 
                       {/* Top Raised Gold Ribs */}
                       <rect x="6" y="24" width="88" height="3" rx="1" fill={`url(#${goldId})`} />
-                      <line x1="6" y1="28" x2="94" y2="28" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
                       <rect x="6" y="32" width="88" height="2" rx="0.5" fill={`url(#${goldId})`} />
 
                       {/* Bottom Raised Gold Ribs */}
-                      <rect x="6" y="266" width="88" height="2" rx="0.5" fill={`url(#${goldId})`} />
-                      <rect x="6" y="271" width="88" height="3" rx="1" fill={`url(#${goldId})`} />
-                      <line x1="6" y1="275" x2="94" y2="275" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
+                      <rect x="6" y="268" width="88" height="2" rx="0.5" fill={`url(#${goldId})`} />
+                      <rect x="6" y="273" width="88" height="3" rx="1" fill={`url(#${goldId})`} />
 
                       {/* Gold Spine Ornaments */}
                       {book.ornament === 'star' ? (
                         <>
                           <polygon points="50,46 54,51 50,56 46,51" fill={`url(#${goldId})`} />
-                          <polygon points="50,248 54,253 50,258 46,253" fill={`url(#${goldId})`} />
+                          <polygon points="50,250 54,255 50,260 46,255" fill={`url(#${goldId})`} />
                         </>
                       ) : book.ornament === 'diamond' ? (
                         <>
                           <rect x="46" y="47" width="8" height="8" transform="rotate(45, 50, 51)" fill={`url(#${goldId})`} />
-                          <rect x="46" y="249" width="8" height="8" transform="rotate(45, 50, 253)" fill={`url(#${goldId})`} />
+                          <rect x="46" y="251" width="8" height="8" transform="rotate(45, 50, 255)" fill={`url(#${goldId})`} />
                         </>
                       ) : book.ornament === 'dots' ? (
                         <>
                           <circle cx="50" cy="51" r="3" fill={`url(#${goldId})`} />
-                          <circle cx="50" cy="253" r="3" fill={`url(#${goldId})`} />
+                          <circle cx="50" cy="255" r="3" fill={`url(#${goldId})`} />
                         </>
                       ) : (
                         <>
                           <line x1="30" y1="51" x2="70" y2="51" stroke={`url(#${goldId})`} strokeWidth="2" />
-                          <line x1="30" y1="253" x2="70" y2="253" stroke={`url(#${goldId})`} strokeWidth="2" />
+                          <line x1="30" y1="255" x2="70" y2="255" stroke={`url(#${goldId})`} strokeWidth="2" />
                         </>
                       )}
 
                       {/* Hanging Silk Bookmark Ribbon */}
                       {book.hasRibbon && (
                         <path
-                          d="M 44,288 L 44,320 L 50,314 L 56,320 L 56,288 Z"
+                          d="M 44,292 L 44,324 L 50,318 L 56,324 L 56,292 Z"
                           fill={palette.ribbonColor}
                           stroke="rgba(0,0,0,0.25)"
                           strokeWidth="1"
                         />
                       )}
-
-                      {/* Debossed Spine Typography (Centered Vertical Text in SVG) */}
-                      <g transform="translate(50.5, 150) rotate(-90)">
-                        {/* Highlight Layer for Debossed Inset */}
-                        <text
-                          x="0"
-                          y="6"
-                          fill="rgba(255,255,255,0.65)"
-                          fontFamily="var(--font-hand), 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif"
-                          fontWeight="bold"
-                          fontSize="19"
-                          textAnchor="middle"
-                          letterSpacing="0.8"
-                        >
-                          {book.name}
-                        </text>
-                        {/* Main Debossed Ink Text */}
-                        <text
-                          x="0"
-                          y="5"
-                          fill={palette.textColor}
-                          fontFamily="var(--font-hand), 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif"
-                          fontWeight="bold"
-                          fontSize="19"
-                          textAnchor="middle"
-                          letterSpacing="0.8"
-                        >
-                          {book.name}
-                        </text>
-                      </g>
                     </svg>
 
-                    {/* Shelf Floor Soft Shadow beneath book */}
-                    <div className="absolute -bottom-1 inset-x-0 h-1 bg-black/30 blur-[1px] rounded-full pointer-events-none" />
+                    {/* Debossed Spine Typography: Native HTML Flexbox with writing-mode */}
+                    <div className="absolute inset-y-8 inset-x-1 flex items-center justify-center overflow-hidden pointer-events-none select-none">
+                      <span
+                        className="[writing-mode:vertical-rl] rotate-180 font-hand text-[9.5px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-bold tracking-wider leading-none text-center whitespace-nowrap"
+                        style={{
+                          color: palette.textColor,
+                          textShadow: isLightText
+                            ? '0 0.5px 1px rgba(0,0,0,0.8), 0 0.5px 2px rgba(0,0,0,0.6)'
+                            : '0 0.5px 1px rgba(255,255,255,0.7), 0 0.5px 2px rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        {book.name}
+                      </span>
+                    </div>
+
+                    {/* Shelf Floor Soft Shadow directly underneath book */}
+                    <div className="absolute -bottom-1 inset-x-0 h-1 bg-black/40 blur-[1px] rounded-full pointer-events-none" />
                   </motion.div>
                 </div>
               );
             })}
 
-            {/* 3. Cozy Fillers for Rows 3 & 4 */}
+            {/* 3. Cozy Accents for Rows 3 & 4 */}
             {cat.id === 'shelf-ai' && (
               <div
                 style={{
                   left: `${currentX + 0.8}%`,
                   bottom: `${100 - cat.floorY}%`,
                   width: '2.4%',
-                  height: '4.2%',
+                  height: '4.0%',
                 }}
                 title="Potted baby succulent"
                 className="pointer-events-auto absolute"
               >
                 <svg viewBox="0 0 40 45" className="w-full h-full drop-shadow-xs">
-                  <ellipse cx="20" cy="42" rx="16" ry="3" fill="rgba(30,12,6,0.3)" />
-                  <path d="M 6,16 L 34,16 L 30,40 L 10,40 Z" fill="#D97A53" stroke="#B35532" strokeWidth="1.5" />
-                  <rect x="4" y="12" width="32" height="5" rx="1.5" fill="#E28963" stroke="#B35532" strokeWidth="1.2" />
-                  <ellipse cx="20" cy="13" rx="13" ry="2.5" fill="#5A3A28" />
-                  <path d="M 20,14 C 13,8 9,1 13,-3 C 17,-5 20,3 20,14 Z" fill="#78B885" stroke="#528F60" strokeWidth="1" />
-                  <path d="M 20,14 C 27,8 31,1 27,-3 C 23,-5 20,3 20,14 Z" fill="#88C795" stroke="#528F60" strokeWidth="1" />
-                  <path d="M 20,14 C 20,5 20,-6 20,-6 C 22,-6 22,5 20,14 Z" fill="#9CD8A8" stroke="#528F60" strokeWidth="1" />
-                  <circle cx="20" cy="4" r="3" fill="#FFB7D5" />
+                  <ellipse cx="20" cy="42" rx="16" ry="3" fill="rgba(15,8,12,0.4)" />
+                  <path d="M 6,16 L 34,16 L 30,40 L 10,40 Z" fill="#9C523A" stroke="#7A3925" strokeWidth="1.5" />
+                  <rect x="4" y="12" width="32" height="5" rx="1.5" fill="#B06248" stroke="#7A3925" strokeWidth="1.2" />
+                  <ellipse cx="20" cy="13" rx="13" ry="2.5" fill="#422718" />
+                  <path d="M 20,14 C 13,8 9,1 13,-3 C 17,-5 20,3 20,14 Z" fill="#588562" stroke="#3D6144" strokeWidth="1" />
+                  <path d="M 20,14 C 27,8 31,1 27,-3 C 23,-5 20,3 20,14 Z" fill="#6B9675" stroke="#3D6144" strokeWidth="1" />
+                  <path d="M 20,14 C 20,5 20,-6 20,-6 C 22,-6 22,5 20,14 Z" fill="#7FA989" stroke="#3D6144" strokeWidth="1" />
+                  <circle cx="20" cy="3" r="2.5" fill="#E59BB2" />
                 </svg>
               </div>
             )}
@@ -459,14 +430,11 @@ export default function LibraryVectorBookshelf() {
                 className="pointer-events-auto absolute"
               >
                 <svg viewBox="0 0 74 26" className="w-full h-full drop-shadow-xs">
-                  <ellipse cx="37" cy="24" rx="35" ry="2.5" fill="rgba(30,12,6,0.25)" />
-                  <rect x="1" y="13" width="72" height="11" rx="2" fill="#F5ECDB" stroke="#DFCEB3" strokeWidth="1" />
-                  <line x1="3" y1="18" x2="70" y2="18" stroke="#C98B18" strokeWidth="1" />
-                  <text x="37" y="21" fill="#5A3E26" fontFamily="var(--font-hand), sans-serif" fontSize="7.5" fontWeight="bold" textAnchor="middle">Cheatsheets</text>
-                  <rect x="5" y="3" width="64" height="10" rx="2" fill="#F7B4C4" stroke="#DE7C95" strokeWidth="1" />
-                  <line x1="7" y1="8" x2="66" y2="8" stroke="#FCE588" strokeWidth="0.8" />
-                  <text x="37" y="10.5" fill="#4A1220" fontFamily="var(--font-hand), sans-serif" fontSize="7.5" fontWeight="bold" textAnchor="middle">Lab Notes</text>
-                  <rect x="22" y="1" width="30" height="2" rx="1" fill="#FFD166" stroke="#D49B28" strokeWidth="0.5" />
+                  <ellipse cx="37" cy="24" rx="35" ry="2.5" fill="rgba(15,8,12,0.35)" />
+                  <rect x="1" y="13" width="72" height="11" rx="2" fill="#C8BAA3" stroke="#A89981" strokeWidth="1" />
+                  <text x="37" y="21" fill="#382A1B" fontFamily="var(--font-hand), sans-serif" fontSize="7.5" fontWeight="bold" textAnchor="middle">Cheatsheets</text>
+                  <rect x="5" y="3" width="64" height="10" rx="2" fill="#9B5863" stroke="#7A3D47" strokeWidth="1" />
+                  <text x="37" y="10.5" fill="#FFF0F2" fontFamily="var(--font-hand), sans-serif" fontSize="7.5" fontWeight="bold" textAnchor="middle">Lab Notes</text>
                 </svg>
               </div>
             )}

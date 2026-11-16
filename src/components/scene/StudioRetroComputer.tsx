@@ -41,6 +41,13 @@ import {
   scrapbookInvariants,
   scrapbookAudioActions,
 } from '@/data/scrapbookArchitecture';
+import {
+  httpServerDiagrams,
+  httpServerInvariants,
+  httpServerLimits,
+  httpStatusMappings,
+  httpParserTransitions,
+} from '@/data/httpServerArchitecture';
 import MermaidRenderer from '@/components/ui/MermaidRenderer';
 import CozyRunner from '@/components/game/CozyRunner';
 
@@ -64,6 +71,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     | 'bloom-invariants'
     | 'scrapbook-invariants'
     | 'scrapbook-audio'
+    | 'http-invariants'
+    | 'http-transitions'
   >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [showGame, setShowGame] = useState(false);
@@ -76,7 +85,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const isTickease = activeProject?.slug === 'tickease';
   const isBloom = activeProject?.slug === 'bloom-for-youu';
   const isScrapbook = activeProject?.slug === 'a-little-scrapbook';
-  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom || isScrapbook;
+  const isHttpServer = activeProject?.slug === 'http-server';
+  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom || isScrapbook || isHttpServer;
 
   const currentSyntactiqBlueprint =
     syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
@@ -90,6 +100,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     bloomDiagrams.find((d) => d.id === activeBlueprintDiagram) || bloomDiagrams[0];
   const currentScrapbookBlueprint =
     scrapbookDiagrams.find((d) => d.id === activeBlueprintDiagram) || scrapbookDiagrams[0];
+  const currentHttpBlueprint =
+    httpServerDiagrams.find((d) => d.id === activeBlueprintDiagram) || httpServerDiagrams[0];
 
   const diagramCount = isSyntactiq
     ? syntactiqDiagrams.length
@@ -103,6 +115,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     ? bloomDiagrams.length
     : isScrapbook
     ? scrapbookDiagrams.length
+    : isHttpServer
+    ? httpServerDiagrams.length
     : 0;
 
   // Track hydration for createPortal and clean up body class on unmount
@@ -2284,6 +2298,361 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
                                           </div>
                                           <p className="text-[10px] text-ink-soft dark:text-white/70">
                                             Dynamic velocity sway: sway = spring(clamp(vx / 60, -6, 6)) adds organic physical tilt without altering persistent saved coordinates.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: Custom HTTP/1.1 Server in C --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isHttpServer && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    POSIX Network Systems &amp; Zero-Copy Streaming Pipeline
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    Custom HTTP/1.1 Server in C Architectural Specification
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Three interactive system diagrams covering POSIX non-blocking listener with pre-threaded worker concurrency, a zero-copy DFA request parser, and kernel-contained static file streaming via openat2() and sendfile().
+                                  </p>
+                                </div>
+
+                                {/* Choice Band */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {httpServerDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        {d.tabLabel}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('http-invariants');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'http-invariants'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Invariants &amp; Limits ]
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('http-transitions');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'http-transitions'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ State Machine &amp; Status Codes ]
+                                  </button>
+                                </div>
+
+                                {/* Tab Body Content */}
+                                {activeExtraTab === 'none' ? (
+                                  <div className="flex flex-col gap-6">
+                                    {/* Active Diagram Header */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold text-accent dark:text-pink-300">
+                                          Diagram 0{currentHttpBlueprint.id} of 03
+                                        </span>
+                                        <h5 className="font-display text-lg font-bold text-ink dark:text-white">
+                                          {currentHttpBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <span className="self-start sm:self-center rounded-full border border-pink-300/80 bg-pink-100/80 px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent dark:border-pink-800 dark:bg-pink-950/60 dark:text-pink-200">
+                                        {currentHttpBlueprint.badge}
+                                      </span>
+                                    </div>
+
+                                    {/* Mermaid SVG Diagram Container */}
+                                    <div className="overflow-x-auto rounded-2xl border-2 border-pink-200/80 bg-white/95 p-4 shadow-sm dark:border-white/15 dark:bg-[#1A1220]/95">
+                                      <MermaidRenderer
+                                        code={currentHttpBlueprint.mermaid}
+                                        diagramId={`http-diagram-${currentHttpBlueprint.id}`}
+                                      />
+                                    </div>
+
+                                    {/* Tri-Pane Technical Deep Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      {/* Card 1: Interactions */}
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Component Interactions &amp; Handshake
+                                        </span>
+                                        <p className="text-[11px] leading-relaxed text-cocoa dark:text-pink-100">
+                                          {currentHttpBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      {/* Card 2: Failure Modes */}
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Mitigation Strategies
+                                        </span>
+                                        <p className="text-[11px] leading-relaxed text-cocoa dark:text-pink-100">
+                                          {currentHttpBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      {/* Card 3: Trade-Offs */}
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Production Trade-offs &amp; Alternatives
+                                        </span>
+                                        <p className="text-[11px] leading-relaxed text-cocoa dark:text-pink-100">
+                                          {currentHttpBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : activeExtraTab === 'http-invariants' ? (
+                                  /* Invariants & Limits Tab */
+                                  <div className="flex flex-col gap-6">
+                                    {/* Invariants Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex items-center justify-between">
+                                        <h5 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          System Invariants (8 Core System Guarantees)
+                                        </h5>
+                                        <span className="rounded bg-pink-100 px-2 py-0.5 font-mono text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                          Production Hard Invariants
+                                        </span>
+                                      </div>
+
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/20">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead className="border-b border-pink-200/80 bg-blush/40 dark:border-white/10 dark:bg-white/5">
+                                            <tr>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">ID</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Invariant</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Kernel &amp; App Enforcement</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Failure Impact &amp; Security Guarantee</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {httpServerInvariants.map((inv) => (
+                                              <tr key={inv.id} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-3 py-2 font-bold text-accent dark:text-pink-300">0{inv.id}</td>
+                                                <td className="px-3 py-2 font-bold text-ink dark:text-white">{inv.invariant}</td>
+                                                <td className="px-3 py-2 text-cocoa dark:text-pink-100 text-[11px] leading-relaxed">{inv.enforcement}</td>
+                                                <td className="px-3 py-2 text-ink-soft dark:text-white/80 text-[11px] leading-relaxed">{inv.failureImpact}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Limits Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex items-center justify-between">
+                                        <h5 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Hard Resource Limits &amp; Absolute Timeouts
+                                        </h5>
+                                        <span className="rounded bg-pink-100 px-2 py-0.5 font-mono text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                          Zero Indefinite Blocks
+                                        </span>
+                                      </div>
+
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/20">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead className="border-b border-pink-200/80 bg-blush/40 dark:border-white/10 dark:bg-white/5">
+                                            <tr>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Constant</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Configured Value</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Over-Limit Behavior &amp; Status Code</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {httpServerLimits.map((l) => (
+                                              <tr key={l.limit} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-3 py-2 font-bold text-accent dark:text-pink-300">{l.limit}</td>
+                                                <td className="px-3 py-2 font-bold text-ink dark:text-white">{l.value}</td>
+                                                <td className="px-3 py-2 text-cocoa dark:text-pink-100 text-[11px]">{l.overLimitBehavior}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Architecture Deep Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Pre-Threaded Concurrency &amp; Memory Bounds
+                                        </span>
+                                        <div className="space-y-1.5 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <p className="font-bold">Total Memory Ceiling:</p>
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            Memory = N_workers × (~88 KiB) + QCAP × sizeof(int)
+                                          </code>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70 pt-1">
+                                            For 64 workers, entire server footprint is ~5.5 MiB; for 256 workers, ~22 MiB. Zero malloc() on the hot request path eliminates lock contention, fragmentation, and heap exhaustion.
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Kernel-Level Containment (openat2)
+                                        </span>
+                                        <div className="space-y-1.5 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <p className="font-bold">Linux 5.6+ openat2 Sandbox Flags:</p>
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            how.flags = O_RDONLY | O_CLOEXEC | O_NONBLOCK;<br/>
+                                            how.resolve = RESOLVE_BENEATH | RESOLVE_NO_SYMLINKS;
+                                          </code>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70 pt-1">
+                                            Eliminates TOCTOU race conditions with concurrent directory renames. Opening a FIFO with O_NONBLOCK returns immediately instead of blocking worker indefinitely.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  /* State Machine & Status Codes Tab */
+                                  <div className="flex flex-col gap-6">
+                                    {/* Transition Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex items-center justify-between">
+                                        <h5 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          DFA Tokenizer State Transitions (15 Core States)
+                                        </h5>
+                                        <span className="rounded bg-pink-100 px-2 py-0.5 font-mono text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                          Zero-Copy slice_t Offsets
+                                        </span>
+                                      </div>
+
+                                      <div className="max-h-96 overflow-y-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/20">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead className="sticky top-0 border-b border-pink-200/80 bg-blush dark:border-white/10 dark:bg-[#25182E]">
+                                            <tr>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Current State</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Input Byte</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Next State</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Buffer Slice Action</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Error Condition</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {httpParserTransitions.map((t, idx) => (
+                                              <tr key={idx} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className="px-3 py-2 font-bold text-accent dark:text-pink-300 text-[11px]">{t.currentState}</td>
+                                                <td className="px-3 py-2 font-bold text-ink dark:text-white text-[11px]">{t.inputByte}</td>
+                                                <td className="px-3 py-2 text-cocoa dark:text-pink-200 text-[11px] font-semibold">{t.nextState}</td>
+                                                <td className="px-3 py-2 text-ink-soft dark:text-white/80 text-[10px] leading-snug">{t.bufferAction}</td>
+                                                <td className={`px-3 py-2 text-[10px] font-medium ${t.errorCondition === 'none' ? 'text-ink-soft dark:text-white/60' : 'text-rose font-bold dark:text-rose'}`}>{t.errorCondition}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* Status Codes Table */}
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex items-center justify-between">
+                                        <h5 className="font-mono text-xs font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          HTTP Status Code Mapping
+                                        </h5>
+                                        <span className="rounded bg-pink-100 px-2 py-0.5 font-mono text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                          RFC 9110 / 9112 Conformance
+                                        </span>
+                                      </div>
+
+                                      <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/20">
+                                        <table className="w-full text-left font-mono text-xs">
+                                          <thead className="border-b border-pink-200/80 bg-blush/40 dark:border-white/10 dark:bg-white/5">
+                                            <tr>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Status</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Reason Phrase</th>
+                                              <th className="px-3 py-2 font-bold text-ink dark:text-white">Trigger Condition</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                            {httpStatusMappings.map((st) => (
+                                              <tr key={st.code} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                <td className={`px-3 py-2 font-bold ${st.code >= 400 ? 'text-rose' : 'text-accent dark:text-pink-300'}`}>
+                                                  {st.code}
+                                                </td>
+                                                <td className="px-3 py-2 font-bold text-ink dark:text-white">{st.phrase}</td>
+                                                <td className="px-3 py-2 text-cocoa dark:text-pink-100 text-[11px]">{st.trigger}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+
+                                    {/* C Structures Card */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Zero-Copy C Slices (slice_t &amp; header_t)
+                                        </span>
+                                        <div className="space-y-1.5 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            typedef struct &#123; uint32_t off, len; &#125; slice_t;<br/>
+                                            typedef struct &#123; slice_t name, value; &#125; header_t;<br/>
+                                            typedef struct &#123; ... header_t hdr[64]; &#125; http_parser_t;
+                                          </code>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70 pt-1">
+                                            Slices store {`{off, len}`} offsets instead of pointers, remaining valid even if the receive buffer shifts during pipelined request consumption.
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold text-accent dark:text-pink-300">
+                                          Zero-Copy sendfile() &amp; Lingering Close
+                                        </span>
+                                        <div className="space-y-1.5 rounded bg-black/5 p-3 text-[11px] leading-relaxed text-cocoa dark:bg-black/40 dark:text-pink-100">
+                                          <code className="block bg-white/60 p-2 rounded dark:bg-black/30 text-[10px]">
+                                            send(sock, hdr, len, MSG_MORE | MSG_NOSIGNAL);<br/>
+                                            sendfile(sock, file_fd, &amp;offset, 1 * 1024 * 1024);<br/>
+                                            shutdown(sock, SHUT_WR); // linger_close()
+                                          </code>
+                                          <p className="text-[10px] text-ink-soft dark:text-white/70 pt-1">
+                                            Page cache pages stream directly to socket with NIC checksum offload. Lingering close reads and discards pending client bytes to prevent TCP RST generation.
                                           </p>
                                         </div>
                                       </div>

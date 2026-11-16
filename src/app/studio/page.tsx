@@ -5,6 +5,7 @@ import StudioRetroComputer from '@/components/scene/StudioRetroComputer';
 import CoffeeSteam from '@/components/scene/CoffeeSteam';
 import StudioDeskPlant from '@/components/scene/StudioDeskPlant';
 import StudioHeadphoneAudio from '@/components/scene/StudioHeadphoneAudio';
+import RoomNavArrows from '@/components/ui/RoomNavArrows';
 
 export const metadata: Metadata = { title: 'Studio' };
 
@@ -18,6 +19,12 @@ export default function StudioPage() {
         <StudioDeskPlant />
         <StudioHeadphoneAudio />
       </RoomScene>
+
+      {/* Pink bubble navigation arrows: left to Living room, right to Bedroom */}
+      <RoomNavArrows
+        prev={{ name: 'Living room', href: '/' }}
+        next={{ name: 'Bedroom', href: '/bedroom' }}
+      />
 
       {/* Studio Room Heading positioned neatly in the bottom right, right-aligned to leave the desk & monitor completely clear */}
       <div className="studio-heading pointer-events-none absolute bottom-6 right-4 sm:bottom-8 sm:right-6 md:bottom-12 md:right-10 z-20 max-w-[220px] sm:max-w-sm md:max-w-md text-right select-none">

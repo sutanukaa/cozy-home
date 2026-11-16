@@ -324,8 +324,48 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                       <span className="rounded bg-accent/15 px-1 py-0.2 text-[10px]">OS</span>
                       <span className="tracking-tight">CozyOS</span>
                     </span>
-                    <span className="hidden opacity-60 hover:opacity-100 sm:inline">File</span>
-                    <span className="hidden opacity-60 hover:opacity-100 sm:inline">Edit</span>
+                    {/* Primary Tab 1: Projects */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        soundscape.playClickSound();
+                        setShowGame(false);
+                        setShowReadme(false);
+                        if (!activeProject && projects.length > 0) {
+                          setActiveProject(projects[0]);
+                          setSelectedIcon(projects[0].slug);
+                        }
+                      }}
+                      className={`cursor-pointer rounded-full px-2.5 py-0.5 text-[10px] sm:text-xs font-mono font-bold transition-all ${
+                        !showGame
+                          ? 'border border-pink-400/80 bg-accent text-white shadow-xs'
+                          : 'border border-transparent text-ink/80 hover:bg-pink-100/70 hover:text-ink dark:text-pink-200 dark:hover:bg-white/10'
+                      }`}
+                      title="View Projects"
+                    >
+                      Projects
+                    </button>
+
+                    {/* Primary Tab 2: Scratch this, game time! */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        soundscape.playClickSound();
+                        setShowGame(true);
+                        setActiveProject(null);
+                        setShowReadme(false);
+                        setShowBlueprints(false);
+                      }}
+                      className={`cursor-pointer rounded-full px-2.5 py-0.5 text-[10px] sm:text-xs font-mono font-bold transition-all ${
+                        showGame
+                          ? 'border border-butter/90 bg-butter text-cocoa shadow-xs ring-2 ring-butter/50'
+                          : 'border border-butter/80 bg-butter/40 text-cocoa hover:bg-butter hover:text-ink dark:border-butter/50 dark:bg-butter/25 dark:text-butter'
+                      }`}
+                      title="Scratch this, game time! Open the Cozy Arcade mini-game station"
+                    >
+                      Scratch this, game time!
+                    </button>
+
                     <span
                       onClick={() => {
                         const target =
@@ -341,31 +381,24 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                           setActiveProject(target);
                           setSelectedIcon(target.slug);
                           setShowBlueprints(true);
+                          setShowGame(false);
                           setActiveExtraTab('none');
                           setActiveBlueprintDiagram(1);
                         }
                       }}
-                      className="cursor-pointer text-accent underline opacity-85 hover:opacity-100"
+                      className="cursor-pointer text-accent underline opacity-85 hover:opacity-100 hidden sm:inline"
                       title="View Architecture Blueprints & System Diagrams"
                     >
                       Blueprints
                     </span>
-                    <button
-                      type="button"
+
+                    <span
                       onClick={() => {
                         soundscape.playClickSound();
-                        setShowGame(true);
-                        setActiveProject(null);
-                        setShowReadme(false);
+                        setShowReadme(true);
+                        setShowGame(false);
                       }}
-                      className="cursor-pointer rounded-full border border-butter/90 bg-butter/40 px-2.5 py-0.5 text-[10px] sm:text-xs font-mono font-bold text-cocoa hover:bg-butter hover:text-ink transition-all dark:border-butter/50 dark:bg-butter/25 dark:text-butter"
-                      title="Scratch this, game time! Open the Cozy Arcade mini-game station"
-                    >
-                      Scratch this, game time!
-                    </button>
-                    <span
-                      onClick={() => setShowReadme(true)}
-                      className="cursor-pointer opacity-70 hover:opacity-100"
+                      className="cursor-pointer opacity-70 hover:opacity-100 hidden sm:inline"
                     >
                       About
                     </span>
@@ -392,8 +425,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     }}
                   />
 
-                  {/* Desktop Icons Grid - All Projects + Game Time in a clean retro row */}
-                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-8 md:gap-2.5">
+                  {/* Desktop Icons Grid - All Projects in a clean retro row */}
+                  <div className="relative z-20 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-2.5">
                     {/* Project Icons */}
                     {projects.map((p) => {
                       const isSelected = selectedIcon === p.slug;
@@ -435,33 +468,6 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                         </div>
                       );
                     })}
-
-                    {/* Game Time App Icon */}
-                    <div
-                      onClick={() => {
-                        soundscape.playClickSound();
-                        setSelectedIcon('gametime');
-                        setShowGame(true);
-                        setActiveProject(null);
-                        setShowBlueprints(false);
-                        setShowReadme(false);
-                      }}
-                      className={`group flex cursor-pointer flex-col items-center rounded-xl p-2.5 text-center transition-all ${
-                        showGame || selectedIcon === 'gametime'
-                          ? 'bg-butter/60 ring-2 ring-butter shadow-sm dark:bg-white/15'
-                          : 'hover:bg-white/60 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
-                        <PixelGamepad size={48} />
-                      </div>
-                      <span className="mt-1.5 line-clamp-2 max-w-[100px] font-mono text-xs font-bold leading-tight text-ink dark:text-white">
-                        gametime.app
-                      </span>
-                      <span className="mt-0.5 rounded-full border border-butter/80 bg-butter/70 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-cocoa dark:bg-butter/25 dark:text-butter dark:border-butter/40">
-                        Mini-Game
-                      </span>
-                    </div>
                   </div>
 
                   {/* --- Floating Active Project Window --- */}

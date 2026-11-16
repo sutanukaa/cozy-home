@@ -93,16 +93,21 @@ Hotspots in code: bed ~(30,62), window ~(74,30).
 
 ### 5.4 Library (skills): `library-day.png` / `library-night.png`
 ```
-Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), warm light wood, sage green (#A9C7A0), and butter yellow (#FFE29A), warm soft daytime lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette of blush pink (#F9C6D3), cream (#FFF6EC), warm light wood, sage green (#A9C7A0), and butter yellow (#FFE29A), soft daytime lighting, tiny handmade scrapbook details, strictly NO text, NO letters, NO words, NO logos, NO people.
 
-Straight-on wide-angle dollhouse cutaway view of a cozy home library room, 16:9 landscape composition, camera pulled back so the entire room is visible from the wooden floorboards to the ceiling.
+Straight-on wide-angle dollhouse cutaway view of a cozy home library room, 16:9 landscape composition, camera pulled back showing the entire room from wooden floorboards to ceiling beams.
 
-Dominating the center and back wall is a grand, charming wooden bookshelf with multiple spacious horizontal shelves and cubby compartments. The shelves are COMPLETELY EMPTY and CLEAN—strictly zero books, empty wooden shelf surfaces with open space ready to hold items, no clutter on the shelves. 
+Dominating the back wall is a charming wooden bookshelf with four horizontal shelf rows. On each shelf, the books are packed continuously side-by-side in one cohesive, centered row with NO empty gaps in the center:
+- Shelf Row 1 (top): A single continuous, tightly packed row of 8 chunky books framed by cute wooden bookends.
+- Shelf Row 2: A single continuous, tightly packed row of 9 chunky books spanning side-by-side with no gap.
+- Shelf Row 3: A single continuous, tightly packed row of 6 chunky books neatly centered with bookends.
+- Shelf Row 4 (bottom): A single continuous, tightly packed row of 6 chunky books neatly centered with bookends.
 
-To the side of the bookshelf is a cute wooden rolling ladder and a trailing potted vine on the top ledge. In the cozy corner of the room sits a plush rounded armchair with a pastel throw pillow and blanket. Warm wooden plank floorboards with a soft round rug, fairy lights strung gently along the top beam, and an arched window on one side letting in soft golden morning sunlight. Wide 16:9 perspective.
+All books are chunky, substantial hardcovers standing upright shoulder-to-shoulder, completely filling their shelf space with zero empty middle gaps. Clean, solid blank spines with subtle gold foil line accents and pastel ribbon bookmarks.
+
+To the right side of the bookshelf is a wooden rolling ladder, a trailing potted plant on the upper ledge, a plush cream reading armchair with a cozy blanket, and an arched window letting in soft golden morning sunlight onto a round floor rug. Wide 16:9 landscape.
 ```
-Negative prompt: `books on shelves, filled bookshelves, cluttered shelves, pre-drawn books, text, letters, titles, logos, people, human figures, photo, photorealistic, harsh shadows, neon, 3d render`
-Hotspots in code: reading nook ~(78.5, 74), rolling ladder ~(62.5, 62), sunlit window ~(89.5, 38).
+Negative prompt: `gap in center, empty middle, split shelves, two clusters, separated books, empty shelf space, barren wood, text, letters, words, titles, modern plastic, photorealistic, harsh shadows, neon, 3D render, people`
 
 ### 5.5 Kitchen (experience): `kitchen-day.png` / `kitchen-night.png`
 ```

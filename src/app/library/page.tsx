@@ -3,6 +3,7 @@ import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import PaperCard from '@/components/ui/PaperCard';
 import CozyIcon from '@/components/ui/CozyIcon';
+import LibrarySpineOverlay from '@/components/scene/LibrarySpineOverlay';
 import { shelves, currentlyLearning } from '@/data/skills';
 
 export const metadata: Metadata = { title: 'Library' };
@@ -22,7 +23,10 @@ export default function LibraryPage() {
     <div className="relative min-h-screen w-full bg-wall select-none">
       {/* 16:9 Hero Room Scene with clean bookshelf background */}
       <section className="relative h-screen w-full overflow-hidden">
-        <RoomScene room="library" fit="cover" hotspots={[]} />
+        <RoomScene room="library" fit="cover" hotspots={[]}>
+          {/* Wooden Shelf Category Plaques & Printed Spine Titles */}
+          <LibrarySpineOverlay />
+        </RoomScene>
 
         {/* Pink bubble navigation arrows: left to Bedroom, right to Kitchen */}
         <RoomNavArrows

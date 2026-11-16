@@ -107,8 +107,8 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-frontend',
     emoji: '🎀',
     plaqueX: 18.0,
-    plaqueY: 28.0,
-    floorY: 38.6,
+    plaqueY: 29.5,
+    floorY: 40.0,
     startX: 32.2,
     books: [
       { name: 'TypeScript', color: 'ochre', width: 3.3, height: 11.8, tilt: -0.8, hasRibbon: true, ornament: 'star' },
@@ -127,8 +127,8 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-backend',
     emoji: '🧁',
     plaqueX: 18.0,
-    plaqueY: 44.5,
-    floorY: 51.6,
+    plaqueY: 46.0,
+    floorY: 53.0,
     startX: 32.2,
     books: [
       { name: 'FastAPI', color: 'sage', width: 3.1, height: 9.8, ornament: 'diamond' },
@@ -148,8 +148,8 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-ai',
     emoji: '🪄',
     plaqueX: 18.0,
-    plaqueY: 57.5,
-    floorY: 63.9,
+    plaqueY: 59.0,
+    floorY: 65.5,
     startX: 32.2,
     books: [
       { name: 'Gemini API', color: 'slate', width: 3.7, height: 9.4, tilt: -0.8, ornament: 'star' },
@@ -166,16 +166,16 @@ const SHELF_CATEGORIES: ShelfCategoryDef[] = [
     iconName: 'skill-tools',
     emoji: '🧰',
     plaqueX: 18.0,
-    plaqueY: 70.0,
-    floorY: 76.9,
+    plaqueY: 72.0,
+    floorY: 78.5,
     startX: 32.2,
     books: [
-      { name: 'Docker', color: 'slate', width: 3.7, height: 10.2, tilt: -1.0, ornament: 'diamond' },
-      { name: 'Git & GitHub', color: 'terracotta', width: 3.8, height: 10.4, hasRibbon: true, ornament: 'star' },
-      { name: 'GitHub Actions', color: 'ochre', width: 3.9, height: 9.9, ornament: 'lines' },
-      { name: 'Google Cloud Run', color: 'slate', width: 4.1, height: 10.5, ornament: 'dots' },
-      { name: 'Vercel', color: 'parchment', width: 3.5, height: 10.0, ornament: 'lines' },
-      { name: 'Postman', color: 'rose', width: 3.5, height: 9.8, tilt: 1.5, ornament: 'star' },
+      { name: 'Docker', color: 'slate', width: 3.7, height: 10.0, tilt: -1.0, ornament: 'diamond' },
+      { name: 'Git & GitHub', color: 'terracotta', width: 3.8, height: 10.2, hasRibbon: true, ornament: 'star' },
+      { name: 'GitHub Actions', color: 'ochre', width: 3.9, height: 9.7, ornament: 'lines' },
+      { name: 'Google Cloud Run', color: 'slate', width: 4.1, height: 10.3, ornament: 'dots' },
+      { name: 'Vercel', color: 'parchment', width: 3.5, height: 9.8, ornament: 'lines' },
+      { name: 'Postman', color: 'rose', width: 3.5, height: 9.6, tilt: 1.5, ornament: 'star' },
     ],
   },
 ];
@@ -372,10 +372,13 @@ export default function LibraryVectorBookshelf() {
                     </svg>
 
                     {/* Debossed Spine Typography: Native HTML Flexbox with writing-mode */}
-                    <div className="absolute inset-y-8 inset-x-1 flex items-center justify-center overflow-hidden pointer-events-none select-none">
+                    <div className="absolute inset-x-0.5 inset-y-1 flex items-center justify-center pointer-events-none select-none">
                       <span
-                        className="[writing-mode:vertical-rl] rotate-180 font-hand text-[9.5px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-bold tracking-wider leading-none text-center whitespace-nowrap"
+                        className="font-hand text-[8px] sm:text-[9.5px] md:text-[10.5px] lg:text-[11.5px] font-bold tracking-wide leading-none text-center select-none"
                         style={{
+                          writingMode: 'vertical-rl',
+                          transform: 'rotate(180deg)',
+                          whiteSpace: 'nowrap',
                           color: palette.textColor,
                           textShadow: isLightText
                             ? '0 0.5px 1px rgba(0,0,0,0.8), 0 0.5px 2px rgba(0,0,0,0.6)'

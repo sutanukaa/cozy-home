@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import BedroomFairyLights from '@/components/scene/BedroomFairyLights';
 import BedroomDiary from '@/components/scene/BedroomDiary';
+import BedroomTablet from '@/components/scene/BedroomTablet';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 
 export const metadata: Metadata = { title: 'Bedroom' };
@@ -12,6 +13,7 @@ export default function BedroomPage() {
       <RoomScene room="bedroom" fit="cover">
         <BedroomFairyLights />
         <BedroomDiary />
+        <BedroomTablet />
       </RoomScene>
 
       {/* Bedroom Room Heading positioned neatly in the bottom right corner like Studio */}

@@ -145,7 +145,10 @@ body.retro-modal-open .studio-heading,
 body.retro-modal-open #sound-toggle,
 body.diary-modal-open header,
 body.diary-modal-open .bedroom-heading,
-body.diary-modal-open #sound-toggle {
+body.diary-modal-open #sound-toggle,
+body.tablet-modal-open header,
+body.tablet-modal-open .bedroom-heading,
+body.tablet-modal-open #sound-toggle {
   display: none !important;
 }
 

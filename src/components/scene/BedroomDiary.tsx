@@ -245,15 +245,15 @@ export default function BedroomDiary() {
       {/* 3. OPEN DIARY FULL-SCREEN OVERLAY */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 select-none">
-            {/* Dimmed backdrop */}
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-8 select-none">
+            {/* Dimmed backdrop covering entire screen including navbar */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={handleClose}
-              className="absolute inset-0 bg-black/60 backdrop-blur-[3px]"
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               aria-hidden="true"
             />
 
@@ -263,7 +263,7 @@ export default function BedroomDiary() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 15 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full max-w-5xl aspect-[2222/1248] max-h-[92vh] flex items-center justify-center"
+              className="relative z-10 w-full max-w-5xl aspect-[2222/1248] max-h-[94vh] flex items-center justify-center"
             >
               {/* Background Open Diary Image */}
               <div className="absolute inset-0 pointer-events-none select-none">
@@ -272,7 +272,7 @@ export default function BedroomDiary() {
                   alt="Open diary spread"
                   fill
                   sizes="(max-width: 1024px) 95vw, 1100px"
-                  className="object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.45)]"
+                  className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
                   priority
                 />
               </div>
@@ -282,7 +282,7 @@ export default function BedroomDiary() {
                 type="button"
                 onClick={handleClose}
                 aria-label="Close Diary"
-                className="group absolute -top-2 right-2 sm:top-2 sm:right-4 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none"
+                className="group absolute -top-3 right-0 sm:top-1 sm:right-3 md:top-3 md:right-5 z-40 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none"
               >
                 <span
                   aria-hidden="true"
@@ -303,15 +303,15 @@ export default function BedroomDiary() {
               </button>
 
               {/* Two-page Content Layout Inside Open Book */}
-              <div className="relative z-20 grid h-full w-full grid-cols-1 md:grid-cols-2 px-6 py-6 sm:px-12 sm:py-8 md:px-16 md:py-12 overflow-y-auto md:overflow-visible text-ink">
+              <div className="relative z-20 grid h-full w-full grid-cols-1 md:grid-cols-2 px-6 py-6 sm:px-10 sm:py-8 md:px-14 md:py-10 text-ink">
                 {/* LEFT PAGE: Photo Polaroid + Name + Social Links */}
-                <div className="flex flex-col items-center justify-center text-center p-2 sm:p-4 md:pr-8">
+                <div className="flex flex-col items-center justify-center text-center p-1 sm:p-3 md:pr-6">
                   {/* Polaroid Frame */}
-                  <div className="relative w-44 sm:w-56 md:w-64 rotate-[-2deg] rounded-lg bg-white p-3 sm:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
+                  <div className="relative w-36 sm:w-48 md:w-56 rotate-[-2deg] rounded-lg bg-white p-2.5 sm:p-3.5 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
                     {/* Cute Washi Tape on Top of Polaroid */}
                     <div
                       aria-hidden="true"
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 h-6 w-20 rounded-xs bg-[#FFC5D3]/85 shadow-xs -rotate-2"
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 h-5 w-16 sm:h-6 sm:w-20 rounded-xs bg-[#FFC5D3]/85 shadow-xs -rotate-2"
                       style={{
                         backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.4) 4px, rgba(255,255,255,0.4) 8px)',
                       }}
@@ -323,32 +323,32 @@ export default function BedroomDiary() {
                         src="/images/me.jpeg"
                         alt={site.name}
                         fill
-                        sizes="260px"
+                        sizes="240px"
                         className="object-cover"
                         priority
                       />
                     </div>
 
                     {/* Polaroid Caption */}
-                    <div className="mt-2.5 sm:mt-3 text-center">
-                      <p className="font-hand text-xl sm:text-2xl font-bold text-ink">
+                    <div className="mt-2 sm:mt-2.5 text-center">
+                      <p className="font-hand text-lg sm:text-xl md:text-2xl font-bold text-ink">
                         {site.name}
                       </p>
-                      <p className="font-sans text-xs tracking-wider uppercase text-ink/65 font-semibold">
+                      <p className="font-sans text-[10px] sm:text-xs tracking-wider uppercase text-ink/65 font-semibold">
                         {site.role}
                       </p>
                     </div>
                   </div>
 
                   {/* Social links row */}
-                  <div className="mt-4 sm:mt-5 flex items-center justify-center gap-2">
+                  <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
                     {site.socials.map((s) => (
                       <a
                         key={s.label}
                         href={s.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-full border border-pink-200/80 bg-paper/90 px-3 py-1 font-hand text-sm font-bold text-ink shadow-xs backdrop-blur-xs transition hover:scale-105 hover:bg-blush/40"
+                        className="rounded-full border border-pink-200/80 bg-paper/90 px-2.5 py-0.5 sm:px-3 sm:py-1 font-hand text-xs sm:text-sm font-bold text-ink shadow-xs backdrop-blur-xs transition hover:scale-105 hover:bg-blush/40"
                       >
                         {s.label}
                       </a>
@@ -357,18 +357,18 @@ export default function BedroomDiary() {
                 </div>
 
                 {/* RIGHT PAGE: Bio + Loves + Fun Facts + Resume Button */}
-                <div className="flex flex-col justify-center space-y-3 sm:space-y-4 p-2 sm:p-4 md:pl-8 text-left">
+                <div className="flex flex-col justify-center space-y-2 sm:space-y-3 p-1 sm:p-3 md:pl-6 text-left max-h-[82vh] md:max-h-[72vh] overflow-y-auto">
                   <div>
-                    <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-ink">
+                    <h2 className="font-display text-lg sm:text-2xl md:text-3xl font-extrabold text-ink leading-tight">
                       Hello, I&apos;m {site.shortName}
                     </h2>
-                    <p className="mt-1 font-hand text-base sm:text-lg text-accent font-semibold">
+                    <p className="mt-0.5 font-hand text-sm sm:text-base md:text-lg text-accent font-semibold">
                       Welcome to my diary &amp; personal space!
                     </p>
                   </div>
 
                   {/* Bio Paragraphs */}
-                  <div className="space-y-2 font-sans text-xs sm:text-sm leading-relaxed text-ink/85">
+                  <div className="space-y-1.5 font-sans text-xs sm:text-[13px] md:text-sm leading-relaxed text-ink/85">
                     {about.paragraphs.map((p, i) => (
                       <p key={i}>{p}</p>
                     ))}
@@ -376,14 +376,14 @@ export default function BedroomDiary() {
 
                   {/* Things I Love Stickers */}
                   <div>
-                    <h3 className="font-hand text-base sm:text-lg font-bold text-ink/90">
+                    <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
                       Things I love:
                     </h3>
-                    <div className="mt-1 flex flex-wrap gap-1.5">
+                    <div className="mt-0.5 flex flex-wrap gap-1 sm:gap-1.5">
                       {about.loves.map((love) => (
                         <span
                           key={love}
-                          className="rounded-full border border-pink-200/90 bg-[#FFF5F8] px-2.5 py-0.5 font-sans text-xs font-medium text-ink shadow-xs"
+                          className="rounded-full border border-pink-200/90 bg-[#FFF5F8] px-2 py-0.5 font-sans text-[11px] sm:text-xs font-medium text-ink shadow-xs"
                         >
                           {love}
                         </span>
@@ -393,10 +393,10 @@ export default function BedroomDiary() {
 
                   {/* Fun Facts */}
                   <div>
-                    <h3 className="font-hand text-base sm:text-lg font-bold text-ink/90">
+                    <h3 className="font-hand text-sm sm:text-base font-bold text-ink/90">
                       Fun facts:
                     </h3>
-                    <ul className="mt-1 space-y-1 font-sans text-xs text-ink/80 list-disc list-inside">
+                    <ul className="mt-0.5 space-y-0.5 font-sans text-[11px] sm:text-xs text-ink/80 list-disc list-inside">
                       {about.funFacts.map((fact) => (
                         <li key={fact}>{fact}</li>
                       ))}
@@ -404,15 +404,15 @@ export default function BedroomDiary() {
                   </div>
 
                   {/* Resume Download Button */}
-                  <div className="pt-2">
+                  <div className="pt-1">
                     <a
                       href={site.resumeUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border-2 border-white/80 bg-gradient-to-r from-[#FFB8CE] to-[#F482A5] px-4 py-1.5 font-hand text-base font-bold text-white shadow-cozy transition-transform hover:scale-105 active:scale-95"
+                      className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border-2 border-white/80 bg-gradient-to-r from-[#FFB8CE] to-[#F482A5] px-3.5 py-1 sm:px-4 sm:py-1.5 font-hand text-sm sm:text-base font-bold text-white shadow-cozy transition-transform hover:scale-105 active:scale-95"
                     >
                       <svg
-                        className="h-4 w-4"
+                        className="h-3.5 w-3.5 sm:h-4 sm:w-4"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"

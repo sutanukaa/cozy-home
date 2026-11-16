@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
@@ -31,6 +31,9 @@ export default function BedroomTablet() {
   // Song of the day rotation (based on calendar day of the year)
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(30);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -64,11 +67,26 @@ export default function BedroomTablet() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
+  // Audio playback controller when song index changes
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const currentSong = spotifyPlaylist.tracks[currentSongIndex];
+    if (currentSong?.previewUrl) {
+      audioRef.current.src = currentSong.previewUrl;
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(() => {
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, [currentSongIndex, isPlaying, spotifyPlaylist.tracks]);
+
   const handleOpen = () => {
     soundscape.playSparkleSound();
     setIsFloating(true);
 
-    // Generate sparkle trail along trajectory from bedside table (x: 71.2%, y: 53%) to center (x: 50%, y: 50%)
+    // Generate sparkle trail along trajectory from bedside table to center
     const newSparkles: SparkleParticle[] = Array.from({ length: 18 }).map((_, i) => {
       const progress = i / 17;
       const baseX = 71.2 - progress * 21.2;
@@ -97,8 +115,11 @@ export default function BedroomTablet() {
 
   const handleClose = () => {
     soundscape.playSparkleSound();
-    setIsOpen(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     setIsPlaying(false);
+    setIsOpen(false);
   };
 
   const currentSong: PlaylistTrack =
@@ -117,8 +138,48 @@ export default function BedroomTablet() {
   };
 
   const togglePlay = () => {
-    setIsPlaying((prev) => !prev);
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      if (!audioRef.current.src && currentSong.previewUrl) {
+        audioRef.current.src = currentSong.previewUrl;
+      }
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    }
     soundscape.playSparkleSound();
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+      if (audioRef.current.duration && !isNaN(audioRef.current.duration)) {
+        setDuration(audioRef.current.duration);
+      }
+    }
+  };
+
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audioRef.current || duration === 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    audioRef.current.currentTime = pos * duration;
+    setCurrentTime(pos * duration);
+  };
+
+  const formatTime = (secs: number) => {
+    if (isNaN(secs)) return '0:00';
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
   return (
@@ -287,7 +348,7 @@ export default function BedroomTablet() {
         createPortal(
           <AnimatePresence>
             {isOpen && (
-              <div className="diary-book-modal fixed inset-0 z-[999] flex items-center justify-center p-2 sm:p-4 md:p-8 select-none">
+              <div className="diary-book-modal fixed inset-0 z-[999] flex items-center justify-center p-2 sm:p-4 select-none">
                 {/* Dimmed backdrop covering entire screen */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -299,32 +360,46 @@ export default function BedroomTablet() {
                   aria-hidden="true"
                 />
 
-                {/* Tablet Frame Container */}
+                {/* Hidden Audio element for streaming Spotify audio previews */}
+                <audio
+                  ref={audioRef}
+                  onTimeUpdate={handleTimeUpdate}
+                  onEnded={handleNextSong}
+                  onError={() => setIsPlaying(false)}
+                  preload="auto"
+                />
+
+                {/* Tablet Frame Container - Strict 1599:1192 aspect ratio locked */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.7, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 15 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative z-10 w-full max-w-4xl aspect-[1599/1192] max-h-[92vh] flex items-center justify-center"
+                  className="relative z-10 flex items-center justify-center select-none"
+                  style={{
+                    width: 'min(94vw, calc(86vh * 1599 / 1192), 940px)',
+                    height: 'calc(min(94vw, calc(86vh * 1599 / 1192), 940px) * 1192 / 1599)',
+                    aspectRatio: '1599 / 1192',
+                  }}
                 >
-                  {/* Tablet Frame Image */}
+                  {/* Tablet Frame Art */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
                       src="/assets/objects/bedroom-tablet-open.png"
                       alt="Open iPad frame"
                       fill
-                      sizes="(max-width: 1024px) 96vw, 1100px"
-                      className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
+                      sizes="(max-width: 1024px) 96vw, 940px"
+                      className="object-fill drop-shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
                       priority
                     />
                   </div>
 
-                  {/* Close Button: Glossy Pink Bubble in Top Right Corner */}
+                  {/* Close Button: Glossy Pink Bubble floating neatly on top right case */}
                   <button
                     type="button"
                     onClick={handleClose}
                     aria-label="Close Tablet"
-                    className="group absolute -top-3 right-0 sm:top-1 sm:right-3 md:top-2 md:right-4 z-40 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none"
+                    className="group absolute -top-3.5 -right-3.5 sm:-top-4 sm:-right-4 z-40 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none"
                   >
                     <span
                       aria-hidden="true"
@@ -344,8 +419,16 @@ export default function BedroomTablet() {
                     </svg>
                   </button>
 
-                  {/* Inside Screen Content: Strictly bounded inside cream screen (left: 7.5%, right: 9.5%, top: 12%, bottom: 12%) */}
-                  <div className="absolute left-[7.5%] right-[9.5%] top-[12%] bottom-[12%] z-20 flex flex-col overflow-hidden rounded-md bg-[#FFFDF8] text-ink select-text">
+                  {/* Inside Screen Content: Strictly bounded inside tablet screen glass */}
+                  <div
+                    className="absolute z-20 flex flex-col overflow-hidden rounded-xl bg-[#FFFDF8] text-ink select-text shadow-inner"
+                    style={{
+                      top: '14.2%',
+                      bottom: '12.8%',
+                      left: '11.0%',
+                      right: '11.0%',
+                    }}
+                  >
                     {/* Tablet Top App Bar */}
                     <div className="flex items-center justify-between border-b border-pink-200/60 bg-[#FFF5F8] px-3 sm:px-4 py-1.5 sm:py-2 shrink-0">
                       <div className="flex items-center gap-2">
@@ -407,12 +490,12 @@ export default function BedroomTablet() {
                           mobileTab === 'blogs' ? 'flex' : 'hidden md:flex'
                         }`}
                       >
-                        {/* 1. SONG OF THE DAY MINI PLAYER */}
-                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs">
+                        {/* 1. SONG OF THE DAY MINI PLAYER - FULLY PLAYABLE */}
+                        <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs transition-shadow hover:shadow-sm">
                           <div className="flex items-center justify-between mb-1.5">
                             <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent">
                               <svg
-                                className="h-3.5 w-3.5 text-accent animate-spin-slow"
+                                className={`h-3.5 w-3.5 text-accent ${isPlaying ? 'animate-spin-slow' : ''}`}
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
                               >
@@ -435,17 +518,18 @@ export default function BedroomTablet() {
                                 className="object-cover"
                               />
                               {isPlaying && (
-                                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                  <div className="flex items-end gap-0.5 h-3">
-                                    <span className="w-1 bg-white animate-pulse h-3 rounded-full" />
+                                <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                                  <div className="flex items-end gap-0.5 h-3.5">
+                                    <span className="w-1 bg-white animate-pulse h-3.5 rounded-full" />
                                     <span className="w-1 bg-white animate-pulse h-2 rounded-full delay-75" />
-                                    <span className="w-1 bg-white animate-pulse h-3.5 rounded-full delay-150" />
+                                    <span className="w-1 bg-white animate-pulse h-4 rounded-full delay-150" />
+                                    <span className="w-1 bg-white animate-pulse h-2.5 rounded-full delay-200" />
                                   </div>
                                 </div>
                               )}
                             </div>
 
-                            {/* Song Meta */}
+                            {/* Song Meta & Playback Controls */}
                             <div className="flex-1 min-w-0">
                               <p className="font-display text-xs sm:text-sm font-bold text-ink truncate leading-tight">
                                 {currentSong.title}
@@ -456,7 +540,7 @@ export default function BedroomTablet() {
 
                               {/* Controls Row */}
                               <div className="mt-1.5 flex items-center justify-between">
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1.5">
                                   {/* Prev */}
                                   <button
                                     type="button"
@@ -469,19 +553,21 @@ export default function BedroomTablet() {
                                     </svg>
                                   </button>
 
-                                  {/* Play / Pause Toggle */}
+                                  {/* Play / Pause Toggle Button */}
                                   <button
                                     type="button"
                                     onClick={togglePlay}
                                     aria-label={isPlaying ? 'Pause' : 'Play'}
-                                    className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-xs hover:scale-105 active:scale-95 transition-transform"
+                                    className={`flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-xs hover:scale-105 active:scale-95 transition-all ${
+                                      isPlaying ? 'ring-2 ring-pink-300' : ''
+                                    }`}
                                   >
                                     {isPlaying ? (
-                                      <svg className="h-2.5 w-2.5 fill-current" viewBox="0 0 24 24">
+                                      <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
                                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                                       </svg>
                                     ) : (
-                                      <svg className="h-2.5 w-2.5 fill-current ml-0.5" viewBox="0 0 24 24">
+                                      <svg className="h-3 w-3 fill-current ml-0.5" viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z" />
                                       </svg>
                                     )}
@@ -506,9 +592,16 @@ export default function BedroomTablet() {
                                   target="_blank"
                                   rel="noreferrer"
                                   className="inline-flex items-center gap-1 rounded-full border border-green-300/80 bg-[#1DB954]/10 px-2 py-0.5 font-sans text-[9px] font-bold text-[#1DB954] hover:bg-[#1DB954]/20 transition-colors"
+                                  title="Listen on Spotify"
                                 >
                                   <span>Spotify</span>
-                                  <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                  <svg
+                                    className="h-2.5 w-2.5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                  >
                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                                     <polyline points="15 3 21 3 21 9" />
                                     <line x1="10" y1="14" x2="21" y2="3" />
@@ -517,13 +610,40 @@ export default function BedroomTablet() {
                               </div>
                             </div>
                           </div>
+
+                          {/* Progress bar scrubber */}
+                          <div className="mt-2 pt-1 border-t border-pink-100 flex items-center gap-2">
+                            <span className="font-mono text-[9px] text-ink-soft shrink-0">
+                              {formatTime(currentTime)}
+                            </span>
+                            <div
+                              onClick={handleSeek}
+                              className="relative flex-1 h-1.5 bg-pink-100 rounded-full cursor-pointer overflow-hidden group"
+                            >
+                              <div
+                                className="h-full bg-gradient-to-r from-[#FFB8CE] to-[#F482A5] rounded-full transition-all duration-100"
+                                style={{
+                                  width: `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%`,
+                                }}
+                              />
+                            </div>
+                            <span className="font-mono text-[9px] text-ink-soft shrink-0">
+                              {formatTime(duration)}
+                            </span>
+                          </div>
                         </div>
 
                         {/* 2. CURRENTLY READING */}
                         <div className="rounded-xl border border-pink-200/80 bg-white/95 p-2.5 shadow-xs">
                           <div className="flex items-center justify-between mb-1.5">
                             <span className="flex items-center gap-1 font-hand text-xs sm:text-sm font-bold text-accent">
-                              <svg className="h-3.5 w-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <svg
+                                className="h-3.5 w-3.5 text-accent"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                              >
                                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                               </svg>
@@ -566,7 +686,13 @@ export default function BedroomTablet() {
                         <div className="flex-1 flex flex-col min-h-0">
                           <div className="flex items-center justify-between mb-1 pt-1">
                             <h3 className="font-display text-xs sm:text-sm font-extrabold text-ink flex items-center gap-1.5">
-                              <svg className="h-3.5 w-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <svg
+                                className="h-3.5 w-3.5 text-accent"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                              >
                                 <path d="M12 20h9" />
                                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                               </svg>
@@ -687,6 +813,16 @@ export default function BedroomTablet() {
                               fill
                               className="object-cover"
                             />
+                            {isPlaying && (
+                              <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                                <div className="flex items-end gap-1 h-5">
+                                  <span className="w-1.5 bg-white animate-pulse h-5 rounded-full" />
+                                  <span className="w-1.5 bg-white animate-pulse h-3 rounded-full delay-75" />
+                                  <span className="w-1.5 bg-white animate-pulse h-6 rounded-full delay-150" />
+                                  <span className="w-1.5 bg-white animate-pulse h-4 rounded-full delay-200" />
+                                </div>
+                              </div>
+                            )}
                           </div>
                           <h3 className="font-display text-base font-bold text-ink leading-tight">
                             {currentSong.title}
@@ -698,6 +834,7 @@ export default function BedroomTablet() {
                             <button
                               type="button"
                               onClick={handlePrevSong}
+                              aria-label="Previous Song"
                               className="p-2 rounded-full bg-pink-100 text-ink"
                             >
                               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -707,7 +844,8 @@ export default function BedroomTablet() {
                             <button
                               type="button"
                               onClick={togglePlay}
-                              className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-md"
+                              aria-label={isPlaying ? 'Pause' : 'Play'}
+                              className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] text-white shadow-md active:scale-95 transition-transform"
                             >
                               {isPlaying ? (
                                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -722,6 +860,7 @@ export default function BedroomTablet() {
                             <button
                               type="button"
                               onClick={handleNextSong}
+                              aria-label="Next Song"
                               className="p-2 rounded-full bg-pink-100 text-ink"
                             >
                               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -736,7 +875,13 @@ export default function BedroomTablet() {
                             className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-green-300 bg-[#1DB954]/15 px-3.5 py-1.5 font-sans text-xs font-bold text-[#1DB954]"
                           >
                             <span>Open in Spotify</span>
-                            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <svg
+                              className="h-3 w-3"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
                               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                               <polyline points="15 3 21 3 21 9" />
                               <line x1="10" y1="14" x2="21" y2="3" />

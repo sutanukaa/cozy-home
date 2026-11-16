@@ -277,7 +277,7 @@ export default function BedroomDiary() {
         createPortal(
           <AnimatePresence>
             {isOpen && (
-              <div className="fixed inset-0 z-[999] flex items-center justify-center p-2 sm:p-4 md:p-8 select-none">
+              <div className="diary-book-modal fixed inset-0 z-[999] flex items-center justify-center p-2 sm:p-4 md:p-8 select-none">
                 {/* Dimmed backdrop covering entire screen including navbar */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -285,7 +285,7 @@ export default function BedroomDiary() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                   onClick={handleClose}
-                  className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+                  className="absolute inset-0 bg-black/75 backdrop-blur-sm"
                   aria-hidden="true"
                 />
 
@@ -295,7 +295,7 @@ export default function BedroomDiary() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 15 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="hidden md:flex relative z-10 w-full max-w-4xl aspect-[2222/1248] max-h-[88vh] items-center justify-center"
+                  className="diary-book-modal hidden md:flex relative z-10 w-full max-w-4xl aspect-[2222/1248] max-h-[88vh] items-center justify-center"
                 >
                   {/* Background Open Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
@@ -476,7 +476,7 @@ export default function BedroomDiary() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.85, y: 15 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex md:hidden relative z-10 w-full max-w-[390px] xs:max-w-[420px] aspect-[1372/1908] max-h-[92vh] items-center justify-center"
+                  className="diary-book-modal flex md:hidden relative z-10 w-full max-w-[390px] xs:max-w-[420px] aspect-[1372/1908] max-h-[92vh] items-center justify-center"
                 >
                   {/* Background Single-Page Mobile Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">

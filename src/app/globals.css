@@ -60,6 +60,48 @@ html[data-theme='night'] {
   ::selection { background: rgb(var(--accent) / 0.35); }
 }
 
+/* ------------------------------------------------------------------ */
+/* Custom Floral Cursors: Closed Bud (Default) & Blooming Flower (Hover) */
+/* ------------------------------------------------------------------ */
+html,
+body {
+  cursor: url('/assets/icons/cursor-default.png') 4 2, auto;
+}
+
+/* Clickable elements display the blooming flower cursor */
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+summary,
+[tabindex="0"],
+label[for],
+.cursor-pointer,
+.cursor-pointer * {
+  cursor: url('/assets/icons/cursor-pointer.png') 4 4, pointer;
+}
+
+/* Text fields keep standard text caret */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+/* Disabled states keep not-allowed cursor */
+button:disabled,
+[aria-disabled="true"],
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 /* ---------------- day / night helpers (pure CSS, no flash) ---------------- */
 .only-night { display: none; }
 html[data-theme='night'] .only-night { display: block; }

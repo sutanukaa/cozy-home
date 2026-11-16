@@ -8,6 +8,7 @@ import { soundscape } from '@/lib/soundEngine';
 interface BookSpine {
   name: string;
   x: number; // percentage center X
+  width: number; // percentage width
 }
 
 interface ShelfCategory {
@@ -19,7 +20,6 @@ interface ShelfCategory {
   y: number; // plaque top %
   topY: number; // spine top %
   spineHeight: number; // spine height %
-  spineWidth: number; // spine width %
   books: BookSpine[];
 }
 
@@ -29,20 +29,19 @@ export const SHELF_CATEGORIES: ShelfCategory[] = [
     name: 'Frontend & UI',
     iconName: 'skill-frontend',
     emoji: '🎀',
-    x: 14.2,
-    y: 20.0,
+    x: 8.5,
+    y: 19.5,
     topY: 16.5,
-    spineHeight: 11.5,
-    spineWidth: 3.5,
+    spineHeight: 12.0,
     books: [
-      { name: 'TypeScript', x: 26.56 },
-      { name: 'JavaScript', x: 30.09 },
-      { name: 'Next.js', x: 33.61 },
-      { name: 'React.js', x: 37.14 },
-      { name: 'React Native', x: 40.66 },
-      { name: 'Tailwind CSS', x: 44.19 },
-      { name: 'Framer Motion', x: 47.71 },
-      { name: 'Polaris', x: 51.24 },
+      { name: 'TypeScript', x: 27.05, width: 2.2 },
+      { name: 'JavaScript', x: 29.04, width: 2.2 },
+      { name: 'Next.js', x: 31.12, width: 2.2 },
+      { name: 'React.js', x: 33.94, width: 2.8 },
+      { name: 'React Native', x: 37.39, width: 3.0 },
+      { name: 'Tailwind CSS', x: 40.95, width: 3.2 },
+      { name: 'Framer Motion', x: 46.73, width: 3.0 },
+      { name: 'Polaris', x: 51.35, width: 2.2 },
     ],
   },
   {
@@ -50,21 +49,20 @@ export const SHELF_CATEGORIES: ShelfCategory[] = [
     name: 'Backend & APIs',
     iconName: 'skill-backend',
     emoji: '🧁',
-    x: 13.0,
+    x: 6.5,
     y: 35.5,
     topY: 32.0,
-    spineHeight: 11.5,
-    spineWidth: 4.4,
+    spineHeight: 12.0,
     books: [
-      { name: 'FastAPI', x: 22.44 },
-      { name: 'Node.js', x: 26.92 },
-      { name: 'Express.js', x: 31.39 },
-      { name: 'Celery', x: 35.87 },
-      { name: 'Redis', x: 40.35 },
-      { name: 'PostgreSQL', x: 44.83 },
-      { name: 'Prisma', x: 49.31 },
-      { name: 'MongoDB', x: 53.78 },
-      { name: 'Supabase', x: 58.26 },
+      { name: 'FastAPI', x: 21.24, width: 2.2 },
+      { name: 'Node.js', x: 25.13, width: 2.6 },
+      { name: 'Express.js', x: 29.29, width: 2.2 },
+      { name: 'Celery', x: 33.87, width: 2.6 },
+      { name: 'Redis', x: 36.65, width: 2.4 },
+      { name: 'PostgreSQL', x: 39.55, width: 2.8 },
+      { name: 'Prisma', x: 42.86, width: 3.2 },
+      { name: 'MongoDB', x: 51.45, width: 2.6 },
+      { name: 'Supabase', x: 55.88, width: 2.2 },
     ],
   },
   {
@@ -72,18 +70,17 @@ export const SHELF_CATEGORIES: ShelfCategory[] = [
     name: 'AI & Data',
     iconName: 'skill-ai',
     emoji: '🪄',
-    x: 16.0,
+    x: 8.5,
     y: 51.5,
     topY: 47.5,
-    spineHeight: 11.0,
-    spineWidth: 3.8,
+    spineHeight: 12.0,
     books: [
-      { name: 'Gemini API', x: 30.73 },
-      { name: 'RAG', x: 34.60 },
-      { name: 'Vector Embeddings', x: 38.47 },
-      { name: 'ChromaDB', x: 42.33 },
-      { name: 'Vercel AI SDK', x: 46.20 },
-      { name: 'ETL Pipelines', x: 50.07 },
+      { name: 'Gemini API', x: 31.18, width: 2.2 },
+      { name: 'RAG', x: 34.88, width: 2.2 },
+      { name: 'Vector Embeddings', x: 41.93, width: 3.0 },
+      { name: 'ChromaDB', x: 43.86, width: 2.2 },
+      { name: 'Vercel AI SDK', x: 47.47, width: 2.4 },
+      { name: 'ETL Pipelines', x: 49.49, width: 2.2 },
     ],
   },
   {
@@ -91,18 +88,17 @@ export const SHELF_CATEGORIES: ShelfCategory[] = [
     name: 'Tools & DevOps',
     iconName: 'skill-tools',
     emoji: '🧰',
-    x: 16.0,
+    x: 8.5,
     y: 66.5,
     topY: 63.0,
-    spineHeight: 11.0,
-    spineWidth: 4.0,
+    spineHeight: 12.0,
     books: [
-      { name: 'Docker', x: 30.82 },
-      { name: 'Git & GitHub', x: 34.85 },
-      { name: 'GitHub Actions', x: 38.88 },
-      { name: 'Google Cloud Run', x: 42.92 },
-      { name: 'Vercel', x: 46.95 },
-      { name: 'Postman', x: 50.98 },
+      { name: 'Docker', x: 30.85, width: 2.2 },
+      { name: 'Git & GitHub', x: 34.41, width: 2.2 },
+      { name: 'GitHub Actions', x: 39.64, width: 2.6 },
+      { name: 'Google Cloud Run', x: 41.88, width: 2.8 },
+      { name: 'Vercel', x: 43.99, width: 2.2 },
+      { name: 'Postman', x: 49.71, width: 2.2 },
     ],
   },
 ];
@@ -127,7 +123,7 @@ export default function LibrarySpineOverlay() {
     <div className="absolute inset-0 z-20 pointer-events-none select-none">
       {SHELF_CATEGORIES.map((cat) => (
         <div key={cat.id}>
-          {/* Category Wooden Plaque on the left shelf plank */}
+          {/* Category Wooden Plaque on the left shelf plank with ample margin */}
           <a
             href={`#${cat.id}`}
             title={`Go to ${cat.name} shelf`}
@@ -161,10 +157,10 @@ export default function LibrarySpineOverlay() {
               style={{
                 left: `${book.x}%`,
                 top: `${cat.topY}%`,
-                width: `${cat.spineWidth}%`,
+                width: `${book.width}%`,
                 height: `${cat.spineHeight}%`,
               }}
-              className="pointer-events-auto absolute -translate-x-1/2 flex items-center justify-center cursor-pointer group rounded-xs transition-colors hover:bg-white/15"
+              className="pointer-events-auto absolute -translate-x-1/2 flex items-center justify-center cursor-pointer group rounded-xs transition-colors hover:bg-white/20 active:scale-95"
               onMouseEnter={() =>
                 setHoveredSkill({
                   name: book.name,
@@ -176,12 +172,12 @@ export default function LibrarySpineOverlay() {
               onMouseLeave={() => setHoveredSkill(null)}
               onClick={() => handleBookClick(cat.id)}
             >
-              {/* Vertical Title printed on the spine */}
+              {/* Vertical Title printed neatly on the spine */}
               <span
-                className="[writing-mode:vertical-rl] rotate-180 font-hand text-[8.5px] sm:text-[9.5px] md:text-[10.5px] lg:text-[11.5px] font-bold tracking-wide leading-none text-[#2D1A10] dark:text-[#FFF5EA] transition-all group-hover:scale-105 group-hover:text-black dark:group-hover:text-white line-clamp-1"
+                className="[writing-mode:vertical-rl] rotate-180 font-hand text-[7.5px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10.5px] font-bold tracking-wide leading-none text-[#2D1A10] dark:text-[#FFF5EA] transition-all group-hover:scale-105 group-hover:text-black dark:group-hover:text-white whitespace-nowrap"
                 style={{
                   textShadow:
-                    '0 0.5px 1.5px rgba(255, 255, 255, 0.85), 0 1px 2px rgba(0, 0, 0, 0.25)',
+                    '0 0.5px 1.5px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.25)',
                 }}
               >
                 {book.name}

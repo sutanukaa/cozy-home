@@ -12,9 +12,10 @@ interface Props {
   hotspots?: HotspotDef[];
   children?: React.ReactNode;
   fit?: 'cover' | 'contain';
+  stageAlign?: 'center' | 'top';
 }
 
-export default function RoomScene({ room, hotspots = [], children, fit = 'cover' }: Props) {
+export default function RoomScene({ room, hotspots = [], children, fit = 'cover', stageAlign = 'center' }: Props) {
   const meta = getRoom(room);
   const [debug, setDebug] = useState(false);
   const [picked, setPicked] = useState<{ x: number; y: number } | null>(null);
@@ -80,7 +81,9 @@ export default function RoomScene({ room, hotspots = [], children, fit = 'cover'
     <figure aria-label={`Illustration of the ${meta.name.toLowerCase()}`} className="relative h-full w-full overflow-hidden select-none">
       <div
         ref={containerRef}
-        className="relative h-full w-full overflow-hidden bg-wall-deep flex items-center justify-center touch-pan-y"
+        className={`relative h-full w-full overflow-hidden bg-wall-deep flex ${
+          stageAlign === 'top' ? 'items-start pt-14 sm:pt-16' : 'items-center'
+        } justify-center touch-pan-y`}
       >
         {/* Diorama stage: smoothly pannable on mobile/portrait devices, centered on desktop */}
         <motion.div

@@ -23,7 +23,7 @@ export default function LibraryPage() {
     <div className="relative min-h-screen w-full bg-wall select-none">
       {/* 16:9 Hero Room Scene with clean bookshelf background */}
       <section className="relative h-screen w-full overflow-hidden">
-        <RoomScene room="library" fit="cover" hotspots={[]}>
+        <RoomScene room="library" fit="cover" stageAlign="top" hotspots={[]}>
           {/* Wooden Shelf Category Plaques & Printed Spine Titles */}
           <LibrarySpineOverlay />
         </RoomScene>

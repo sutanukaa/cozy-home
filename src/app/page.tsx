@@ -31,19 +31,18 @@ export default function HomePage() {
       </RoomScene>
 
       {/* Clean professional hero text anchored safely below the fixed navbar */}
-      <div className="pointer-events-none absolute inset-x-0 top-18 sm:top-24 md:top-28 z-20 mx-auto max-w-4xl px-4 text-center">
+      <div className="pointer-events-none absolute inset-x-0 top-18 sm:top-22 md:top-26 z-20 mx-auto max-w-5xl px-4 text-center">
         <h1
-          className="font-display text-[22px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight"
+          className="font-display text-lg xs:text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold tracking-tight text-white whitespace-nowrap leading-tight"
           style={{
             textShadow:
               '0 3px 14px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 140, 180, 0.75), 0 2px 4px rgba(0,0,0,0.85)',
           }}
         >
-          <span className="block whitespace-nowrap">Software Development</span>
-          <span className="block">Engineer</span>
+          {site.role}
         </h1>
         <p
-          className="mx-auto mt-1 sm:mt-2 max-w-xl font-hand text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white/95"
+          className="mx-auto mt-1 sm:mt-1.5 max-w-2xl font-hand text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-white/95"
           style={{
             textShadow:
               '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',

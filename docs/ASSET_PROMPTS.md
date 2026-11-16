@@ -378,3 +378,35 @@ Isolated object centered on a solid plain flat white background, strictly no whi
 
 Negative prompt: `text, letters, words, writing, handwriting, scribbles, lined paper, grid, photo in middle, portrait, face, people, dirty paper, dark background, sticker outline, drop shadow on white background, 3D render`
 
+---
+
+## 13. Bedroom Interactive Tablet / iPad (Non-Tech Life, Blogs & Currently Reading)
+Output directory: `public/assets/objects/`
+- `bedroom-ipad.png` (tabletop resting view, transparent PNG, 512x512)
+- `bedroom-ipad-open.png` (full-screen overlay tablet frame, transparent PNG, 2048x1536)
+
+### 13.1 Tabletop Resting iPad (`bedroom-ipad.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+A cute slim modern digital tablet (iPad) resting on a wooden nightstand tabletop. The tablet is in a charming pastel silicone protective case in soft blush pink with rounded bumper corners, and a pastel stylus pen (Apple Pencil) magnetically snapped to its top edge.
+Angled 3/4 tabletop perspective (approx. 25-degree downward tilt) to sit naturally beside a journal. The screen shows a soft, dreamy ambient pastel gradient wallpaper in blush and butter yellow with subtle tiny stardust specks, but strictly no readable text, no app icons, no clocks.
+Isolated object centered on a solid plain flat white background, strictly no white sticker border, no white halo, natural organic painted edges, 512x512 square, high resolution, no ground shadow.
+```
+
+Negative prompt: `text, numbers, clock, app icons, user interface, letters, watermark, people, hands holding tablet, photorealistic, harsh shadows, neon, sticker border`
+
+### 13.2 Open / Expanded Tablet Screen Frame (`bedroom-ipad-open.png`)
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+Straight-on front flat-lay view of an expanded digital tablet (iPad) in landscape orientation (4:3 aspect ratio).
+The tablet is housed in a lovely pastel blush-pink or lavender protective bumper case with cute rounded corners, a tiny camera lens dot centered on the top bezel, and delicate hand-drawn star or heart stickers subtly decorating the outer case bezel.
+
+CRITICAL REQUIREMENT: The inner glass screen area must be 100% COMPLETELY BLANK, plain, clean, and solid flat cream-white (#FFFBF5) (strictly zero text, zero app icons, zero UI windows, zero drawn graphics, zero reflections in the center screen).
+Isolated object centered on a solid plain flat white background, strictly no white sticker border, no white halo, 2048x1536 resolution landscape, ready for transparency.
+```
+
+Negative prompt: `text, apps, icons, browser, interface, buttons, keyboard, web page, glare, reflections, photos on screen, hands, people, 3D render`
+
+

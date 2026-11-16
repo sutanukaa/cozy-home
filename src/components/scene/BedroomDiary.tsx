@@ -61,11 +61,11 @@ export default function BedroomDiary() {
     soundscape.playSparkleSound();
     setIsFloating(true);
 
-    // Generate sparkle trail along trajectory from bedside table (x: 67.2%, y: 52.5%) to center (x: 50%, y: 50%)
+    // Generate sparkle trail along trajectory from bedside table (x: 64.5%, y: 52.5%) to center (x: 50%, y: 50%)
     const newSparkles: SparkleParticle[] = Array.from({ length: 18 }).map((_, i) => {
       const progress = i / 17;
       // Interpolate with a natural gentle curve
-      const baseX = 67.2 - progress * 17.2;
+      const baseX = 64.5 - progress * 14.5;
       const baseY = 52.5 + Math.sin(progress * Math.PI) * -8 + progress * -2.5;
       const jitterX = (Math.random() - 0.5) * 6;
       const jitterY = (Math.random() - 0.5) * 6;
@@ -107,11 +107,11 @@ export default function BedroomDiary() {
         <div
           className="group absolute z-20 cursor-pointer select-none"
           style={{
-            left: '67.2%',
+            left: '64.5%',
             top: '52.5%',
-            width: '6.5%',
-            maxWidth: '82px',
-            minWidth: '48px',
+            width: '5.2%',
+            maxWidth: '65px',
+            minWidth: '40px',
             aspectRatio: '1140 / 1652',
             transform: 'translate(-50%, -50%) rotate(-1.5deg)',
           }}
@@ -230,7 +230,7 @@ export default function BedroomDiary() {
             {/* Closed diary floating from nightstand into screen center */}
             <motion.div
               initial={{
-                left: '67.2%',
+                left: '64.5%',
                 top: '52.5%',
                 x: '-50%',
                 y: '-50%',

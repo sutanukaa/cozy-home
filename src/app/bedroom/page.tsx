@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import RoomHeading from '@/components/layout/RoomHeading';
+import BedroomFairyLights from '@/components/scene/BedroomFairyLights';
+import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import PaperCard from '@/components/ui/PaperCard';
 import Sticker from '@/components/ui/Sticker';
 import Button from '@/components/ui/Button';
@@ -11,20 +13,27 @@ import type { HotspotDef } from '@/components/ui/Hotspot';
 export const metadata: Metadata = { title: 'Bedroom' };
 
 const hotspots: HotspotDef[] = [
-  { id: 'bed', label: 'The comfiest bed', x: 30, y: 62, emoji: '🛏️', note: 'Where late-night debugging breakthroughs usually happen.' },
-  { id: 'window', label: 'The window', x: 74, y: 30, emoji: '🌙', note: 'Daydreaming about cozy interfaces and intelligent agents.' },
+  { id: 'bed', label: 'The comfiest bed', x: 30, y: 62, icon: 'bedroom', note: 'Where late-night debugging breakthroughs usually happen.' },
+  { id: 'window', label: 'The window', x: 74, y: 30, icon: 'bedroom', note: 'Daydreaming about cozy interfaces and intelligent agents.' },
 ];
 
 export default function BedroomPage() {
   const { about } = site;
   return (
-    <div>
-      <section className="relative h-screen w-full">
-        <RoomScene room="bedroom" hotspots={hotspots}>
-          <div className="pointer-events-none absolute inset-x-0 top-24 z-20 mx-auto max-w-xl px-4 text-center">
+    <div className="relative min-h-screen w-full">
+      <section className="relative h-screen h-[100dvh] w-full overflow-hidden select-none">
+        <RoomScene room="bedroom" hotspots={hotspots} fit="cover">
+          <BedroomFairyLights />
+          <div className="pointer-events-none absolute inset-x-0 top-20 sm:top-24 z-20 mx-auto max-w-xl px-4 text-center">
             <RoomHeading room="bedroom" title="The bedroom" />
           </div>
         </RoomScene>
+
+        {/* Pink bubble navigation arrows: left to Studio, right to Library */}
+        <RoomNavArrows
+          prev={{ name: 'Studio', href: '/studio' }}
+          next={{ name: 'Library', href: '/library' }}
+        />
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-16">
@@ -36,7 +45,7 @@ export default function BedroomPage() {
                 src="/images/me.jpeg"
                 alt={`Photo of ${site.shortName}`}
                 className="h-full w-full object-cover"
-                fallback={<div className="flex h-full items-center justify-center text-7xl" aria-hidden>🧸</div>}
+                fallback={<div className="flex h-full items-center justify-center font-display text-4xl text-ink/40" aria-hidden>SC</div>}
               />
             </div>
             <p className="mt-3 text-center font-hand text-2xl">{site.name}</p>

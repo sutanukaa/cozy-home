@@ -411,4 +411,19 @@ Single isolated object centered on a solid plain flat white background (#FFFFFF)
 
 Negative prompt: `angled view, isometric, 3D tilt, table, desk, wood, surface, text, apps, icons, widgets, clock, browser, user interface, keyboard, glare, reflections, photos on screen, hands, people, photorealistic, harsh shadows, neon, 3D render`
 
+### 13.3 Mobile Portrait Straight-Facing Tablet Screen Frame (`bedroom-tablet-open-mobile.png`)
+Target dimensions: **1536x2048** (3:4 portrait) or **1200x1800** (2:3 portrait).
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by blush pink (#F9C6D3), cream (#FFF6EC), rose (#E86A92), sage green (#A9C7A0) and butter yellow (#FFE29A), warm soft lighting, tiny charming handmade details, cozy scrapbook feel, no text, no letters, no logos, no people.
+
+Direct straight-on, perfectly symmetrical, front flat-lay view of a modern digital tablet (iPad) in TALL VERTICAL / PORTRAIT orientation (approx. 3:4 aspect ratio). Zero tilt, zero angle, facing directly straight forward towards the viewer.
+The tablet is enclosed inside an adorable pastel blush-pink protective silicone bumper case with puffy rounded shockproof corners. A sleek pastel stylus pen (Apple Pencil) is docked along the right side of the case in a snug pencil groove. The inner bezel is clean and rounded with a tiny camera dot centered at the top edge.
+
+CRITICAL REQUIREMENT: The center display screen must be 100% COMPLETELY BLANK, plain, empty, flat, solid light cream-white (#FFFDF8) (strictly zero text, zero app icons, zero UI windows, zero drawn graphics, zero reflections, zero glare on the screen).
+Single isolated cut-out object centered on a completely solid plain flat white background (#FFFFFF), strictly zero background objects, zero furniture, zero table, zero desk, zero floor, zero hands, no sticker border, no white outline, 1536x2048 resolution portrait, ready for transparency.
+```
+
+Negative prompt: `landscape orientation, horizontal, wide, tilted, angled view, isometric, 3D tilt, table, desk, wood, surface, floor, stand, text, numbers, clock, apps, icons, widgets, browser, user interface, keyboard, glare, reflections, photos on screen, hands, people, photorealistic, harsh shadows, neon, sticker border, 3D render`
+
+
 

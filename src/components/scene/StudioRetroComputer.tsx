@@ -391,63 +391,71 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                 </div>
 
                 {/* --- Retro OS Desktop Workspace --- */}
-                <div className="retro-scroll relative flex flex-1 flex-col overflow-y-auto p-2 sm:p-4 md:p-6">
-                  {/* Subtle pixel grid pattern on desktop wallpaper */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 opacity-40"
-                    style={{
-                      backgroundImage:
-                        'radial-gradient(circle, rgba(232, 106, 146, 0.25) 1px, transparent 1px)',
-                      backgroundSize: '24px 24px',
-                    }}
-                  />
+                <div
+                  className={`relative flex flex-1 flex-col ${
+                    showGame ? 'overflow-hidden p-0' : 'retro-scroll overflow-y-auto p-2 sm:p-4 md:p-6'
+                  }`}
+                >
+                  {!showGame && (
+                    <>
+                      {/* Subtle pixel grid pattern on desktop wallpaper */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 opacity-40"
+                        style={{
+                          backgroundImage:
+                            'radial-gradient(circle, rgba(232, 106, 146, 0.25) 1px, transparent 1px)',
+                          backgroundSize: '24px 24px',
+                        }}
+                      />
 
-                  {/* Desktop Icons Grid - All Projects in a clean retro row */}
-                  <div className="relative z-20 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-2.5">
-                    {/* Project Icons */}
-                    {projects.map((p) => {
-                      const isSelected = selectedIcon === p.slug;
-                      const isOpen = activeProject?.slug === p.slug;
+                      {/* Desktop Icons Grid - All Projects in a clean retro row */}
+                      <div className="relative z-20 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-2.5">
+                        {/* Project Icons */}
+                        {projects.map((p) => {
+                          const isSelected = selectedIcon === p.slug;
+                          const isOpen = activeProject?.slug === p.slug;
 
-                      return (
-                        <div
-                          key={p.slug}
-                          onClick={() => {
-                            soundscape.playClickSound();
-                            setSelectedIcon(p.slug);
-                            setActiveProject(p);
-                            setShowBlueprints(false);
-                            setShowGame(false);
-                            setActiveExtraTab('none');
-                            setActiveBlueprintDiagram(1);
-                          }}
-                          className={`group flex cursor-pointer flex-col items-center rounded-xl p-2 sm:p-2.5 text-center transition-all ${
-                            isSelected || isOpen
-                              ? 'bg-blush/60 ring-2 ring-accent dark:bg-white/15'
-                              : 'hover:bg-white/60 dark:hover:bg-white/10'
-                          }`}
-                        >
-                          <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
-                            <div className="hidden sm:block">{getProjectPixelIcon(p.slug, 48)}</div>
-                            <div className="sm:hidden">{getProjectPixelIcon(p.slug, 34)}</div>
-                          </div>
-                          <span className="mt-1 line-clamp-2 max-w-[120px] font-mono text-[11px] sm:text-xs font-bold leading-tight text-ink dark:text-white">
-                            {p.slug}.app
-                          </span>
-                          <span
-                            className={`mt-0.5 rounded-full px-1.5 py-0.2 font-mono text-[8px] sm:text-[9px] font-semibold ${
-                              p.status === 'Currently Building'
-                                ? 'bg-amber-100 text-amber-900 border border-amber-300/80 dark:bg-amber-950/70 dark:text-amber-200 dark:border-amber-700/60'
-                                : 'bg-pink-200/70 text-accent dark:bg-pink-900/60 dark:text-pink-200'
-                            }`}
-                          >
-                            {p.status}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
+                          return (
+                            <div
+                              key={p.slug}
+                              onClick={() => {
+                                soundscape.playClickSound();
+                                setSelectedIcon(p.slug);
+                                setActiveProject(p);
+                                setShowBlueprints(false);
+                                setShowGame(false);
+                                setActiveExtraTab('none');
+                                setActiveBlueprintDiagram(1);
+                              }}
+                              className={`group flex cursor-pointer flex-col items-center rounded-xl p-2 sm:p-2.5 text-center transition-all ${
+                                isSelected || isOpen
+                                  ? 'bg-blush/60 ring-2 ring-accent dark:bg-white/15'
+                                  : 'hover:bg-white/60 dark:hover:bg-white/10'
+                              }`}
+                            >
+                              <div className="transition-transform duration-200 group-hover:scale-110 active:scale-95">
+                                <div className="hidden sm:block">{getProjectPixelIcon(p.slug, 48)}</div>
+                                <div className="sm:hidden">{getProjectPixelIcon(p.slug, 34)}</div>
+                              </div>
+                              <span className="mt-1 line-clamp-2 max-w-[120px] font-mono text-[11px] sm:text-xs font-bold leading-tight text-ink dark:text-white">
+                                {p.slug}.app
+                              </span>
+                              <span
+                                className={`mt-0.5 rounded-full px-1.5 py-0.2 font-mono text-[8px] sm:text-[9px] font-semibold ${
+                                  p.status === 'Currently Building'
+                                    ? 'bg-amber-100 text-amber-900 border border-amber-300/80 dark:bg-amber-950/70 dark:text-amber-200 dark:border-amber-700/60'
+                                    : 'bg-pink-200/70 text-accent dark:bg-pink-900/60 dark:text-pink-200'
+                                }`}
+                              >
+                                {p.status}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
 
                   {/* --- Floating Active Project Window --- */}
                   <AnimatePresence>
@@ -2706,7 +2714,7 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
 
                   {/* --- Fullscreen Game (fills entire workspace when active) --- */}
                   {showGame && (
-                    <div className="absolute inset-0 z-40 flex flex-col">
+                    <div className="absolute inset-0 z-40 flex flex-col overflow-hidden">
                       <CozyRunner />
                       {/* Floating back button */}
                       <div className="pointer-events-auto absolute top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2">
@@ -2717,9 +2725,9 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
                             setShowGame(false);
                             if (projects.length > 0) setActiveProject(projects[0]);
                           }}
-                          className="rounded-full border border-pink-300/80 bg-white/80 px-3 py-1 font-mono text-[10px] font-bold text-ink shadow-xs backdrop-blur-sm hover:bg-rose hover:text-white transition-all dark:border-white/20 dark:bg-black/50 dark:text-white"
+                          className="rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-mono text-[10px] font-bold text-ink shadow-xs backdrop-blur-xs hover:bg-rose hover:text-white transition-all active:scale-95 dark:border-white/20 dark:bg-black/70 dark:text-white"
                         >
-                          Back to projects
+                          ✕ Back to projects
                         </button>
                       </div>
                     </div>

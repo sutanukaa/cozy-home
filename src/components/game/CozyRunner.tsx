@@ -4,23 +4,19 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTime } from '@/components/providers/TimeProvider';
 
 /* ─────────────────────────── constants ─────────────────────────── */
-const WORLD_W = 800;
-const WORLD_H = 300;
-const GROUND_Y = 250;
 const GRAVITY = 0.55;
 const JUMP_FORCE = -10.5;
 const INITIAL_SPEED = 3.5;
 const MAX_SPEED = 8;
 const SPEED_INCREMENT = 0.002;
 
-// Character
+// Character dimensions in world units (natural pixel proportions)
 const CHAR_W = 44;
 const CHAR_H = 52;
-const CHAR_X = 70;
 
-// Obstacles
-const OB_MIN_GAP = 260;
-const OB_MAX_GAP = 420;
+// Obstacles spacing in world units
+const OB_MIN_GAP = 220;
+const OB_MAX_GAP = 360;
 
 type ObstacleKind = 'cactus' | 'cactus-tall' | 'cactus-double';
 interface Obstacle {
@@ -128,31 +124,31 @@ const NEAR_BUILDINGS_NIGHT: Building[] = [
   { x: 615, w: 45, h: 48, color: '#271444', roofColor: '#FFBE0B', hasWindows: true, windowColor: '#361B5C', windowLitColor: '#FFE2A0', litSeed: 24 },
 ];
 
-// Star Field Data for Night Sky
-const NIGHT_STARS = [
-  { x: 30,  y: 22, s: 2, c: '#FFE29A', p: 0.2 },
-  { x: 75,  y: 50, s: 1, c: '#FFF6EC', p: 1.1 },
-  { x: 120, y: 18, s: 2, c: '#A8F0FF', p: 2.3 },
-  { x: 160, y: 65, s: 1, c: '#FFF6EC', p: 0.7 },
-  { x: 210, y: 32, s: 3, c: '#FFE29A', p: 1.9 }, // 4-point cross star
-  { x: 270, y: 75, s: 1, c: '#FFB8D2', p: 3.1 },
-  { x: 320, y: 20, s: 2, c: '#FFF6EC', p: 2.7 },
-  { x: 370, y: 58, s: 1, c: '#A8F0FF', p: 0.5 },
-  { x: 420, y: 28, s: 3, c: '#FFE29A', p: 1.4 },
-  { x: 460, y: 70, s: 2, c: '#FFF6EC', p: 2.9 },
-  { x: 510, y: 18, s: 1, c: '#FFB8D2', p: 0.8 },
-  { x: 560, y: 48, s: 2, c: '#A8F0FF', p: 1.6 },
-  { x: 610, y: 78, s: 1, c: '#FFF6EC', p: 2.2 },
-  { x: 660, y: 25, s: 3, c: '#FFE29A', p: 3.4 },
-  { x: 700, y: 55, s: 1, c: '#FFF6EC', p: 0.9 },
-  { x: 765, y: 35, s: 2, c: '#A8F0FF', p: 2.1 },
-  { x: 95,  y: 35, s: 1, c: '#FFE29A', p: 1.5 },
-  { x: 185, y: 85, s: 1, c: '#FFF6EC', p: 2.8 },
-  { x: 240, y: 14, s: 2, c: '#FFF6EC', p: 0.4 },
-  { x: 350, y: 42, s: 1, c: '#FFE29A', p: 3.0 },
-  { x: 490, y: 82, s: 1, c: '#FFF6EC', p: 1.2 },
-  { x: 635, y: 38, s: 2, c: '#FFF6EC', p: 2.5 },
-  { x: 735, y: 75, s: 1, c: '#FFB8D2', p: 0.3 },
+// Proportional Star Field Data for Night Sky
+const STAR_SEEDS = [
+  { xPct: 0.04, yPct: 0.12, s: 2, c: '#FFE29A', p: 0.2 },
+  { xPct: 0.10, yPct: 0.28, s: 1, c: '#FFF6EC', p: 1.1 },
+  { xPct: 0.16, yPct: 0.10, s: 2, c: '#A8F0FF', p: 2.3 },
+  { xPct: 0.21, yPct: 0.36, s: 1, c: '#FFF6EC', p: 0.7 },
+  { xPct: 0.27, yPct: 0.18, s: 3, c: '#FFE29A', p: 1.9 },
+  { xPct: 0.34, yPct: 0.42, s: 1, c: '#FFB8D2', p: 3.1 },
+  { xPct: 0.40, yPct: 0.11, s: 2, c: '#FFF6EC', p: 2.7 },
+  { xPct: 0.46, yPct: 0.32, s: 1, c: '#A8F0FF', p: 0.5 },
+  { xPct: 0.53, yPct: 0.16, s: 3, c: '#FFE29A', p: 1.4 },
+  { xPct: 0.58, yPct: 0.39, s: 2, c: '#FFF6EC', p: 2.9 },
+  { xPct: 0.64, yPct: 0.10, s: 1, c: '#FFB8D2', p: 0.8 },
+  { xPct: 0.70, yPct: 0.27, s: 2, c: '#A8F0FF', p: 1.6 },
+  { xPct: 0.76, yPct: 0.44, s: 1, c: '#FFF6EC', p: 2.2 },
+  { xPct: 0.83, yPct: 0.14, s: 3, c: '#FFE29A', p: 3.4 },
+  { xPct: 0.88, yPct: 0.31, s: 1, c: '#FFF6EC', p: 0.9 },
+  { xPct: 0.95, yPct: 0.20, s: 2, c: '#A8F0FF', p: 2.1 },
+  { xPct: 0.12, yPct: 0.48, s: 1, c: '#FFE29A', p: 1.5 },
+  { xPct: 0.23, yPct: 0.47, s: 1, c: '#FFF6EC', p: 2.8 },
+  { xPct: 0.30, yPct: 0.08, s: 2, c: '#FFF6EC', p: 0.4 },
+  { xPct: 0.44, yPct: 0.23, s: 1, c: '#FFE29A', p: 3.0 },
+  { xPct: 0.61, yPct: 0.46, s: 1, c: '#FFF6EC', p: 1.2 },
+  { xPct: 0.79, yPct: 0.21, s: 2, c: '#FFF6EC', p: 2.5 },
+  { xPct: 0.92, yPct: 0.42, s: 1, c: '#FFB8D2', p: 0.3 },
 ];
 
 /* ──────────────────── draw helpers ─────────────────────────────── */
@@ -198,21 +194,22 @@ function drawCityLayer(
   buildings: Building[],
   tileW: number,
   offset: number,
-  baseY: number,
+  groundY: number,
   alpha: number,
   isNight: boolean,
   tick: number,
+  worldW: number,
 ) {
+  ctx.save();
   ctx.globalAlpha = alpha;
   const scrollOff = offset % tileW;
 
-  for (let tile = -1; tile <= 1; tile++) {
-    const tileX = tile * tileW - scrollOff;
+  for (let tileX = -scrollOff - tileW; tileX < worldW + tileW; tileX += tileW) {
     for (const b of buildings) {
       const bx = tileX + b.x;
-      if (bx + b.w < -20 || bx > WORLD_W + 20) continue;
+      if (bx + b.w < -20 || bx > worldW + 20) continue;
 
-      const by = baseY - b.h;
+      const by = groundY - b.h;
 
       // Building Body
       ctx.fillStyle = b.color;
@@ -248,39 +245,42 @@ function drawCityLayer(
       // Windows
       if (b.hasWindows && b.h > 30) {
         const winW = 6;
-        const winH = 6;
-        const winGapX = 12;
-        const winGapY = 14;
-        const marginX = 6;
-        const startY = by + 14;
-        const cols = Math.floor((b.w - marginX * 2 + (winGapX - winW)) / winGapX);
-        const rows = Math.floor((b.h - 20) / winGapY);
+        const winH = 7;
+        const gapX = 10;
+        const gapY = 12;
+        const startX = bx + 5;
+        const startY = by + 8;
+        const cols = Math.floor((b.w - 10) / gapX);
+        const rows = Math.floor((b.h - 16) / gapY);
 
-        for (let wr = 0; wr < rows; wr++) {
-          for (let wc = 0; wc < cols; wc++) {
-            const wx = bx + marginX + wc * winGapX;
-            const wy = startY + wr * winGapY;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const wx = startX + c * gapX;
+            const wy = startY + r * gapY;
+            const hash = (b.litSeed * 17 + r * 7 + c * 13) % 100;
+            const isLit = isNight ? hash < 65 : hash < 35;
 
-            // Deterministic lit pattern
-            const isLit = ((b.litSeed * (wr + 1) * (wc + 3)) % 7) < (isNight ? 4 : 3);
-            ctx.fillStyle = isLit ? b.windowLitColor : b.windowColor;
-            ctx.fillRect(wx, wy, winW, winH);
+            if (isLit) {
+              const pulse = isNight && (hash % 9 === 0) ? Math.sin(tick * 0.08 + hash) * 0.2 + 0.8 : 1;
+              ctx.globalAlpha = alpha * pulse;
+              ctx.fillStyle = b.windowLitColor || (isNight ? '#FFE066' : '#FFE29A');
+              ctx.fillRect(wx, wy, winW, winH);
 
-            // In night mode, lit windows have an intense bright core that makes them glow!
-            if (isLit && isNight) {
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-              ctx.fillRect(wx + 2, wy + 2, 2, 2);
-            } else if (isLit) {
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-              ctx.fillRect(wx, wy, 2, 2);
+              if (isNight) {
+                ctx.fillStyle = 'rgba(255, 230, 100, 0.18)';
+                ctx.fillRect(wx - 1, wy - 1, winW + 2, winH + 2);
+              }
+            } else {
+              ctx.globalAlpha = alpha * 0.75;
+              ctx.fillStyle = b.windowColor || (isNight ? '#1F1038' : '#D0A0B0');
+              ctx.fillRect(wx, wy, winW, winH);
             }
           }
         }
       }
     }
   }
-
-  ctx.globalAlpha = 1;
+  ctx.restore();
 }
 
 function drawCactus(
@@ -290,116 +290,124 @@ function drawCactus(
   kind: ObstacleKind,
   isNight: boolean,
 ) {
-  const def = OB_DEFS[kind];
-  const px = 4;
-  const cols = Math.floor(def.w / px);
-  const rows = Math.floor(def.h / px);
-  const tL = Math.floor(cols * 0.3);
-  const tR = Math.floor(cols * 0.7);
+  const p = 3;
+  ctx.fillStyle = isNight ? '#00F5D4' : '#5E8B7E';
 
-  // Night: deep cyber evergreen with glowing mint highlight
-  ctx.fillStyle = isNight ? '#164332' : '#7CB87C';
-  for (let r = 0; r < rows; r++)
-    for (let c = tL; c < tR; c++)
-      ctx.fillRect(x + c * px, y + r * px, px - 1, px - 1);
-
-  if (kind === 'cactus-tall') {
-    const aY = Math.floor(rows * 0.35);
-    for (let c = 0; c < tL; c++) {
-      ctx.fillRect(x + c * px, y + aY * px, px - 1, px - 1);
-      ctx.fillRect(x + c * px, y + (aY - 1) * px, px - 1, px - 1);
+  if (kind === 'cactus') {
+    ctx.fillRect(x + 2 * p, y, 2 * p, 9 * p);
+    ctx.fillRect(x, y + 2 * p, p, 4 * p);
+    ctx.fillRect(x + p, y + 5 * p, p, p);
+    ctx.fillRect(x + 4 * p, y + 3 * p, p, 3 * p);
+    ctx.fillRect(x + 3 * p, y + 5 * p, p, p);
+    if (isNight) {
+      ctx.fillStyle = 'rgba(0, 245, 212, 0.25)';
+      ctx.fillRect(x - 2, y - 2, 6 * p + 4, 9 * p + 4);
     }
-    const aY2 = Math.floor(rows * 0.55);
-    for (let c = tR; c < cols; c++) {
-      ctx.fillRect(x + c * px, y + aY2 * px, px - 1, px - 1);
-      ctx.fillRect(x + c * px, y + (aY2 - 1) * px, px - 1, px - 1);
+  } else if (kind === 'cactus-tall') {
+    ctx.fillRect(x + 2 * p, y, 2 * p, 14 * p);
+    ctx.fillRect(x, y + 3 * p, p, 5 * p);
+    ctx.fillRect(x + p, y + 7 * p, p, p);
+    ctx.fillRect(x + 4 * p, y + 5 * p, p, 4 * p);
+    ctx.fillRect(x + 3 * p, y + 8 * p, p, p);
+    if (isNight) {
+      ctx.fillStyle = 'rgba(0, 245, 212, 0.25)';
+      ctx.fillRect(x - 2, y - 2, 6 * p + 4, 14 * p + 4);
     }
-  }
-
-  if (kind === 'cactus-double') {
-    const off = Math.floor(cols * 0.55);
-    for (let r = 0; r < rows; r++)
-      for (let c = off; c < cols; c++)
-        ctx.fillRect(x + c * px, y + r * px, px - 1, px - 1);
-  }
-
-  // Highlights & Base outline
-  ctx.fillStyle = isNight ? '#57CC99' : '#5A8F5A';
-  for (let c = tL; c < tR; c++) {
-    // Top highlight rim
-    ctx.fillRect(x + c * px, y, px - 1, 1);
-    // Base darker
-    ctx.fillRect(x + c * px, y + (rows - 1) * px, px - 1, px - 1);
+  } else {
+    // cactus-double
+    ctx.fillRect(x + 2 * p, y + 2 * p, 2 * p, 7 * p);
+    ctx.fillRect(x + 6 * p, y, 2 * p, 9 * p);
+    ctx.fillRect(x, y + 4 * p, p, 3 * p);
+    ctx.fillRect(x + p, y + 6 * p, p, p);
+    ctx.fillRect(x + 8 * p, y + 3 * p, p, 3 * p);
+    ctx.fillRect(x + 7 * p, y + 5 * p, p, p);
+    if (isNight) {
+      ctx.fillStyle = 'rgba(0, 245, 212, 0.25)';
+      ctx.fillRect(x - 2, y - 2, 10 * p + 4, 9 * p + 4);
+    }
   }
 }
 
-/* ─────────────────── audio helpers (Web Audio API) ─────────────── */
-function lazyAudioCtx() {
+/* ──────────────────── audio synth ───────────────────────────────── */
+function lazyAudioCtx(): AudioContext | null {
   if (typeof window === 'undefined') return null;
-  return new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+  const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  return Ctx ? new Ctx() : null;
 }
 
 function sfxJump(ctx: AudioContext) {
+  const now = ctx.currentTime;
   const osc = ctx.createOscillator();
-  const g = ctx.createGain();
-  osc.connect(g).connect(ctx.destination);
+  const gain = ctx.createGain();
   osc.type = 'square';
-  osc.frequency.setValueAtTime(260, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + 0.08);
-  g.gain.setValueAtTime(0.10, ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
-  osc.start(); osc.stop(ctx.currentTime + 0.14);
-}
-
-function sfxMilestone(ctx: AudioContext) {
-  const osc = ctx.createOscillator();
-  const g = ctx.createGain();
-  osc.connect(g).connect(ctx.destination);
-  osc.type = 'square';
-  osc.frequency.setValueAtTime(440, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.06);
-  g.gain.setValueAtTime(0.07, ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.10);
-  osc.start(); osc.stop(ctx.currentTime + 0.10);
+  osc.frequency.setValueAtTime(140, now);
+  osc.frequency.exponentialRampToValueAtTime(560, now + 0.12);
+  gain.gain.setValueAtTime(0.12, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.14);
 }
 
 function sfxGameOver(ctx: AudioContext) {
-  const t = ctx.currentTime;
+  const now = ctx.currentTime;
   const osc = ctx.createOscillator();
-  const g = ctx.createGain();
-  osc.connect(g).connect(ctx.destination);
-  osc.type = 'square';
-  osc.frequency.setValueAtTime(440, t);
-  osc.frequency.setValueAtTime(330, t + 0.12);
-  osc.frequency.setValueAtTime(220, t + 0.24);
-  g.gain.setValueAtTime(0.10, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-  osc.start(t); osc.stop(t + 0.4);
+  const gain = ctx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(260, now);
+  osc.frequency.exponentialRampToValueAtTime(65, now + 0.35);
+  gain.gain.setValueAtTime(0.18, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.38);
 }
 
-/* ──────────────────── main component ──────────────────────────── */
-type GamePhase = 'idle' | 'running' | 'over';
+function sfxMilestone(ctx: AudioContext) {
+  const now = ctx.currentTime;
+  [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const t = now + i * 0.05;
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0.09, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.07);
+  });
+}
 
+/* ──────────────────── component ─────────────────────────────────── */
 export default function CozyRunner() {
   const { theme } = useTime();
-  const isNight = theme === 'night';
-  const isNightRef = useRef(isNight);
-
+  const isNightRef = useRef(theme === 'night');
   useEffect(() => {
-    isNightRef.current = isNight;
-  }, [isNight]);
+    isNightRef.current = theme === 'night';
+  }, [theme]);
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [phase, setPhase] = useState<GamePhase>('idle');
+
+  const [phase, setPhase] = useState<'idle' | 'running' | 'over'>('idle');
   const [score, setScore] = useState(0);
   const [hi, setHi] = useState(0);
+  const [spdVal, setSpdVal] = useState(INITIAL_SPEED);
 
-  /* mutable refs for the hot loop */
-  const phaseR = useRef<GamePhase>('idle');
+  const phaseR = useRef<'idle' | 'running' | 'over'>('idle');
   const scoreR = useRef(0);
   const hiR = useRef(0);
-  const charY = useRef(GROUND_Y - CHAR_H);
+
+  // Dynamic world coordinate tracking for uniform 1:1 scale
+  const worldWRef = useRef(800);
+  const groundYRef = useRef(250);
+  const charXRef = useRef(70);
+
+  const charY = useRef(250 - CHAR_H);
   const vy = useRef(0);
   const grounded = useRef(true);
   const spd = useRef(INITIAL_SPEED);
@@ -415,7 +423,11 @@ export default function CozyRunner() {
   const jump = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
-    const mk = (src: string) => { const i = new Image(); i.src = src; return i; };
+    const mk = (src: string) => {
+      const i = new Image();
+      i.src = src;
+      return i;
+    };
     run1.current = mk('/assets/objects/sutanuka-run.png');
     run2.current = mk('/assets/objects/sutanuka-run-2.png');
     jump.current = mk('/assets/objects/sutanuka-jump.png');
@@ -428,14 +440,14 @@ export default function CozyRunner() {
     return c;
   }, []);
 
-  /* spawn */
-  const spawn = useCallback(() => {
+  /* spawn obstacle */
+  const spawn = useCallback((currentWorldW: number) => {
     const kinds: ObstacleKind[] = ['cactus', 'cactus-tall', 'cactus-double'];
     const kind = kinds[Math.floor(Math.random() * kinds.length)];
     const def = OB_DEFS[kind];
     const last = obs.current[obs.current.length - 1];
     const gap = OB_MIN_GAP + Math.random() * (OB_MAX_GAP - OB_MIN_GAP);
-    const sx = last ? Math.max(WORLD_W + 40, last.x + last.w + gap) : WORLD_W + 60;
+    const sx = last ? Math.max(currentWorldW + 40, last.x + last.w + gap) : currentWorldW + 60;
     obs.current.push({ x: sx, kind, w: def.w, h: def.h, scored: false });
   }, []);
 
@@ -450,10 +462,12 @@ export default function CozyRunner() {
 
   /* start / restart */
   const start = useCallback(() => {
-    charY.current = GROUND_Y - CHAR_H;
+    const groundY = groundYRef.current;
+    charY.current = groundY - CHAR_H;
     vy.current = 0;
     grounded.current = true;
     spd.current = INITIAL_SPEED;
+    setSpdVal(INITIAL_SPEED);
     obs.current = [];
     tick.current = 0;
     scoreR.current = 0;
@@ -462,12 +476,13 @@ export default function CozyRunner() {
     setScore(0);
     phaseR.current = 'running';
     setPhase('running');
-    spawn();
-    spawn();
+    const w = worldWRef.current;
+    spawn(w);
+    spawn(w);
     audio();
   }, [spawn, audio]);
 
-  /* keyboard */
+  /* keyboard controls */
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
@@ -480,7 +495,7 @@ export default function CozyRunner() {
     return () => window.removeEventListener('keydown', h);
   }, [start, doJump]);
 
-  /* touch */
+  /* touch controls */
   useEffect(() => {
     const el = canvasRef.current;
     if (!el) return;
@@ -524,12 +539,23 @@ export default function CozyRunner() {
       const ch = canvas.height;
       if (cw === 0 || ch === 0) return;
 
-      const sx = cw / WORLD_W;
-      const sy = ch / WORLD_H;
+      // 1. UNIFORM SCALE: 1 unit in X === 1 unit in Y. Absolutely zero distortion or deformation!
+      // On narrow screens (cw < 600), choose targetW so distance and jump reaction time are natural.
+      // On desktop (cw >= 600), targetW is 800.
+      const targetW = cw < 600 ? Math.max(380, cw / 0.85) : 800;
+      const scale = cw / targetW;
+      const worldW = targetW;
+      const worldH = ch / scale;
+      const groundY = worldH - 52;
+      const charX = Math.min(70, Math.max(40, worldW * 0.12));
+
+      worldWRef.current = worldW;
+      groundYRef.current = groundY;
+      charXRef.current = charX;
 
       ctx.clearRect(0, 0, cw, ch);
       ctx.save();
-      ctx.scale(sx, sy);
+      ctx.scale(scale, scale);
 
       // Check current night mode state
       const night = isNightRef.current || (typeof document !== 'undefined' && document.documentElement.dataset.theme === 'night');
@@ -537,112 +563,121 @@ export default function CozyRunner() {
       /* ── sky ── */
       if (night) {
         // Vibrant deep indigo / twilight gradient
-        const sky = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+        const sky = ctx.createLinearGradient(0, 0, 0, groundY);
         sky.addColorStop(0, '#0C061E');
         sky.addColorStop(0.55, '#1B0C33');
         sky.addColorStop(1, '#33134C');
         ctx.fillStyle = sky;
-        ctx.fillRect(0, 0, WORLD_W, GROUND_Y);
+        ctx.fillRect(0, 0, worldW, groundY);
 
         // Twinkling Pixel Stars
-        for (const star of NIGHT_STARS) {
+        for (const star of STAR_SEEDS) {
+          const starX = star.xPct * worldW;
+          const starY = star.yPct * (groundY * 0.75);
           const tw = Math.sin(tick.current * 0.05 + star.p) * 0.35 + 0.65;
           ctx.fillStyle = star.c;
           ctx.globalAlpha = tw;
           if (star.s === 3) {
-            ctx.fillRect(star.x, star.y - 1, 2, 4);
-            ctx.fillRect(star.x - 1, star.y, 4, 2);
+            ctx.fillRect(starX, starY - 1, 2, 4);
+            ctx.fillRect(starX - 1, starY, 4, 2);
           } else {
-            ctx.fillRect(star.x, star.y, star.s, star.s);
+            ctx.fillRect(starX, starY, star.s, star.s);
           }
         }
         ctx.globalAlpha = 1;
 
         // Pixel Crescent Moon
-        drawMoon(ctx, WORLD_W - 130, 36);
+        drawMoon(ctx, worldW - 85, Math.min(48, groundY * 0.18));
       } else {
         // Soft daytime blush pastel
-        const sky = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+        const sky = ctx.createLinearGradient(0, 0, 0, groundY);
         sky.addColorStop(0, '#FFF6EC');
         sky.addColorStop(1, '#FFDFE7');
         ctx.fillStyle = sky;
-        ctx.fillRect(0, 0, WORLD_W, GROUND_Y);
+        ctx.fillRect(0, 0, worldW, groundY);
       }
 
       /* ── parallax cityscape ── */
       if (night) {
         // Vibrant neon city layers
-        drawCityLayer(ctx, FAR_BUILDINGS_NIGHT, FAR_TILE_W, gndOff.current * 0.12, GROUND_Y, 0.75, true, tick.current);
-        drawCityLayer(ctx, NEAR_BUILDINGS_NIGHT, NEAR_TILE_W, gndOff.current * 0.30, GROUND_Y, 0.90, true, tick.current);
+        drawCityLayer(ctx, FAR_BUILDINGS_NIGHT, FAR_TILE_W, gndOff.current * 0.12, groundY, 0.75, true, tick.current, worldW);
+        drawCityLayer(ctx, NEAR_BUILDINGS_NIGHT, NEAR_TILE_W, gndOff.current * 0.30, groundY, 0.90, true, tick.current, worldW);
       } else {
         // Daytime pastel city layers
-        drawCityLayer(ctx, FAR_BUILDINGS_DAY, FAR_TILE_W, gndOff.current * 0.12, GROUND_Y, 0.40, false, tick.current);
-        drawCityLayer(ctx, NEAR_BUILDINGS_DAY, NEAR_TILE_W, gndOff.current * 0.30, GROUND_Y, 0.60, false, tick.current);
+        drawCityLayer(ctx, FAR_BUILDINGS_DAY, FAR_TILE_W, gndOff.current * 0.12, groundY, 0.40, false, tick.current, worldW);
+        drawCityLayer(ctx, NEAR_BUILDINGS_DAY, NEAR_TILE_W, gndOff.current * 0.30, groundY, 0.60, false, tick.current, worldW);
       }
 
-      /* ── ground ── */
+      /* ── ground / road ── */
       if (night) {
-        // Midnight road
-        ctx.fillStyle = '#1D0E29';
-        ctx.fillRect(0, GROUND_Y, WORLD_W, WORLD_H - GROUND_Y);
+        // Deep midnight asphalt
+        ctx.fillStyle = '#160824';
+        ctx.fillRect(0, groundY, worldW, worldH - groundY);
 
-        // Top glowing neon trim strip along the road edge
-        ctx.fillStyle = '#FF5C8D';
-        ctx.fillRect(0, GROUND_Y, WORLD_W, 2);
+        // Glowing neon pink kerb line
+        ctx.fillStyle = '#FF2A85';
+        ctx.fillRect(0, groundY, worldW, 2);
 
-        // Neon road dashes
-        ctx.fillStyle = '#FFE29A';
+        // Fluorescent dashed road dividers
+        ctx.fillStyle = '#FFE066';
         const dg = 40;
-        const doff = gndOff.current % dg;
-        for (let x = -doff; x < WORLD_W + dg; x += dg) {
-          ctx.fillRect(x, GROUND_Y + 8, 18, 2);
-          ctx.fillStyle = '#FF70A6';
-          ctx.fillRect(x + dg * 0.5, GROUND_Y + 18, 10, 2);
-          ctx.fillStyle = '#FFE29A';
+        const doff = (gndOff.current * 0.5) % dg;
+        for (let x = -doff; x < worldW + dg; x += dg) {
+          ctx.fillRect(x, groundY + 10, 18, 2);
+          ctx.fillRect(x + dg * 0.5, groundY + 22, 10, 2);
         }
       } else {
-        ctx.fillStyle = '#E8C5CE';
-        ctx.fillRect(0, GROUND_Y, WORLD_W, WORLD_H - GROUND_Y);
+        // Daytime pastel road
+        ctx.fillStyle = '#F2C8D4';
+        ctx.fillRect(0, groundY, worldW, worldH - groundY);
 
-        ctx.fillStyle = '#D4A0AD';
+        ctx.fillStyle = '#D64676';
+        ctx.fillRect(0, groundY, worldW, 2);
+
+        ctx.fillStyle = '#FFF6EC';
         const dg = 40;
-        const doff = gndOff.current % dg;
-        for (let x = -doff; x < WORLD_W + dg; x += dg) {
-          ctx.fillRect(x, GROUND_Y + 8, 18, 2);
-          ctx.fillRect(x + dg * 0.5, GROUND_Y + 18, 10, 2);
+        const doff = (gndOff.current * 0.5) % dg;
+        for (let x = -doff; x < worldW + dg; x += dg) {
+          ctx.fillRect(x, groundY + 10, 18, 2);
+          ctx.fillRect(x + dg * 0.5, groundY + 22, 10, 2);
         }
       }
 
-      /* ── atmospheric clouds ── */
-      ctx.fillStyle = night ? 'rgba(120, 60, 150, 0.25)' : 'rgba(255, 255, 255, 0.45)';
-      const co = (gndOff.current * 0.15) % (WORLD_W + 200);
-      ctx.beginPath();
-      ctx.arc(200 - co + WORLD_W, 50, 20, 0, Math.PI * 2);
-      ctx.arc(224 - co + WORLD_W, 44, 26, 0, Math.PI * 2);
-      ctx.arc(250 - co + WORLD_W, 50, 18, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(550 - co, 65, 16, 0, Math.PI * 2);
-      ctx.arc(570 - co, 58, 20, 0, Math.PI * 2);
-      ctx.arc(588 - co, 65, 14, 0, Math.PI * 2);
-      ctx.fill();
+      /* ── daytime drifting clouds ── */
+      if (!night) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+        const co = (gndOff.current * 0.15) % (worldW + 200);
+        ctx.beginPath();
+        ctx.arc(200 - co + worldW, 50, 20, 0, Math.PI * 2);
+        ctx.arc(224 - co + worldW, 44, 26, 0, Math.PI * 2);
+        ctx.arc(250 - co + worldW, 50, 18, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
+      /* ── gameplay logic ── */
       const running = phaseR.current === 'running';
 
       if (running) {
         tick.current += 1;
-        spd.current = Math.min(MAX_SPEED, spd.current + SPEED_INCREMENT);
         gndOff.current += spd.current;
+        if (spd.current < MAX_SPEED) {
+          spd.current += SPEED_INCREMENT;
+          if (tick.current % 30 === 0) {
+            setSpdVal(spd.current);
+          }
+        }
 
         /* physics */
-        vy.current += GRAVITY;
         charY.current += vy.current;
-        if (charY.current >= GROUND_Y - CHAR_H) {
-          charY.current = GROUND_Y - CHAR_H;
+        vy.current += GRAVITY;
+
+        // Ground collision
+        if (charY.current >= groundY - CHAR_H) {
+          charY.current = groundY - CHAR_H;
           if (!grounded.current) {
             dust.current.push(
-              { x: CHAR_X + CHAR_W * 0.5, y: GROUND_Y - 2, age: 0 },
-              { x: CHAR_X + CHAR_W * 0.3, y: GROUND_Y - 4, age: 0 },
+              { x: charX + CHAR_W * 0.5, y: groundY - 2, age: 0 },
+              { x: charX + CHAR_W * 0.3, y: groundY - 4, age: 0 },
             );
           }
           vy.current = 0;
@@ -652,8 +687,8 @@ export default function CozyRunner() {
         /* running dust */
         if (grounded.current && tick.current % 10 === 0) {
           dust.current.push({
-            x: CHAR_X + CHAR_W * 0.3 + Math.random() * 6,
-            y: GROUND_Y - 1 - Math.random() * 3,
+            x: charX + CHAR_W * 0.3 + Math.random() * 6,
+            y: groundY - 1 - Math.random() * 3,
             age: 0,
           });
         }
@@ -661,7 +696,7 @@ export default function CozyRunner() {
         /* obstacles */
         for (const o of obs.current) {
           o.x -= spd.current;
-          if (!o.scored && o.x + o.w < CHAR_X) {
+          if (!o.scored && o.x + o.w < charX) {
             o.scored = true;
             scoreR.current += 1;
             setScore(scoreR.current);
@@ -674,12 +709,12 @@ export default function CozyRunner() {
         obs.current = obs.current.filter((o) => o.x + o.w > -60);
 
         const last = obs.current[obs.current.length - 1];
-        if (!last || last.x < WORLD_W - 120) spawn();
+        if (!last || last.x < worldW - 120) spawn(worldW);
 
-        /* collision */
-        const cb = { x: CHAR_X + 8, y: charY.current + 6, w: CHAR_W - 16, h: CHAR_H - 8 };
+        /* collision box */
+        const cb = { x: charX + 8, y: charY.current + 6, w: CHAR_W - 16, h: CHAR_H - 8 };
         for (const o of obs.current) {
-          const ob = { x: o.x + 4, y: GROUND_Y - o.h + 2, w: o.w - 8, h: o.h - 4 };
+          const ob = { x: o.x + 4, y: groundY - o.h + 2, w: o.w - 8, h: o.h - 4 };
           if (cb.x < ob.x + ob.w && cb.x + cb.w > ob.x && cb.y < ob.y + ob.h && cb.y + cb.h > ob.y) {
             phaseR.current = 'over';
             setPhase('over');
@@ -695,20 +730,29 @@ export default function CozyRunner() {
       }
 
       /* draw obstacles */
-      for (const o of obs.current) drawCactus(ctx, o.x, GROUND_Y - o.h, o.kind, night);
+      for (const o of obs.current) {
+        drawCactus(ctx, o.x, groundY - o.h, o.kind, night);
+      }
 
-      /* draw dust */
+      /* draw dust particles */
       dust.current = dust.current.filter((d) => d.age < 14);
       for (const d of dust.current) {
         const alpha = Math.max(0, 0.45 - d.age * 0.04);
         ctx.fillStyle = night ? `rgba(255,180,230,${alpha})` : `rgba(210,180,160,${alpha})`;
         const sz = 3 + d.age * 0.7;
-        ctx.beginPath(); ctx.arc(d.x, d.y, sz, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(d.x - 4, d.y - 2, sz * 0.6, 0, Math.PI * 2); ctx.fill();
-        if (running) { d.age += 1; d.x -= spd.current * 0.25; }
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, sz, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(d.x - 4, d.y - 2, sz * 0.6, 0, Math.PI * 2);
+        ctx.fill();
+        if (running) {
+          d.age += 1;
+          d.x -= spd.current * 0.25;
+        }
       }
 
-      /* draw character */
+      /* draw character with natural aspect ratio */
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
@@ -728,69 +772,50 @@ export default function CozyRunner() {
           dh = CHAR_H + 8;
           dw = dh * srcAspect;
         }
-        const dx = CHAR_X + (CHAR_W - dw) / 2;
+        const dx = charX + (CHAR_W - dw) / 2;
         const dy = charY.current + (CHAR_H - dh);
         ctx.drawImage(spr, dx, dy, dw, dh);
       } else {
         ctx.fillStyle = '#E86A92';
-        ctx.fillRect(CHAR_X, charY.current, CHAR_W, CHAR_H);
+        ctx.fillRect(charX, charY.current, CHAR_W, CHAR_H);
       }
 
       ctx.imageSmoothingEnabled = false;
 
-      /* HUD score */
-      ctx.fillStyle = night ? '#FFE29A' : '#5C3246';
-      ctx.font = 'bold 16px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`SCORE: ${String(scoreR.current).padStart(4, '0')}`, WORLD_W - 20, 28);
-      if (hiR.current > 0) {
-        ctx.fillStyle = night ? '#FF9EBB' : '#B07090';
-        ctx.font = 'bold 11px monospace';
-        ctx.fillText(`HI: ${String(hiR.current).padStart(4, '0')}`, WORLD_W - 20, 44);
-      }
-
-      /* speed indicator */
-      ctx.fillStyle = night ? '#A8F0FF' : '#D4A0AD';
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'left';
-      if (running) {
-        ctx.fillText(`SPD: ${spd.current.toFixed(1)}`, 16, 28);
-      }
-
       /* overlays */
       if (phaseR.current === 'idle') {
-        ctx.fillStyle = night ? 'rgba(10, 5, 20, 0.55)' : 'rgba(30,18,38,0.40)';
-        ctx.fillRect(0, 0, WORLD_W, WORLD_H);
+        ctx.fillStyle = night ? 'rgba(10, 5, 20, 0.65)' : 'rgba(30,18,38,0.45)';
+        ctx.fillRect(0, 0, worldW, worldH);
         ctx.textAlign = 'center';
         ctx.fillStyle = '#FFF6EC';
         ctx.font = 'bold 24px monospace';
-        ctx.fillText('COZY RUNNER', WORLD_W / 2, WORLD_H * 0.35);
+        ctx.fillText('COZY RUNNER', worldW / 2, worldH * 0.38);
         ctx.font = 'bold 13px monospace';
         ctx.fillStyle = '#FFE29A';
-        ctx.fillText('Press SPACE or tap to start', WORLD_W / 2, WORLD_H * 0.35 + 30);
+        ctx.fillText('Press SPACE, click, or tap to start', worldW / 2, worldH * 0.38 + 32);
         ctx.font = '11px monospace';
         ctx.fillStyle = night ? '#FF9EBB' : '#F9C6D3';
-        ctx.fillText('Jump over the cacti!', WORLD_W / 2, WORLD_H * 0.35 + 54);
+        ctx.fillText('Jump over the cacti!', worldW / 2, worldH * 0.38 + 56);
       }
 
       if (phaseR.current === 'over') {
-        ctx.fillStyle = night ? 'rgba(10, 5, 20, 0.65)' : 'rgba(30,18,38,0.50)';
-        ctx.fillRect(0, 0, WORLD_W, WORLD_H);
+        ctx.fillStyle = night ? 'rgba(10, 5, 20, 0.70)' : 'rgba(30,18,38,0.55)';
+        ctx.fillRect(0, 0, worldW, worldH);
         ctx.textAlign = 'center';
         ctx.fillStyle = '#FF5C8D';
         ctx.font = 'bold 24px monospace';
-        ctx.fillText('GAME OVER', WORLD_W / 2, WORLD_H * 0.32);
+        ctx.fillText('GAME OVER', worldW / 2, worldH * 0.35);
         ctx.fillStyle = '#FFF6EC';
         ctx.font = 'bold 16px monospace';
-        ctx.fillText(`Score: ${scoreR.current}`, WORLD_W / 2, WORLD_H * 0.32 + 32);
+        ctx.fillText(`Score: ${scoreR.current}`, worldW / 2, worldH * 0.35 + 32);
         if (scoreR.current >= hiR.current && hiR.current > 0) {
           ctx.fillStyle = '#FFE29A';
           ctx.font = 'bold 12px monospace';
-          ctx.fillText('NEW HIGH SCORE!', WORLD_W / 2, WORLD_H * 0.32 + 54);
+          ctx.fillText('NEW HIGH SCORE!', worldW / 2, worldH * 0.35 + 56);
         }
         ctx.fillStyle = '#FFE29A';
         ctx.font = 'bold 12px monospace';
-        ctx.fillText('Press SPACE or tap to retry', WORLD_W / 2, WORLD_H * 0.32 + 76);
+        ctx.fillText('Press SPACE, click, or tap to retry', worldW / 2, worldH * 0.35 + 80);
       }
 
       ctx.restore();
@@ -801,7 +826,7 @@ export default function CozyRunner() {
   }, [audio, spawn]);
 
   return (
-    <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
+    <div ref={wrapRef} className="relative h-full w-full overflow-hidden select-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full cursor-pointer"
@@ -812,8 +837,29 @@ export default function CozyRunner() {
         }}
         aria-label="Cozy Runner game. Press Space or tap to jump."
       />
+
+      {/* Floating Top HUD Bar (Score & High Score & Speed) */}
+      <div className="pointer-events-none absolute top-2 inset-x-3 z-30 flex items-center justify-between font-mono font-bold select-none">
+        {/* Score pill */}
+        <div className="flex items-center gap-2 rounded-full border border-pink-200/60 bg-paper/95 px-2.5 py-1 text-xs text-ink shadow-xs backdrop-blur-xs dark:border-white/15 dark:bg-black/60 dark:text-pink-100">
+          <span className="text-[10px] text-accent dark:text-pink-300">SCORE</span>
+          <span>{String(score).padStart(4, '0')}</span>
+          {hi > 0 && (
+            <span className="text-[10px] text-ink-soft dark:text-butter/80">
+              HI {String(hi).padStart(4, '0')}
+            </span>
+          )}
+        </div>
+
+        {/* Speed pill */}
+        <div className="flex items-center gap-1.5 rounded-full border border-pink-200/60 bg-paper/95 px-2.5 py-1 text-[10px] text-ink shadow-xs backdrop-blur-xs dark:border-white/15 dark:bg-black/60 dark:text-pink-100">
+          <span className="text-accent dark:text-pink-300">SPD</span>
+          <span>{spdVal.toFixed(1)}</span>
+        </div>
+      </div>
+
       {/* Floating controls hint */}
-      <div className="pointer-events-none absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2 rounded-full border border-cocoa/10 bg-white/80 px-2.5 sm:px-3 py-0.5 sm:py-1 font-mono text-[9px] sm:text-[10px] text-cocoa/70 backdrop-blur-sm whitespace-nowrap dark:border-white/10 dark:bg-black/60 dark:text-white/80">
+      <div className="pointer-events-none absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2 rounded-full border border-cocoa/10 bg-white/85 px-3 py-1 font-mono text-[9px] sm:text-[10px] text-cocoa/80 shadow-xs backdrop-blur-xs whitespace-nowrap dark:border-white/10 dark:bg-black/70 dark:text-white/80">
         <span className="hidden sm:inline-flex items-center gap-1">
           <span className="rounded border border-cocoa/15 bg-cocoa/5 px-1 py-0.5 dark:border-white/15 dark:bg-white/10">
             SPACE
@@ -827,15 +873,6 @@ export default function CozyRunner() {
         </span>
         <span>Tap or click to jump</span>
       </div>
-      {/* Score display in React layer */}
-      <div className="pointer-events-none absolute top-2 left-3 font-mono text-xs font-bold text-cocoa/80 dark:text-pink-200">
-        {phase === 'running' && `SCORE: ${String(score).padStart(4, '0')}`}
-      </div>
-      {hi > 0 && (
-        <div className="pointer-events-none absolute top-2 right-3 font-mono text-[10px] font-bold text-cocoa/50 dark:text-butter/80">
-          HI: {String(hi).padStart(4, '0')}
-        </div>
-      )}
     </div>
   );
 }

@@ -1,16 +1,36 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { rooms } from '@/data/rooms';
 import { site } from '@/data/site';
 import TimeToggle from './TimeToggle';
 import CozyIcon from '@/components/ui/CozyIcon';
+import { soundscape } from '@/lib/soundEngine';
 
 export default function SiteHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+
+  // Automatically close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
 
   return (
     <>
@@ -71,39 +91,144 @@ export default function SiteHeader() {
               })}
             </nav>
 
-            {/* Right: Sky/Clock Toggle */}
-            <div className="flex items-center">
+            {/* Right Controls: Sky/Clock Toggle & Mobile Hamburger Menu */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <TimeToggle />
+
+              {/* Hamburger Button (visible on screens < md) */}
+              <button
+                type="button"
+                onClick={() => {
+                  soundscape.playClickSound();
+                  setMenuOpen(!menuOpen);
+                }}
+                aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-nav-menu"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-pink-200/80 bg-paper/90 text-ink shadow-xs transition-all hover:bg-blush/40 active:scale-95 md:hidden dark:border-white/15 dark:bg-white/10 dark:text-white"
+              >
+                <div className="relative flex h-3.5 w-4 flex-col justify-between">
+                  <span
+                    className={clsx(
+                      'h-0.5 w-full rounded-full bg-current transition-all duration-300 origin-center',
+                      menuOpen && 'translate-y-1.5 rotate-45'
+                    )}
+                  />
+                  <span
+                    className={clsx(
+                      'h-0.5 w-full rounded-full bg-current transition-all duration-200',
+                      menuOpen && 'opacity-0 scale-x-0'
+                    )}
+                  />
+                  <span
+                    className={clsx(
+                      'h-0.5 w-full rounded-full bg-current transition-all duration-300 origin-center',
+                      menuOpen && '-translate-y-1.5 -rotate-45'
+                    )}
+                  />
+                </div>
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile: bottom tab bar */}
-      <nav aria-label="Rooms" className="fixed inset-x-2 sm:inset-x-4 bottom-3 z-50 md:hidden">
-        <ul className="flex items-center justify-between rounded-full border-2 border-pink-200/70 bg-paper/95 px-2 sm:px-3 py-1.5 sm:py-2 shadow-cozy backdrop-blur-md transition-all duration-300 dark:border-white/15 dark:bg-black/30 dark:shadow-lg">
-          {rooms.map((r) => {
-            const active = isActive(r.href);
-            return (
-              <li key={r.slug}>
-                <Link
-                  href={r.href}
-                  aria-label={r.name}
-                  aria-current={active ? 'page' : undefined}
-                  className={clsx(
-                    'flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full transition-all active:scale-95',
-                    active
-                      ? 'bg-blush/60 dark:bg-white/25'
-                      : 'hover:bg-blush/20 dark:hover:bg-white/10'
-                  )}
+      {/* Mobile Hamburger Dropdown Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs md:hidden"
+            />
+
+            {/* Menu Drawer Plaque */}
+            <motion.nav
+              id="mobile-nav-menu"
+              aria-label="Mobile Navigation"
+              initial={{ opacity: 0, y: -12, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.96 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="fixed inset-x-3 top-16 z-50 mx-auto max-w-sm rounded-3xl border-2 border-pink-200/90 bg-paper/98 p-4 shadow-2xl backdrop-blur-md md:hidden dark:border-white/20 dark:bg-[#25182E]/98 dark:shadow-black/60 select-none"
+            >
+              {/* Subtle decorative washi tape */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -top-1.5 left-8 z-10 h-3 w-10 -rotate-2 rounded-xs bg-butter/85 shadow-xs"
+                style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgb(255 255 255 / .4) 0 3px, transparent 3px 6px)' }}
+              />
+
+              {/* Menu Header */}
+              <div className="flex items-center justify-between border-b border-pink-200/60 pb-2.5 px-1 dark:border-white/10">
+                <span className="font-mono text-[11px] font-bold text-ink-soft dark:text-pink-200 tracking-wider">
+                  ROOMS &bull; SUTANUKA&apos;S HOME
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundscape.playClickSound();
+                    setMenuOpen(false);
+                  }}
+                  aria-label="Close navigation menu"
+                  className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-mono font-bold text-ink hover:bg-rose hover:text-white transition-colors dark:text-white"
                 >
-                  <CozyIcon name={r.slug} fallback={r.emoji} size={20} />
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+                  ✕
+                </button>
+              </div>
+
+              {/* Room Links List */}
+              <ul className="mt-2.5 space-y-1.5">
+                {rooms.map((r) => {
+                  const active = isActive(r.href);
+                  return (
+                    <li key={r.slug}>
+                      <Link
+                        href={r.href}
+                        onClick={() => {
+                          soundscape.playClickSound();
+                          setMenuOpen(false);
+                        }}
+                        aria-current={active ? 'page' : undefined}
+                        className={clsx(
+                          'flex items-center justify-between rounded-2xl px-3 py-2 transition-all active:scale-[0.98]',
+                          active
+                            ? 'bg-blush/60 text-accent font-bold dark:bg-white/20 dark:text-white'
+                            : 'text-ink/85 hover:bg-blush/25 hover:text-ink dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white'
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-paper/90 shadow-xs border border-pink-200/60 dark:border-white/10 dark:bg-black/30">
+                            <CozyIcon name={r.slug} fallback={r.emoji} size={20} />
+                          </span>
+                          <div className="flex flex-col text-left">
+                            <span className="font-display text-sm font-bold leading-tight">
+                              {r.name === 'Living room' ? 'Living room (Home)' : r.name}
+                            </span>
+                            <span className="font-sans text-[11px] text-ink-soft dark:text-pink-200/75">
+                              {r.purpose}
+                            </span>
+                          </div>
+                        </div>
+                        {active && (
+                          <span className="rounded-full bg-accent/15 px-2 py-0.5 font-mono text-[9px] uppercase font-bold text-accent dark:bg-white/15 dark:text-pink-200">
+                            Current
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

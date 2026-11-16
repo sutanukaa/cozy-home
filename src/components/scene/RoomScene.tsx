@@ -134,7 +134,7 @@ export default function RoomScene({ room, hotspots = [], children, fit = 'cover'
         {/* Subtle swipe hint pill for mobile visitors when diorama overflows horizontally */}
         {overflowX > 30 && !hasDragged && (
           <div
-            className="pointer-events-none absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 rounded-full border border-pink-300/80 bg-paper/90 px-3 py-1 font-mono text-[10px] sm:text-xs font-bold text-cocoa shadow-cozy backdrop-blur-md animate-pulse dark:border-white/20 dark:bg-black/60 dark:text-pink-200"
+            className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 rounded-full border border-pink-300/80 bg-paper/90 px-3 py-1 font-mono text-[10px] sm:text-xs font-bold text-cocoa shadow-cozy backdrop-blur-md animate-pulse dark:border-white/20 dark:bg-black/60 dark:text-pink-200"
           >
             <span className="text-accent dark:text-pink-300 font-bold">‹</span>
             <span>drag to look around room</span>

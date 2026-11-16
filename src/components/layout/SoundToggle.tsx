@@ -71,7 +71,7 @@ export default function SoundToggle() {
       aria-label={isPlaying ? 'Mute cozy sound' : 'Play cozy ambient sound'}
       aria-pressed={isPlaying}
       className={clsx(
-        'fixed bottom-20 right-4 sm:bottom-20 sm:right-5 md:bottom-5 md:right-5 z-40',
+        'fixed bottom-5 right-4 sm:bottom-5 sm:right-5 z-40',
         'group flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full',
         'border-2 shadow-cozy backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95',
         isPlaying

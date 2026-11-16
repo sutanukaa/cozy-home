@@ -325,16 +325,16 @@ export default function BedroomDiary() {
                     </svg>
                   </button>
 
-                  {/* Two-page Content Layout Inside Open Book */}
-                  <div className="relative z-20 grid h-full w-full grid-cols-1 md:grid-cols-2 px-6 py-6 sm:px-10 sm:py-8 md:px-12 md:py-10 text-ink">
-                    {/* LEFT PAGE: Photo Polaroid + Name + Social Links (Shifted up to give pills breathing room) */}
-                    <div className="flex flex-col items-center justify-start pt-3 sm:pt-6 md:pt-8 text-center p-1 sm:p-2 md:pr-6">
+                  {/* Two-page Content Layout Inside Open Book: strictly bounded within the cream parchment safe zone (top: 6%, bottom: 19%) */}
+                  <div className="absolute inset-x-0 top-[6%] bottom-[19%] z-20 grid grid-cols-1 md:grid-cols-2 text-ink select-text">
+                    {/* LEFT PAGE: Photo Polaroid + Name + Social Links */}
+                    <div className="flex h-full flex-col items-center justify-center text-center px-4 sm:px-8 py-2">
                       {/* Polaroid Frame */}
-                      <div className="relative w-32 sm:w-44 md:w-50 rotate-[-2deg] rounded-lg bg-white p-2 sm:p-3 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
+                      <div className="relative w-32 sm:w-40 md:w-46 rotate-[-2deg] rounded-lg bg-white p-2 sm:p-2.5 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:rotate-0 hover:scale-105">
                         {/* Cute Washi Tape on Top of Polaroid */}
                         <div
                           aria-hidden="true"
-                          className="absolute -top-3 left-1/2 -translate-x-1/2 h-5 w-16 sm:h-6 sm:w-20 rounded-xs bg-[#FFC5D3]/85 shadow-xs -rotate-2"
+                          className="absolute -top-2.5 left-1/2 -translate-x-1/2 h-4.5 w-16 sm:h-5 sm:w-20 rounded-xs bg-[#FFC5D3]/85 shadow-xs -rotate-2"
                           style={{
                             backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.4) 4px, rgba(255,255,255,0.4) 8px)',
                           }}
@@ -346,25 +346,25 @@ export default function BedroomDiary() {
                             src="/images/me.jpeg"
                             alt={site.name}
                             fill
-                            sizes="220px"
+                            sizes="200px"
                             className="object-cover"
                             priority
                           />
                         </div>
 
                         {/* Polaroid Caption */}
-                        <div className="mt-1.5 sm:mt-2 text-center">
-                          <p className="font-hand text-lg sm:text-xl font-bold text-ink">
+                        <div className="mt-1 sm:mt-1.5 text-center">
+                          <p className="font-hand text-base sm:text-lg font-bold text-ink">
                             {site.name}
                           </p>
-                          <p className="font-sans text-[10px] sm:text-xs tracking-wider uppercase text-ink/65 font-semibold">
+                          <p className="font-sans text-[9px] sm:text-[11px] tracking-wider uppercase text-ink/65 font-semibold">
                             {site.role}
                           </p>
                         </div>
                       </div>
 
                       {/* Social links row: fits comfortably within bottom page cream area */}
-                      <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+                      <div className="mt-2.5 sm:mt-3.5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
                         {site.socials.map((s) => (
                           <a
                             key={s.label}
@@ -380,8 +380,8 @@ export default function BedroomDiary() {
                     </div>
 
                     {/* RIGHT PAGE: Bio + Loves + Fun Facts + Resume Button (Centered with ribbon & margin clearance, scrollable) */}
-                    <div className="flex flex-col justify-center pl-8 sm:pl-12 md:pl-16 pr-8 sm:pr-12 md:pr-16 py-2 text-left">
-                      <div className="diary-scroll flex flex-col space-y-3 max-h-[68vh] md:max-h-[60vh] overflow-y-auto pr-3 pt-1 pb-10 sm:pb-14">
+                    <div className="flex h-full flex-col justify-center pl-10 sm:pl-14 md:pl-20 pr-8 sm:pr-12 md:pr-16 py-2 text-left min-h-0">
+                      <div className="diary-scroll flex flex-col space-y-2.5 h-full overflow-y-auto pr-3 pt-1 pb-6">
                         <div>
                           <h2 className="font-display text-lg sm:text-2xl font-extrabold text-ink leading-tight">
                             Hello, I&apos;m {site.shortName}
@@ -392,7 +392,7 @@ export default function BedroomDiary() {
                         </div>
 
                         {/* Bio Paragraphs */}
-                        <div className="space-y-2 font-sans text-xs sm:text-[13px] leading-relaxed text-ink/85">
+                        <div className="space-y-1.5 font-sans text-xs sm:text-[13px] leading-relaxed text-ink/85">
                           {about.paragraphs.map((p, i) => (
                             <p key={i}>{p}</p>
                           ))}
@@ -428,7 +428,7 @@ export default function BedroomDiary() {
                         </div>
 
                         {/* Resume Download Button: High-contrast, rich rose-pink pill with generous bottom padding */}
-                        <div className="pt-3 pb-4">
+                        <div className="pt-2 pb-2">
                           <a
                             href={site.resumeUrl}
                             target="_blank"

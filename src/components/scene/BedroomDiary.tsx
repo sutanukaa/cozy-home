@@ -140,9 +140,12 @@ export default function BedroomDiary() {
               priority
             />
 
-            {/* Prominent Glowing Hotspot Button floating on the diary cover */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-              <div className="relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center">
+            {/* Prominent Glowing Hotspot Button positioned in lower half of cover so 'Suto's Diary' text is fully visible */}
+            <div
+              className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+              style={{ top: '68%', left: '49%' }}
+            >
+              <div className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center">
                 {/* Outer pulsing radiant halo */}
                 <span
                   aria-hidden="true"
@@ -156,16 +159,16 @@ export default function BedroomDiary() {
                 />
 
                 {/* Main vibrant rose-berry button */}
-                <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF4D88] via-[#E81E63] to-[#B7004B] text-white shadow-[0_0_14px_rgba(232,30,99,0.7),0_4px_10px_rgba(0,0,0,0.3)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_20px_rgba(255,77,136,0.95)]">
+                <span className="relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF4D88] via-[#E81E63] to-[#B7004B] text-white shadow-[0_0_12px_rgba(232,30,99,0.7),0_3px_8px_rgba(0,0,0,0.3)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_18px_rgba(255,77,136,0.95)]">
                   {/* Glossy top-left bubble highlight */}
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-0.5 left-1 h-2 w-2.5 rounded-full bg-white/60 blur-[0.3px] -rotate-12"
+                    className="pointer-events-none absolute top-0.5 left-1 h-1.5 w-2 rounded-full bg-white/60 blur-[0.3px] -rotate-12"
                   />
 
                   {/* Sparkle Book Icon */}
                   <svg
-                    className="h-4 w-4 sm:h-4.5 sm:w-4.5 drop-shadow-sm text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
+                    className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

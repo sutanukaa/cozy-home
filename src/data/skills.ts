@@ -13,7 +13,7 @@ export const shelves: Shelf[] = [
   {
     name: 'Backend & APIs',
     emoji: '🧁',
-    books: ['FastAPI', 'Node.js', 'Express.js', 'Celery', 'Redis', 'PostgreSQL', 'Prisma', 'MongoDB'],
+    books: ['FastAPI', 'Node.js', 'Express.js', 'Celery', 'Redis', 'PostgreSQL', 'Prisma', 'MongoDB', 'Supabase'],
   },
   {
     name: 'AI & Data',

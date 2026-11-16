@@ -365,43 +365,6 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                     >
                       Scratch this, game time!
                     </button>
-
-                    <span
-                      onClick={() => {
-                        const target =
-                          activeProject?.slug === 'syntactiq' ||
-                          activeProject?.slug === 'rag-document-qa' ||
-                          activeProject?.slug === 'github-etl' ||
-                          activeProject?.slug === 'tickease' ||
-                          activeProject?.slug === 'bloom-for-youu' ||
-                          activeProject?.slug === 'a-little-scrapbook'
-                            ? activeProject
-                            : projects.find((p) => p.slug === 'syntactiq') || projects[0];
-                        if (target) {
-                          setActiveProject(target);
-                          setSelectedIcon(target.slug);
-                          setShowBlueprints(true);
-                          setShowGame(false);
-                          setActiveExtraTab('none');
-                          setActiveBlueprintDiagram(1);
-                        }
-                      }}
-                      className="cursor-pointer text-accent underline opacity-85 hover:opacity-100 hidden sm:inline"
-                      title="View Architecture Blueprints & System Diagrams"
-                    >
-                      Blueprints
-                    </span>
-
-                    <span
-                      onClick={() => {
-                        soundscape.playClickSound();
-                        setShowReadme(true);
-                        setShowGame(false);
-                      }}
-                      className="cursor-pointer opacity-70 hover:opacity-100 hidden sm:inline"
-                    >
-                      About
-                    </span>
                   </div>
 
                   <div className="flex items-center gap-3">

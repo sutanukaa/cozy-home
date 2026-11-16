@@ -61,12 +61,12 @@ export default function BedroomDiary() {
     soundscape.playSparkleSound();
     setIsFloating(true);
 
-    // Generate sparkle trail along trajectory from bedside table (x: 64.5%, y: 48.5%) to center (x: 50%, y: 50%)
+    // Generate sparkle trail along trajectory from bedside table (x: 65%, y: 46%) to center (x: 50%, y: 50%)
     const newSparkles: SparkleParticle[] = Array.from({ length: 18 }).map((_, i) => {
       const progress = i / 17;
       // Interpolate with a natural gentle curve
-      const baseX = 64.5 - progress * 14.5;
-      const baseY = 48.5 + Math.sin(progress * Math.PI) * -8 + progress * 1.5;
+      const baseX = 65 - progress * 15;
+      const baseY = 46 + Math.sin(progress * Math.PI) * -8 + progress * 4;
       const jitterX = (Math.random() - 0.5) * 6;
       const jitterY = (Math.random() - 0.5) * 6;
       const colors = ['#FFE28A', '#FFB8CE', '#FFFFFF', '#F482A5', '#FFF3B0'];
@@ -107,11 +107,11 @@ export default function BedroomDiary() {
         <div
           className="group absolute z-20 cursor-pointer select-none"
           style={{
-            left: '64.5%',
-            top: '47.5%',
-            width: '11.5%',
-            maxWidth: '135px',
-            minWidth: '85px',
+            left: '65%',
+            top: '46.5%',
+            width: '6.5%',
+            maxWidth: '82px',
+            minWidth: '48px',
             aspectRatio: '1140 / 1652',
             transform: 'translate(-50%, -50%) rotate(-2deg)',
           }}
@@ -127,22 +127,22 @@ export default function BedroomDiary() {
           aria-label="Open Suto's Diary"
         >
           {/* Subtle soft cast shadow on the nightstand table top */}
-          <div className="absolute -bottom-2 inset-x-2 h-4 rounded-full bg-black/25 blur-[3px]" />
+          <div className="absolute -bottom-1.5 inset-x-1.5 h-3 rounded-full bg-black/25 blur-[2.5px]" />
 
           {/* Closed diary book art */}
-          <div className="relative h-full w-full transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-1">
+          <div className="relative h-full w-full transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1">
             <Image
               src="/assets/objects/bedroom-diary-closed.png"
               alt="Suto's Diary resting on the nightstand"
               fill
-              sizes="(max-width: 768px) 110px, 140px"
-              className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
+              sizes="(max-width: 768px) 60px, 85px"
+              className="object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.22)]"
               priority
             />
 
             {/* Glowing pink bubble click indicator floating on the diary */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center">
+              <div className="relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center">
                 {/* Pulsing breathing ring */}
                 <span
                   aria-hidden="true"
@@ -150,16 +150,16 @@ export default function BedroomDiary() {
                 />
 
                 {/* Pink bubble button */}
-                <span className="relative flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 group-hover:scale-110">
+                <span className="relative flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 group-hover:scale-110">
                   {/* Glossy bubble highlight */}
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-1 left-1.5 h-2 w-3 rounded-full bg-white/50 blur-[0.3px] -rotate-12"
+                    className="pointer-events-none absolute top-0.5 left-1 h-1.5 w-2 rounded-full bg-white/50 blur-[0.3px] -rotate-12"
                   />
 
                   {/* Sparkle / Diary Book Icon */}
                   <svg
-                    className="h-4 w-4 sm:h-5 sm:w-5 drop-shadow-sm transition-transform duration-200 group-hover:rotate-12"
+                    className="h-3 w-3 sm:h-3.5 sm:w-3.5 drop-shadow-sm transition-transform duration-200 group-hover:rotate-12"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -178,7 +178,7 @@ export default function BedroomDiary() {
               {/* Tooltip on hover */}
               <span
                 role="tooltip"
-                className="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-200/90 bg-paper/95 px-3 py-1 font-hand text-sm sm:text-base font-bold text-ink opacity-0 shadow-md backdrop-blur-xs transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0.5 dark:border-white/20 dark:bg-[#25182E]/95 dark:text-pink-100"
+                className="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-200/90 bg-paper/95 px-2.5 py-0.5 font-hand text-xs sm:text-sm font-bold text-ink opacity-0 shadow-md backdrop-blur-xs transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0.5 dark:border-white/20 dark:bg-[#25182E]/95 dark:text-pink-100"
               >
                 Open Suto&apos;s Diary
               </span>
@@ -229,8 +229,8 @@ export default function BedroomDiary() {
             {/* Closed diary floating from nightstand into screen center */}
             <motion.div
               initial={{
-                left: '64.5%',
-                top: '47.5%',
+                left: '65%',
+                top: '46.5%',
                 x: '-50%',
                 y: '-50%',
                 scale: 1,
@@ -241,20 +241,20 @@ export default function BedroomDiary() {
                 top: '50%',
                 x: '-50%',
                 y: '-50%',
-                scale: [1, 1.4, 2.2],
+                scale: [1, 1.8, 3.2],
                 rotate: [-2, 4, 0],
               }}
               transition={{
                 duration: 0.58,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="absolute z-50 w-[11.5%] max-w-[135px] min-w-[85px] aspect-[1140/1652]"
+              className="absolute z-50 w-[6.5%] max-w-[82px] min-w-[48px] aspect-[1140/1652]"
             >
               <Image
                 src="/assets/objects/bedroom-diary-closed.png"
                 alt="Suto's Diary floating"
                 fill
-                sizes="200px"
+                sizes="120px"
                 className="object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
                 priority
               />
@@ -286,7 +286,7 @@ export default function BedroomDiary() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 15 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative z-10 w-full max-w-5xl aspect-[2222/1248] max-h-[94vh] flex items-center justify-center"
+                  className="relative z-10 w-full max-w-4xl aspect-[2222/1248] max-h-[88vh] flex items-center justify-center"
                 >
                   {/* Background Open Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">

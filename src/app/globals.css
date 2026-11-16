@@ -176,8 +176,6 @@ html[data-theme='night'] .retro-scroll::-webkit-scrollbar-thumb,
 html[data-theme='night'] .diary-scroll::-webkit-scrollbar-thumb {
   background: #FF8FA3;
 }
-  background: #A85178;
-}
 
 /* ---------------- accessibility ---------------- */
 @media (prefers-reduced-motion: reduce) {

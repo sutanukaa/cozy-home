@@ -878,15 +878,15 @@ export default function BedroomTablet() {
                     {/* Top App Bar for Mobile */}
                     <div className="flex items-center justify-between border-b border-pink-200/60 bg-[#FFF5F8] px-2.5 py-1.5 shrink-0">
                       {/* Left: Pink indicator dot + Title */}
-                      <div className="flex items-center gap-1.5 min-w-0">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <span className="flex h-2 w-2 rounded-full bg-[#FF4D88] animate-pulse shrink-0" />
-                        <span className="font-display text-[11px] xs:text-xs font-bold text-ink truncate">
+                        <span className="font-display text-[11px] xs:text-xs font-bold text-ink whitespace-nowrap">
                           Suto&apos;s iPad
                         </span>
                       </div>
 
                       {/* Right: Music Icon Button + Book Icon Button + Blogs Hamburger Button */}
-                      <div className="flex items-center gap-1 shrink-0">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         {/* Music Player Overlay Button */}
                         <button
                           type="button"
@@ -896,15 +896,15 @@ export default function BedroomTablet() {
                           }}
                           aria-label="Song of the day"
                           title="Song of the day"
-                          className={`flex h-6.5 w-6.5 sm:h-7 sm:w-7 items-center justify-center rounded-full border transition-all active:scale-95 ${
+                          className={`flex h-7 w-7 items-center justify-center rounded-full border transition-all active:scale-95 ${
                             mobileOverlay === 'music'
-                              ? 'border-pink-400 bg-gradient-to-br from-[#FF4D88] to-[#E81E63] text-white shadow-xs'
+                              ? 'border-pink-500 bg-[#FF4D88] text-white shadow-xs'
                               : isPlaying
-                              ? 'border-pink-300 bg-[#FFF0F5] text-accent ring-1 ring-pink-300 animate-pulse'
-                              : 'border-pink-200/80 bg-white/95 text-ink-soft hover:text-accent hover:bg-[#FFF0F5]'
+                              ? 'border-pink-300 bg-[#FFF0F5] text-[#FF4D88] ring-1 ring-pink-300 animate-pulse'
+                              : 'border-pink-200/90 bg-white text-[#FF4D88] hover:bg-[#FFF0F5]'
                           }`}
                         >
-                          <svg className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${isPlaying ? 'animate-spin-slow' : ''}`} viewBox="0 0 24 24" fill="currentColor">
+                          <svg className={`h-3.5 w-3.5 ${isPlaying ? 'animate-spin-slow' : ''}`} viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                           </svg>
                         </button>
@@ -918,13 +918,13 @@ export default function BedroomTablet() {
                           }}
                           aria-label="Currently Reading"
                           title="Currently Reading"
-                          className={`flex h-6.5 w-6.5 sm:h-7 sm:w-7 items-center justify-center rounded-full border transition-all active:scale-95 ${
+                          className={`flex h-7 w-7 items-center justify-center rounded-full border transition-all active:scale-95 ${
                             mobileOverlay === 'reading'
-                              ? 'border-pink-400 bg-gradient-to-br from-[#FF4D88] to-[#E81E63] text-white shadow-xs'
-                              : 'border-pink-200/80 bg-white/95 text-ink-soft hover:text-accent hover:bg-[#FFF0F5]'
+                              ? 'border-pink-500 bg-[#FF4D88] text-white shadow-xs'
+                              : 'border-pink-200/90 bg-white text-accent hover:bg-[#FFF0F5]'
                           }`}
                         >
-                          <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                           </svg>
@@ -1003,7 +1003,7 @@ export default function BedroomTablet() {
                         )}
                       </div>
 
-                      {/* OVERLAY 1: Song of the day bubble overlay from top */}
+                      {/* OVERLAY 1: Song of the day bubble overlay from top - Rich Cozy Pink & Scrollable */}
                       <AnimatePresence>
                         {mobileOverlay === 'music' && (
                           <>
@@ -1012,42 +1012,45 @@ export default function BedroomTablet() {
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
                               onClick={() => setMobileOverlay(null)}
-                              className="absolute inset-0 z-30 bg-black/25 backdrop-blur-[1px]"
+                              className="absolute inset-0 z-30 bg-black/50 backdrop-blur-[2px]"
                               aria-hidden="true"
                             />
                             <motion.div
-                              initial={{ y: -30, opacity: 0, scale: 0.96 }}
+                              initial={{ y: -24, opacity: 0, scale: 0.96 }}
                               animate={{ y: 0, opacity: 1, scale: 1 }}
-                              exit={{ y: -30, opacity: 0, scale: 0.96 }}
+                              exit={{ y: -24, opacity: 0, scale: 0.96 }}
                               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                              className="absolute top-2 inset-x-2 z-40 rounded-2xl border-2 border-pink-300/90 bg-gradient-to-b from-[#FFF5F8] via-white to-[#FFF0F5] p-3 shadow-cozy flex flex-col items-center text-center"
+                              className="absolute top-2 inset-x-2 bottom-2 z-40 rounded-2xl border-2 border-[#FF99BA] bg-gradient-to-b from-[#FFF0F5] via-[#FFE2EC] to-[#FFCDE0] p-3 shadow-cozy flex flex-col items-center text-center overflow-y-auto diary-scroll"
                             >
+                              {/* Glossy top-left bubble highlight */}
+                              <div className="pointer-events-none absolute top-1 left-2 h-4 w-12 rounded-full bg-white/60 blur-[0.5px] -rotate-6" />
+
                               {/* Close mini bubble */}
                               <button
                                 type="button"
                                 onClick={() => setMobileOverlay(null)}
                                 aria-label="Close music overlay"
-                                className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-100 text-ink-soft hover:bg-pink-200 hover:text-ink active:scale-95 transition-all text-xs"
+                                className="absolute top-2.5 right-2.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-pink-300 bg-white/90 text-ink-soft hover:bg-[#FF4D88] hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
                               >
                                 ✕
                               </button>
 
                               {/* Title */}
-                              <div className="flex items-center gap-1.5 mb-2">
+                              <div className="flex items-center gap-1.5 mb-2 shrink-0">
                                 <svg
-                                  className={`h-3.5 w-3.5 text-accent shrink-0 ${isPlaying ? 'animate-spin-slow' : ''}`}
+                                  className={`h-3.5 w-3.5 text-[#D62868] shrink-0 ${isPlaying ? 'animate-spin-slow' : ''}`}
                                   viewBox="0 0 24 24"
                                   fill="currentColor"
                                 >
                                   <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                                 </svg>
-                                <span className="font-hand text-xs font-bold text-accent">
+                                <span className="font-hand text-sm font-bold text-[#D62868]">
                                   Song of the day
                                 </span>
                               </div>
 
                               {/* Thumbnail */}
-                              <div className="relative h-20 w-20 rounded-xl overflow-hidden border border-pink-200 shadow-sm shrink-0 bg-pink-50 mb-1.5">
+                              <div className="relative h-20 w-20 rounded-xl overflow-hidden border-2 border-white/80 shadow-md shrink-0 bg-pink-100 mb-2">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   src={currentSong.coverImage || spotifyPlaylist.coverImage}
@@ -1067,41 +1070,43 @@ export default function BedroomTablet() {
                               </div>
 
                               {/* Info */}
-                              <p className="font-display text-xs font-bold text-ink leading-tight line-clamp-1">
-                                {currentSong.title}
-                              </p>
-                              <p className="font-sans text-[10px] text-ink-soft mt-0.5 line-clamp-1">
-                                {currentSong.artist} · {currentSong.album}
-                              </p>
+                              <div className="w-full px-2 shrink-0">
+                                <p className="font-display text-xs font-bold text-ink leading-tight">
+                                  {currentSong.title}
+                                </p>
+                                <p className="font-sans text-[10px] font-semibold text-[#8C3A5A] mt-0.5 leading-tight">
+                                  {currentSong.artist} · {currentSong.album}
+                                </p>
+                              </div>
 
                               {/* Scrubber */}
-                              <div className="w-full mt-2 pt-1 border-t border-pink-100 flex items-center gap-1.5">
-                                <span className="font-mono text-[8px] text-ink-soft shrink-0 w-5 text-right">
+                              <div className="w-full mt-2 pt-1.5 border-t border-pink-300/60 flex items-center gap-1.5 shrink-0">
+                                <span className="font-mono text-[8px] font-bold text-[#8C3A5A] shrink-0 w-5 text-right">
                                   {formatTime(currentTime)}
                                 </span>
                                 <div
                                   onClick={handleSeek}
-                                  className="relative flex-1 h-1 bg-pink-100 rounded-full cursor-pointer overflow-hidden"
+                                  className="relative flex-1 h-1.5 bg-white/80 rounded-full cursor-pointer overflow-hidden border border-pink-200"
                                 >
                                   <div
-                                    className="h-full bg-gradient-to-r from-[#FFB8CE] to-[#F482A5] rounded-full transition-all duration-100"
+                                    className="h-full bg-gradient-to-r from-[#FF4D88] to-[#E81E63] rounded-full transition-all duration-100"
                                     style={{
                                       width: `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%`,
                                     }}
                                   />
                                 </div>
-                                <span className="font-mono text-[8px] text-ink-soft shrink-0 w-5 text-left">
+                                <span className="font-mono text-[8px] font-bold text-[#8C3A5A] shrink-0 w-5 text-left">
                                   {formatTime(duration)}
                                 </span>
                               </div>
 
                               {/* Controls */}
-                              <div className="flex items-center justify-center gap-3 mt-1.5">
+                              <div className="flex items-center justify-center gap-3 mt-2 shrink-0 pb-1">
                                 <button
                                   type="button"
                                   onClick={handlePrevSong}
                                   aria-label="Previous Song"
-                                  className="p-1 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30"
+                                  className="p-1.5 rounded-full text-[#8C3A5A] hover:text-ink hover:bg-white/60 active:scale-95 transition-colors"
                                 >
                                   <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
@@ -1112,16 +1117,15 @@ export default function BedroomTablet() {
                                   type="button"
                                   onClick={togglePlay}
                                   aria-label={isPlaying ? 'Pause' : 'Play'}
-                                  style={{ backgroundColor: '#FF4D88' }}
-                                  className="flex h-7 w-7 items-center justify-center rounded-full text-white shadow-md active:scale-95 transition-all ring-2 ring-pink-300/80"
+                                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#FF3377] via-[#E81E63] to-[#B7004B] text-white shadow-md hover:scale-105 active:scale-95 transition-all ring-2 ring-white/90"
                                 >
                                   {isPlaying ? (
-                                    <svg className="h-3 w-3 text-white" viewBox="0 0 24 24" fill="#FFFFFF">
-                                      <path fill="#FFFFFF" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                    <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                                     </svg>
                                   ) : (
-                                    <svg className="h-3 w-3 text-white ml-0.5" viewBox="0 0 24 24" fill="#FFFFFF">
-                                      <path fill="#FFFFFF" d="M8 5v14l11-7z" />
+                                    <svg className="h-3.5 w-3.5 text-white ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M8 5v14l11-7z" />
                                     </svg>
                                   )}
                                 </button>
@@ -1130,7 +1134,7 @@ export default function BedroomTablet() {
                                   type="button"
                                   onClick={handleNextSong}
                                   aria-label="Next Song"
-                                  className="p-1 rounded-full text-ink-soft hover:text-ink hover:bg-blush/30"
+                                  className="p-1.5 rounded-full text-[#8C3A5A] hover:text-ink hover:bg-white/60 active:scale-95 transition-colors"
                                 >
                                   <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
@@ -1142,7 +1146,7 @@ export default function BedroomTablet() {
                         )}
                       </AnimatePresence>
 
-                      {/* OVERLAY 2: Currently Reading bubble overlay from top */}
+                      {/* OVERLAY 2: Currently Reading bubble overlay from top - Rich Cozy Pink & Scrollable */}
                       <AnimatePresence>
                         {mobileOverlay === 'reading' && (
                           <>
@@ -1151,30 +1155,33 @@ export default function BedroomTablet() {
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
                               onClick={() => setMobileOverlay(null)}
-                              className="absolute inset-0 z-30 bg-black/25 backdrop-blur-[1px]"
+                              className="absolute inset-0 z-30 bg-black/50 backdrop-blur-[2px]"
                               aria-hidden="true"
                             />
                             <motion.div
-                              initial={{ y: -30, opacity: 0, scale: 0.96 }}
+                              initial={{ y: -24, opacity: 0, scale: 0.96 }}
                               animate={{ y: 0, opacity: 1, scale: 1 }}
-                              exit={{ y: -30, opacity: 0, scale: 0.96 }}
+                              exit={{ y: -24, opacity: 0, scale: 0.96 }}
                               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                              className="absolute top-2 inset-x-2 z-40 rounded-2xl border-2 border-pink-300/90 bg-gradient-to-b from-[#FFF5F8] via-white to-[#FFF0F5] p-3 shadow-cozy flex flex-col items-center text-center"
+                              className="absolute top-2 inset-x-2 bottom-2 z-40 rounded-2xl border-2 border-[#FF99BA] bg-gradient-to-b from-[#FFF0F5] via-[#FFE2EC] to-[#FFCDE0] p-3 shadow-cozy flex flex-col items-center text-center overflow-y-auto diary-scroll"
                             >
+                              {/* Glossy top-left bubble highlight */}
+                              <div className="pointer-events-none absolute top-1 left-2 h-4 w-12 rounded-full bg-white/60 blur-[0.5px] -rotate-6" />
+
                               {/* Close mini bubble */}
                               <button
                                 type="button"
                                 onClick={() => setMobileOverlay(null)}
                                 aria-label="Close reading overlay"
-                                className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-100 text-ink-soft hover:bg-pink-200 hover:text-ink active:scale-95 transition-all text-xs"
+                                className="absolute top-2.5 right-2.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-pink-300 bg-white/90 text-ink-soft hover:bg-[#FF4D88] hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
                               >
                                 ✕
                               </button>
 
                               {/* Title */}
-                              <div className="flex items-center gap-1.5 mb-2">
+                              <div className="flex items-center gap-1.5 mb-2 shrink-0">
                                 <svg
-                                  className="h-3.5 w-3.5 text-accent shrink-0"
+                                  className="h-3.5 w-3.5 text-[#D62868] shrink-0"
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   stroke="currentColor"
@@ -1183,13 +1190,13 @@ export default function BedroomTablet() {
                                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                 </svg>
-                                <span className="font-hand text-xs font-bold text-accent">
+                                <span className="font-hand text-sm font-bold text-[#D62868]">
                                   Currently Reading
                                 </span>
                               </div>
 
                               {/* Book Cover */}
-                              <div className="relative h-24 w-16 rounded-md overflow-hidden border border-pink-200 shadow-sm shrink-0 bg-[#FFF5F8] mb-1.5">
+                              <div className="relative h-28 w-20 rounded-md overflow-hidden border-2 border-white/80 shadow-md shrink-0 bg-[#FFF5F8] mb-2">
                                 <Image
                                   src={currentlyReading.coverImage}
                                   alt={currentlyReading.title}
@@ -1199,17 +1206,19 @@ export default function BedroomTablet() {
                               </div>
 
                               {/* Info */}
-                              <p className="font-display text-xs font-bold text-ink leading-tight">
-                                {currentlyReading.title}
-                              </p>
-                              <p className="font-sans text-[10px] font-semibold text-accent mt-0.5">
-                                by {currentlyReading.author}
-                              </p>
-                              {currentlyReading.note && (
-                                <p className="mt-1 font-hand text-[10px] text-ink-soft leading-snug px-2">
-                                  &ldquo;{currentlyReading.note}&rdquo;
+                              <div className="w-full px-2 shrink-0 pb-1">
+                                <p className="font-display text-xs sm:text-sm font-bold text-ink leading-tight">
+                                  {currentlyReading.title}
                                 </p>
-                              )}
+                                <p className="font-sans text-[11px] font-semibold text-[#8C3A5A] mt-0.5">
+                                  by {currentlyReading.author}
+                                </p>
+                                {currentlyReading.note && (
+                                  <p className="mt-1 font-hand text-[11px] text-[#6B2A42] leading-snug px-1">
+                                    &ldquo;{currentlyReading.note}&rdquo;
+                                  </p>
+                                )}
+                              </div>
                             </motion.div>
                           </>
                         )}

@@ -115,6 +115,41 @@
     "size": "2222x1248 (16:9), transparent"
   },
   {
+    "path": "public/assets/objects/book-pink.png",
+    "kind": "object",
+    "size": "384x1600, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-yellow1.png",
+    "kind": "object",
+    "size": "173x858, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-green.png",
+    "kind": "object",
+    "size": "186x1033, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-lilac.png",
+    "kind": "object",
+    "size": "168x860, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-yellow2.png",
+    "kind": "object",
+    "size": "166x932, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-magenta.png",
+    "kind": "object",
+    "size": "157x811, transparent"
+  },
+  {
+    "path": "public/assets/objects/book-yellow3.png",
+    "kind": "object",
+    "size": "309x827, transparent"
+  },
+  {
     "path": "public/assets/patterns/wallpaper-day.png",
     "kind": "pattern",
     "size": "1024x1024, seamless tile"

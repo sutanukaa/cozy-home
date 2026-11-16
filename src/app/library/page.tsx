@@ -3,6 +3,7 @@ import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import PaperCard from '@/components/ui/PaperCard';
 import CozyIcon from '@/components/ui/CozyIcon';
+import LibraryBookshelf from '@/components/scene/LibraryBookshelf';
 import { shelves, currentlyLearning } from '@/data/skills';
 
 export const metadata: Metadata = { title: 'Library' };
@@ -17,87 +18,14 @@ const shelfIcons: Record<string, string> = {
   'Tools & DevOps': 'skill-tools',
 };
 
-interface ShelfPlate {
-  id: string;
-  name: string;
-  iconName: string;
-  fallback: string;
-  x: number;
-  y: number;
-}
-
-const shelfPlates: ShelfPlate[] = [
-  {
-    id: 'shelf-frontend',
-    name: 'Frontend & UI',
-    iconName: 'skill-frontend',
-    fallback: '🎀',
-    x: 18.5,
-    y: 18.0,
-  },
-  {
-    id: 'shelf-backend',
-    name: 'Backend & APIs',
-    iconName: 'skill-backend',
-    fallback: '🧁',
-    x: 18.5,
-    y: 34.5,
-  },
-  {
-    id: 'shelf-ai',
-    name: 'AI & Data',
-    iconName: 'skill-ai',
-    fallback: '🪄',
-    x: 18.5,
-    y: 46.5,
-  },
-  {
-    id: 'shelf-tools',
-    name: 'Tools & DevOps',
-    iconName: 'skill-tools',
-    fallback: '🧰',
-    x: 18.5,
-    y: 58.5,
-  },
-];
-
 export default function LibraryPage() {
   return (
     <div className="relative min-h-screen w-full bg-wall select-none">
       {/* 16:9 Hero Room Scene with empty shelves ready for book stickers */}
       <section className="relative h-screen w-full overflow-hidden">
         <RoomScene room="library" fit="cover" hotspots={[]}>
-          {/* 4 Shelf Row Category Headings on the wooden shelves */}
-          <div className="absolute inset-0 pointer-events-none z-10">
-            {shelfPlates.map((plate) => (
-              <a
-                key={plate.id}
-                href={`#${plate.id}`}
-                title={`Go to ${plate.name} shelf`}
-                className="pointer-events-auto absolute flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg bg-[#55331E]/85 hover:bg-[#683F26] border border-[#7D4F31]/80 shadow-[0_3px_6px_rgba(0,0,0,0.45)] backdrop-blur-[1px] transition-all hover:scale-105 active:scale-95 group"
-                style={{
-                  left: `${plate.x}%`,
-                  top: `${plate.y}%`,
-                }}
-              >
-                <CozyIcon
-                  name={plate.iconName}
-                  fallback={plate.fallback}
-                  size={20}
-                  className="shrink-0 drop-shadow-xs group-hover:rotate-6 transition-transform"
-                />
-                <span
-                  className="font-hand text-xs sm:text-sm md:text-base font-bold text-[#FFF5E6] whitespace-nowrap tracking-wide"
-                  style={{
-                    textShadow:
-                      '0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(255, 210, 160, 0.45)',
-                  }}
-                >
-                  {plate.name}
-                </span>
-              </a>
-            ))}
-          </div>
+          {/* Wooden Shelf Category Plaques & Interactive Standalone Books */}
+          <LibraryBookshelf />
         </RoomScene>
 
         {/* Pink bubble navigation arrows: left to Bedroom, right to Kitchen */}

@@ -2332,67 +2332,26 @@ export function centerLimits(page: { w: number; h: number }, hx: number, hy: num
                     )}
                   </AnimatePresence>
 
-                  {/* --- Floating Game Station Retro Window (Mini-Game Station) --- */}
-                  <AnimatePresence>
-                    {showGame && (
-                      <motion.div
-                        key="game-station-window"
-                        initial={{ scale: 0.95, y: 15, opacity: 0 }}
-                        animate={{ scale: 1, y: 0, opacity: 1 }}
-                        exit={{ scale: 0.95, y: 15, opacity: 0 }}
-                        className="relative z-30 mx-auto mt-4 w-full max-w-2xl flex flex-col rounded-2xl border-2 border-butter/90 bg-[#FFFDF8] shadow-2xl backdrop-blur-md dark:border-butter/50 dark:bg-[#25182E]"
-                      >
-                        {/* Titlebar */}
-                        <div className="flex shrink-0 items-center justify-between border-b-2 border-butter/80 bg-gradient-to-r from-butter/60 via-paper to-butter/60 px-4 py-2 dark:border-white/10 dark:from-[#3D2947] dark:to-[#2B1B3A]">
-                          <div className="flex items-center gap-2">
-                            <span className="h-3 w-3 rounded-full border border-rose/80 bg-rose" />
-                            <span className="h-3 w-3 rounded-full border border-butter/80 bg-butter" />
-                            <span className="h-3 w-3 rounded-full border border-sage/80 bg-sage" />
-                            <span className="ml-2 font-mono text-xs font-bold text-cocoa dark:text-pink-100">
-                              gametime.app - Cozy Arcade Station
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setShowGame(false)}
-                            title="Close Game Station"
-                            className="flex h-5 w-5 items-center justify-center rounded-full border border-pink-300 bg-white font-mono text-xs font-bold text-ink hover:bg-rose hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-white"
-                          >
-                            ✕
-                          </button>
-                        </div>
-
-                        {/* Arcade Game Canvas Preview Area */}
-                        <div className="p-4 sm:p-6 flex flex-col items-center text-center gap-3">
-                          <CozyRunner />
-
-                          <div className="flex items-center gap-3 pt-2">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                soundscape.playClickSound();
-                                setShowGame(false);
-                                if (projects.length > 0) setActiveProject(projects[0]);
-                              }}
-                              className="rounded-full border border-pink-300 bg-white px-4 py-1.5 font-mono text-xs font-bold text-ink shadow-xs hover:bg-rose hover:text-white transition-all dark:border-white/20 dark:bg-white/10 dark:text-white"
-                            >
-                              Back to projects
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                soundscape.playClickSound();
-                                setShowGame(false);
-                              }}
-                              className="rounded-full border border-pink-200 bg-transparent px-3 py-1.5 font-mono text-xs font-medium text-ink-soft hover:text-ink transition-all dark:text-white/60 dark:hover:text-white"
-                            >
-                              Close to desktop
-                            </button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {/* --- Fullscreen Game (fills entire workspace when active) --- */}
+                  {showGame && (
+                    <div className="absolute inset-0 z-40 flex flex-col">
+                      <CozyRunner />
+                      {/* Floating back button */}
+                      <div className="pointer-events-auto absolute top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            soundscape.playClickSound();
+                            setShowGame(false);
+                            if (projects.length > 0) setActiveProject(projects[0]);
+                          }}
+                          className="rounded-full border border-pink-300/80 bg-white/80 px-3 py-1 font-mono text-[10px] font-bold text-ink shadow-xs backdrop-blur-sm hover:bg-rose hover:text-white transition-all dark:border-white/20 dark:bg-black/50 dark:text-white"
+                        >
+                          Back to projects
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* --- Bottom Status Bar --- */}

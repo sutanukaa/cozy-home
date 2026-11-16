@@ -354,11 +354,13 @@ export default function BedroomDiary() {
 
                         {/* Polaroid Caption */}
                         <div className="mt-1 sm:mt-1.5 text-center">
-                          <p className="font-hand text-base sm:text-lg font-bold text-ink">
+                          <p className="font-hand text-base sm:text-lg font-bold text-ink leading-tight">
                             {site.name}
                           </p>
-                          <p className="font-sans text-[9px] sm:text-[11px] tracking-wider uppercase text-ink/65 font-semibold">
-                            {site.role}
+                          <p className="mt-0.5 font-sans text-[7.5px] sm:text-[8.5px] tracking-wide uppercase text-ink/65 font-semibold leading-tight">
+                            <span>Software Development</span>
+                            <br />
+                            <span>Engineer</span>
                           </p>
                         </div>
                       </div>

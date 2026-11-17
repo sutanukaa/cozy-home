@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: 'Kitchen' };
 export default function KitchenPage() {
   return (
     <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
-      <RoomScene room="kitchen" fit="cover">
+      <RoomScene room="kitchen" fit="cover" stageOffsetY="-4.5%" stageScale={1.08}>
         {/* Future Fortune Cookie Tray and interactive components will be mounted here */}
       </RoomScene>
 

@@ -13,9 +13,19 @@ interface Props {
   children?: React.ReactNode;
   fit?: 'cover' | 'contain';
   stageAlign?: 'center' | 'top';
+  stageOffsetY?: string | number;
+  stageScale?: number;
 }
 
-export default function RoomScene({ room, hotspots = [], children, fit = 'cover', stageAlign = 'center' }: Props) {
+export default function RoomScene({
+  room,
+  hotspots = [],
+  children,
+  fit = 'cover',
+  stageAlign = 'center',
+  stageOffsetY,
+  stageScale,
+}: Props) {
   const meta = getRoom(room);
   const [debug, setDebug] = useState(false);
   const [picked, setPicked] = useState<{ x: number; y: number } | null>(null);
@@ -87,7 +97,11 @@ export default function RoomScene({ room, hotspots = [], children, fit = 'cover'
       >
         {/* Diorama stage: smoothly pannable on mobile/portrait devices, centered on desktop */}
         <motion.div
-          style={{ x }}
+          style={{
+            x,
+            y: stageOffsetY ?? 0,
+            scale: stageScale ?? 1,
+          }}
           drag={overflowX > 10 ? 'x' : false}
           dragConstraints={{ left: -overflowX, right: overflowX }}
           dragElastic={0.08}

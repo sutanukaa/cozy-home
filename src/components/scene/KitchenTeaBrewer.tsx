@@ -19,7 +19,7 @@ type BrewState = 'idle' | 'brewing' | 'pouring' | 'served';
 
 const KETTLE_REST  = { left: '24.5%', top: '44%' };   // on the dark stovetop burner
 const CUP_POS      = { left: '44%',   top: '49%' };   // right wooden countertop
-const KETTLE_POUR  = { left: '48%',   top: '40%' };   // to the RIGHT of cup, spout pours left into it
+const KETTLE_POUR  = { left: '46%',   top: '40%' };   // to the RIGHT of cup, spout pours left into it
 const BUTTON_POS   = { left: '24.5%', top: '36%' };   // just above the resting kettle
 
 export default function KitchenTeaBrewer() {

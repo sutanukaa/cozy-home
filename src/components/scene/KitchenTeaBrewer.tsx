@@ -17,10 +17,10 @@ type BrewState = 'idle' | 'brewing' | 'pouring' | 'served';
  *  Front-right burner ≈ 32 %,  48 %
  * ------------------------------------------------------------------ */
 
-const KETTLE_REST  = { left: '24.5%', top: '48%' };
-const CUP_POS      = { left: '32%',   top: '50%' };
-const KETTLE_POUR  = { left: '29%',   top: '42%' };   // tilted above the cup
-const BUTTON_POS   = { left: '24.5%', top: '40%' };   // just above the resting kettle
+const KETTLE_REST  = { left: '24.5%', top: '44%' };   // on the dark stovetop burner
+const CUP_POS      = { left: '40%',   top: '49%' };   // right wooden countertop
+const KETTLE_POUR  = { left: '35%',   top: '40%' };   // tilted above the cup, pouring right
+const BUTTON_POS   = { left: '24.5%', top: '36%' };   // just above the resting kettle
 
 export default function KitchenTeaBrewer() {
   const [brewState, setBrewState] = useState<BrewState>('idle');

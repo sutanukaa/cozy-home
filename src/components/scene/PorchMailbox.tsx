@@ -314,7 +314,7 @@ export default function PorchMailbox() {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="youname@gmail.com"
+                            placeholder="yourname@gmail.com"
                             className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                           />
                         </div>
@@ -372,7 +372,7 @@ export default function PorchMailbox() {
                           style={{
                             lineHeight: '2.6rem', // Accurately aligns each line of writing onto the ruled pink lines
                           }}
-                          className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none pt-1"
+                          className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none pt-3 sm:pt-3.5"
                         />
                       </div>
 
@@ -436,7 +436,7 @@ export default function PorchMailbox() {
                               required
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
-                              placeholder="youname@gmail.com"
+                              placeholder="yourname@gmail.com"
                               className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                             />
                           </div>

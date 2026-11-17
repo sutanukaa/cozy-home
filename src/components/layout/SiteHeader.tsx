@@ -141,7 +141,7 @@ export default function SiteHeader() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs md:hidden"
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
             />
 
             {/* Menu Drawer Plaque */}
@@ -152,7 +152,7 @@ export default function SiteHeader() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.96 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="fixed inset-x-3 top-16 z-50 mx-auto max-w-sm rounded-3xl border-2 border-pink-200/90 bg-paper/98 p-4 shadow-2xl backdrop-blur-md md:hidden dark:border-white/20 dark:bg-[#25182E]/98 dark:shadow-black/60 select-none"
+              className="mobile-nav-drawer fixed inset-x-3 top-16 z-50 mx-auto max-w-sm rounded-3xl border-2 p-4 select-none md:hidden"
             >
               {/* Subtle decorative washi tape */}
               <span
@@ -162,8 +162,8 @@ export default function SiteHeader() {
               />
 
               {/* Menu Header */}
-              <div className="flex items-center justify-between border-b border-pink-200/60 pb-2.5 px-1 dark:border-white/10">
-                <span className="font-mono text-[11px] font-bold text-ink-soft dark:text-pink-200 tracking-wider">
+              <div className="flex items-center justify-between border-b border-pink-300/40 pb-2.5 px-1 dark:border-white/15">
+                <span className="mobile-nav-header-text font-mono text-xs font-bold tracking-wider">
                   ROOMS &bull; SUTANUKA&apos;S HOME
                 </span>
                 <button
@@ -173,7 +173,7 @@ export default function SiteHeader() {
                     setMenuOpen(false);
                   }}
                   aria-label="Close navigation menu"
-                  className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-mono font-bold text-ink hover:bg-rose hover:text-white transition-colors dark:text-white"
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-mono font-bold bg-pink-100 text-ink hover:bg-rose hover:text-white transition-colors dark:bg-white/15 dark:text-pink-100 dark:hover:bg-rose dark:hover:text-white"
                 >
                   ✕
                 </button>
@@ -193,27 +193,25 @@ export default function SiteHeader() {
                         }}
                         aria-current={active ? 'page' : undefined}
                         className={clsx(
-                          'flex items-center justify-between rounded-2xl px-3 py-2 transition-all active:scale-[0.98]',
-                          active
-                            ? 'bg-blush/60 text-accent font-bold dark:bg-white/20 dark:text-white'
-                            : 'text-ink/85 hover:bg-blush/25 hover:text-ink dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white'
+                          'flex items-center justify-between rounded-2xl px-3 py-2.5 transition-all active:scale-[0.98]',
+                          active ? 'mobile-nav-active' : 'mobile-nav-item'
                         )}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-paper/90 shadow-xs border border-pink-200/60 dark:border-white/10 dark:bg-black/30">
-                            <CozyIcon name={r.slug} fallback={r.emoji} size={20} />
+                          <span className="mobile-nav-icon-badge flex h-10 w-10 shrink-0 items-center justify-center rounded-full border shadow-xs">
+                            <CozyIcon name={r.slug} fallback={r.emoji} size={22} />
                           </span>
                           <div className="flex flex-col text-left">
-                            <span className="font-display text-sm font-bold leading-tight">
+                            <span className="mobile-nav-title font-display text-sm sm:text-base leading-tight">
                               {r.name === 'Living room' ? 'Living room (Home)' : r.name}
                             </span>
-                            <span className="font-sans text-[11px] text-ink-soft dark:text-pink-200/75">
+                            <span className="mobile-nav-sub font-sans text-xs mt-0.5 leading-tight">
                               {r.purpose}
                             </span>
                           </div>
                         </div>
                         {active && (
-                          <span className="rounded-full bg-accent/15 px-2 py-0.5 font-mono text-[9px] uppercase font-bold text-accent dark:bg-white/15 dark:text-pink-200">
+                          <span className="mobile-nav-badge-pill rounded-full px-2.5 py-0.5 font-mono text-[10px] uppercase font-bold tracking-wider shadow-xs">
                             Current
                           </span>
                         )}

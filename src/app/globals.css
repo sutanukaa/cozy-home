@@ -102,6 +102,102 @@ button:disabled,
   cursor: not-allowed;
 }
 
+/* ---------------- Mobile Navigation Menu (High Readability) ---------------- */
+.mobile-nav-drawer {
+  background-color: #FFF9F5 !important;
+  border-color: rgba(244, 114, 182, 0.5) !important;
+  box-shadow: 0 20px 40px -10px rgba(91, 58, 71, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+}
+html[data-theme='night'] .mobile-nav-drawer {
+  background-color: #1E1024 !important;
+  border-color: rgba(255, 143, 177, 0.35) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+}
+
+.mobile-nav-header-text {
+  color: #7D4C62 !important;
+}
+html[data-theme='night'] .mobile-nav-header-text {
+  color: #F8D3E4 !important;
+}
+
+.mobile-nav-item {
+  color: #4A2838 !important;
+  border: 1.5px solid transparent !important;
+}
+html[data-theme='night'] .mobile-nav-item {
+  color: #FFFFFF !important;
+  border: 1.5px solid transparent !important;
+}
+
+.mobile-nav-item:hover {
+  background-color: rgba(249, 198, 211, 0.35) !important;
+  border-color: rgba(244, 114, 182, 0.3) !important;
+}
+html[data-theme='night'] .mobile-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.mobile-nav-title {
+  color: #4A2838 !important;
+  font-weight: 700 !important;
+}
+html[data-theme='night'] .mobile-nav-title {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.mobile-nav-sub {
+  color: #7D4C62 !important;
+  font-weight: 500 !important;
+}
+html[data-theme='night'] .mobile-nav-sub {
+  color: #F8D3E4 !important;
+  font-weight: 500 !important;
+}
+
+.mobile-nav-icon-badge {
+  background-color: #FFFFFF !important;
+  border-color: rgba(244, 114, 182, 0.4) !important;
+}
+html[data-theme='night'] .mobile-nav-icon-badge {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.mobile-nav-active {
+  background-color: rgba(244, 114, 182, 0.22) !important;
+  border-color: rgba(232, 106, 146, 0.6) !important;
+}
+html[data-theme='night'] .mobile-nav-active {
+  background-color: rgba(255, 143, 177, 0.22) !important;
+  border-color: rgba(255, 143, 177, 0.5) !important;
+}
+
+.mobile-nav-active .mobile-nav-title {
+  color: #D64676 !important;
+}
+html[data-theme='night'] .mobile-nav-active .mobile-nav-title {
+  color: #FFB3CB !important;
+}
+
+.mobile-nav-active .mobile-nav-sub {
+  color: #B83260 !important;
+}
+html[data-theme='night'] .mobile-nav-active .mobile-nav-sub {
+  color: #FED7E2 !important;
+}
+
+.mobile-nav-badge-pill {
+  background-color: #D64676 !important;
+  color: #FFFFFF !important;
+}
+html[data-theme='night'] .mobile-nav-badge-pill {
+  background-color: #E86A92 !important;
+  color: #FFFFFF !important;
+}
+
 /* ---------------- day / night helpers (pure CSS, no flash) ---------------- */
 .only-night { display: none; }
 html[data-theme='night'] .only-night { display: block; }

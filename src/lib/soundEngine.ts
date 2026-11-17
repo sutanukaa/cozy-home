@@ -349,6 +349,33 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play a soft procedural paper turn / rustle sound when flipping sheets
+   */
+  public playPageTurnSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+
+      gain.gain.setValueAtTime(0.045, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch {
+      // AudioContext safe catch
+    }
+  }
+
+  /**
    * Play a magical, delicate sparkle chime when opening the diary
    */
   public playSparkleSound(): void {

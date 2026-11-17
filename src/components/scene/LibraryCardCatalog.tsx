@@ -7,6 +7,7 @@ import AssetImage from '@/components/ui/AssetImage';
 import CozyIcon from '@/components/ui/CozyIcon';
 import { soundscape } from '@/lib/soundEngine';
 import { shelves, currentlyLearning } from '@/data/skills';
+import { SKILL_DEEP_DIVES, SkillDeepDive } from '@/data/skillSummaries';
 
 interface SkillCard {
   title: string;
@@ -73,6 +74,8 @@ export default function LibraryCardCatalog() {
   const [isCabinetZoomed, setIsCabinetZoomed] = useState(false);
   const [activeDrawer, setActiveDrawer] = useState<string | null>(null);
   const [isClipboardZoomed, setIsClipboardZoomed] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageDirection, setPageDirection] = useState<1 | -1>(1);
   const [hoveredDrawer, setHoveredDrawer] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
@@ -89,58 +92,6 @@ export default function LibraryCardCatalog() {
       };
     }
   }, [isCabinetZoomed]);
-
-  // Close modals on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (isClipboardZoomed) {
-          setIsClipboardZoomed(false);
-        } else if (activeDrawer) {
-          setActiveDrawer(null);
-        } else if (isCabinetZoomed) {
-          setIsCabinetZoomed(false);
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeDrawer, isCabinetZoomed, isClipboardZoomed]);
-
-  const handleOpenZoom = () => {
-    soundscape.playClickSound();
-    setIsCabinetZoomed(true);
-    setActiveDrawer(null);
-    setIsClipboardZoomed(false);
-  };
-
-  const handleCloseAll = () => {
-    soundscape.playClickSound();
-    setIsCabinetZoomed(false);
-    setActiveDrawer(null);
-    setIsClipboardZoomed(false);
-    setSelectedCard(null);
-  };
-
-  const handleOpenDrawer = (drawerId: string) => {
-    soundscape.playClickSound();
-    setActiveDrawer(drawerId);
-    setIsClipboardZoomed(false);
-    setSelectedCard(null);
-  };
-
-  const handleBackToCabinet = () => {
-    soundscape.playClickSound();
-    setActiveDrawer(null);
-    setIsClipboardZoomed(false);
-    setSelectedCard(null);
-  };
-
-  const handleBackToDrawer = () => {
-    soundscape.playClickSound();
-    setIsClipboardZoomed(false);
-    setSelectedCard(null);
-  };
 
   const currentDrawerDef = DRAWERS.find((d) => d.id === activeDrawer) ?? DRAWERS[0];
 
@@ -169,6 +120,79 @@ export default function LibraryCardCatalog() {
   };
 
   const cards = activeDrawer ? getCardsForDrawer(activeDrawer) : [];
+
+  const handleTurnPage = (direction: 1 | -1) => {
+    soundscape.playPageTurnSound();
+    setPageDirection(direction);
+    setPageIndex((prev) => {
+      const total = cards.length;
+      if (total === 0) return 0;
+      const next = prev + direction;
+      if (next < 0) return total - 1;
+      if (next >= total) return 0;
+      return next;
+    });
+  };
+
+  // Close modals on Escape key & Arrow keys to turn pages on clipboard
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isClipboardZoomed) {
+          setIsClipboardZoomed(false);
+        } else if (activeDrawer) {
+          setActiveDrawer(null);
+        } else if (isCabinetZoomed) {
+          setIsCabinetZoomed(false);
+        }
+      } else if (isClipboardZoomed && cards.length > 0) {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          handleTurnPage(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          handleTurnPage(-1);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeDrawer, isCabinetZoomed, isClipboardZoomed, cards.length]);
+
+  const handleOpenZoom = () => {
+    soundscape.playClickSound();
+    setIsCabinetZoomed(true);
+    setActiveDrawer(null);
+    setIsClipboardZoomed(false);
+  };
+
+  const handleCloseAll = () => {
+    soundscape.playClickSound();
+    setIsCabinetZoomed(false);
+    setActiveDrawer(null);
+    setIsClipboardZoomed(false);
+    setSelectedCard(null);
+  };
+
+  const handleOpenDrawer = (drawerId: string) => {
+    soundscape.playClickSound();
+    setActiveDrawer(drawerId);
+    setPageIndex(0);
+    setPageDirection(1);
+    setIsClipboardZoomed(false);
+    setSelectedCard(null);
+  };
+
+  const handleBackToCabinet = () => {
+    soundscape.playClickSound();
+    setActiveDrawer(null);
+    setIsClipboardZoomed(false);
+    setSelectedCard(null);
+  };
+
+  const handleBackToDrawer = () => {
+    soundscape.playClickSound();
+    setIsClipboardZoomed(false);
+    setSelectedCard(null);
+  };
 
   return (
     <>
@@ -457,154 +481,307 @@ export default function LibraryCardCatalog() {
             )}
 
             {/* ============================================================ */}
-            {/* 3. ZOOMED CLIPBOARD VIEW: Skills rendered on paper canvas    */}
+            {/* 3. ZOOMED CLIPBOARD VIEW: 1 Page per Tech with 3D Page Turn   */}
             {/* ============================================================ */}
-            {activeDrawer && isClipboardZoomed && (
-              <motion.div
-                key="clipboard-zoom-stage"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="clipboard-title"
-                initial={{ opacity: 0, scale: 0.88, y: 25 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 15 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-                className="relative z-10 flex flex-col items-center justify-center w-full max-w-[460px] sm:max-w-[500px] py-1 my-auto"
-              >
-                {/* Header Navigation Bar */}
-                <div className="flex items-center justify-between w-full mb-2 px-3 py-2 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
-                  <button
-                    type="button"
-                    onClick={handleBackToDrawer}
-                    className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
-                  >
-                    <span>← Back to drawer</span>
-                  </button>
+            {activeDrawer && isClipboardZoomed && cards.length > 0 && (() => {
+              const currentSkill = cards[pageIndex] ?? cards[0];
+              const deepDive = currentSkill ? SKILL_DEEP_DIVES[currentSkill.title] : undefined;
+              const skillData: SkillDeepDive = deepDive ?? {
+                title: currentSkill?.title ?? 'Skill',
+                category: (currentDrawerDef?.name as any) ?? 'Frontend & UI',
+                catalogCode: currentSkill?.catalogCode ?? 'SK-01',
+                status: currentSkill?.status ?? 'Production',
+                iconName: currentDrawerDef?.iconName ?? 'skill-frontend',
+                masterySummary: currentSkill?.note ?? 'Production skill in engineering stack.',
+                whatIBuilt: ['Engineered in production repositories and projects.'],
+                keyHighlights: ['Production standard design patterns.'],
+              };
 
-                  <div className="flex items-center gap-1.5 font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
-                    <CozyIcon name={currentDrawerDef.iconName} size={18} className="shrink-0 select-none" />
-                    <span>{currentDrawerDef.name}</span>
+              return (
+                <motion.div
+                  key="clipboard-zoom-stage"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="clipboard-title"
+                  initial={{ opacity: 0, scale: 0.88, y: 25 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 15 }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+                  className="relative z-10 flex flex-col items-center justify-center w-full max-w-[500px] sm:max-w-[540px] md:max-w-[560px] py-1 my-auto"
+                >
+                  {/* Top Header Navigation Bar */}
+                  <div className="flex items-center justify-between w-full mb-2 px-3 py-2 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                    <button
+                      type="button"
+                      onClick={handleBackToDrawer}
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                    >
+                      <span>← Back to drawer</span>
+                    </button>
+
+                    <div className="flex items-center gap-1.5 font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
+                      <CozyIcon name={currentDrawerDef.iconName} size={18} className="shrink-0 select-none" />
+                      <span>{currentDrawerDef.name}</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleCloseAll}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      aria-label="Close"
+                    >
+                      ✕
+                    </button>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleCloseAll}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
+                  {/* The Fullscreen Clipboard Artwork with Text Canvas */}
+                  <div className="relative w-full aspect-[958/1276] select-none drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)]">
+                    <AssetImage
+                      src="/assets/objects/clipboard.png"
+                      alt="Clipboard with skills paper sheet"
+                      className="w-full h-full object-contain pointer-events-none"
+                    />
 
-                {/* The Fullscreen Clipboard Artwork with Text Canvas */}
-                <div className="relative w-full aspect-[958/1276] select-none drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)]">
-                  <AssetImage
-                    src="/assets/objects/clipboard.png"
-                    alt="Clipboard with skills paper"
-                    className="w-full h-full object-contain pointer-events-none"
-                  />
-
-                  {/* Writing Area on the Blank Paper of the Clipboard */}
-                  <div
-                    className="absolute flex flex-col select-text"
-                    style={{
-                      left: '11%',
-                      right: '11%',
-                      top: '16.5%',
-                      bottom: '9%',
-                    }}
-                  >
-                    {/* Paper Title Header */}
-                    <div className="border-b-2 border-[#DAC8AD] pb-2 mb-2 flex items-center justify-between px-1">
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <CozyIcon name={currentDrawerDef.iconName} size={24} className="drop-shadow-xs shrink-0 select-none" />
+                    {/* Writing Area on the Blank Paper of the Clipboard */}
+                    <div
+                      className="absolute flex flex-col justify-between select-text"
+                      style={{
+                        left: '11%',
+                        right: '11%',
+                        top: '16.5%',
+                        bottom: '8.5%',
+                      }}
+                    >
+                      {/* Fixed Top Paper Header (Pinned above turnable sheets) */}
+                      <div className="border-b-2 border-[#DAC8AD] pb-1.5 mb-1 flex items-start justify-between gap-2 px-1 shrink-0">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <CozyIcon
+                              name={skillData.iconName}
+                              size={22}
+                              className="drop-shadow-xs shrink-0 select-none"
+                            />
+                            <span className="font-mono text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold truncate">
+                              {currentDrawerDef.name} • {skillData.catalogCode}
+                            </span>
+                          </div>
                           <h3
                             id="clipboard-title"
-                            className="font-display text-sm sm:text-base md:text-lg font-bold text-[#3B2212] leading-tight"
+                            className="font-display text-base sm:text-xl font-bold text-[#3B2212] leading-tight truncate mt-0.5"
                           >
-                            {currentDrawerDef.name}
+                            {skillData.title}
                           </h3>
                         </div>
-                        <p className="font-mono text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold">
-                          Engineering Skill Index • {cards.length} Recorded
-                        </p>
-                      </div>
-                      <span className="rounded-md bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider">
-                        VERIFIED
-                      </span>
-                    </div>
 
-                    {/* Scrollable list of Skill cards on the paper */}
-                    <div className="flex-1 overflow-y-auto pr-1 space-y-2 select-text custom-scrollbar">
-                      {cards.map((card) => {
-                        const isSelected = selectedCard === card.title;
-                        return (
-                          <div
-                            key={card.title}
-                            onClick={() => {
-                              soundscape.playSparkleSound();
-                              setSelectedCard(isSelected ? null : card.title);
+                        <span
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${
+                            skillData.status === 'Daily Driver'
+                              ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                              : skillData.status === 'Active'
+                              ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+                              : 'bg-rose-100 text-rose-900 border border-rose-300'
+                          }`}
+                        >
+                          {skillData.status}
+                        </span>
+                      </div>
+
+                      {/* 3D Animated Paper Page Surface (1 Technology per Sheet) */}
+                      <div className="relative flex-1 w-full overflow-hidden" style={{ perspective: 1200 }}>
+                        <AnimatePresence mode="wait" custom={pageDirection}>
+                          <motion.div
+                            key={`${activeDrawer}-${pageIndex}`}
+                            custom={pageDirection}
+                            variants={{
+                              enter: (dir: number) => ({
+                                opacity: 0,
+                                rotateY: dir > 0 ? 28 : -28,
+                                x: dir > 0 ? 35 : -35,
+                                scale: 0.97,
+                              }),
+                              center: {
+                                opacity: 1,
+                                rotateY: 0,
+                                x: 0,
+                                scale: 1,
+                                transition: {
+                                  duration: 0.28,
+                                  ease: [0.22, 1, 0.36, 1],
+                                },
+                              },
+                              exit: (dir: number) => ({
+                                opacity: 0,
+                                rotateY: dir > 0 ? -32 : 32,
+                                x: dir > 0 ? -45 : 45,
+                                scale: 0.95,
+                                transition: {
+                                  duration: 0.22,
+                                  ease: [0.32, 0, 0.67, 0],
+                                },
+                              }),
                             }}
-                            className={`rounded-xl border p-2 sm:p-2.5 transition-all cursor-pointer ${
-                              isSelected
-                                ? 'border-pink-400 bg-pink-50/85 shadow-xs ring-1 ring-pink-300'
-                                : 'border-[#DAC8AD]/70 hover:border-[#BF9E77] bg-white/70 hover:bg-white/95 shadow-2xs'
-                            }`}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            className="absolute inset-0 flex flex-col justify-between overflow-y-auto pr-1 select-text custom-scrollbar space-y-2 py-0.5"
                             style={{
-                              backgroundImage:
-                                'repeating-linear-gradient(transparent, transparent 21px, rgba(180, 160, 140, 0.12) 22px)',
+                              transformOrigin: pageDirection > 0 ? 'left center' : 'right center',
+                              transformStyle: 'preserve-3d',
                             }}
                           >
-                            <div className="flex items-center justify-between mb-0.5">
-                              <span className="font-mono text-[9px] sm:text-[10px] font-bold text-[#8C6B4F]">
-                                {card.catalogCode}
-                              </span>
-                              <span
-                                className={`rounded-full px-2 py-0.2 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider ${
-                                  card.status === 'Daily Driver'
-                                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                    : card.status === 'Active'
-                                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                                    : 'bg-rose-100 text-rose-800 border border-rose-300'
-                                }`}
-                              >
-                                {card.status}
-                              </span>
+                            {/* Section 1: Proficiency & Mastery Summary */}
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                                </svg>
+                                <span>Proficiency & Technical Mastery</span>
+                              </div>
+                              <p className="rounded-lg bg-[#FAF5EE]/95 border border-[#E8DAC5] p-2 font-sans text-[11px] sm:text-[12px] leading-relaxed text-[#4A3319] shadow-2xs">
+                                {skillData.masterySummary}
+                              </p>
                             </div>
 
-                            <h4 className="font-display text-xs sm:text-sm font-bold text-[#3B2212]">
-                              {card.title}
-                            </h4>
-                            <p className="mt-0.5 font-hand text-xs sm:text-sm text-[#5C402B] leading-snug">
-                              {card.note}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                            {/* Section 2: What I Built (Grounding from Real Repos) */}
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2.5 h-2.5 text-amber-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                                </svg>
+                                <span>Production Work & Git History</span>
+                              </div>
+                              <ul className="space-y-1">
+                                {skillData.whatIBuilt.map((item, bIdx) => (
+                                  <li
+                                    key={bIdx}
+                                    className="flex items-start gap-1.5 text-[10.5px] sm:text-[11.5px] leading-snug text-[#4A3319] bg-white/70 p-1.5 rounded-md border border-[#EDE2D3]/90 shadow-2xs"
+                                  >
+                                    <span className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-rose-400" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
 
-                    {/* Paper Footer with Back & Jump to shelf link */}
-                    <div className="pt-2 mt-1 border-t border-[#DAC8AD] flex items-center justify-between text-[11px] text-[#8C6B4F] font-hand font-bold px-1">
-                      <button
-                        type="button"
-                        onClick={handleBackToDrawer}
-                        className="hover:text-[#3B2212] cursor-pointer"
-                      >
-                        ← Back to drawer
-                      </button>
-                      <a
-                        href={`#${currentDrawerDef.id}`}
-                        onClick={handleCloseAll}
-                        className="text-pink-600 hover:text-pink-700 underline font-bold"
-                      >
-                        Jump to shelf ↓
-                      </a>
+                            {/* Section 3: Key Architectural Highlights */}
+                            <div className="space-y-1 pb-1">
+                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                                </svg>
+                                <span>Architectural Strengths</span>
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {skillData.keyHighlights.map((hl, hlIdx) => (
+                                  <span
+                                    key={hlIdx}
+                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F2E7D8]/90 border border-[#DECFBA] text-[#5C3D24] text-[9.5px] sm:text-[10.5px] font-medium leading-tight"
+                                  >
+                                    <span className="w-1 h-1 rounded-full bg-amber-600 shrink-0" />
+                                    {hl}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+
+                      {/* Bottom Turn Page Controls Bar */}
+                      <div className="pt-2 border-t-2 border-[#DAC8AD] mt-1 shrink-0 flex flex-col gap-1.5 select-none">
+                        <div className="flex items-center justify-between gap-1">
+                          {/* Previous Sheet Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleTurnPage(-1)}
+                            disabled={pageIndex === 0}
+                            aria-label="Previous skill sheet"
+                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-hand text-xs font-bold transition-all ${
+                              pageIndex === 0
+                                ? 'opacity-40 cursor-not-allowed bg-[#ECE3D5] text-[#8C7A68]'
+                                : 'bg-[#ECE3D5] hover:bg-[#E2D6C4] active:scale-95 text-[#4A3319] border border-[#D5C6B1] shadow-2xs cursor-pointer'
+                            }`}
+                          >
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <span>Prev</span>
+                          </button>
+
+                          {/* Sheet Indicator & Clickable Micro Pagination Dots */}
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-1 font-mono text-[9px] sm:text-[10px] font-bold text-[#6D4C33]">
+                              <span>Sheet</span>
+                              <span className="px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
+                                {pageIndex + 1}
+                              </span>
+                              <span>of</span>
+                              <span>{cards.length}</span>
+                            </div>
+
+                            <div className="flex items-center gap-1 mt-1">
+                              {cards.map((_, dotIdx) => (
+                                <button
+                                  key={dotIdx}
+                                  type="button"
+                                  onClick={() => {
+                                    if (dotIdx !== pageIndex) {
+                                      handleTurnPage(dotIdx > pageIndex ? 1 : -1);
+                                      setPageIndex(dotIdx);
+                                    }
+                                  }}
+                                  aria-label={`Jump to sheet ${dotIdx + 1}`}
+                                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                                    dotIdx === pageIndex ? 'w-3.5 bg-rose' : 'w-1.5 bg-[#CBB79F] hover:bg-rose-300'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Turn Page Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleTurnPage(1)}
+                            aria-label="Turn page to next skill sheet"
+                            className="group/turn inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-xs sm:text-sm font-bold shadow-cozy transition-all cursor-pointer"
+                          >
+                            <span>{pageIndex === cards.length - 1 ? 'First Sheet' : 'Turn Page'}</span>
+                            <svg
+                              className="w-3.5 h-3.5 transition-transform group-hover/turn:translate-x-0.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        {/* Sub-footer: Quick shortcuts */}
+                        <div className="flex items-center justify-between text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
+                          <button
+                            type="button"
+                            onClick={handleBackToDrawer}
+                            className="hover:text-[#3B2212] cursor-pointer"
+                          >
+                            ← Back to drawer
+                          </button>
+                          <a
+                            href={`#${currentDrawerDef.id}`}
+                            onClick={handleCloseAll}
+                            className="text-pink-600 hover:text-pink-700 underline font-bold"
+                          >
+                            Jump to shelf ↓
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              );
+            })()}
           </div>
         )}
       </AnimatePresence>,

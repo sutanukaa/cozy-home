@@ -10,7 +10,7 @@ type FormPhase = 'writing' | 'depositing' | 'zooming_out';
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
 // Mailbox position on the horizontal wooden bracket of the post (X: ~67.5%, Y: ~56.5%)
-const MAILBOX_POS = { left: '67.5%', top: '56.5%' };
+const MAILBOX_POS = { left: '74.5%', top: '61.5%' };
 const BUTTON_POS  = { left: '67.5%', top: '43%' };
 
 export default function PorchMailbox() {
@@ -123,15 +123,10 @@ export default function PorchMailbox() {
   return (
     <>
       {/* ---------------- 1. The Interactive Mailbox on the Wooden Bracket ---------------- */}
-      <motion.div
-        key="porch-mailbox"
-        initial={false}
+      <div
         onClick={handleOpen}
         className="group absolute z-20 -translate-x-1/2 -translate-y-[96%] cursor-pointer select-none"
         style={{ ...MAILBOX_POS, width: '12.5%' }}
-        whileHover={{ scale: 1.05, y: '-98%' }}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
       >
         {/* Soft contact shadow on wooden bracket */}
         <div
@@ -174,7 +169,7 @@ export default function PorchMailbox() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
 
       {/* ---------------- 2. Glossy Bubble Button Above Mailbox ---------------- */}
       {!isOpen && (

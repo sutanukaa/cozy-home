@@ -26,8 +26,9 @@ Never use pure black or neutral grey.
 - Cards are **paper**: `PaperCard` (cream, 2px soft border, pink shadow). Tilt a few cards +-0.6 to 1 degree; add `tape` to a few, not all.
 - Tags are **stickers** (`Sticker`): pill, white border, slight rotation.
 - Buttons: pill, chunky bottom shadow (`shadow-pop`) that squashes on press.
-- **Hotspot Bubble Buttons**: Always use `<CozyBubbleButton>` (`src/components/ui/CozyBubbleButton.tsx`) or `<Hotspot>`.
-  - Signature style: radiant pulsing outer halo (`#FF3377/55`), secondary white breathing ring, vibrant rose-berry gradient disc (`from-[#FF4D88] via-[#E81E63] to-[#B7004B]`), 2px crisp white border, glossy top-left highlight reflection, crisp white SVG icon, and floating paper tooltip. Never use flat discs or mismatched colors for hotspots.
+- **Hotspot Bubble Buttons**:
+  - In individual rooms (Bedroom diary/tablet, Library cabinet/clipboard, Studio headphones): Use `<CozyBubbleButton>` (`src/components/ui/CozyBubbleButton.tsx`). Signature style: radiant pulsing outer halo (`#FF3377/55`), secondary white breathing ring, vibrant rose-berry gradient disc (`from-[#FF4D88] via-[#E81E63] to-[#B7004B]`), 2px crisp white border, glossy top-left highlight reflection, crisp white SVG icon, and floating paper tooltip.
+  - In the living room hub: Room door hotspots are kept separate using `<Hotspot>` with the custom generated sticker asset icons (`studio.png`, `bedroom.png`, `library.png`, `kitchen.png`, `porch.png`).
 
 ## Motion
 | What | How | Trigger |

@@ -320,12 +320,12 @@ export default function PorchMailbox() {
                         </div>
                       </div>
 
-                      {/* --- Section 2: Quick Stamps Row (Cleanly placed right above the handwriting lines) --- */}
+                      {/* --- Section 2: Quick Stamps Row (Cleanly placed in the space above handwriting lines) --- */}
                       <div
                         className="absolute flex items-center gap-1.5"
                         style={{
                           left: '16%',
-                          top: '34%',
+                          top: '30%',
                           width: '68%',
                         }}
                       >
@@ -333,23 +333,26 @@ export default function PorchMailbox() {
                         <button
                           type="button"
                           onClick={() => handleQuickNote('Saying a warm hello!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                          className="group rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:bg-pink-50 hover:border-pink-400 hover:shadow-sm active:scale-95 active:rotate-0"
                         >
-                          Saying hello 🌸
+                          <span>Saying hello</span>
+                          <span className="inline-block ml-1 transition-transform duration-200 group-hover:scale-125">🌸</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                          className="group rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:rotate-[1.5deg] hover:bg-pink-50 hover:border-pink-400 hover:shadow-sm active:scale-95 active:rotate-0"
                         >
-                          Work inquiry 💼
+                          <span>Work inquiry</span>
+                          <span className="inline-block ml-1 transition-transform duration-200 group-hover:scale-125">💼</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => handleQuickNote('Would love to connect over tea!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                          className="group rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:bg-pink-50 hover:border-pink-400 hover:shadow-sm active:scale-95 active:rotate-0"
                         >
-                          Tea chat ☕
+                          <span>Tea chat</span>
+                          <span className="inline-block ml-1 transition-transform duration-200 group-hover:scale-125">☕</span>
                         </button>
                       </div>
 
@@ -376,22 +379,22 @@ export default function PorchMailbox() {
                         />
                       </div>
 
-                      {/* --- Section 4: The Prominent "Post in Mailbox" Button (Centered inside the bottom clear space) --- */}
+                      {/* --- Section 4: The Prominent "Post in Mailbox" Button (Moved comfortably up from bottom rim) --- */}
                       <div
                         className="absolute flex items-center justify-center"
                         style={{
                           left: '50%',
-                          bottom: '5.5%',
+                          bottom: '8.5%',
                           transform: 'translateX(-50%)',
                         }}
                       >
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="flex items-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] px-7 py-2 font-display text-sm font-extrabold text-white shadow-[0_4px_18px_rgba(214,70,118,0.55)] transition-all hover:scale-105 active:scale-95 disabled:opacity-70 whitespace-nowrap"
+                          className="group flex items-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] px-7 py-2 font-display text-sm font-extrabold text-white shadow-[0_4px_18px_rgba(214,70,118,0.55)] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:shadow-[0_6px_22px_rgba(214,70,118,0.7)] active:scale-95 disabled:opacity-70 whitespace-nowrap"
                         >
                           <span>Post in Mailbox</span>
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                           </svg>
                         </button>
@@ -463,18 +466,20 @@ export default function PorchMailbox() {
                       </div>
                     </form>
 
-                    {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard */}
-                    <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-                      {site.socials.map((s) => (
+                    {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard with tactile microanimations */}
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-2.5">
+                      {site.socials.map((s, idx) => (
                         <a
                           key={s.label}
                           href={s.href}
                           target={s.href.startsWith('http') ? '_blank' : undefined}
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 rounded-full border border-pink-300/80 bg-white/95 px-3 py-1 font-hand text-xs font-bold text-[#5B3A47] shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-50 active:scale-95"
+                          className={`group inline-flex items-center gap-1.5 rounded-full border border-pink-300/80 bg-white/95 px-3.5 py-1 font-hand text-xs sm:text-sm font-bold text-[#5B3A47] shadow-xs backdrop-blur-xs transition-all duration-200 hover:-translate-y-1 ${
+                            idx % 2 === 0 ? 'hover:rotate-[-1.5deg]' : 'hover:rotate-[1.5deg]'
+                          } hover:bg-pink-50 hover:border-pink-400 hover:shadow-md active:scale-95 active:rotate-0`}
                         >
-                          <span>{s.label}</span>
-                          <svg className="h-2.5 w-2.5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <span className="transition-transform duration-200 group-hover:scale-105">{s.label}</span>
+                          <svg className="h-3 w-3 text-pink-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
@@ -483,10 +488,10 @@ export default function PorchMailbox() {
                         href="/resume.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full border border-pink-400 bg-pink-100/95 px-3 py-1 font-hand text-xs font-bold text-pink-800 shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-200 active:scale-95"
+                        className="group inline-flex items-center gap-1.5 rounded-full border border-pink-400 bg-pink-100/95 px-3.5 py-1 font-hand text-xs sm:text-sm font-bold text-pink-800 shadow-xs backdrop-blur-xs transition-all duration-200 hover:-translate-y-1 hover:rotate-[-1deg] hover:bg-pink-200 hover:shadow-md active:scale-95 active:rotate-0"
                       >
-                        <span>Resume PDF</span>
-                        <svg className="h-2.5 w-2.5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <span className="transition-transform duration-200 group-hover:scale-105">Resume PDF</span>
+                        <svg className="h-3 w-3 text-pink-600 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
                       </a>

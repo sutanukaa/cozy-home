@@ -18,7 +18,7 @@ export default function KitchenPage() {
       />
 
       {/* Kitchen Room Heading */}
-      <div className="kitchen-heading pointer-events-none absolute bottom-6 right-4 sm:bottom-7 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 pr-10 sm:pr-0 z-20 max-w-[260px] sm:max-w-sm md:max-w-md text-right select-none">
+      <div className="kitchen-heading pointer-events-none absolute bottom-6 right-4 sm:bottom-7 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 pr-16 sm:pr-0 z-20 max-w-[280px] xs:max-w-xs sm:max-w-sm md:max-w-md text-right select-none">
         <h1
           className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md"
           style={{

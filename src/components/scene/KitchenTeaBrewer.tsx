@@ -148,6 +148,7 @@ export default function KitchenTeaBrewer() {
       {/* ---------------- 2. The Tea Kettle (rests on left front burner) ---------------- */}
       <motion.div
         key="kitchen-kettle"
+        initial={false}
         animate={{
           left: brewState === 'pouring' ? KETTLE_POUR.left : KETTLE_REST.left,
           top:  brewState === 'pouring' ? KETTLE_POUR.top  : KETTLE_REST.top,

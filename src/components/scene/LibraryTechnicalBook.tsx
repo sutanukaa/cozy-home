@@ -110,7 +110,7 @@ export default function LibraryTechnicalBook() {
             />
           </div>
 
-          {/* Pulsing Pink Bubble Button centered on the book */}
+          {/* Standardized Pulsing Pink Bubble Button centered on the book */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
             <CozyBubbleButton
               size="md"
@@ -156,9 +156,9 @@ export default function LibraryTechnicalBook() {
                 {/* DESKTOP & TABLET: 16:9 TWO-PAGE SPREAD VIEW (md and up)     */}
                 {/* ============================================================ */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                  initial={{ opacity: 0, scale: 0.82, y: 15 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.85, y: 12 }}
+                  exit={{ opacity: 0, scale: 0.86, y: 12 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className="hidden md:flex relative z-10 w-full max-w-5xl aspect-[1672/941] max-h-[90vh] items-center justify-center select-none"
                 >
@@ -179,14 +179,14 @@ export default function LibraryTechnicalBook() {
                     type="button"
                     onClick={handleClose}
                     aria-label="Close Technical Book"
-                    className="group absolute -top-3 right-0 sm:top-0 sm:right-2 md:top-2 md:right-4 z-40 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
+                    className="group absolute -top-3.5 right-0 sm:-top-2 sm:right-2 md:top-1 md:right-3 z-40 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-cozy backdrop-blur-xs transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
                   >
                     <span
                       aria-hidden="true"
                       className="pointer-events-none absolute top-1 left-1.5 h-2 w-3 rounded-full bg-white/50 blur-[0.3px] -rotate-12"
                     />
                     <svg
-                      className="h-5 w-5 sm:h-6 sm:w-6 transition-transform duration-200 group-hover:rotate-90"
+                      className="h-5 w-5 transition-transform duration-200 group-hover:rotate-90"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -199,28 +199,27 @@ export default function LibraryTechnicalBook() {
                     </svg>
                   </button>
 
-                  {/* Inner Writing & Reading Surface: Bounds inside cream parchment safe-zone */}
-                  <div className="absolute inset-x-0 top-[7.5%] bottom-[9.5%] z-20 grid grid-cols-2 text-[#3D2517] select-text">
-                    {/* ---------------- LEFT PAGE: Article Navigation & Introduction ---------------- */}
-                    <div className="flex flex-col justify-between pl-10 pr-6 sm:pl-12 sm:pr-8 py-2 overflow-hidden border-r border-[#E2D4C0]/70">
-                      {/* Top Header Bar */}
-                      <div>
-                        <div className="flex items-center justify-between pb-1.5 border-b border-[#D8C7B0]/80">
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-hand text-base font-bold text-rose-600">
-                              Technical Grimoire
-                            </span>
-                            <span className="text-[10px] font-mono text-[#8C6D54]">
-                              • Field Notes
-                            </span>
-                          </div>
-                          <span className="text-[10px] font-mono font-bold text-[#A47F64] uppercase tracking-wider">
-                            {activeBlog.badge}
-                          </span>
-                        </div>
-
-                        {/* Article Selector Tabs */}
-                        <div className="mt-2 flex gap-1 overflow-x-auto pb-1 scrollbar-none">
+                  {/* ========================================================== */}
+                  {/* LEFT PAGE: STRICT SAFE WRITING ZONE                        */}
+                  {/* left: 12.0% (clears pink ribbon at 4-8%)                   */}
+                  {/* right: 53.5% (stops cleanly before center spine at 50%)    */}
+                  {/* top: 16.0% (clears washi tape & golden corner)             */}
+                  {/* bottom: 16.0% (clears bottom curve & corner)               */}
+                  {/* ========================================================== */}
+                  <div
+                    className="absolute z-20 flex flex-col justify-between text-[#3D2517] select-text"
+                    style={{
+                      left: '12.0%',
+                      right: '53.5%',
+                      top: '16.0%',
+                      bottom: '16.0%',
+                    }}
+                  >
+                    {/* Top Section: Category Switcher & Metadata */}
+                    <div className="shrink-0">
+                      {/* Top Bar: Switcher Pills between the 2 Blogs */}
+                      <div className="flex items-center justify-between gap-1 pb-1 border-b border-[#D8C7B0]/80">
+                        <div className="flex items-center gap-1">
                           {technicalBlogs.map((b, idx) => (
                             <button
                               key={b.slug}
@@ -229,7 +228,7 @@ export default function LibraryTechnicalBook() {
                                 soundscape.playClickSound();
                                 setSelectedBlogIndex(idx);
                               }}
-                              className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-bold transition-all whitespace-nowrap cursor-pointer ${
+                              className={`px-2 py-0.5 rounded-full text-[9px] lg:text-[10px] font-sans font-bold transition-all whitespace-nowrap cursor-pointer ${
                                 idx === selectedBlogIndex
                                   ? 'bg-[#E8507D] text-white shadow-xs'
                                   : 'bg-[#EFE5D7] text-[#6E4E36] hover:bg-[#E5D7C5]'
@@ -239,156 +238,167 @@ export default function LibraryTechnicalBook() {
                             </button>
                           ))}
                         </div>
-
-                        {/* Article Title & Subtitle */}
-                        <div className="mt-2.5">
-                          <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[9px] font-mono font-bold text-amber-800 uppercase">
-                            {activeBlog.category}
-                          </span>
-                          <h2 className="mt-1 font-display text-lg lg:text-xl font-extrabold text-[#2F1A0F] leading-tight">
-                            {activeBlog.title}
-                          </h2>
-                          <p className="mt-0.5 font-hand text-xs lg:text-sm text-[#7D5A42] leading-snug">
-                            {activeBlog.subtitle}
-                          </p>
-                          <div className="mt-1 flex items-center gap-2 text-[10px] font-mono text-[#8C6B52]">
-                            <span>📅 {activeBlog.date}</span>
-                            <span>⏱️ {activeBlog.readTime}</span>
-                          </div>
-                        </div>
-
-                        {/* Article Summary Box */}
-                        <div className="mt-2 p-2 rounded-lg bg-[#FAF4EB]/90 border border-[#E8DAC9] text-[11px] leading-relaxed text-[#4A3223]">
-                          <strong className="block text-[10px] uppercase font-mono text-rose-600 font-bold mb-0.5">
-                            Executive Overview
-                          </strong>
-                          {activeBlog.summary}
-                        </div>
+                        <span className="text-[9px] font-mono text-[#8C6D54] font-semibold shrink-0">
+                          {activeBlog.date} • {activeBlog.readTime}
+                        </span>
                       </div>
 
-                      {/* Section 1 Content on Left Page */}
-                      <div className="mt-2 overflow-y-auto pr-1 text-[11px] leading-relaxed text-[#4A3223] space-y-1.5 cozy-scrollbar max-h-[145px]">
-                        <h3 className="font-sans font-bold text-xs text-[#2A160C]">
-                          {activeBlog.sections[0]?.heading}
-                        </h3>
-                        {activeBlog.sections[0]?.paragraphs.map((p, pIdx) => (
-                          <p key={pIdx}>{p}</p>
-                        ))}
-                        {activeBlog.sections[0]?.callout && (
-                          <div className="p-1.5 rounded-md bg-rose-50 border-l-2 border-rose-400 text-[10.5px] text-[#5A2D3A]">
-                            <span className="font-bold font-mono">
-                              {activeBlog.sections[0].callout.title}:
-                            </span>{' '}
-                            {activeBlog.sections[0].callout.text}
-                          </div>
-                        )}
+                      {/* Article Title & Subtitle */}
+                      <div className="mt-1.5">
+                        <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[8.5px] font-mono font-bold text-amber-800 uppercase">
+                          {activeBlog.badge}
+                        </span>
+                        <h2 className="mt-0.5 font-display text-base lg:text-lg font-extrabold text-[#2F1A0F] leading-snug">
+                          {activeBlog.title}
+                        </h2>
+                        <p className="mt-0.5 font-hand text-xs text-[#7D5A42] leading-tight">
+                          {activeBlog.subtitle}
+                        </p>
                       </div>
 
-                      {/* Left Page Footer Indicator */}
-                      <div className="pt-1.5 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[10px] font-mono text-[#8C6D54]">
-                        <span>Article {selectedBlogIndex + 1} of {technicalBlogs.length}</span>
-                        <span>Turn right for implementation & code ➔</span>
+                      {/* Executive Overview Box */}
+                      <div className="mt-1.5 p-2 rounded-lg bg-[#FAF4EB]/90 border border-[#E8DAC9] text-[10.5px] leading-relaxed text-[#4A3223]">
+                        <strong className="block text-[9.5px] uppercase font-mono text-rose-600 font-bold mb-0.5">
+                          Architecture Summary
+                        </strong>
+                        {activeBlog.summary}
                       </div>
                     </div>
 
-                    {/* ---------------- RIGHT PAGE: Implementation, Code & Takeaways ---------------- */}
-                    <div className="flex flex-col justify-between pl-6 pr-10 sm:pl-8 sm:pr-12 py-2 overflow-hidden">
-                      {/* Top Header of Right Page */}
-                      <div className="flex items-center justify-between pb-1.5 border-b border-[#D8C7B0]/80">
-                        <span className="font-hand text-base font-bold text-[#6D4C35]">
-                          Architecture & Deep Dive
-                        </span>
-                        <div className="flex items-center gap-1">
-                          {activeBlog.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-1.5 py-0.2 rounded-md bg-[#EDE2D2] text-[8.5px] font-mono text-[#5C3E28]"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+                    {/* Section 1 Content on Left Page */}
+                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-1 cozy-scrollbar flex-1">
+                      <h3 className="font-sans font-bold text-xs text-[#2A160C]">
+                        {activeBlog.sections[0]?.heading}
+                      </h3>
+                      {activeBlog.sections[0]?.paragraphs.map((p, pIdx) => (
+                        <p key={pIdx}>{p}</p>
+                      ))}
+                      {activeBlog.sections[0]?.callout && (
+                        <div className="p-1.5 rounded-md bg-rose-50 border-l-2 border-rose-400 text-[10px] text-[#5A2D3A]">
+                          <span className="font-bold font-mono">
+                            {activeBlog.sections[0].callout.title}:
+                          </span>{' '}
+                          {activeBlog.sections[0].callout.text}
                         </div>
-                      </div>
+                      )}
+                    </div>
 
-                      {/* Main Scrollable Body: Section 2 & Code Snippet */}
-                      <div className="my-1.5 overflow-y-auto pr-2 text-[11px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar max-h-[290px]">
-                        {activeBlog.sections.slice(1).map((sec, secIdx) => (
-                          <div key={secIdx} className="space-y-1">
-                            <h3 className="font-sans font-bold text-xs text-[#2A160C]">
-                              {sec.heading}
-                            </h3>
-                            {sec.paragraphs.map((p, pIdx) => (
-                              <p key={pIdx}>{p}</p>
-                            ))}
+                    {/* Left Page Footer Indicator */}
+                    <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[9px] font-mono text-[#8C6D54] shrink-0">
+                      <span>Article {selectedBlogIndex + 1} of {technicalBlogs.length}</span>
+                      <span>Turn right for implementation ➔</span>
+                    </div>
+                  </div>
 
-                            {/* Code Snippet Box */}
-                            {sec.codeSnippet && (
-                              <div className="my-1 rounded-md bg-[#251B15] text-[#FDF6E2] p-2 border border-[#443328] font-mono text-[9.5px] relative group/code">
-                                <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8px] text-[#A69080]">
-                                  <span>{sec.codeSnippet.caption ?? 'Implementation'}</span>
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      handleCopyCode(
-                                        sec.codeSnippet!.code,
-                                        `${activeBlog.slug}-${secIdx}`
-                                      )
-                                    }
-                                    className="px-1.5 py-0.5 rounded bg-[#3B2C23] hover:bg-[#523E32] text-white transition-colors cursor-pointer"
-                                  >
-                                    {isCopied === `${activeBlog.slug}-${secIdx}`
-                                      ? '✓ Copied'
-                                      : 'Copy code'}
-                                  </button>
-                                </div>
-                                <pre className="overflow-x-auto whitespace-pre font-mono leading-relaxed select-text py-0.5 scrollbar-none">
-                                  <code>{sec.codeSnippet.code}</code>
-                                </pre>
-                              </div>
-                            )}
-
-                            {sec.callout && (
-                              <div className="p-1.5 rounded-md bg-amber-50 border-l-2 border-amber-500 text-[10.5px] text-[#553C18]">
-                                <span className="font-bold font-mono">
-                                  {sec.callout.title}:
-                                </span>{' '}
-                                {sec.callout.text}
-                              </div>
-                            )}
-                          </div>
+                  {/* ========================================================== */}
+                  {/* RIGHT PAGE: STRICT SAFE WRITING ZONE                       */}
+                  {/* left: 53.5% (starts cleanly after center spine at 50%)     */}
+                  {/* right: 12.0% (clears right golden corner at 88-100%)       */}
+                  {/* top: 16.0% (clears floral branch sticker & golden corner)  */}
+                  {/* bottom: 16.0% (clears bottom curve & corner)               */}
+                  {/* ========================================================== */}
+                  <div
+                    className="absolute z-20 flex flex-col justify-between text-[#3D2517] select-text"
+                    style={{
+                      left: '53.5%',
+                      right: '12.0%',
+                      top: '16.0%',
+                      bottom: '16.0%',
+                    }}
+                  >
+                    {/* Top Header of Right Page */}
+                    <div className="flex items-center justify-between pb-1 border-b border-[#D8C7B0]/80 shrink-0">
+                      <span className="font-hand text-sm font-bold text-[#6D4C35]">
+                        Implementation & Code
+                      </span>
+                      <div className="flex items-center gap-1">
+                        {activeBlog.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-1.5 py-0.2 rounded-md bg-[#EDE2D2] text-[8px] font-mono text-[#5C3E28]"
+                          >
+                            #{tag}
+                          </span>
                         ))}
                       </div>
+                    </div>
 
-                      {/* Bottom Controls: Previous / Next Article */}
-                      <div className="pt-1.5 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[11px] font-hand font-bold">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            soundscape.playClickSound();
-                            setSelectedBlogIndex((prev) =>
-                              prev > 0 ? prev - 1 : technicalBlogs.length - 1
-                            );
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] text-[#4A301D] transition-colors cursor-pointer"
-                        >
-                          ← Previous Article
-                        </button>
-                        <span className="font-mono text-[9px] text-[#8C6D54]">
-                          {selectedBlogIndex + 1} / {technicalBlogs.length}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            soundscape.playClickSound();
-                            setSelectedBlogIndex((prev) =>
-                              prev < technicalBlogs.length - 1 ? prev + 1 : 0
-                            );
-                          }}
-                          className="px-3 py-1 rounded-lg bg-[#E8507D] hover:bg-[#D43D69] text-white transition-colors cursor-pointer shadow-2xs"
-                        >
-                          Next Article →
-                        </button>
-                      </div>
+                    {/* Main Scrollable Body: Code Snippet & Sections */}
+                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-1.5 cozy-scrollbar flex-1">
+                      {activeBlog.sections.slice(1).map((sec, secIdx) => (
+                        <div key={secIdx} className="space-y-1">
+                          <h3 className="font-sans font-bold text-xs text-[#2A160C]">
+                            {sec.heading}
+                          </h3>
+                          {sec.paragraphs.map((p, pIdx) => (
+                            <p key={pIdx}>{p}</p>
+                          ))}
+
+                          {/* Code Snippet Box */}
+                          {sec.codeSnippet && (
+                            <div className="my-1 rounded-md bg-[#231A14] text-[#FDF6E2] p-2 border border-[#48372B] font-mono text-[9px] relative group/code shadow-xs">
+                              <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8px] text-[#A69080]">
+                                <span className="font-bold text-amber-200/90">
+                                  {sec.codeSnippet.caption ?? 'Implementation'}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleCopyCode(
+                                      sec.codeSnippet!.code,
+                                      `${activeBlog.slug}-${secIdx}`
+                                    )
+                                  }
+                                  className="px-1.5 py-0.5 rounded bg-[#3B2C23] hover:bg-[#523E32] text-white transition-colors cursor-pointer text-[7.5px]"
+                                >
+                                  {isCopied === `${activeBlog.slug}-${secIdx}`
+                                    ? '✓ Copied'
+                                    : 'Copy code'}
+                                </button>
+                              </div>
+                              <pre className="overflow-x-auto whitespace-pre font-mono leading-relaxed select-text py-0.5 scrollbar-none text-[#FDF6E2]">
+                                <code>{sec.codeSnippet.code}</code>
+                              </pre>
+                            </div>
+                          )}
+
+                          {sec.callout && (
+                            <div className="p-1.5 rounded-md bg-amber-50 border-l-2 border-amber-500 text-[10px] text-[#553C18]">
+                              <span className="font-bold font-mono">
+                                {sec.callout.title}:
+                              </span>{' '}
+                              {sec.callout.text}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Bottom Controls: Previous / Next Article */}
+                    <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[10.5px] font-hand font-bold shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          soundscape.playClickSound();
+                          setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
+                        }}
+                        className="px-2.5 py-0.5 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] text-[#4A301D] transition-colors cursor-pointer"
+                      >
+                        {selectedBlogIndex === 0 ? '← Next: HTTP Server' : '← Prev: Syntactiq'}
+                      </button>
+                      <span className="font-mono text-[8.5px] text-[#8C6D54]">
+                        Sheet {selectedBlogIndex + 1} of 2
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          soundscape.playClickSound();
+                          setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
+                        }}
+                        className="px-3 py-0.5 rounded-lg bg-[#E8507D] hover:bg-[#D43D69] text-white transition-colors cursor-pointer shadow-2xs"
+                      >
+                        {selectedBlogIndex === 0 ? 'Read: HTTP Server →' : 'Read: Syntactiq →'}
+                      </button>
                     </div>
                   </div>
                 </motion.div>
@@ -450,12 +460,12 @@ export default function LibraryTechnicalBook() {
                           Technical Notes
                         </span>
                         <span className="font-mono text-[9px] text-[#8C6D54]">
-                          {selectedBlogIndex + 1} of {technicalBlogs.length}
+                          {selectedBlogIndex + 1} of 2
                         </span>
                       </div>
 
-                      {/* Compact Category Pills */}
-                      <div className="mt-1 flex gap-1 overflow-x-auto pb-0.5 scrollbar-none">
+                      {/* 2 Category Pills */}
+                      <div className="mt-1 flex gap-1">
                         {technicalBlogs.map((b, idx) => (
                           <button
                             key={b.slug}
@@ -508,7 +518,7 @@ export default function LibraryTechnicalBook() {
                           ))}
 
                           {sec.codeSnippet && (
-                            <div className="my-1 rounded-md bg-[#251B15] text-[#FDF6E2] p-1.5 border border-[#443328] font-mono text-[8.5px]">
+                            <div className="my-1 rounded-md bg-[#231A14] text-[#FDF6E2] p-1.5 border border-[#48372B] font-mono text-[8.5px]">
                               <div className="flex items-center justify-between pb-0.5 mb-1 border-b border-[#3B2C23] text-[7.5px] text-[#A69080]">
                                 <span>{sec.codeSnippet.caption ?? 'Code'}</span>
                                 <button
@@ -548,28 +558,24 @@ export default function LibraryTechnicalBook() {
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
-                          setSelectedBlogIndex((prev) =>
-                            prev > 0 ? prev - 1 : technicalBlogs.length - 1
-                          );
+                          setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
                         className="px-2 py-0.5 rounded bg-[#EAE0D1] text-[#4A301D]"
                       >
-                        ← Prev
+                        {selectedBlogIndex === 0 ? '← Next Blog' : '← Prev Blog'}
                       </button>
                       <span className="font-mono text-[8.5px] text-[#8C6D54]">
-                        Sheet {selectedBlogIndex + 1}/{technicalBlogs.length}
+                        Sheet {selectedBlogIndex + 1} of 2
                       </span>
                       <button
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
-                          setSelectedBlogIndex((prev) =>
-                            prev < technicalBlogs.length - 1 ? prev + 1 : 0
-                          );
+                          setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
                         className="px-2.5 py-0.5 rounded bg-[#E8507D] text-white"
                       >
-                        Next →
+                        {selectedBlogIndex === 0 ? 'Next Blog →' : 'First Blog →'}
                       </button>
                     </div>
                   </div>

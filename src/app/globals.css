@@ -154,7 +154,10 @@ body.cabinet-modal-open .library-heading,
 body.cabinet-modal-open #sound-toggle,
 body.book-modal-open header,
 body.book-modal-open .library-heading,
-body.book-modal-open #sound-toggle {
+body.book-modal-open #sound-toggle,
+body.cookie-modal-open header,
+body.cookie-modal-open .kitchen-heading,
+body.cookie-modal-open #sound-toggle {
   display: none !important;
 }
 

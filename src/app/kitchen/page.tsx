@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
+import KitchenFortuneCookies from '@/components/scene/KitchenFortuneCookies';
 
 export const metadata: Metadata = { title: 'Kitchen' };
 
@@ -8,7 +9,8 @@ export default function KitchenPage() {
   return (
     <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
       <RoomScene room="kitchen" fit="cover" stageOffsetY="-5.5%" stageScale={1.08}>
-        {/* Future Fortune Cookie Tray and interactive components will be mounted here */}
+        {/* Interactive Fortune Cookie Tray on Countertop */}
+        <KitchenFortuneCookies />
       </RoomScene>
 
       {/* Pink bubble navigation arrows: left to Library, right to Porch */}

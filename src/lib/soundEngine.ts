@@ -408,6 +408,57 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play a crisp tactile cookie crack and parchment paper snap sound
+   */
+  public playCookieCrackSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+
+      // 1. Crisp biscuit snap
+      const snapOsc = this.ctx.createOscillator();
+      const snapGain = this.ctx.createGain();
+      snapOsc.type = 'triangle';
+      snapOsc.frequency.setValueAtTime(2400, now);
+      snapOsc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+      snapGain.gain.setValueAtTime(0.09, now);
+      snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      snapOsc.connect(snapGain);
+      snapGain.connect(this.ctx.destination);
+      snapOsc.start(now);
+      snapOsc.stop(now + 0.07);
+
+      // 2. Crunchy lower body thud
+      const bodyOsc = this.ctx.createOscillator();
+      const bodyGain = this.ctx.createGain();
+      bodyOsc.type = 'sine';
+      bodyOsc.frequency.setValueAtTime(450, now);
+      bodyOsc.frequency.exponentialRampToValueAtTime(90, now + 0.1);
+      bodyGain.gain.setValueAtTime(0.07, now);
+      bodyGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      bodyOsc.connect(bodyGain);
+      bodyGain.connect(this.ctx.destination);
+      bodyOsc.start(now);
+      bodyOsc.stop(now + 0.11);
+
+      // 3. Delicate paper rustle / slip sliding out
+      const paperOsc = this.ctx.createOscillator();
+      const paperGain = this.ctx.createGain();
+      paperOsc.type = 'triangle';
+      paperOsc.frequency.setValueAtTime(380, now + 0.05);
+      paperOsc.frequency.exponentialRampToValueAtTime(160, now + 0.18);
+      paperGain.gain.setValueAtTime(0.045, now + 0.05);
+      paperGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      paperOsc.connect(paperGain);
+      paperGain.connect(this.ctx.destination);
+      paperOsc.start(now + 0.05);
+      paperOsc.stop(now + 0.19);
+    } catch {
+      // AudioContext safe catch
+    }
+  }
+
+  /**
    * Starts or resumes the soundscape
    */
   public async start(): Promise<void> {

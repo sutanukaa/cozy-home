@@ -4,6 +4,7 @@ import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import PaperCard from '@/components/ui/PaperCard';
 import CozyIcon from '@/components/ui/CozyIcon';
 import LibraryCardCatalog from '@/components/scene/LibraryCardCatalog';
+import LibraryFairyLights from '@/components/scene/LibraryFairyLights';
 import { shelves, currentlyLearning } from '@/data/skills';
 
 export const metadata: Metadata = { title: 'Library' };
@@ -24,6 +25,9 @@ export default function LibraryPage() {
       {/* 16:9 Hero Room Scene with clean bookshelf background */}
       <section className="relative h-screen w-full overflow-hidden">
         <RoomScene room="library" fit="cover" hotspots={[]}>
+          {/* Ambient Fairy Lights draped across bookcase, ladder rail & ivy */}
+          <LibraryFairyLights />
+
           {/* Vintage Wooden Library Card Catalog on Left Wall */}
           <LibraryCardCatalog />
         </RoomScene>
@@ -52,7 +56,7 @@ export default function LibraryPage() {
                 '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',
             }}
           >
-            Every shelf is something I have learned.
+            A collection of everything I have learnt.
           </p>
         </div>
       </section>

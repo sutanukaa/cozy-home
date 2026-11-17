@@ -215,9 +215,8 @@ export default function LibraryTechnicalBook() {
                       bottom: '16.0%',
                     }}
                   >
-                    {/* Top Section: Category Switcher & Metadata */}
+                    {/* Top Bar: Switcher Pills between the 2 Deep Dives */}
                     <div className="shrink-0">
-                      {/* Top Bar: Switcher Pills between the 2 Blogs */}
                       <div className="flex items-center justify-between gap-1 pb-1 border-b border-[#D8C7B0]/80">
                         <div className="flex items-center gap-1">
                           {technicalBlogs.map((b, idx) => (
@@ -245,48 +244,79 @@ export default function LibraryTechnicalBook() {
 
                       {/* Article Title & Subtitle */}
                       <div className="mt-1.5">
-                        <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[8.5px] font-mono font-bold text-amber-800 uppercase">
+                        <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[8px] font-mono font-bold text-amber-900 uppercase">
                           {activeBlog.badge}
                         </span>
-                        <h2 className="mt-0.5 font-display text-base lg:text-lg font-extrabold text-[#2F1A0F] leading-snug">
+                        <h2 className="mt-0.5 font-display text-sm lg:text-base font-extrabold text-[#2F1A0F] leading-snug">
                           {activeBlog.title}
                         </h2>
-                        <p className="mt-0.5 font-hand text-xs text-[#7D5A42] leading-tight">
+                        <p className="mt-0.5 font-hand text-[11px] text-[#7D5A42] leading-tight">
                           {activeBlog.subtitle}
                         </p>
                       </div>
 
-                      {/* Executive Overview Box */}
-                      <div className="mt-1.5 p-2 rounded-lg bg-[#FAF4EB]/90 border border-[#E8DAC9] text-[10.5px] leading-relaxed text-[#4A3223]">
-                        <strong className="block text-[9.5px] uppercase font-mono text-rose-600 font-bold mb-0.5">
-                          Architecture Summary
+                      {/* Summary Callout Box */}
+                      <div className="mt-1.5 p-2 rounded-lg bg-[#FAF4EB]/90 border border-[#E8DAC9] text-[10px] leading-relaxed text-[#4A3223]">
+                        <strong className="block text-[8.5px] uppercase font-mono text-rose-600 font-bold mb-0.5">
+                          Architectural Thesis
                         </strong>
                         {activeBlog.summary}
                       </div>
                     </div>
 
-                    {/* Section 1 Content on Left Page */}
-                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-1 cozy-scrollbar flex-1">
-                      <h3 className="font-sans font-bold text-xs text-[#2A160C]">
-                        {activeBlog.sections[0]?.heading}
-                      </h3>
-                      {activeBlog.sections[0]?.paragraphs.map((p, pIdx) => (
-                        <p key={pIdx}>{p}</p>
-                      ))}
-                      {activeBlog.sections[0]?.callout && (
-                        <div className="p-1.5 rounded-md bg-rose-50 border-l-2 border-rose-400 text-[10px] text-[#5A2D3A]">
-                          <span className="font-bold font-mono">
-                            {activeBlog.sections[0].callout.title}:
-                          </span>{' '}
-                          {activeBlog.sections[0].callout.text}
+                    {/* Left Page Scrollable Content: Problem Breakdown + Architecture Diagram + Invariants */}
+                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
+                      {/* 1. Problem Statement */}
+                      <div className="space-y-1">
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          The Engineering Challenge
+                        </h3>
+                        {activeBlog.leftPage.problemStatement.map((p, idx) => (
+                          <p key={idx}>{p}</p>
+                        ))}
+                      </div>
+
+                      {/* 2. System Architecture Flow Diagram */}
+                      <div className="rounded-lg bg-[#241B15] border border-[#443328] p-2 text-[#FFE8B2] shadow-xs">
+                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8px] font-mono text-[#C4AC99]">
+                          <span className="font-bold text-amber-300">
+                            📊 {activeBlog.leftPage.diagram.title}
+                          </span>
+                          <span className="text-[7.5px] text-[#A69080]">Architecture Map</span>
                         </div>
-                      )}
+                        <pre className="overflow-x-auto whitespace-pre font-mono text-[7.5px] lg:text-[8px] leading-tight select-text py-0.5 scrollbar-none text-[#FDF4DF]">
+                          <code>{activeBlog.leftPage.diagram.ascii}</code>
+                        </pre>
+                        <p className="mt-1 text-[7.5px] font-sans text-[#B09985] italic">
+                          {activeBlog.leftPage.diagram.caption}
+                        </p>
+                      </div>
+
+                      {/* 3. Core System Invariants */}
+                      <div className="space-y-1">
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          Core Mathematical & System Invariants
+                        </h3>
+                        <div className="space-y-1">
+                          {activeBlog.leftPage.coreInvariants.map((inv, idx) => (
+                            <div
+                              key={idx}
+                              className="p-1.5 rounded-md bg-[#F5EBE0] border-l-2 border-rose-500 text-[10px]"
+                            >
+                              <span className="font-bold font-mono text-[#4A2411]">
+                                #{idx + 1} {inv.title}:
+                              </span>{' '}
+                              <span className="text-[#593922]">{inv.description}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     {/* Left Page Footer Indicator */}
                     <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[9px] font-mono text-[#8C6D54] shrink-0">
-                      <span>Article {selectedBlogIndex + 1} of {technicalBlogs.length}</span>
-                      <span>Turn right for implementation ➔</span>
+                      <span>Deep Dive 1 of 2</span>
+                      <span>Turn right for implementation & code ➔</span>
                     </div>
                   </div>
 
@@ -309,7 +339,7 @@ export default function LibraryTechnicalBook() {
                     {/* Top Header of Right Page */}
                     <div className="flex items-center justify-between pb-1 border-b border-[#D8C7B0]/80 shrink-0">
                       <span className="font-hand text-sm font-bold text-[#6D4C35]">
-                        Implementation & Code
+                        Implementation Mechanics & Benchmarks
                       </span>
                       <div className="flex items-center gap-1">
                         {activeBlog.tags.map((tag) => (
@@ -323,11 +353,12 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* Main Scrollable Body: Code Snippet & Sections */}
-                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-1.5 cozy-scrollbar flex-1">
-                      {activeBlog.sections.slice(1).map((sec, secIdx) => (
+                    {/* Right Page Scrollable Content: Deep Dives + Code Snippets + Benchmarks */}
+                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
+                      {/* Implementation Sections */}
+                      {activeBlog.rightPage.implementationSections.map((sec, secIdx) => (
                         <div key={secIdx} className="space-y-1">
-                          <h3 className="font-sans font-bold text-xs text-[#2A160C]">
+                          <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
                             {sec.heading}
                           </h3>
                           {sec.paragraphs.map((p, pIdx) => (
@@ -363,7 +394,13 @@ export default function LibraryTechnicalBook() {
                           )}
 
                           {sec.callout && (
-                            <div className="p-1.5 rounded-md bg-amber-50 border-l-2 border-amber-500 text-[10px] text-[#553C18]">
+                            <div
+                              className={`p-1.5 rounded-md border-l-2 text-[10px] ${
+                                sec.callout.type === 'warning'
+                                  ? 'bg-rose-50 border-rose-500 text-rose-900'
+                                  : 'bg-amber-50 border-amber-500 text-[#553C18]'
+                              }`}
+                            >
                               <span className="font-bold font-mono">
                                 {sec.callout.title}:
                               </span>{' '}
@@ -372,6 +409,31 @@ export default function LibraryTechnicalBook() {
                           )}
                         </div>
                       ))}
+
+                      {/* Production Benchmarks & Trade-Offs Matrix */}
+                      <div className="space-y-1 pt-1 border-t border-[#E0D2C0]">
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          Production Benchmarks & Verification
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1">
+                          {activeBlog.rightPage.benchmarksAndTradeoffs.map((item, bIdx) => (
+                            <div
+                              key={bIdx}
+                              className="p-1.5 rounded-md bg-[#FDF9F2] border border-[#DECFBE] text-center"
+                            >
+                              <span className="block text-[8px] font-mono text-[#8C6D54] uppercase">
+                                {item.metric}
+                              </span>
+                              <span className="block text-xs font-bold font-mono text-rose-600 mt-0.5">
+                                {item.value}
+                              </span>
+                              <span className="block text-[8px] text-[#5C3E28] leading-tight mt-0.5">
+                                {item.detail}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     {/* Bottom Controls: Previous / Next Article */}
@@ -384,10 +446,10 @@ export default function LibraryTechnicalBook() {
                         }}
                         className="px-2.5 py-0.5 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] text-[#4A301D] transition-colors cursor-pointer"
                       >
-                        {selectedBlogIndex === 0 ? '← Next: HTTP Server' : '← Prev: Syntactiq'}
+                        {selectedBlogIndex === 0 ? '← Next: Socket Server' : '← Prev: Syntactiq'}
                       </button>
                       <span className="font-mono text-[8.5px] text-[#8C6D54]">
-                        Sheet {selectedBlogIndex + 1} of 2
+                        Deep Dive {selectedBlogIndex + 1} of 2
                       </span>
                       <button
                         type="button"
@@ -397,7 +459,7 @@ export default function LibraryTechnicalBook() {
                         }}
                         className="px-3 py-0.5 rounded-lg bg-[#E8507D] hover:bg-[#D43D69] text-white transition-colors cursor-pointer shadow-2xs"
                       >
-                        {selectedBlogIndex === 0 ? 'Read: HTTP Server →' : 'Read: Syntactiq →'}
+                        {selectedBlogIndex === 0 ? 'Read: Socket Server →' : 'Read: Syntactiq →'}
                       </button>
                     </div>
                   </div>
@@ -405,7 +467,6 @@ export default function LibraryTechnicalBook() {
 
                 {/* ============================================================ */}
                 {/* MOBILE SCREEN: SINGLE-PAGE VIEW USING bedroom-diary-mobile   */}
-                {/* (As requested: "for smaller screen use bedroom-diary-mobile")*/}
                 {/* ============================================================ */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8, y: 15 }}
@@ -457,14 +518,14 @@ export default function LibraryTechnicalBook() {
                     <div>
                       <div className="flex items-center justify-between pb-1 border-b border-[#D8C7B0]/80">
                         <span className="font-hand text-sm font-bold text-rose-600">
-                          Technical Notes
+                          Engineering Deep Dive
                         </span>
                         <span className="font-mono text-[9px] text-[#8C6D54]">
                           {selectedBlogIndex + 1} of 2
                         </span>
                       </div>
 
-                      {/* 2 Category Pills */}
+                      {/* 2 Category Switcher Pills */}
                       <div className="mt-1 flex gap-1">
                         {technicalBlogs.map((b, idx) => (
                           <button
@@ -487,10 +548,10 @@ export default function LibraryTechnicalBook() {
 
                       {/* Header Title */}
                       <div className="mt-1.5">
-                        <h2 className="font-display text-sm xs:text-base font-extrabold text-[#2F1A0F] leading-tight">
+                        <h2 className="font-display text-xs xs:text-sm font-extrabold text-[#2F1A0F] leading-tight">
                           {activeBlog.title}
                         </h2>
-                        <div className="mt-0.5 flex items-center gap-2 text-[9px] font-mono text-[#8C6B52]">
+                        <div className="mt-0.5 flex items-center gap-2 text-[8.5px] font-mono text-[#8C6B52]">
                           <span>📅 {activeBlog.date}</span>
                           <span>⏱️ {activeBlog.readTime}</span>
                         </div>
@@ -498,19 +559,54 @@ export default function LibraryTechnicalBook() {
                     </div>
 
                     {/* Scrollable Mobile Article Body */}
-                    <div className="my-1.5 overflow-y-auto pr-1 text-[10.5px] xs:text-[11px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
+                    <div className="my-1.5 overflow-y-auto pr-1 text-[10px] xs:text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
                       {/* Overview */}
-                      <div className="p-1.5 rounded-md bg-[#FAF4EB] border border-[#E8DAC9] text-[10px]">
+                      <div className="p-1.5 rounded-md bg-[#FAF4EB] border border-[#E8DAC9] text-[9.5px]">
                         <strong className="block font-mono text-rose-600 font-bold mb-0.5 uppercase">
-                          Summary
+                          Thesis
                         </strong>
                         {activeBlog.summary}
                       </div>
 
-                      {/* Sections & Code */}
-                      {activeBlog.sections.map((sec, sIdx) => (
+                      {/* Problem Statement */}
+                      <div className="space-y-1">
+                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                          The Engineering Challenge
+                        </h3>
+                        {activeBlog.leftPage.problemStatement.map((p, idx) => (
+                          <p key={idx}>{p}</p>
+                        ))}
+                      </div>
+
+                      {/* Architecture Diagram */}
+                      <div className="rounded-lg bg-[#241B15] border border-[#443328] p-1.5 text-[#FFE8B2] shadow-xs">
+                        <span className="block text-[7.5px] font-mono font-bold text-amber-300 mb-1">
+                          📊 {activeBlog.leftPage.diagram.title}
+                        </span>
+                        <pre className="overflow-x-auto whitespace-pre font-mono text-[7px] leading-tight select-text py-0.5 scrollbar-none text-[#FDF4DF]">
+                          <code>{activeBlog.leftPage.diagram.ascii}</code>
+                        </pre>
+                      </div>
+
+                      {/* Invariants */}
+                      <div className="space-y-1">
+                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                          Core Invariants
+                        </h3>
+                        {activeBlog.leftPage.coreInvariants.map((inv, idx) => (
+                          <div
+                            key={idx}
+                            className="p-1 rounded bg-[#F5EBE0] border-l-2 border-rose-500 text-[9px]"
+                          >
+                            <span className="font-bold">{inv.title}:</span> {inv.description}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Implementation & Code */}
+                      {activeBlog.rightPage.implementationSections.map((sec, sIdx) => (
                         <div key={sIdx} className="space-y-1">
-                          <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
                             {sec.heading}
                           </h3>
                           {sec.paragraphs.map((p, pIdx) => (
@@ -518,7 +614,7 @@ export default function LibraryTechnicalBook() {
                           ))}
 
                           {sec.codeSnippet && (
-                            <div className="my-1 rounded-md bg-[#231A14] text-[#FDF6E2] p-1.5 border border-[#48372B] font-mono text-[8.5px]">
+                            <div className="my-1 rounded-md bg-[#231A14] text-[#FDF6E2] p-1.5 border border-[#48372B] font-mono text-[8px]">
                               <div className="flex items-center justify-between pb-0.5 mb-1 border-b border-[#3B2C23] text-[7.5px] text-[#A69080]">
                                 <span>{sec.codeSnippet.caption ?? 'Code'}</span>
                                 <button
@@ -543,13 +639,31 @@ export default function LibraryTechnicalBook() {
                           )}
 
                           {sec.callout && (
-                            <div className="p-1 rounded bg-amber-50 border-l-2 border-amber-500 text-[9.5px] text-[#553C18]">
+                            <div className="p-1 rounded bg-amber-50 border-l-2 border-amber-500 text-[9px] text-[#553C18]">
                               <span className="font-bold">{sec.callout.title}:</span>{' '}
                               {sec.callout.text}
                             </div>
                           )}
                         </div>
                       ))}
+
+                      {/* Benchmarks */}
+                      <div className="space-y-1 pt-1 border-t border-[#DECFBE]">
+                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                          Benchmarks
+                        </h3>
+                        <div className="grid grid-cols-1 gap-1">
+                          {activeBlog.rightPage.benchmarksAndTradeoffs.map((item, bIdx) => (
+                            <div
+                              key={bIdx}
+                              className="p-1 rounded bg-[#FDF9F2] border border-[#DECFBE] flex items-center justify-between text-[8.5px]"
+                            >
+                              <span className="font-mono text-[#8C6D54]">{item.metric}:</span>
+                              <span className="font-bold font-mono text-rose-600">{item.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     {/* Bottom Navigation */}
@@ -562,7 +676,7 @@ export default function LibraryTechnicalBook() {
                         }}
                         className="px-2 py-0.5 rounded bg-[#EAE0D1] text-[#4A301D]"
                       >
-                        {selectedBlogIndex === 0 ? '← Next Blog' : '← Prev Blog'}
+                        {selectedBlogIndex === 0 ? '← Next Deep Dive' : '← Prev Deep Dive'}
                       </button>
                       <span className="font-mono text-[8.5px] text-[#8C6D54]">
                         Sheet {selectedBlogIndex + 1} of 2
@@ -575,7 +689,7 @@ export default function LibraryTechnicalBook() {
                         }}
                         className="px-2.5 py-0.5 rounded bg-[#E8507D] text-white"
                       >
-                        {selectedBlogIndex === 0 ? 'Next Blog →' : 'First Blog →'}
+                        {selectedBlogIndex === 0 ? 'Next Deep Dive →' : 'First Deep Dive →'}
                       </button>
                     </div>
                   </div>

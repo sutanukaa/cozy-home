@@ -93,15 +93,25 @@ export default function KitchenFortuneCookies() {
   };
 
   const handlePrevCookie = () => {
-    soundscape.playClickSound();
-    const prevIdx = (currentIndex - 1 + recipes.length) % recipes.length;
-    startCrackSequence(prevIdx);
+    if (currentIndex <= 0) return;
+    // When going back, navigate directly to the previous fortune note without snapping
+    soundscape.playPageTurnSound();
+    setCurrentIndex((prev) => Math.max(0, prev - 1));
+    setPhase('reading');
   };
 
   const handleSelectCookie = (idx: number) => {
     if (idx === currentIndex) return;
-    soundscape.playClickSound();
-    startCrackSequence(idx);
+    if (idx < currentIndex) {
+      // Navigating backwards directly displays the previous fortune note
+      soundscape.playPageTurnSound();
+      setCurrentIndex(idx);
+      setPhase('reading');
+    } else {
+      // Navigating forward plays the crack sequence
+      soundscape.playClickSound();
+      startCrackSequence(idx);
+    }
   };
 
   return (
@@ -617,13 +627,18 @@ export default function KitchenFortuneCookies() {
                   <button
                     type="button"
                     onClick={handlePrevCookie}
-                    aria-label="Crack previous fortune cookie"
-                    className="flex items-center gap-1 sm:gap-1.5 rounded-full border border-pink-200/90 bg-white px-2.5 py-1.5 sm:px-4 sm:py-2 font-display text-xs sm:text-sm font-bold text-ink shadow-xs transition-all hover:scale-105 active:scale-95 hover:bg-pink-50"
+                    disabled={currentIndex === 0}
+                    aria-label="View previous fortune note"
+                    className={`flex items-center gap-1 sm:gap-1.5 rounded-full border px-2.5 py-1.5 sm:px-4 sm:py-2 font-display text-xs sm:text-sm font-bold shadow-xs transition-all ${
+                      currentIndex === 0
+                        ? 'opacity-35 cursor-not-allowed border-pink-100 bg-white/50 text-[#8C6B4F]/50'
+                        : 'border-pink-200/90 bg-white text-ink hover:scale-105 active:scale-95 hover:bg-pink-50'
+                    }`}
                   >
                     <svg className="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="hidden xs:inline">Prev Cookie</span>
+                    <span className="hidden xs:inline">Prev Fortune</span>
                   </button>
 
                   {/* 4 Cookie Crumb Dots */}

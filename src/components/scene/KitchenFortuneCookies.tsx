@@ -615,7 +615,9 @@ export default function KitchenFortuneCookies() {
                             clipRule="evenodd"
                           />
                         </svg>
-                        Highlights & Impact
+                        {currentRecipe.id === 'hackathons'
+                          ? 'Hackathon Titles & Podium Finishes'
+                          : 'Highlights & Impact'}
                       </h3>
                       <ul className="mt-2.5 space-y-2.5 sm:space-y-3">
                         {currentRecipe.bullets.map((bullet, bIdx) => (

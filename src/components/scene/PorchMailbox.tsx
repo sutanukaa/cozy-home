@@ -411,147 +411,142 @@ export default function PorchMailbox() {
                     {/* ================= MOBILE POSTCARD (Vertical 2:3) ================= */}
                     <form
                       onSubmit={handleSubmit}
-                      style={{ containerType: 'inline-size' }}
-                      className="relative w-full max-w-[340px] aspect-[2/3] block sm:hidden drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
+                      className="w-full max-w-[340px] block sm:hidden flex flex-col items-center"
                     >
-                      <img
-                        src="/assets/objects/porch-postcard-mobile.png"
-                        alt="Handmade Postcard Stationery Mobile"
-                        className="absolute inset-0 h-full w-full object-contain pointer-events-none"
-                      />
-
-                      {/* --- Section 1: Line 1 - From: Your Name (Sits right on ruled line 1 at Y=28.7%) --- */}
+                      {/* The Postcard Stationery Card */}
                       <div
-                        className="absolute flex items-baseline gap-1.5"
-                        style={{
-                          left: '11%',
-                          width: '78%',
-                          top: '23.8%',
-                          height: '5.2%',
-                        }}
+                        style={{ containerType: 'inline-size' }}
+                        className="relative w-full aspect-[2/3] drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
                       >
-                        <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">From:</span>
-                        <input
-                          type="text"
-                          required
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          placeholder="Your Name"
-                          className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                        <img
+                          src="/assets/objects/porch-postcard-mobile.png"
+                          alt="Handmade Postcard Stationery Mobile"
+                          className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                         />
-                      </div>
 
-                      {/* --- Section 2: Line 2 - Email: yourname@gmail.com (Sits right on ruled line 2 at Y=34.2%) --- */}
-                      <div
-                        className="absolute flex items-baseline gap-1.5"
-                        style={{
-                          left: '11%',
-                          width: '78%',
-                          top: '29.3%',
-                          height: '5.2%',
-                        }}
-                      >
-                        <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">Email:</span>
-                        <input
-                          type="email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="yourname@gmail.com"
-                          className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
-                        />
-                      </div>
-
-                      {/* --- Section 3: Lines 3 to 8 - Handwritten Message Textarea (Aligned on ruled lines) --- */}
-                      <div
-                        className="absolute"
-                        style={{
-                          left: '11%',
-                          width: '78%',
-                          top: '35.0%',
-                          height: '35.5%',
-                        }}
-                      >
-                        <textarea
-                          required
-                          rows={5}
-                          value={message}
-                          onChange={(e) => setMessage(e.target.value)}
-                          placeholder="Dear Sutanuka,&#10;Write a warm note here..."
+                        {/* --- Section 1: Line 1 - From: Your Name (Moved a bit right & up onto line) --- */}
+                        <div
+                          className="absolute flex items-baseline gap-1.5"
                           style={{
-                            lineHeight: '8.55cqw',
+                            left: '15.5%',
+                            width: '72%',
+                            top: '22.8%',
+                            height: '5.2%',
                           }}
-                          className="w-full h-full resize-none bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none pt-1"
-                        />
+                        >
+                          <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">From:</span>
+                          <input
+                            type="text"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Your Name"
+                            className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                          />
+                        </div>
+
+                        {/* --- Section 2: Line 2 - Email: yourname@gmail.com (Moved a bit right & up onto line) --- */}
+                        <div
+                          className="absolute flex items-baseline gap-1.5"
+                          style={{
+                            left: '15.5%',
+                            width: '72%',
+                            top: '28.3%',
+                            height: '5.2%',
+                          }}
+                        >
+                          <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">Email:</span>
+                          <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="yourname@gmail.com"
+                            className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                          />
+                        </div>
+
+                        {/* --- Section 3: Lines 3 to 9 - Handwritten Message Textarea (Moved a bit right & up) --- */}
+                        <div
+                          className="absolute"
+                          style={{
+                            left: '15.5%',
+                            width: '72%',
+                            top: '33.8%',
+                            bottom: '15%',
+                          }}
+                        >
+                          <textarea
+                            required
+                            rows={6}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            placeholder="Dear Sutanuka,&#10;Write a warm note here..."
+                            style={{
+                              lineHeight: '8.55cqw',
+                            }}
+                            className="w-full h-full resize-none bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                          />
+                        </div>
+
+                        {/* --- Section 4: Quick Stamps Row (Positioned properly at the bottom border of the postcard) --- */}
+                        <div
+                          className="absolute flex items-center justify-center gap-1.5"
+                          style={{
+                            left: '5%',
+                            width: '90%',
+                            bottom: '5.5%',
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => handleQuickNote('Saying a warm hello!')}
+                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                          >
+                            <span>Saying hello</span>
+                            <span className="ml-0.5">🌸</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
+                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                          >
+                            <span>Work inquiry</span>
+                            <span className="ml-0.5">💼</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickNote('Would love to connect over tea!')}
+                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                          >
+                            <span>Tea chat</span>
+                            <span className="ml-0.5">☕</span>
+                          </button>
+                        </div>
+
+                        {/* Error notice if needed */}
+                        {errorMessage && (
+                          <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-[10px] text-rose-600 font-bold whitespace-nowrap">
+                            {errorMessage}
+                          </p>
+                        )}
                       </div>
 
-                      {/* --- Section 4: Quick Stamps Row (Compact pills above submit button) --- */}
-                      <div
-                        className="absolute flex items-center justify-center gap-1.5"
-                        style={{
-                          left: '8%',
-                          width: '84%',
-                          top: '71.5%',
-                        }}
+                      {/* --- Mobile Button Below the Postcard --- */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full mt-2.5 flex items-center justify-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] py-2.5 font-display text-sm font-extrabold text-white shadow-[0_4px_16px_rgba(214,70,118,0.55)] transition-all active:scale-95 disabled:opacity-70"
                       >
-                        <button
-                          type="button"
-                          onClick={() => handleQuickNote('Saying a warm hello!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
-                        >
-                          <span>Saying hello</span>
-                          <span className="ml-0.5">🌸</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
-                        >
-                          <span>Work inquiry</span>
-                          <span className="ml-0.5">💼</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleQuickNote('Would love to connect over tea!')}
-                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
-                        >
-                          <span>Tea chat</span>
-                          <span className="ml-0.5">☕</span>
-                        </button>
-                      </div>
-
-                      {/* --- Section 5: The Prominent "Post in Mailbox" Button (No emoji, centered) --- */}
-                      <div
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          left: '50%',
-                          top: '80.5%',
-                          transform: 'translateX(-50%)',
-                          width: '74%',
-                        }}
-                      >
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full flex items-center justify-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] py-2 font-display text-xs font-extrabold text-white shadow-[0_4px_16px_rgba(214,70,118,0.55)] transition-all active:scale-95 disabled:opacity-70 whitespace-nowrap"
-                        >
-                          <span>Post in Mailbox</span>
-                          <svg className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </button>
-                      </div>
-
-                      {/* Error notice if needed */}
-                      {errorMessage && (
-                        <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-[10px] text-rose-600 font-bold whitespace-nowrap">
-                          {errorMessage}
-                        </p>
-                      )}
+                        <span>Post in Mailbox</span>
+                        <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </button>
                     </form>
 
-                    {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard with tactile microanimations */}
-                    <div className="mt-0.5 sm:-mt-1 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+                    {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard (and just below the button on mobile) */}
+                    <div className="mt-2.5 sm:-mt-1 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
                       {site.socials.map((s, idx) => (
                         <a
                           key={s.label}

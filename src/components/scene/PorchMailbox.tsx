@@ -285,37 +285,41 @@ export default function PorchMailbox() {
 
                       {/* --- Section 1: Sender Name & Email (Top-Center, avoiding washi tape on left and stamp on right) --- */}
                       <div
-                        className="absolute flex flex-col justify-center space-y-1"
+                        className="absolute flex flex-col justify-center space-y-1.5"
                         style={{
-                          left: '21%',
-                          top: '13%',
-                          width: '38%',
-                          height: '22%',
+                          left: '18%',
+                          top: '12%',
+                          width: '42%',
+                          height: '24%',
                         }}
                       >
                         {/* Name Line */}
-                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
-                          <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">From:</span>
+                        <div className="flex items-center gap-1.5 border-b border-pink-300/80 pb-0.5">
+                          <span className="rounded bg-[#5B3A47] px-2 py-0.5 font-hand text-xs font-bold text-white shadow-xs shrink-0 tracking-wide">
+                            From (Your Name)
+                          </span>
                           <input
                             type="text"
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Ada Lovelace"
-                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
                           />
                         </div>
 
                         {/* Email Line */}
-                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
-                          <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">Email:</span>
+                        <div className="flex items-center gap-1.5 border-b border-pink-300/80 pb-0.5">
+                          <span className="rounded bg-[#5B3A47] px-2 py-0.5 font-hand text-xs font-bold text-white shadow-xs shrink-0 tracking-wide">
+                            Email (For Replies)
+                          </span>
                           <input
                             type="email"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="ada@example.com"
-                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
                           />
                         </div>
                       </div>
@@ -360,26 +364,30 @@ export default function PorchMailbox() {
 
                       <div className="absolute inset-0 pt-[24%] pb-[14%] px-[12%] flex flex-col justify-between">
                         <div className="space-y-1.5">
-                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
-                            <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">From:</span>
+                          <div className="flex items-center gap-1 border-b border-pink-300/80 pb-0.5">
+                            <span className="rounded bg-[#5B3A47] px-1.5 py-0.5 font-hand text-[10.5px] font-bold text-white shadow-xs shrink-0 tracking-wide">
+                              From (Your Name)
+                            </span>
                             <input
                               type="text"
                               required
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               placeholder="Ada Lovelace"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
                             />
                           </div>
-                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
-                            <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">Email:</span>
+                          <div className="flex items-center gap-1 border-b border-pink-300/80 pb-0.5">
+                            <span className="rounded bg-[#5B3A47] px-1.5 py-0.5 font-hand text-[10.5px] font-bold text-white shadow-xs shrink-0 tracking-wide">
+                              Email (For Replies)
+                            </span>
                             <input
                               type="email"
                               required
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               placeholder="ada@example.com"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
                             />
                           </div>
                         </div>

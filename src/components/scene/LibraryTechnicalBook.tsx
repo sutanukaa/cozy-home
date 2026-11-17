@@ -78,18 +78,18 @@ export default function LibraryTechnicalBook() {
 
   return (
     <>
-      {/* 1. CLOSED BOOK RESTING ON THE STAR CUSHION IN THE ARMCHAIR */}
+      {/* 1. CLOSED BOOK RESTING ON THE STAR PILLOW ON THE COUCH */}
       {!isOpen && (
         <div
-          className="group absolute z-20 cursor-pointer select-none touch-manipulation"
+          className="group absolute z-30 cursor-pointer select-none touch-manipulation"
           style={{
-            left: '73.5%',
-            top: '42.5%',
+            left: '79.5%',
+            top: '53.0%',
             width: '9.2%',
             maxWidth: '110px',
             minWidth: '52px',
             aspectRatio: '1535 / 1024',
-            transform: 'translate(-50%, -50%) rotate(-6deg)',
+            transform: 'translate(-50%, -50%) rotate(-5deg)',
           }}
           onClick={handleOpen}
           role="button"
@@ -100,16 +100,16 @@ export default function LibraryTechnicalBook() {
               handleOpen();
             }
           }}
-          aria-label="Open Technical Field Notes Book resting on the star cushion"
+          aria-label="Open Technical Field Notes Book resting on the star pillow"
         >
-          {/* Subtle warm ambient drop shadow on the star cushion */}
+          {/* Subtle warm ambient drop shadow on the star pillow */}
           <div className="absolute inset-0 translate-y-1.5 rounded-xl bg-purple-950/30 blur-md pointer-events-none transition-all duration-300 group-hover:blur-lg group-hover:translate-y-2.5" />
 
           {/* Book Image */}
           <div className="relative h-full w-full transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-translate-y-1">
             <Image
               src="/assets/objects/library-book-closed.png"
-              alt="Hardcover technical book resting on the star cushion"
+              alt="Hardcover technical book resting on the star pillow"
               fill
               sizes="120px"
               className="object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]"

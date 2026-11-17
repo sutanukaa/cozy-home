@@ -36,3 +36,4 @@ async function processDirectory(dir) {
 console.log('Starting WebP conversion in:', ASSETS_DIR);
 await processDirectory(ASSETS_DIR);
 console.log('WebP conversion completed!');
+

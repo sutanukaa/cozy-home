@@ -13,7 +13,16 @@ export const metadata: Metadata = {
   title: { default: `${site.name} | ${site.role}`, template: `%s | ${site.shortName}'s little home` },
   description: site.description,
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/assets/icons/skill-frontend.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
   openGraph: {
     title: `${site.name} | ${site.role}`,

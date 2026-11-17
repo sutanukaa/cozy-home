@@ -98,16 +98,6 @@ export default function PorchDoorPlaque() {
               Suto&apos;s home
             </span>
           </div>
-
-          {/* Cozy hover tooltip */}
-          <span
-            role="tooltip"
-            className="pointer-events-none absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center whitespace-nowrap rounded-xl border border-pink-200/90 bg-white/95 px-2.5 py-0.5 font-sans text-[11px] font-bold text-[#5B3A47] opacity-0 shadow-md backdrop-blur-xs transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:translate-y-0.5 dark:border-white/20 dark:bg-[#25182E]/95 dark:text-pink-100"
-          >
-            <span className="font-display text-[11px] text-pink-600 dark:text-pink-300 font-extrabold">
-              Knock &bull; Enter Living room
-            </span>
-          </span>
         </motion.div>
       </div>
 

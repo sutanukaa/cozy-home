@@ -21,10 +21,9 @@ export default function PorchPage() {
         <PorchMailbox />
       </RoomScene>
 
-      {/* Bubble navigation arrows: left to Kitchen, right to Living Room (front door) */}
+      {/* Bubble navigation arrow: left to Kitchen (door leads to living room) */}
       <RoomNavArrows
         prev={{ name: 'Kitchen', href: '/kitchen' }}
-        next={{ name: 'Living room', href: '/' }}
       />
 
       {/* Porch Room Heading */}

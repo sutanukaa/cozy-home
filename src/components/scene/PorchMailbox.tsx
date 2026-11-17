@@ -8,6 +8,7 @@ import { site } from '@/data/site';
 
 type FormPhase = 'writing' | 'depositing' | 'zooming_out';
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
+const web3formsKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
 
 // Mailbox position resting directly on the horizontal wooden bracket of the post (X: ~72%, Y: ~73.5%)
 const MAILBOX_POS = { left: '74.5%', top: '63.5%' };
@@ -64,26 +65,54 @@ export default function PorchMailbox() {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // If Formspree ID is not configured, fallback to mailto
-    if (!formspreeId) {
-      const body = encodeURIComponent(`${message}\n\n— From: ${name} (${email})`);
-      window.location.href = `mailto:${site.email}?subject=${encodeURIComponent('A postcard from your porch')}&body=${body}`;
-      triggerDepositAnimation();
-      return;
+    // 1. If Web3Forms Access Key is configured
+    if (web3formsKey) {
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: web3formsKey,
+            name,
+            email,
+            message,
+            from_name: `${name} (Cozy Home Porch)`,
+            subject: `New Postcard from ${name}! 💌`,
+          }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Submission failed');
+        triggerDepositAnimation();
+        return;
+      } catch {
+        setIsSubmitting(false);
+        setErrorMessage(`Could not send note. Try emailing ${site.email} directly!`);
+        return;
+      }
     }
 
-    try {
-      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name, email, message }),
-      });
-      if (!res.ok) throw new Error('bad response');
-      triggerDepositAnimation();
-    } catch {
-      setIsSubmitting(false);
-      setErrorMessage(`Could not send note. Try emailing ${site.email} directly!`);
+    // 2. If Formspree ID is configured
+    if (formspreeId) {
+      try {
+        const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+        });
+        if (!res.ok) throw new Error('bad response');
+        triggerDepositAnimation();
+        return;
+      } catch {
+        setIsSubmitting(false);
+        setErrorMessage(`Could not send note. Try emailing ${site.email} directly!`);
+        return;
+      }
     }
+
+    // 3. Fallback: If neither service is configured in .env.local, attempt mailto
+    const body = encodeURIComponent(`${message}\n\n— From: ${name} (${email})`);
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent('A postcard from your porch')}&body=${body}`;
+    triggerDepositAnimation();
   };
 
   // Step 1: Show open mailbox with postcard inside

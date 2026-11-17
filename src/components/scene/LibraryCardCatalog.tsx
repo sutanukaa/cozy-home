@@ -391,14 +391,15 @@ export default function LibraryCardCatalog() {
                     className="w-full h-full object-contain pointer-events-none"
                   />
 
-                  {/* The Clipboard laying inside the drawer cavity */}
+                  {/* The Clipboard laying horizontally inside the drawer cavity */}
                   <div
                     className="group/clip absolute cursor-pointer transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
                     style={{
-                      left: '34%',
-                      top: '15%',
-                      width: '32%',
+                      left: '50%',
+                      top: '42%',
+                      width: '31%',
                       aspectRatio: '958/1276',
+                      transform: 'translate(-50%, -50%) rotate(-90deg)',
                     }}
                     onClick={() => {
                       soundscape.playSparkleSound();
@@ -407,12 +408,17 @@ export default function LibraryCardCatalog() {
                   >
                     <AssetImage
                       src="/assets/objects/clipboard.png"
-                      alt="Clipboard resting in drawer"
-                      className="w-full h-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)] pointer-events-none"
+                      alt="Clipboard resting horizontally in drawer"
+                      className="w-full h-full object-contain drop-shadow-[0_10px_22px_rgba(0,0,0,0.35)] pointer-events-none"
                     />
 
-                    {/* Pink Clickable Bubble Button right on the clipboard */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
+                    {/* Pink Clickable Bubble Button right on the clipboard (counter-rotated so button & tooltip stay upright) */}
+                    <div
+                      className="absolute inset-0 flex items-center justify-center pointer-events-auto"
+                      style={{
+                        transform: 'rotate(90deg)',
+                      }}
+                    >
                       <button
                         type="button"
                         onClick={(e) => {

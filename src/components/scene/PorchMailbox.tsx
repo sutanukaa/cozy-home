@@ -489,38 +489,38 @@ export default function PorchMailbox() {
                           />
                         </div>
 
-                        {/* --- Section 4: Quick Stamps Row (Positioned properly at the bottom border of the postcard) --- */}
+                        {/* --- Section 4: Quick Stamps Row (Border-free, positioned in clean band above bottom border) --- */}
                         <div
                           className="absolute flex items-center justify-center gap-1.5"
                           style={{
                             left: '5%',
                             width: '90%',
-                            bottom: '5.5%',
+                            bottom: '8.5%',
                           }}
                         >
                           <button
                             type="button"
                             onClick={() => handleQuickNote('Saying a warm hello!')}
-                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
                           >
                             <span>Saying hello</span>
-                            <span className="ml-0.5">🌸</span>
+                            <span className="ml-1">🌸</span>
                           </button>
                           <button
                             type="button"
                             onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
-                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
                           >
                             <span>Work inquiry</span>
-                            <span className="ml-0.5">💼</span>
+                            <span className="ml-1">💼</span>
                           </button>
                           <button
                             type="button"
                             onClick={() => handleQuickNote('Would love to connect over tea!')}
-                            className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-xs hover:bg-pink-50 active:scale-95"
+                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
                           >
                             <span>Tea chat</span>
-                            <span className="ml-0.5">☕</span>
+                            <span className="ml-1">☕</span>
                           </button>
                         </div>
 

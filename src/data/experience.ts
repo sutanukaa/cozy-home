@@ -248,54 +248,92 @@ export const recipes: Recipe[] = [
     ],
   },
   {
-    id: 'rcciit',
-    title: 'B.Tech in Computer Science and Engineering',
-    org: 'RCC Institute of Information Technology (RCCIIT)',
-    location: 'Kolkata, West Bengal, India',
-    period: 'August 2023 – Present (Expected 2027)',
-    kind: 'education',
-    category: 'Education & Academics',
-    tagline: 'Undergraduate Computer Science • 8.08 CGPA • Systems & Software Architecture',
-    summary:
-      'Undergraduate student with an 8.08 CGPA, active competitive programmer, hackathon builder, and core campus technical contributor.',
-    bullets: [
-      'Current Cumulative GPA: 8.08 / 10.0.',
-      'Core Coursework: Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks, Object-Oriented Programming, and Software Engineering.',
-      'Active developer and mentor across college tech communities, conducting workshops on modern full-stack web architecture and competitive coding.',
-    ],
-    ingredients: [
-      'Data Structures',
-      'Algorithms',
-      'System Design',
-      'Operating Systems',
-      'Database Systems',
-      'Computer Networks',
-    ],
-  },
-  {
     id: 'hackathons',
-    title: 'Hackathon Achievements & Honors',
-    org: 'National & Global Competitive Circuits',
+    title: 'Hackathon Champion & Systems Architect',
+    org: 'Global & National Competitive Circuits',
     location: 'India & International',
     period: '2025 – 2026',
     kind: 'other',
-    category: 'Honors & Recognition',
-    tagline: 'Podium finishes across 650+ international teams in autonomous AI & systems',
+    category: 'Hackathons & Honors',
+    tagline: '1st Place Winner out of 650+ international teams • Podium finishes at IIT Dhanbad & DevNexus',
     summary:
-      'Recognized on prestigious hackathon podiums for building innovative autonomous multi-agent systems and high-concurrency tooling.',
-    bullets: [
-      'Winner (1st Place) – 100Agents Global Hackathon: Placed 1st among 650+ international teams building autonomous multi-agent workflow systems.',
-      '1st Runner Up – Hackfest \'25 at IIT (ISM) Dhanbad: Architected and presented high-concurrency distributed developer tooling under 36 hours.',
-      '2nd Runner Up – DevNexus: Finalist and podium finisher among 300+ competitive developer teams.',
-    ],
-    keyProjects: [
+      'Competed on prestigious hackathon podiums, architecting, building, and pitching autonomous multi-agent systems and high-concurrency tooling under intense 36-hour sprint constraints.',
+    metrics: [
       {
-        name: '100Agents 1st Place Autonomous Multi-Agent System',
-        description:
-          'Orchestrated collaborative LLM agent swarms with dynamic role-delegation, shared memory boards, and deterministic safety checks.',
-        tags: ['AI Agents', 'Multi-Agent Systems', '1st Place'],
+        value: '1st Place',
+        label: '100Agents Global',
+        sublabel: 'Winner out of 650+ international teams',
+      },
+      {
+        value: '1st Runner Up',
+        label: "Hackfest '25 IIT (ISM)",
+        sublabel: 'IIT Dhanbad national hackathon',
+      },
+      {
+        value: '2nd Runner Up',
+        label: 'DevNexus',
+        sublabel: 'Podium finisher among 300+ teams',
+      },
+      {
+        value: '36 Hours',
+        label: 'Rapid Prototyping',
+        sublabel: 'Zero to production-grade architecture',
       },
     ],
-    ingredients: ['Autonomous AI Agents', 'Distributed Systems', 'Rapid Prototyping', 'System Architecture', 'Team Leadership'],
+    systemSections: [
+      {
+        title: '100Agents Global Hackathon — 1st Place Winner',
+        ownership: '1st Place out of 650+ international teams',
+        badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+        summary:
+          'Architected and built an autonomous multi-agent collaboration platform with dynamic task fan-out, shared memory, and deterministic safety checks.',
+        achievements: [
+          'Designed a multi-agent orchestration graph coordinating specialized AI agents (Architect, Coder, Reviewer, Verifier) with typed message passing and deterministic state isolation.',
+          'Built anti-hallucination and validation gates ensuring all LLM generated code passes compile and unit-test sandboxes before execution.',
+          'Pitched and demonstrated live real-time interactive multi-agent workflows to an international judging panel, taking 1st Place globally.',
+        ],
+        techTags: ['Autonomous AI', 'Multi-Agent Swarms', 'TypeScript', 'LLM Orchestration', '1st Place'],
+      },
+      {
+        title: "Hackfest '25 at IIT (ISM) Dhanbad — 1st Runner Up",
+        ownership: 'National Hackathon Podium',
+        badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+        summary:
+          'Architected and implemented high-concurrency distributed developer tooling and telemetry pipelines within 36 hours.',
+        achievements: [
+          'Constructed high-throughput event ingestion pipelines handling concurrent streams with zero-allocation buffers and sub-millisecond latency.',
+          'Built real-time telemetry dashboards for developer observability, bottleneck profiling, and live task execution graphs.',
+          'Delivered live production demonstration and technical architectural defense before IIT faculty and engineering leaders.',
+        ],
+        techTags: ['Distributed Systems', 'High Concurrency', 'Real-Time Telemetry', 'IIT Dhanbad'],
+      },
+      {
+        title: 'DevNexus — 2nd Runner Up',
+        ownership: 'Competitive Circuit Podium (300+ Teams)',
+        badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
+        summary:
+          'Engineered and shipped a resilient full-stack developer productivity platform under strict hackathon time constraints.',
+        achievements: [
+          'Rapidly designed and implemented high-performance responsive web interfaces with 60fps micro-interactions.',
+          'Built type-safe schema-validated backend APIs, session persistence, and instant deployment pipelines.',
+        ],
+        techTags: ['Full-Stack', 'Rapid Prototyping', 'React', 'Node.js', 'System Architecture'],
+      },
+    ],
+    bullets: [
+      'Winner (1st Place) – 100Agents Global Hackathon: Placed 1st among 650+ international teams building autonomous multi-agent workflow systems.',
+      "1st Runner Up – Hackfest '25 at IIT (ISM) Dhanbad: Architected and presented high-concurrency distributed developer tooling under 36 hours.",
+      '2nd Runner Up – DevNexus: Finalist and podium finisher among 300+ competitive developer teams.',
+      'Active competitive programmer and systems builder specializing in rapid prototyping and high-concurrency architectures.',
+    ],
+    ingredients: [
+      'Autonomous AI Agents',
+      'Multi-Agent Systems',
+      'Distributed Systems',
+      'High Concurrency',
+      'Rapid Prototyping',
+      'System Architecture',
+      'Team Leadership',
+    ],
   },
 ];

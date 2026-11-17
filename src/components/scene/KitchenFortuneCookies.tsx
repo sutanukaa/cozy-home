@@ -1,17 +1,23 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { soundscape } from '@/lib/soundEngine';
 import { recipes, type Recipe } from '@/data/experience';
 
 export default function KitchenFortuneCookies() {
+  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<'whole' | 'cracking' | 'reading'>('whole');
   const [crumbSparkles, setCrumbSparkles] = useState<Array<{ id: number; x: number; y: number }>>([]);
 
   const currentRecipe: Recipe = recipes[currentIndex] ?? recipes[0];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Lock body scroll and trigger modal-open CSS rule to hide headers and sound toggle
   useEffect(() => {
@@ -158,131 +164,133 @@ export default function KitchenFortuneCookies() {
         </button>
       </div>
 
-      {/* ---------------- Fullscreen Fortune Cookie Overlay ---------------- */}
-      <AnimatePresence mode="wait">
-        {isOpen && (
-          <div className="fixed inset-0 z-50 overflow-y-auto cookie-scroll p-3 sm:p-6 md:p-8 flex justify-center items-start">
-            {/* Backdrop with dark cozy warmth and heavy blur */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={handleClose}
-              className="fixed inset-0 bg-[#1D1119]/80 backdrop-blur-md cursor-pointer select-none -z-10"
-            />
-
-            {/* Top-right close button pinned to viewport */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              type="button"
-              onClick={handleClose}
-              aria-label="Close fortune cookie experience"
-              className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/90 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-lg transition-transform hover:scale-110 active:scale-95 focus:outline-none"
-            >
-              <svg className="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </motion.button>
-
-            {/* ---------------- Phase 1 & 2: Whole & Cracking Cookie Animation ---------------- */}
-            {(phase === 'whole' || phase === 'cracking') && (
-              <div className="min-h-[85vh] w-full flex items-center justify-center">
+      {/* ---------------- Fullscreen Fortune Cookie Overlay (Rendered via React Portal) ---------------- */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence mode="wait">
+            {isOpen && (
+              <div className="fixed inset-0 z-[999] overflow-y-auto cookie-scroll p-4 sm:p-6 md:p-8 flex justify-center items-start">
+                {/* Backdrop with dark cozy warmth and heavy blur */}
                 <motion.div
-                  key={`cookie-crack-${currentIndex}-${phase}`}
-                  initial={{ scale: 0.75, opacity: 0 }}
-                  animate={{
-                    scale: phase === 'cracking' ? [1, 1.08, 0.95, 1.02] : [0.85, 1.02, 1],
-                    rotate: phase === 'cracking' ? [-2, 3, -3, 2, 0] : 0,
-                    opacity: 1,
-                  }}
-                  exit={{ scale: 1.15, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: 'easeOut' }}
-                  className="relative z-40 flex flex-col items-center justify-center select-none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={handleClose}
+                  className="fixed inset-0 bg-[#1D1119]/80 backdrop-blur-md cursor-pointer select-none -z-10"
+                />
+
+                {/* Top-right close button pinned to viewport */}
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  type="button"
+                  onClick={handleClose}
+                  aria-label="Close fortune cookie experience"
+                  className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[1000] flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/90 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-lg transition-transform hover:scale-110 active:scale-95 focus:outline-none"
                 >
-                  {/* Whole cookie state */}
-                  {phase === 'whole' && (
+                  <svg className="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </motion.button>
+
+                {/* ---------------- Phase 1 & 2: Whole & Cracking Cookie Animation ---------------- */}
+                {(phase === 'whole' || phase === 'cracking') && (
+                  <div className="min-h-[85vh] w-full flex items-center justify-center">
                     <motion.div
+                      key={`cookie-crack-${currentIndex}-${phase}`}
+                      initial={{ scale: 0.75, opacity: 0 }}
                       animate={{
-                        y: [-4, 4, -4],
-                        rotate: [-1, 1, -1],
+                        scale: phase === 'cracking' ? [1, 1.08, 0.95, 1.02] : [0.85, 1.02, 1],
+                        rotate: phase === 'cracking' ? [-2, 3, -3, 2, 0] : 0,
+                        opacity: 1,
                       }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 3,
-                        ease: 'easeInOut',
-                      }}
-                      className="relative flex flex-col items-center cursor-pointer"
-                      onClick={() => startCrackSequence()}
+                      exit={{ scale: 1.15, opacity: 0 }}
+                      transition={{ duration: 0.45, ease: 'easeOut' }}
+                      className="relative z-40 flex flex-col items-center justify-center select-none"
                     >
-                      {/* Golden halo warmth behind cookie */}
-                      <div className="absolute inset-0 -m-10 rounded-full bg-amber-400/25 blur-3xl" />
-
-                      <img
-                        src="/assets/objects/fortune-cookie-whole.png"
-                        alt="Whole Golden Fortune Cookie"
-                        className="relative h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-105"
-                      />
-
-                      <div className="mt-4 flex flex-col items-center text-center">
-                        <span className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-amber-200 drop-shadow-md">
-                          Cracking Fortune #{currentIndex + 1}...
-                        </span>
-                        <span className="font-hand text-sm sm:text-base text-pink-200/90 font-medium mt-0.5">
-                          Fresh out of the oven &bull; Revealing {currentRecipe.org}
-                        </span>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Cracked cookie state with crumb burst */}
-                  {phase === 'cracking' && (
-                    <div className="relative flex flex-col items-center">
-                      {/* Crumb particle sparkles */}
-                      {crumbSparkles.map((crumb) => (
-                        <motion.span
-                          key={crumb.id}
-                          initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                      {/* Whole cookie state */}
+                      {phase === 'whole' && (
+                        <motion.div
                           animate={{
-                            opacity: 0,
-                            x: crumb.x,
-                            y: crumb.y,
-                            scale: 0.2,
+                            y: [-4, 4, -4],
+                            rotate: [-1, 1, -1],
                           }}
-                          transition={{ duration: 0.5, ease: 'easeOut' }}
-                          className="absolute h-2 w-2 rounded-full bg-amber-300 shadow-xs"
-                        />
-                      ))}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 3,
+                            ease: 'easeInOut',
+                          }}
+                          className="relative flex flex-col items-center cursor-pointer"
+                          onClick={() => startCrackSequence()}
+                        >
+                          {/* Golden halo warmth behind cookie */}
+                          <div className="absolute inset-0 -m-10 rounded-full bg-amber-400/25 blur-3xl" />
 
-                      <img
-                        src="/assets/objects/fortune-cookie-cracked.png"
-                        alt="Cracked Fortune Cookie"
-                        className="relative h-48 w-56 sm:h-64 sm:w-80 md:h-72 md:w-96 object-contain drop-shadow-[0_20px_32px_rgba(0,0,0,0.6)]"
-                      />
+                          <img
+                            src="/assets/objects/fortune-cookie-whole.png"
+                            alt="Whole Golden Fortune Cookie"
+                            className="relative h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-105"
+                          />
 
-                      <div className="mt-4 flex flex-col items-center">
-                        <span className="font-display text-lg sm:text-xl font-extrabold text-amber-300 animate-pulse">
-                          * Snap! *
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              </div>
-            )}
+                          <div className="mt-4 flex flex-col items-center text-center">
+                            <span className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-amber-200 drop-shadow-md">
+                              Cracking Fortune #{currentIndex + 1}...
+                            </span>
+                            <span className="font-hand text-sm sm:text-base text-pink-200/90 font-medium mt-0.5">
+                              Fresh out of the oven &bull; Revealing {currentRecipe.org}
+                            </span>
+                          </div>
+                        </motion.div>
+                      )}
 
-            {/* ---------------- Phase 3: Parchment Paper Sheet (Fills Screen) ---------------- */}
-            {phase === 'reading' && (
-              <motion.div
-                key={`fortune-paper-${currentIndex}`}
-                initial={{ scale: 0.92, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.94, opacity: 0, y: 16 }}
-                transition={{ type: 'spring', damping: 24, stiffness: 220 }}
-                className="relative z-40 my-4 sm:my-8 w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
-              >
+                      {/* Cracked cookie state with crumb burst */}
+                      {phase === 'cracking' && (
+                        <div className="relative flex flex-col items-center">
+                          {/* Crumb particle sparkles */}
+                          {crumbSparkles.map((crumb) => (
+                            <motion.span
+                              key={crumb.id}
+                              initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                              animate={{
+                                opacity: 0,
+                                x: crumb.x,
+                                y: crumb.y,
+                                scale: 0.2,
+                              }}
+                              transition={{ duration: 0.5, ease: 'easeOut' }}
+                              className="absolute h-2 w-2 rounded-full bg-amber-300 shadow-xs"
+                            />
+                          ))}
+
+                          <img
+                            src="/assets/objects/fortune-cookie-cracked.png"
+                            alt="Cracked Fortune Cookie"
+                            className="relative h-48 w-56 sm:h-64 sm:w-80 md:h-72 md:w-96 object-contain drop-shadow-[0_20px_32px_rgba(0,0,0,0.6)]"
+                          />
+
+                          <div className="mt-4 flex flex-col items-center">
+                            <span className="font-display text-lg sm:text-xl font-extrabold text-amber-300 animate-pulse">
+                              * Snap! *
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
+                )}
+
+                {/* ---------------- Phase 3: Parchment Paper Sheet (Fills Screen) ---------------- */}
+                {phase === 'reading' && (
+                  <motion.div
+                    key={`fortune-paper-${currentIndex}`}
+                    initial={{ scale: 0.94, opacity: 0, y: 16 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.96, opacity: 0, y: 14 }}
+                    transition={{ type: 'spring', damping: 24, stiffness: 220 }}
+                    className="relative z-40 my-6 sm:my-10 w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
+                  >
                 {/* Vintage Washi Tape Strip at top center */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1.5 z-20 pointer-events-none select-none">
                   <div className="h-4 sm:h-5 w-28 sm:w-36 bg-pink-200/85 border border-pink-300/80 shadow-xs rotate-1 -skew-x-6 backdrop-blur-xs flex items-center justify-center">
@@ -653,7 +661,9 @@ export default function KitchenFortuneCookies() {
             )}
           </div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+    )}
     </>
   );
 }

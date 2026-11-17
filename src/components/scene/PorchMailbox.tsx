@@ -240,7 +240,7 @@ export default function PorchMailbox() {
         createPortal(
           <AnimatePresence>
             {isOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 select-none overflow-y-auto">
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 select-none overflow-y-auto">
                 {/* Backdrop Blur & Scrim */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -283,18 +283,18 @@ export default function PorchMailbox() {
                         className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
 
-                      {/* --- Section 1: Sender Name & Email (Moved to right of roses, no dark strips) --- */}
+                      {/* --- Section 1: Sender Name & Email (Positioned clearly between roses and postmark) --- */}
                       <div
                         className="absolute flex flex-col justify-center space-y-1"
                         style={{
-                          left: '28%',
+                          left: '27%',
                           top: '12%',
-                          width: '38%',
-                          height: '22%',
+                          width: '36%',
+                          height: '21%',
                         }}
                       >
                         {/* Name Line */}
-                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
+                        <div className="flex items-baseline gap-2 border-b border-pink-400/60 pb-1">
                           <span className="font-hand text-sm font-bold text-[#5B3A47] shrink-0">From:</span>
                           <input
                             type="text"
@@ -302,12 +302,12 @@ export default function PorchMailbox() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Your Name"
-                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 focus:outline-none"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                           />
                         </div>
 
                         {/* Email Line */}
-                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
+                        <div className="flex items-baseline gap-2 border-b border-pink-400/60 pb-1">
                           <span className="font-hand text-sm font-bold text-[#5B3A47] shrink-0">Email:</span>
                           <input
                             type="email"
@@ -315,19 +315,52 @@ export default function PorchMailbox() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="youname@gmail.com"
-                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 focus:outline-none"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                           />
                         </div>
                       </div>
 
-                      {/* --- Section 2: Handwritten Message (Sits directly ON the ruled lines) --- */}
+                      {/* --- Section 2: Quick Stamps Row (Cleanly placed right above the handwriting lines) --- */}
+                      <div
+                        className="absolute flex items-center gap-1.5"
+                        style={{
+                          left: '16%',
+                          top: '34%',
+                          width: '68%',
+                        }}
+                      >
+                        <span className="font-hand text-xs font-bold text-[#5B3A47]/80">Quick stamps:</span>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Saying a warm hello!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                        >
+                          Saying hello 🌸
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                        >
+                          Work inquiry 💼
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Would love to connect over tea!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 hover:scale-105 active:scale-95"
+                        >
+                          Tea chat ☕
+                        </button>
+                      </div>
+
+                      {/* --- Section 3: Handwritten Message (Sits directly ON the pink ruled lines) --- */}
                       <div
                         className="absolute"
                         style={{
-                          left: '11.5%',
+                          left: '16%',
                           top: '41%',
-                          width: '76%',
-                          height: '35%',
+                          width: '68%',
+                          height: '38%',
                         }}
                       >
                         <textarea
@@ -335,57 +368,30 @@ export default function PorchMailbox() {
                           rows={4}
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
-                          placeholder="Dear Sutanuka,&#10;Say hi, ask about a project, or tell me about a role..."
+                          placeholder="Dear Sutanuka,&#10;Write a cozy note here..."
                           style={{
-                            lineHeight: '2.5rem', // Sits directly on the painted pink lines
+                            lineHeight: '2.6rem', // Accurately aligns each line of writing onto the ruled pink lines
                           }}
-                          className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 focus:outline-none"
+                          className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none pt-1"
                         />
                       </div>
 
-                      {/* --- Section 3: Action Buttons INSIDE the Postcard (Bottom area between bow & roses) --- */}
+                      {/* --- Section 4: The Prominent "Post in Mailbox" Button (Centered inside the bottom clear space) --- */}
                       <div
-                        className="absolute flex items-center justify-between"
+                        className="absolute flex items-center justify-center"
                         style={{
-                          left: '23%',
-                          right: '25%',
-                          top: '80%',
-                          height: '12%',
+                          left: '50%',
+                          bottom: '5.5%',
+                          transform: 'translateX(-50%)',
                         }}
                       >
-                        {/* Quick Stamps */}
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Saying a warm hello!')}
-                            className="rounded-full bg-white/95 border border-pink-300/90 px-2 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
-                          >
-                            Saying hello 🌸
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Have an engineering role in mind!')}
-                            className="rounded-full bg-white/95 border border-pink-300/90 px-2 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
-                          >
-                            Work inquiry 💼
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Would love to connect over tea!')}
-                            className="rounded-full bg-white/95 border border-pink-300/90 px-2 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
-                          >
-                            Tea chat ☕
-                          </button>
-                        </div>
-
-                        {/* Wax Seal Post Button */}
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="flex items-center gap-1.5 rounded-full border-2 border-white/95 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 px-4 py-1.5 font-display text-xs font-extrabold text-white shadow-[0_3px_12px_rgba(225,29,72,0.4)] transition-all hover:scale-105 active:scale-95 disabled:opacity-70 shrink-0"
+                          className="flex items-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] px-7 py-2 font-display text-sm font-extrabold text-white shadow-[0_4px_18px_rgba(214,70,118,0.55)] transition-all hover:scale-105 active:scale-95 disabled:opacity-70 whitespace-nowrap"
                         >
                           <span>Post in Mailbox</span>
-                          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                           </svg>
                         </button>
@@ -393,7 +399,7 @@ export default function PorchMailbox() {
 
                       {/* Error notice if needed */}
                       {errorMessage && (
-                        <p className="absolute bottom-2 left-1/2 -translate-x-1/2 font-hand text-xs text-rose-600 font-bold">
+                        <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-xs text-rose-600 font-bold whitespace-nowrap">
                           {errorMessage}
                         </p>
                       )}
@@ -410,9 +416,9 @@ export default function PorchMailbox() {
                         className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
 
-                      <div className="absolute inset-0 pt-[24%] pb-[14%] px-[12%] flex flex-col justify-between">
+                      <div className="absolute inset-0 pt-[22%] pb-[12%] px-[12%] flex flex-col justify-between">
                         <div className="space-y-1.5">
-                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
+                          <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
                             <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">From:</span>
                             <input
                               type="text"
@@ -420,10 +426,10 @@ export default function PorchMailbox() {
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               placeholder="Your Name"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                             />
                           </div>
-                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
+                          <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
                             <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">Email:</span>
                             <input
                               type="email"
@@ -431,7 +437,7 @@ export default function PorchMailbox() {
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               placeholder="youname@gmail.com"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                             />
                           </div>
                         </div>
@@ -443,14 +449,14 @@ export default function PorchMailbox() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Dear Sutanuka,&#10;Write a warm note here..."
-                            className="w-full h-full resize-none bg-transparent font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 leading-6 focus:outline-none"
+                            className="w-full h-full resize-none bg-transparent font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 leading-6 focus:outline-none"
                           />
                         </div>
 
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full mt-2 rounded-full border-2 border-white bg-gradient-to-r from-pink-500 to-rose-500 py-1.5 font-display text-xs font-extrabold text-white shadow-md transition-all active:scale-95"
+                          className="w-full mt-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] py-2 font-display text-xs font-extrabold text-white shadow-md transition-all active:scale-95"
                         >
                           Post in Mailbox 📮
                         </button>
@@ -458,14 +464,14 @@ export default function PorchMailbox() {
                     </form>
 
                     {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard */}
-                    <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
                       {site.socials.map((s) => (
                         <a
                           key={s.label}
                           href={s.href}
                           target={s.href.startsWith('http') ? '_blank' : undefined}
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 rounded-full border border-pink-300/70 bg-white/90 px-3 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-50 active:scale-95"
+                          className="inline-flex items-center gap-1 rounded-full border border-pink-300/80 bg-white/95 px-3 py-1 font-hand text-xs font-bold text-[#5B3A47] shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-50 active:scale-95"
                         >
                           <span>{s.label}</span>
                           <svg className="h-2.5 w-2.5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -477,7 +483,7 @@ export default function PorchMailbox() {
                         href="/resume.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full border border-pink-400/80 bg-pink-100/95 px-3 py-0.5 font-hand text-xs font-bold text-pink-800 shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-200 active:scale-95"
+                        className="inline-flex items-center gap-1 rounded-full border border-pink-400 bg-pink-100/95 px-3 py-1 font-hand text-xs font-bold text-pink-800 shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-200 active:scale-95"
                       >
                         <span>Resume PDF</span>
                         <svg className="h-2.5 w-2.5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

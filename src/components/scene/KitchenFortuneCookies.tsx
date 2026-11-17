@@ -117,10 +117,10 @@ export default function KitchenFortuneCookies() {
   return (
     <>
       {/* ---------------- Hotspot on Cookie Tray in RoomScene ---------------- */}
-      {/* Situated on the baking tray on the countertop (X: ~62.5%, Y: ~30%) */}
+      {/* Situated directly on the fortune cookies baking tray on the countertop (X: ~52%, Y: ~71%) */}
       <div
         className="absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none"
-        style={{ left: '62.5%', top: '30.0%' }}
+        style={{ left: '52%', top: '71%' }}
       >
         <button
           type="button"
@@ -179,7 +179,7 @@ export default function KitchenFortuneCookies() {
         createPortal(
           <AnimatePresence mode="wait">
             {isOpen && (
-              <div className="fixed inset-0 z-[999] overflow-y-auto cookie-scroll p-4 sm:p-6 md:p-8 flex justify-center items-start">
+              <div className="fixed inset-0 z-[999] overflow-y-auto cookie-scroll p-2.5 xs:p-3 sm:p-6 md:p-8 flex justify-center items-start">
                 {/* Backdrop with dark cozy warmth and heavy blur */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -198,9 +198,9 @@ export default function KitchenFortuneCookies() {
                   type="button"
                   onClick={handleClose}
                   aria-label="Close fortune cookie experience"
-                  className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[1000] flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/90 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-lg transition-transform hover:scale-110 active:scale-95 focus:outline-none"
+                  className="fixed top-3 right-3 sm:top-6 sm:right-6 z-[1000] flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/90 bg-gradient-to-br from-[#FF4D82] via-[#E82C68] to-[#BA1650] text-white shadow-lg transition-transform hover:scale-110 active:scale-95 focus:outline-none"
                 >
-                  <svg className="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </motion.button>
@@ -299,7 +299,7 @@ export default function KitchenFortuneCookies() {
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.96, opacity: 0, y: 14 }}
                     transition={{ type: 'spring', damping: 24, stiffness: 220 }}
-                    className="relative z-40 my-6 sm:my-10 w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
+                    className="relative z-40 my-2 xs:my-3 sm:my-8 w-full max-w-4xl flex flex-col rounded-xl xs:rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
                   >
                 {/* Vintage Washi Tape Strip at top center */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1.5 z-20 pointer-events-none select-none">
@@ -317,10 +317,10 @@ export default function KitchenFortuneCookies() {
                 />
 
                 {/* ---------------- Card Header: Bakery Tag & Meta ---------------- */}
-                <div className="relative shrink-0 px-4 pt-6 pb-4 sm:px-8 sm:pt-7 sm:pb-5 border-b border-[#F0E2D6] bg-gradient-to-b from-[#FFF9F2] to-[#FFFDF8] select-none">
+                <div className="relative shrink-0 px-3.5 pt-5 pb-3 xs:px-5 xs:pt-6 xs:pb-4 sm:px-8 sm:pt-7 sm:pb-5 border-b border-[#F0E2D6] bg-gradient-to-b from-[#FFF9F2] to-[#FFFDF8] select-none">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     {/* Cookie Tracker & Bakery Stamp */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 xs:gap-2">
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-pink-300 bg-pink-50 px-2.5 py-0.5 sm:px-3 sm:py-1 font-display text-[10px] sm:text-xs font-bold text-pink-700">
                         <span className="h-1.5 w-1.5 rounded-full bg-pink-500 animate-pulse" />
                         Fortune #{currentIndex + 1} of {recipes.length}
@@ -337,12 +337,12 @@ export default function KitchenFortuneCookies() {
                   </div>
 
                   {/* Main Job Title & Company */}
-                  <div className="mt-2.5 sm:mt-3">
-                    <h2 className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#341F2B]">
+                  <div className="mt-2 xs:mt-2.5 sm:mt-3">
+                    <h2 className="font-display text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#341F2B] leading-snug">
                       {currentRecipe.title}
                     </h2>
 
-                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm md:text-base font-bold text-pink-700">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs sm:text-sm md:text-base font-bold text-pink-700">
                       <span className="flex items-center gap-1">
                         <svg className="h-3.5 w-3.5 fill-current text-pink-600" viewBox="0 0 20 20">
                           <path
@@ -370,15 +370,15 @@ export default function KitchenFortuneCookies() {
 
                     {/* Tagline summary */}
                     {currentRecipe.tagline && (
-                      <p className="mt-1 font-hand text-sm sm:text-base md:text-lg text-[#6E4F5D] font-bold">
+                      <p className="mt-1 font-hand text-xs xs:text-sm sm:text-base md:text-lg text-[#6E4F5D] font-bold">
                         &ldquo;{currentRecipe.tagline}&rdquo;
                       </p>
                     )}
 
                     {/* Official Letters & Documents (Letter of Recommendation, Completion Letter) */}
                     {currentRecipe.documents && currentRecipe.documents.length > 0 && (
-                      <div className="mt-3 flex flex-wrap items-center gap-2 pt-2.5 border-t border-[#F0E2D6]/80">
-                        <span className="font-display text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#8C6B4F] flex items-center gap-1.5 mr-1">
+                      <div className="mt-2.5 flex flex-wrap items-center gap-1.5 xs:gap-2 pt-2 border-t border-[#F0E2D6]/80">
+                        <span className="font-display text-[10.5px] xs:text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#8C6B4F] flex items-center gap-1.5 mr-1">
                           <svg className="h-3.5 w-3.5 text-pink-500 fill-current" viewBox="0 0 20 20">
                             <path
                               fillRule="evenodd"
@@ -394,7 +394,7 @@ export default function KitchenFortuneCookies() {
                             href={doc.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group/doc inline-flex items-center gap-1.5 rounded-full border border-pink-300/90 bg-gradient-to-r from-pink-50/90 to-white px-3 py-1 font-sans text-xs font-bold text-pink-700 shadow-xs transition-all duration-200 hover:border-pink-400 hover:bg-pink-100 hover:text-pink-900 hover:shadow-sm hover:scale-[1.02] active:scale-95"
+                            className="group/doc inline-flex items-center gap-1.5 rounded-full border border-pink-300/90 bg-gradient-to-r from-pink-50/90 to-white px-2.5 py-1 font-sans text-[11px] xs:text-xs font-bold text-pink-700 shadow-xs transition-all duration-200 hover:border-pink-400 hover:bg-pink-100 hover:text-pink-900 hover:shadow-sm hover:scale-[1.02] active:scale-95"
                           >
                             <svg className="h-3.5 w-3.5 text-pink-500 transition-transform group-hover/doc:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -411,11 +411,11 @@ export default function KitchenFortuneCookies() {
                 </div>
 
                 {/* ---------------- Scrollable Content Body ---------------- */}
-                <div className="px-4 py-5 sm:px-8 sm:py-6 space-y-6 select-text">
+                <div className="px-3.5 py-4 xs:px-5 xs:py-5 sm:px-8 sm:py-6 space-y-4 sm:space-y-6 select-text">
                   {/* Summary note box */}
                   {currentRecipe.summary && (
-                    <div className="rounded-xl border border-pink-200/80 bg-gradient-to-r from-pink-50/70 to-amber-50/60 p-3.5 sm:p-4 text-xs sm:text-sm md:text-base leading-relaxed text-[#4A323E]">
-                      <span className="font-hand font-extrabold text-pink-700 text-sm sm:text-base mr-1.5">
+                    <div className="rounded-xl border border-pink-200/80 bg-gradient-to-r from-pink-50/70 to-amber-50/60 p-3 sm:p-4 text-xs sm:text-sm md:text-base leading-relaxed text-[#4A323E]">
+                      <span className="font-hand font-extrabold text-pink-700 text-xs sm:text-base mr-1.5">
                         Overview:
                       </span>
                       {currentRecipe.summary}
@@ -431,20 +431,20 @@ export default function KitchenFortuneCookies() {
                         </svg>
                         Scale & Production Metrics
                       </h3>
-                      <div className="mt-2.5 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
+                      <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 xs:gap-2.5 sm:gap-3">
                         {currentRecipe.metrics.map((metric, mIdx) => (
                           <div
                             key={mIdx}
-                            className="flex flex-col justify-between rounded-xl border border-pink-200/80 bg-gradient-to-b from-white to-pink-50/30 p-2.5 sm:p-3 shadow-xs"
+                            className="flex flex-col justify-between rounded-xl border border-pink-200/80 bg-gradient-to-b from-white to-pink-50/30 p-2 xs:p-2.5 sm:p-3 shadow-xs"
                           >
-                            <span className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-pink-700">
+                            <span className="font-display text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-pink-700 leading-tight">
                               {metric.value}
                             </span>
-                            <span className="mt-0.5 font-display text-xs sm:text-sm font-bold text-[#3D2633]">
+                            <span className="mt-0.5 font-display text-[11px] xs:text-xs sm:text-sm font-bold text-[#3D2633] leading-snug">
                               {metric.label}
                             </span>
                             {metric.sublabel && (
-                              <span className="mt-0.5 font-hand text-[10px] sm:text-xs text-[#8C6B4F] leading-tight">
+                              <span className="mt-0.5 font-hand text-[9.5px] xs:text-[10px] sm:text-xs text-[#8C6B4F] leading-tight">
                                 {metric.sublabel}
                               </span>
                             )}
@@ -657,27 +657,27 @@ export default function KitchenFortuneCookies() {
                 </div>
 
                 {/* ---------------- Card Bottom Bar: Controls & Pagination ---------------- */}
-                <footer className="sticky bottom-0 z-30 px-4 py-3 sm:px-8 sm:py-4 border-t border-[#F0E2D6] bg-[#FFFDF8]/95 backdrop-blur-md flex items-center justify-between gap-2 select-none shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
+                <footer className="sticky bottom-0 z-30 px-3 py-2.5 xs:px-4 xs:py-3 sm:px-8 sm:py-4 border-t border-[#F0E2D6] bg-[#FFFDF8]/95 backdrop-blur-md flex items-center justify-between gap-2 select-none shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
                   {/* Previous Button */}
                   <button
                     type="button"
                     onClick={handlePrevCookie}
                     disabled={currentIndex === 0}
                     aria-label="View previous fortune note"
-                    className={`flex items-center gap-1 sm:gap-1.5 rounded-full border px-2.5 py-1.5 sm:px-4 sm:py-2 font-display text-xs sm:text-sm font-bold shadow-xs transition-all ${
+                    className={`flex items-center gap-1 xs:gap-1.5 rounded-full border-2 px-2.5 py-1.5 xs:px-3.5 xs:py-2 sm:px-4 sm:py-2.5 font-display text-xs sm:text-sm font-extrabold shadow-xs transition-all ${
                       currentIndex === 0
-                        ? 'opacity-35 cursor-not-allowed border-pink-100 bg-white/50 text-[#8C6B4F]/50'
-                        : 'border-pink-200/90 bg-white text-ink hover:scale-105 active:scale-95 hover:bg-pink-50'
+                        ? 'opacity-40 cursor-not-allowed border-pink-200 bg-pink-50/60 text-pink-400'
+                        : 'border-pink-300 bg-white text-pink-700 hover:bg-pink-50 hover:border-pink-400 hover:scale-105 active:scale-95'
                     }`}
                   >
-                    <svg className="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <svg className="h-4 w-4 stroke-current stroke-[2.5]" fill="none" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="hidden xs:inline">Prev Fortune</span>
+                    <span>Prev</span>
                   </button>
 
-                  {/* 4 Cookie Crumb Dots */}
-                  <div className="flex items-center gap-1.5 sm:gap-2">
+                  {/* Cookie Crumb Dots */}
+                  <div className="flex items-center gap-1.5 xs:gap-2">
                     {recipes.map((r, idx) => (
                       <button
                         key={r.id}
@@ -685,10 +685,10 @@ export default function KitchenFortuneCookies() {
                         onClick={() => handleSelectCookie(idx)}
                         aria-label={`View fortune ${idx + 1}: ${r.title}`}
                         title={r.title}
-                        className={`h-2.5 sm:h-3 rounded-full transition-all duration-300 ${
+                        className={`h-2.5 sm:h-3 rounded-full border transition-all duration-300 ${
                           idx === currentIndex
-                            ? 'w-6 sm:w-8 bg-gradient-to-r from-pink-500 to-rose-500 shadow-xs'
-                            : 'w-2.5 sm:w-3 bg-pink-200 hover:bg-pink-300'
+                            ? 'w-6 sm:w-8 border-pink-600 bg-gradient-to-r from-pink-500 to-rose-600 shadow-xs'
+                            : 'w-2.5 sm:w-3 border-pink-300 bg-pink-100 hover:bg-pink-300'
                         }`}
                       />
                     ))}
@@ -699,10 +699,10 @@ export default function KitchenFortuneCookies() {
                     type="button"
                     onClick={handleNextCookie}
                     aria-label="Crack next fortune cookie"
-                    className="flex items-center gap-1.5 sm:gap-2 rounded-full border-2 border-white/95 bg-gradient-to-r from-[#FFB8CE] via-[#F482A5] to-[#D64676] px-3 py-1.5 sm:px-5 sm:py-2 font-display text-xs sm:text-sm font-extrabold text-white shadow-cozy transition-all hover:scale-105 active:scale-95"
+                    className="flex items-center gap-1 xs:gap-1.5 sm:gap-2 rounded-full border-2 border-white/95 bg-gradient-to-r from-[#FF3E7A] via-[#E61F5C] to-[#B00F41] px-3 py-1.5 xs:px-4 xs:py-2 sm:px-5 sm:py-2.5 font-display text-xs sm:text-sm font-extrabold text-white shadow-[0_4px_14px_rgba(230,31,92,0.45)] transition-all hover:scale-105 active:scale-95"
                   >
-                    <span>{currentIndex === recipes.length - 1 ? 'Start Over' : 'Crack Next Fortune'}</span>
-                    <svg className="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <span>{currentIndex === recipes.length - 1 ? 'Start Over' : 'Next Fortune'}</span>
+                    <svg className="h-4 w-4 stroke-current stroke-[2.5]" fill="none" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </button>

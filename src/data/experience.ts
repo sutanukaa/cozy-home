@@ -53,7 +53,7 @@ export const recipes: Recipe[] = [
     id: 'updesk',
     title: 'Software Development Engineering Intern',
     org: 'Updesk Private Limited',
-    location: 'Remote',
+    location: 'Ludhiana, India (Remote)',
     period: 'February 2026 – July 2026',
     kind: 'work',
     category: 'Industry Experience',

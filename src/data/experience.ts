@@ -20,6 +20,11 @@ export interface RecipeSystemSection {
   techTags: string[];
 }
 
+export interface RecipeDocument {
+  title: string;
+  url: string;
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -30,6 +35,7 @@ export interface Recipe {
   category: string;
   tagline: string;
   summary: string;
+  documents?: RecipeDocument[];
   metrics?: RecipeMetric[];
   screenshots?: RecipeScreenshot[];
   systemSections?: RecipeSystemSection[];
@@ -54,6 +60,16 @@ export const recipes: Recipe[] = [
     tagline: 'AI CRO platform, 18-signal behavioral trigger engine & Shopify merchant agents',
     summary:
       'Engineered high-throughput CRO platform systems, autonomous AI merchant analytics agents, and on-site behavioral intervention runtimes for DynoWeb across hundreds of Shopify stores.',
+    documents: [
+      {
+        title: 'Letter of Recommendation',
+        url: '/assets/work/Letter%20of%20Recommendation.pdf',
+      },
+      {
+        title: 'Internship Completion Letter',
+        url: '/assets/work/Internship%20Completion%20Letter.pdf',
+      },
+    ],
     metrics: [
       {
         value: '74',

@@ -34,7 +34,7 @@ export default function SiteHeader() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-2 sm:px-3 pt-2 sm:pt-3 transition-all duration-300">
+      <header id="site-header" className="fixed inset-x-0 top-0 z-50 px-2 sm:px-3 pt-2 sm:pt-3 transition-all duration-300">
         <div className="relative mx-auto max-w-5xl">
           {/* Whimsical washi tape strips pinned to top corners */}
           <span

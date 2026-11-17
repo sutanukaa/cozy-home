@@ -1,56 +1,42 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
-import RoomHeading from '@/components/layout/RoomHeading';
-import PaperCard from '@/components/ui/PaperCard';
-import Sticker from '@/components/ui/Sticker';
-import { recipes } from '@/data/experience';
-import type { HotspotDef } from '@/components/ui/Hotspot';
+import RoomNavArrows from '@/components/ui/RoomNavArrows';
 
 export const metadata: Metadata = { title: 'Kitchen' };
 
-const hotspots: HotspotDef[] = [
-  { id: 'kettle', label: 'The kettle', x: 70, y: 48, emoji: '🫖', note: 'Always on. Hot masala chai fuels every build.' },
-];
-
-const kindLabel = { work: 'work', education: 'school', other: 'other' } as const;
-
 export default function KitchenPage() {
   return (
-    <div>
-      <section className="relative h-screen w-full">
-        <RoomScene room="kitchen" hotspots={hotspots}>
-          <div className="pointer-events-none absolute inset-x-0 top-24 z-20 mx-auto max-w-xl px-4 text-center">
-            <RoomHeading room="kitchen" title="The kitchen" />
-          </div>
-        </RoomScene>
-      </section>
+    <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
+      <RoomScene room="kitchen" fit="cover">
+        {/* Future Fortune Cookie Tray and interactive components will be mounted here */}
+      </RoomScene>
 
-      <div className="mx-auto max-w-4xl px-4 py-16">
-        <section aria-label="Experience and education" className="mx-auto max-w-3xl">
-          <ol className="space-y-6">
-            {recipes.map((r, i) => (
-              <PaperCard as="li" key={`${r.title}-${i}`} tilt={i % 2 ? 0.7 : -0.7} tape>
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <div>
-                    <h2 className="font-display text-2xl font-semibold">{r.title}</h2>
-                    <p className="text-ink-soft">{r.org}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-hand text-xl">{r.period}</p>
-                    <Sticker tilt={2}>{kindLabel[r.kind]}</Sticker>
-                  </div>
-                </div>
-                <ul className="mt-3 list-inside list-disc space-y-1">
-                  {r.bullets.map((b) => <li key={b}>{b}</li>)}
-                </ul>
-                <p className="mt-4 font-hand text-xl text-ink-soft">Ingredients</p>
-                <ul className="mt-1 flex flex-wrap gap-2">
-                  {r.ingredients.map((g, k) => <li key={`${g}-${k}`}><Sticker tilt={0} className="bg-sage/40">{g}</Sticker></li>)}
-                </ul>
-              </PaperCard>
-            ))}
-          </ol>
-        </section>
+      {/* Pink bubble navigation arrows: left to Library, right to Porch */}
+      <RoomNavArrows
+        prev={{ name: 'Library', href: '/library' }}
+        next={{ name: 'Porch', href: '/porch' }}
+      />
+
+      {/* Kitchen Room Heading anchored in the bottom right corner */}
+      <div className="kitchen-heading pointer-events-none absolute bottom-6 right-4 sm:bottom-8 sm:right-6 md:bottom-12 md:right-10 z-20 max-w-[240px] sm:max-w-sm md:max-w-md text-right select-none">
+        <h1
+          className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md"
+          style={{
+            textShadow:
+              '0 3px 14px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 140, 180, 0.75), 0 2px 4px rgba(0,0,0,0.85)',
+          }}
+        >
+          The Kitchen
+        </h1>
+        <p
+          className="mt-0.5 sm:mt-1 font-hand text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white/95"
+          style={{
+            textShadow:
+              '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',
+          }}
+        >
+          Recipes for the things I have cooked up.
+        </p>
       </div>
     </div>
   );

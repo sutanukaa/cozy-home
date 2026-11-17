@@ -551,7 +551,7 @@ export default function PorchMailbox() {
                     </form>
 
                     {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard with tactile microanimations */}
-                    <div className="mt-3 flex flex-wrap items-center justify-center gap-2.5">
+                    <div className="mt-0.5 sm:-mt-1 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
                       {site.socials.map((s, idx) => (
                         <a
                           key={s.label}

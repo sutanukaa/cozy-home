@@ -18,6 +18,48 @@ interface Props {
   stageScale?: number;
 }
 
+const ROOM_INTERACTIVE_OBJECTS: Record<RoomSlug, string[]> = {
+  'living-room': [
+    '/assets/objects/drawer-open.webp',
+    '/assets/objects/lamp-on.webp',
+    '/assets/objects/lamp-off.webp',
+    '/assets/objects/basket-cat-sleep.webp',
+    '/assets/objects/basket-cat-wake.webp',
+  ],
+  studio: [
+    '/assets/objects/studio-plant-growing.webp',
+    '/assets/objects/studio-plant-full.webp',
+    '/assets/objects/studio-watering-can.webp',
+  ],
+  bedroom: [
+    '/assets/objects/bedroom-diary-open.webp',
+    '/assets/objects/bedroom-diary-mobile.webp',
+    '/assets/objects/bedroom-tablet.webp',
+    '/assets/objects/bedroom-tablet-open.webp',
+    '/assets/objects/bedroom-tablet-mobile.webp',
+  ],
+  library: [
+    '/assets/objects/card-catalog.webp',
+    '/assets/objects/drawer-open.webp',
+    '/assets/objects/clipboard.webp',
+    '/assets/objects/library-book-open.webp',
+  ],
+  kitchen: [
+    '/assets/objects/fortune-cookie-whole.webp',
+    '/assets/objects/fortune-cookie-cracked.webp',
+    '/assets/objects/kitchen-kettle-pour.webp',
+    '/assets/objects/kitchen-teacup.webp',
+  ],
+  porch: [
+    '/assets/objects/porch-mailbox.webp',
+    '/assets/objects/porch-mailbox-night.webp',
+    '/assets/objects/mailbox-open.webp',
+    '/assets/objects/porch-postcard.webp',
+    '/assets/objects/porch-postcard-mobile.webp',
+    '/assets/objects/porch-plaque.webp',
+  ],
+};
+
 export default function RoomScene({
   room,
   hotspots = [],
@@ -41,7 +83,7 @@ export default function RoomScene({
     setDebug(new URLSearchParams(window.location.search).has('debug'));
   }, []);
 
-  // Preload adjacent room background images in the background after the current room renders
+  // Preload this room's interactive object images & adjacent rooms during idle browser time
   useEffect(() => {
     const currentIndex = rooms.findIndex((r) => r.slug === room);
     if (currentIndex === -1) return;
@@ -58,9 +100,16 @@ export default function RoomScene({
 
     const timer = setTimeout(() => {
       const preload = () => {
+        // 1. Preload this room's interactive objects so click actions feel instantaneous
+        const objects = ROOM_INTERACTIVE_OBJECTS[room] || [];
+        objects.forEach((src) => {
+          const img = new window.Image();
+          img.src = src;
+        });
+
+        // 2. Preload adjacent room background images
         targetsToPreload.forEach((slug) => {
           const img = new window.Image();
-          // Preload active theme first (the one the user will see when clicking next)
           img.src = roomAsset(slug, theme === 'night' ? 'night' : 'day');
         });
       };
@@ -70,7 +119,7 @@ export default function RoomScene({
       } else {
         preload();
       }
-    }, 1000);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [room, theme]);

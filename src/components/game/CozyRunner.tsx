@@ -428,9 +428,9 @@ export default function CozyRunner() {
       i.src = src;
       return i;
     };
-    run1.current = mk('/assets/objects/sutanuka-run.png');
-    run2.current = mk('/assets/objects/sutanuka-run-2.png');
-    jump.current = mk('/assets/objects/sutanuka-jump.png');
+    run1.current = mk('/assets/objects/sutanuka-run.webp');
+    run2.current = mk('/assets/objects/sutanuka-run-2.webp');
+    jump.current = mk('/assets/objects/sutanuka-jump.webp');
   }, []);
 
   const audio = useCallback(() => {

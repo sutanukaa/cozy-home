@@ -35,7 +35,7 @@ export default function LivingRoomElements() {
   useEffect(() => {
     SPRITES.forEach((st) => {
       const img = new Image();
-      img.src = `/assets/objects/basket-cat-${st}.png`;
+      img.src = `/assets/objects/basket-cat-${st}.webp`;
     });
   }, []);
 
@@ -178,7 +178,7 @@ export default function LivingRoomElements() {
     setLampOn((prev) => !prev);
   };
 
-  const catSrc = `/assets/objects/basket-cat-${catState}.png`;
+  const catSrc = `/assets/objects/basket-cat-${catState}.webp`;
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 select-none">
@@ -213,7 +213,7 @@ export default function LivingRoomElements() {
 
           {/* Illustrated Lamp Sprite */}
           <img
-            src={lampOn ? '/assets/objects/lamp-on.png' : '/assets/objects/lamp-off.png'}
+            src={lampOn ? '/assets/objects/lamp-on.webp' : '/assets/objects/lamp-off.webp'}
             alt={lampOn ? 'Lamp on' : 'Lamp off'}
             className="relative h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-opacity duration-300"
           />

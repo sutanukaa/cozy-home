@@ -150,6 +150,11 @@
     "size": "309x827, transparent"
   },
   {
+    "path": "public/assets/objects/card-catalog.png",
+    "kind": "object",
+    "size": "1199x1312, transparent"
+  },
+  {
     "path": "public/assets/patterns/wallpaper-day.png",
     "kind": "pattern",
     "size": "1024x1024, seamless tile"

@@ -1,3 +1,25 @@
+export interface RecipeMetric {
+  value: string;
+  label: string;
+  sublabel?: string;
+}
+
+export interface RecipeScreenshot {
+  src: string;
+  alt: string;
+  caption: string;
+  badge: string;
+}
+
+export interface RecipeSystemSection {
+  title: string;
+  ownership: string;
+  badgeColor?: string;
+  summary: string;
+  achievements: string[];
+  techTags: string[];
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -8,6 +30,9 @@ export interface Recipe {
   category: string;
   tagline: string;
   summary: string;
+  metrics?: RecipeMetric[];
+  screenshots?: RecipeScreenshot[];
+  systemSections?: RecipeSystemSection[];
   bullets: string[];
   keyProjects?: {
     name: string;
@@ -28,26 +53,109 @@ export const recipes: Recipe[] = [
     category: 'Industry Experience',
     tagline: 'AI CRO platform, 18-signal behavioral trigger engine & Shopify merchant agents',
     summary:
-      'Engineered conversion rate optimization (CRO) platforms and enterprise AI analytics pipelines integrated with Shopify merchant stores.',
-    bullets: [
-      'Designed and built SmartNudge solo end-to-end on DynoWeb (AI-driven Shopify CRO platform), delivering an 18-signal browser behavioral trigger engine, Figma-style visual editor, and real-time A/B testing.',
-      'Owned anti-hallucination and data-grounding on DynoAgent (Gemini analytics agent): engineered self-heal gates, pre-slice totals verification, and causal-claim guardrails to guarantee factual accuracy.',
-      'Shipped AI session-replay summaries with cached Gemini LLM pipelines, automated funnel anomaly detection, and Lighthouse performance suggestions.',
-      'Built type-safe Prisma & PostgreSQL data schemas and containerized microservices deployed to Google Cloud Run, adhering strictly to Shopify App Bridge and Polaris UX guidelines.',
+      'Engineered high-throughput CRO platform systems, autonomous AI merchant analytics agents, and on-site behavioral intervention runtimes for DynoWeb across hundreds of Shopify stores.',
+    metrics: [
+      {
+        value: '74',
+        label: 'Stores Installed',
+        sublabel: 'Active Shopify merchant stores',
+      },
+      {
+        value: '1.3M+',
+        label: 'Click Events Tracked',
+        sublabel: '80K+ sessions in last 30 days',
+      },
+      {
+        value: '77 Models',
+        label: '143 Routes · 1,300+ Tests',
+        sublabel: 'Robust multi-tenant Postgres / Prisma architecture',
+      },
+      {
+        value: '648 Commits',
+        label: 'Production Commits',
+        sublabel: 'Git author: sutanukaa',
+      },
     ],
-    keyProjects: [
+    screenshots: [
       {
-        name: 'SmartNudge Behavioral Engine',
-        description:
-          '18-signal client-side engine evaluating exit intent, scroll velocity, cart abandonment, and frustration clicks to trigger hyper-targeted on-page nudges without latency.',
-        tags: ['TypeScript', 'Browser APIs', 'Figma-style Editor'],
+        src: '/assets/work/dynoweb-smartnudge.jpg',
+        alt: 'DynoWeb SmartNudge Visual Editor',
+        badge: 'SmartNudge · Solo, End-to-End',
+        caption:
+          'SmartNudge Visual Editor: Figma-style layers, 18-signal behavioral triggers, real-time iframe canvas preview, and author-time WCAG-AA contrast auto-fix linting.',
       },
       {
-        name: 'DynoAgent Anti-Hallucination Pipeline',
-        description:
-          'Grounding framework enforcing pre-slice verification, deterministic totals comparison, and LLM budget caching for Shopify merchant analytics queries.',
-        tags: ['Gemini API', 'Vercel AI SDK', 'Data Grounding'],
+        src: '/assets/work/dynoweb-dashboard.jpg',
+        alt: 'DynoWeb Merchant Dashboard and Telemetry',
+        badge: 'DynoWeb · Core Merchant Platform',
+        caption:
+          'DynoWeb Shopify Admin Dashboard: Real-time telemetry, store pulse, CRO health score, proactive agent suggestions, and holdout-verified incremental revenue attribution.',
       },
+    ],
+    systemSections: [
+      {
+        title: 'SmartNudge On-Site Behavioral Engine',
+        ownership: 'SOLO, end-to-end · 249 commits',
+        badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+        summary:
+          'Architected and built the entire SmartNudge subsystem from UX design to the edge trigger engine, visual editor, Brand DNA system, and holdout attribution.',
+        achievements: [
+          'Engineered an edge-driven 18-signal browser trigger engine (exit intent, scroll velocity, dwell ticks, cart abandonment, frustration signals) with a custom mobile upward-flick discriminator (450ms settle window).',
+          'Built a dual-renderer contract ensuring preview iframes and live storefronts render byte-identically from persisted design tokens, sharing an element-visibility package guarded by tests.',
+          'Built Brand DNA from scratch: multi-page crawler, deterministic 4-tier color extraction cascade (Shopify brand settings, theme JSON, Gemini Vision on logo/OG, role-ranked CSS) with provenance tracking, and a 6-archetype classifier with gamma-correct WCAG contrast.',
+          'Implemented holdout-based revenue attribution (deterministic 10% counterfactual bucketing within a 30-minute pre-order window) reporting true incremental revenue lift.',
+          'Built statistically honest A/B testing: two-proportion Z-test requiring ≥50 samples/side and p < 0.05 before declaring a winner, with immediate serve-time loser suppression.',
+        ],
+        techTags: ['TypeScript', 'Edge Runtime', 'Framer Motion', 'Zod', 'Prisma', 'WCAG-AA'],
+      },
+      {
+        title: 'DynoAgent Anti-Hallucination & Reliability',
+        ownership: 'TEAM (my part: reliability, grounding, tools & billing)',
+        badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+        summary:
+          'Led data-grounding and reliability engineering for a production Gemini 2.5 Flash conversational agent operating over ~70 native tools and Composio Shopify admin actions.',
+        achievements: [
+          'Stale-data self-heal gate: automated fallback recomputing from raw PageView events when daily rollups fall below 90% completeness, reconciling the agent with source-of-truth dashboards.',
+          'Killed "laundered hallucinations": returned pre-slice totals computed across all matching rows before display limiting so the model quotes ground truth instead of inventing arithmetic.',
+          'Causal-claim guardrails: attached attribution-leakage caveats to Direct-traffic breakdowns to prevent unsubstantiated brand recall claims.',
+          'Fixed tool-selection bugs (keyword gaps + plural over-stemming: "sources" → "sourc") with a 23-case regression test suite.',
+          'Monetization: designed and shipped the AI Assistant add-on as a second Shopify subscription line item with webhook-driven monthly quota recomputation.',
+        ],
+        techTags: ['Gemini 2.5 Flash', 'Vercel AI SDK', 'Data Grounding', 'Shopify Billing', 'Composio'],
+      },
+      {
+        title: 'Trust & Honesty Engineering',
+        ownership: 'SOLO, cross-cutting initiative',
+        badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        summary:
+          'Championed an engineering through-line closing gaps where the product previously misled merchants or silently degraded.',
+        achievements: [
+          'Built tracking-blackout detection: pure, unit-tested detector alerting merchants via daily cron when theme updates disable the embed, solving an issue invisible to activity-filtered crons.',
+          'Surfaced bot-traffic filtering as a real, falsifiable number in settings, counting requests rather than invented sessions.',
+          'Audited merchant-facing pricing copy against enforced code constraints, ensuring no marketing claims exceeded code capabilities.',
+          'Engineered durable SEO undo: built append-only SeoAutofixLog preserving before-value payloads across reloads.',
+        ],
+        techTags: ['Observability', 'Cron Pipelines', 'Telemetry', 'Postgres'],
+      },
+      {
+        title: 'AI Session-Replay Summaries & Performance',
+        ownership: 'SOLO · Summary & culprit layers',
+        badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
+        summary:
+          'Shipped one-click AI session-replay reads and Lighthouse 13-resilient JavaScript performance culprit extraction.',
+        achievements: [
+          'Turned raw rrweb timelines into 4-paragraph actionable behavioral reads on Gemini 2.5 Flash, solving reasoning token budget exhaustion by disabling thinkingBudget for narrative tasks.',
+          'Engineered budget-reserved monthly cap metering, 1-hour failure cooldowns, and race-safe persistence (updateMany WHERE summary IS NULL).',
+          'Built named JS speed culprit extraction from Lighthouse/PSI audits, routing third-party app fixes to merchants and raw script fixes with exact URLs to developers.',
+        ],
+        techTags: ['Gemini 2.5 Flash', 'rrweb', 'Lighthouse 13', 'Performance Auditing'],
+      },
+    ],
+    bullets: [
+      'Designed and built SmartNudge solo end-to-end on DynoWeb (249 commits), delivering an 18-signal browser trigger engine, Figma-style visual editor, Brand DNA styling, and holdout-based revenue attribution.',
+      'Owned anti-hallucination and data-grounding on DynoAgent: engineered self-heal gates, pre-slice totals, and causal-claim guardrails, reconciling agent answers with source-of-truth dashboards.',
+      'Drove cross-cutting trust initiatives: tracking-blackout detection, transparent bot filtering counters, pricing copy honesty, and durable SEO undo logs.',
+      'Shipped AI session-replay summaries with cached Gemini 2.5 Flash pipelines and named JS speed culprit performance extraction.',
     ],
     ingredients: [
       'TypeScript',
@@ -55,7 +163,7 @@ export const recipes: Recipe[] = [
       'Prisma',
       'PostgreSQL',
       'Vercel AI SDK',
-      'Gemini API',
+      'Gemini 2.5 Flash',
       'Shopify App Bridge',
       'Google Cloud Run',
       'Tailwind CSS',

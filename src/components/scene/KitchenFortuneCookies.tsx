@@ -358,10 +358,10 @@ export default function KitchenFortuneCookies() {
                 </header>
 
                 {/* ---------------- Scrollable Content Body ---------------- */}
-                <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-8 sm:py-6 space-y-4 sm:space-y-6 select-text">
+                <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-8 sm:py-6 space-y-5 sm:space-y-6 select-text">
                   {/* Summary note box */}
                   {currentRecipe.summary && (
-                    <div className="rounded-xl border border-pink-200/80 bg-gradient-to-r from-pink-50/70 to-amber-50/60 p-3 sm:p-4 text-xs sm:text-sm md:text-base leading-relaxed text-[#4A323E]">
+                    <div className="rounded-xl border border-pink-200/80 bg-gradient-to-r from-pink-50/70 to-amber-50/60 p-3.5 sm:p-4 text-xs sm:text-sm md:text-base leading-relaxed text-[#4A323E]">
                       <span className="font-hand font-extrabold text-pink-700 text-sm sm:text-base mr-1.5">
                         Overview:
                       </span>
@@ -369,34 +369,134 @@ export default function KitchenFortuneCookies() {
                     </div>
                   )}
 
-                  {/* Key Featured Projects (if present) */}
-                  {currentRecipe.keyProjects && currentRecipe.keyProjects.length > 0 && (
+                  {/* Production Scale & Engineering Metrics (if present) */}
+                  {currentRecipe.metrics && currentRecipe.metrics.length > 0 && (
                     <div>
-                      <h3 className="flex items-center gap-1.5 font-display text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#8C6B4F]">
+                      <h3 className="flex items-center gap-1.5 font-display text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#8C6B4F]">
                         <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                         </svg>
-                        Key Initiatives & Systems
+                        Scale & Production Metrics
                       </h3>
-                      <div className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
-                        {currentRecipe.keyProjects.map((proj, pIdx) => (
+                      <div className="mt-2.5 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
+                        {currentRecipe.metrics.map((metric, mIdx) => (
                           <div
-                            key={pIdx}
-                            className="rounded-xl border border-[#EADBCE] bg-white/80 p-3 sm:p-3.5 shadow-xs transition-shadow hover:shadow-md"
+                            key={mIdx}
+                            className="flex flex-col justify-between rounded-xl border border-pink-200/80 bg-gradient-to-b from-white to-pink-50/30 p-2.5 sm:p-3 shadow-xs"
                           >
-                            <h4 className="font-display text-xs sm:text-sm font-extrabold text-[#3D2633]">
-                              {proj.name}
-                            </h4>
-                            <p className="mt-1 text-[11px] sm:text-xs leading-relaxed text-[#6E4F5D]">
-                              {proj.description}
+                            <span className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-pink-700">
+                              {metric.value}
+                            </span>
+                            <span className="mt-0.5 font-display text-xs sm:text-sm font-bold text-[#3D2633]">
+                              {metric.label}
+                            </span>
+                            {metric.sublabel && (
+                              <span className="mt-0.5 font-hand text-[10px] sm:text-xs text-[#8C6B4F] leading-tight">
+                                {metric.sublabel}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Live Visual Screenshots / UI Artifacts (if present) */}
+                  {currentRecipe.screenshots && currentRecipe.screenshots.length > 0 && (
+                    <div>
+                      <h3 className="flex items-center gap-1.5 font-display text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#8C6B4F]">
+                        <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Production Visual Artifacts
+                      </h3>
+                      <div className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                        {currentRecipe.screenshots.map((shot, sIdx) => (
+                          <figure
+                            key={sIdx}
+                            className="group flex flex-col overflow-hidden rounded-xl border-2 border-[#EADBCE] bg-white shadow-xs transition-shadow hover:shadow-md"
+                          >
+                            <div className="relative aspect-video w-full overflow-hidden bg-[#FAF6F0]">
+                              <img
+                                src={shot.src}
+                                alt={shot.alt}
+                                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                loading="lazy"
+                              />
+                              <div className="absolute top-2 left-2 rounded-full border border-pink-200 bg-white/95 px-2.5 py-0.5 text-[10px] font-display font-bold text-pink-700 shadow-xs backdrop-blur-xs">
+                                {shot.badge}
+                              </div>
+                            </div>
+                            <figcaption className="p-2.5 sm:p-3 text-[11px] sm:text-xs leading-relaxed text-[#5C3D4D] bg-[#FFFDF8]">
+                              {shot.caption}
+                            </figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Detailed System Breakdown Cards (if present) */}
+                  {currentRecipe.systemSections && currentRecipe.systemSections.length > 0 && (
+                    <div className="space-y-3 sm:space-y-4">
+                      <h3 className="flex items-center gap-1.5 font-display text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#8C6B4F]">
+                        <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
+                          <path d="M13 7H7v6h6V7z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5v10h10V5H5z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Technical Breakdown & Architectural Ownership
+                      </h3>
+                      <div className="space-y-3">
+                        {currentRecipe.systemSections.map((sec, secIdx) => (
+                          <div
+                            key={secIdx}
+                            className="rounded-xl border border-[#EADBCE] bg-white/90 p-3.5 sm:p-4 shadow-xs"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-1.5">
+                              <h4 className="font-display text-sm sm:text-base font-extrabold text-[#341F2B]">
+                                {sec.title}
+                              </h4>
+                              <span
+                                className={`rounded-full border px-2.5 py-0.5 text-[10px] sm:text-xs font-mono font-bold ${
+                                  sec.badgeColor ?? 'bg-pink-100 text-pink-800 border-pink-200'
+                                }`}
+                              >
+                                {sec.ownership}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#6E4F5D]">
+                              {sec.summary}
                             </p>
-                            <div className="mt-2 flex flex-wrap gap-1">
-                              {proj.tags.map((tag, tIdx) => (
+                            <ul className="mt-2.5 space-y-1.5 sm:space-y-2">
+                              {sec.achievements.map((item, iIdx) => (
+                                <li
+                                  key={iIdx}
+                                  className="flex items-start gap-2 text-[11.5px] sm:text-xs md:text-sm text-[#4A323E] leading-relaxed"
+                                >
+                                  <span className="mt-1 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-pink-100 text-pink-600">
+                                    <svg className="h-2.5 w-2.5 fill-current" viewBox="0 0 20 20">
+                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                  </span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="mt-3 flex flex-wrap gap-1.5 pt-2 border-t border-[#F0E2D6]">
+                              {sec.techTags.map((t, tIdx) => (
                                 <span
                                   key={tIdx}
-                                  className="rounded-md bg-pink-100/70 px-1.5 py-0.5 font-mono text-[9.5px] sm:text-[10px] font-bold text-pink-700"
+                                  className="rounded-md bg-[#FAF0E6] px-2 py-0.5 font-mono text-[9.5px] sm:text-[10px] font-bold text-[#8C6B4F]"
                                 >
-                                  {tag}
+                                  {t}
                                 </span>
                               ))}
                             </div>
@@ -406,29 +506,73 @@ export default function KitchenFortuneCookies() {
                     </div>
                   )}
 
-                  {/* Detailed Accomplishment Bullets */}
-                  <div>
-                    <h3 className="flex items-center gap-1.5 font-display text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#8C6B4F]">
-                      <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      Highlights & Impact
-                    </h3>
-                    <ul className="mt-2.5 space-y-2.5 sm:space-y-3">
-                      {currentRecipe.bullets.map((bullet, bIdx) => (
-                        <li key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm md:text-base text-[#4A323E] leading-relaxed">
-                          <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-pink-200 text-pink-700 text-[10px] font-bold">
-                            &bull;
-                          </span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {/* Key Featured Projects (if present and no systemSections) */}
+                  {(!currentRecipe.systemSections || currentRecipe.systemSections.length === 0) &&
+                    currentRecipe.keyProjects &&
+                    currentRecipe.keyProjects.length > 0 && (
+                      <div>
+                        <h3 className="flex items-center gap-1.5 font-display text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#8C6B4F]">
+                          <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          Key Initiatives & Systems
+                        </h3>
+                        <div className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
+                          {currentRecipe.keyProjects.map((proj, pIdx) => (
+                            <div
+                              key={pIdx}
+                              className="rounded-xl border border-[#EADBCE] bg-white/80 p-3 sm:p-3.5 shadow-xs transition-shadow hover:shadow-md"
+                            >
+                              <h4 className="font-display text-xs sm:text-sm font-extrabold text-[#3D2633]">
+                                {proj.name}
+                              </h4>
+                              <p className="mt-1 text-[11px] sm:text-xs leading-relaxed text-[#6E4F5D]">
+                                {proj.description}
+                              </p>
+                              <div className="mt-2 flex flex-wrap gap-1">
+                                {proj.tags.map((tag, tIdx) => (
+                                  <span
+                                    key={tIdx}
+                                    className="rounded-md bg-pink-100/70 px-1.5 py-0.5 font-mono text-[9.5px] sm:text-[10px] font-bold text-pink-700"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  {/* Highlights & Impact (for other cards that don't have detailed systemSections) */}
+                  {(!currentRecipe.systemSections || currentRecipe.systemSections.length === 0) && (
+                    <div>
+                      <h3 className="flex items-center gap-1.5 font-display text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#8C6B4F]">
+                        <svg className="h-4 w-4 fill-pink-500" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Highlights & Impact
+                      </h3>
+                      <ul className="mt-2.5 space-y-2.5 sm:space-y-3">
+                        {currentRecipe.bullets.map((bullet, bIdx) => (
+                          <li
+                            key={bIdx}
+                            className="flex items-start gap-2.5 text-xs sm:text-sm md:text-base text-[#4A323E] leading-relaxed"
+                          >
+                            <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-pink-200 text-pink-700 text-[10px] font-bold">
+                              &bull;
+                            </span>
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
                   {/* Recipe Ingredients (Tech Stack) */}
                   <div className="pt-2 border-t border-[#F0E2D6]">

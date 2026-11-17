@@ -78,18 +78,18 @@ export default function LibraryTechnicalBook() {
 
   return (
     <>
-      {/* 1. CLOSED BOOK RESTING ON THE COUCH CUSHION */}
+      {/* 1. CLOSED BOOK RESTING ON THE STAR CUSHION IN THE ARMCHAIR */}
       {!isOpen && (
         <div
           className="group absolute z-20 cursor-pointer select-none touch-manipulation"
           style={{
-            left: '78.5%',
-            top: '72.0%',
-            width: '9.8%',
-            maxWidth: '115px',
-            minWidth: '55px',
+            left: '73.5%',
+            top: '42.5%',
+            width: '9.2%',
+            maxWidth: '110px',
+            minWidth: '52px',
             aspectRatio: '1535 / 1024',
-            transform: 'translate(-50%, -50%) rotate(-4deg)',
+            transform: 'translate(-50%, -50%) rotate(-6deg)',
           }}
           onClick={handleOpen}
           role="button"
@@ -100,16 +100,16 @@ export default function LibraryTechnicalBook() {
               handleOpen();
             }
           }}
-          aria-label="Open Technical Field Notes Book on the couch"
+          aria-label="Open Technical Field Notes Book resting on the star cushion"
         >
-          {/* Subtle warm ambient drop shadow on the armchair cushion */}
+          {/* Subtle warm ambient drop shadow on the star cushion */}
           <div className="absolute inset-0 translate-y-1.5 rounded-xl bg-purple-950/30 blur-md pointer-events-none transition-all duration-300 group-hover:blur-lg group-hover:translate-y-2.5" />
 
           {/* Book Image */}
           <div className="relative h-full w-full transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-translate-y-1">
             <Image
               src="/assets/objects/library-book-closed.png"
-              alt="Hardcover technical book resting on the couch"
+              alt="Hardcover technical book resting on the star cushion"
               fill
               sizes="120px"
               className="object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]"

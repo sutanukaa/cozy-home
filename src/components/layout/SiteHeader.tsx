@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { rooms } from '@/data/rooms';
 import { site } from '@/data/site';
-import TimeToggle from './TimeToggle';
 import CozyIcon from '@/components/ui/CozyIcon';
 import { soundscape } from '@/lib/soundEngine';
 
@@ -91,10 +90,8 @@ export default function SiteHeader() {
               })}
             </nav>
 
-            {/* Right Controls: Sky/Clock Toggle & Mobile Hamburger Menu */}
+            {/* Right Controls: Mobile Hamburger Menu */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <TimeToggle />
-
               {/* Hamburger Button (visible on screens < md) */}
               <button
                 type="button"

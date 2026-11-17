@@ -211,7 +211,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       <div
         className={`pointer-events-auto absolute cursor-pointer select-none ${className}`}
         style={{
-          left: '50.0%',
+          left: '50.5%',
           top: '38.8%',
           transform: 'translate(-50%, -50%)',
           width: '16.8%',

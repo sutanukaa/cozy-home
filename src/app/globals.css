@@ -322,6 +322,31 @@ html[data-theme='night'] .retro-scroll::-webkit-scrollbar-thumb {
   }
 }
 
+/* Custom cozy slim scrollbar for diary, clipboard, and modals */
+.cozy-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(180, 140, 110, 0.4) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cozy-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.cozy-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cozy-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(180, 140, 110, 0.4);
+  border-radius: 9999px;
+}
+
+.cozy-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(180, 140, 110, 0.7);
+}
+
 /* ---------------- Natural Sheer Window Curtain Wind Physics & Morphing ---------------- */
 .curtain-morph-left {
   animation: wind-billow-left 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;

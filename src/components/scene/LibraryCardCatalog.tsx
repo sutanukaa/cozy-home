@@ -516,14 +516,14 @@ export default function LibraryCardCatalog() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 15 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-                  className="relative z-10 flex flex-col items-center justify-center w-full max-w-[400px] xs:max-w-[460px] sm:max-w-[520px] md:max-w-[560px] py-1 my-auto"
+                  className="relative z-10 flex flex-col items-center justify-center w-full max-w-[390px] xs:max-w-[440px] sm:max-w-[520px] md:max-w-[560px] py-1 my-auto"
                 >
                   {/* Top Header Navigation Bar */}
-                  <div className="flex items-center justify-between w-full mb-1.5 sm:mb-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                  <div className="flex items-center justify-between w-full mb-1 sm:mb-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
                     <button
                       type="button"
                       onClick={handleBackToDrawer}
-                      className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
+                      className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                     >
                       <span className="hidden sm:inline">← Back to drawer</span>
                       <span className="sm:hidden">← Drawer</span>
@@ -552,39 +552,42 @@ export default function LibraryCardCatalog() {
                       className="w-full h-full object-contain pointer-events-none"
                     />
 
-                    {/* Writing Area on the Blank Paper of the Clipboard */}
+                    {/* Writing Area on the Blank Paper of the Clipboard - Exactly Cleared of Brass Clip */}
                     <div
                       className="absolute flex flex-col justify-between select-text"
                       style={{
-                        left: '10.5%',
-                        right: '10.5%',
-                        top: '16.0%',
-                        bottom: '8.0%',
+                        left: '9.0%',
+                        right: '9.0%',
+                        top: '21.5%',
+                        bottom: '6.8%',
                       }}
                     >
-                      {/* Fixed Top Paper Header (Pinned above turnable sheets) */}
-                      <div className="border-b-2 border-[#DAC8AD] pb-1 sm:pb-1.5 mb-1 flex items-start justify-between gap-1.5 sm:gap-2 px-0.5 sm:px-1 shrink-0">
-                        <div className="min-w-0">
+                      {/* Fixed Top Paper Header (Pinned below clip, above turnable sheets) */}
+                      <div className="border-b border-[#DAC8AD]/80 pb-1 mb-1 flex items-start justify-between gap-1 px-0.5 sm:px-1 shrink-0">
+                        <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1 sm:gap-1.5">
                             <CozyIcon
                               name={skillData.iconName}
-                              size={18}
-                              className="drop-shadow-xs shrink-0 select-none sm:w-[22px] sm:h-[22px]"
+                              size={16}
+                              className="drop-shadow-xs shrink-0 select-none sm:w-[20px] sm:h-[20px]"
                             />
                             <span className="font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold truncate">
-                              {currentDrawerDef.name} • {skillData.catalogCode}
+                              {currentDrawerDef.name}
+                            </span>
+                            <span className="font-mono text-[8px] xs:text-[8.5px] sm:text-[9.5px] text-[#A07E62] font-semibold shrink-0">
+                              • {skillData.catalogCode}
                             </span>
                           </div>
                           <h3
                             id="clipboard-title"
-                            className="font-display text-sm xs:text-base sm:text-xl font-bold text-[#3B2212] leading-tight truncate mt-0.5"
+                            className="font-display text-xs xs:text-sm sm:text-lg md:text-xl font-bold text-[#3B2212] leading-tight truncate mt-0.5"
                           >
                             {skillData.title}
                           </h3>
                         </div>
 
                         <span
-                          className={`shrink-0 rounded-full px-2 py-0.2 sm:px-2.5 sm:py-0.5 font-mono text-[8px] xs:text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider ${
+                          className={`shrink-0 rounded-full px-2 py-0.2 sm:px-2.5 sm:py-0.5 font-mono text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold uppercase tracking-wider ${
                             skillData.status === 'Daily Driver'
                               ? 'bg-amber-100 text-amber-900 border border-amber-300'
                               : skillData.status === 'Active'
@@ -633,29 +636,29 @@ export default function LibraryCardCatalog() {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            className="absolute inset-0 flex flex-col justify-start overflow-y-auto pr-0.5 sm:pr-1 select-text custom-scrollbar space-y-1.5 sm:space-y-2 py-0.5"
+                            className="absolute inset-0 flex flex-col justify-start overflow-y-auto pr-0.5 sm:pr-1 select-text cozy-scrollbar space-y-1 sm:space-y-1.5 py-0.5"
                             style={{
                               transformOrigin: pageDirection > 0 ? 'left center' : 'right center',
                               transformStyle: 'preserve-3d',
                             }}
                           >
                             {/* Section 1: Proficiency & Mastery Summary */}
-                            <div className="space-y-0.5 sm:space-y-1">
-                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
-                                <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8px] xs:text-[8.5px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
                                 <span>Proficiency & Technical Mastery</span>
                               </div>
-                              <p className="rounded-lg bg-[#FAF5EE]/95 border border-[#E8DAC5] p-1.5 sm:p-2 font-sans text-[10px] xs:text-[11px] sm:text-[12px] leading-relaxed text-[#4A3319] shadow-2xs">
+                              <p className="rounded-md sm:rounded-lg bg-[#FAF5EE]/95 border border-[#E8DAC5] p-1.5 sm:p-2 font-sans text-[9.5px] xs:text-[10.5px] sm:text-[11.5px] leading-snug sm:leading-relaxed text-[#4A3319] shadow-2xs">
                                 {skillData.masterySummary}
                               </p>
                             </div>
 
                             {/* Section 2: What I Built (Grounding from Real Repos) */}
-                            <div className="space-y-0.5 sm:space-y-1">
-                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
-                                <svg className="w-2.5 h-2.5 text-amber-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8px] xs:text-[8.5px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-amber-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
                                 <span>Production Work & Git History</span>
@@ -664,9 +667,9 @@ export default function LibraryCardCatalog() {
                                 {skillData.whatIBuilt.map((item, bIdx) => (
                                   <li
                                     key={bIdx}
-                                    className="flex items-start gap-1 sm:gap-1.5 text-[9.5px] xs:text-[10.5px] sm:text-[11.5px] leading-snug text-[#4A3319] bg-white/70 p-1 sm:p-1.5 rounded-md border border-[#EDE2D3]/90 shadow-2xs"
+                                    className="flex items-start gap-1 sm:gap-1.5 text-[9px] xs:text-[10px] sm:text-[11px] leading-snug text-[#4A3319] bg-white/75 p-1 sm:p-1.5 rounded-md border border-[#EDE2D3]/90 shadow-2xs"
                                   >
-                                    <span className="shrink-0 mt-1 w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-400" />
+                                    <span className="shrink-0 mt-1 w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-rose-400" />
                                     <span>{item}</span>
                                   </li>
                                 ))}
@@ -674,18 +677,18 @@ export default function LibraryCardCatalog() {
                             </div>
 
                             {/* Section 3: Key Architectural Highlights */}
-                            <div className="space-y-0.5 sm:space-y-1 pb-1">
-                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
-                                <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                            <div className="space-y-0.5 pb-0.5">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8px] xs:text-[8.5px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                                <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
                                 <span>Architectural Strengths</span>
                               </div>
-                              <div className="flex flex-wrap gap-1">
+                              <div className="flex flex-wrap gap-0.5 sm:gap-1">
                                 {skillData.keyHighlights.map((hl, hlIdx) => (
                                   <span
                                     key={hlIdx}
-                                    className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md bg-[#F2E7D8]/90 border border-[#DECFBA] text-[#5C3D24] text-[8.5px] xs:text-[9.5px] sm:text-[10.5px] font-medium leading-tight"
+                                    className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md bg-[#F2E7D8]/90 border border-[#DECFBA] text-[#5C3D24] text-[8px] xs:text-[9px] sm:text-[10px] font-medium leading-tight"
                                   >
                                     <span className="w-1 h-1 rounded-full bg-amber-600 shrink-0" />
                                     {hl}
@@ -698,7 +701,7 @@ export default function LibraryCardCatalog() {
                       </div>
 
                       {/* Bottom Turn Page Controls Bar */}
-                      <div className="pt-1.5 sm:pt-2 border-t-2 border-[#DAC8AD] mt-1 shrink-0 flex flex-col gap-1 sm:gap-1.5 select-none">
+                      <div className="pt-1 sm:pt-1.5 border-t border-[#DAC8AD] mt-0.5 shrink-0 flex flex-col gap-0.5 select-none">
                         <div className="flex items-center justify-between gap-1 w-full">
                           {/* Previous Sheet Button */}
                           <button
@@ -706,7 +709,7 @@ export default function LibraryCardCatalog() {
                             onClick={() => handleTurnPage(-1)}
                             disabled={pageIndex === 0}
                             aria-label="Previous skill sheet"
-                            className={`inline-flex items-center gap-0.5 sm:gap-1 px-2 sm:px-2.5 py-1 rounded-lg font-hand text-[11px] sm:text-xs font-bold transition-all shrink-0 ${
+                            className={`inline-flex items-center gap-0.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-hand text-[10px] xs:text-[11px] sm:text-xs font-bold transition-all shrink-0 ${
                               pageIndex === 0
                                 ? 'opacity-40 cursor-not-allowed bg-[#ECE3D5] text-[#8C7A68]'
                                 : 'bg-[#ECE3D5] hover:bg-[#E2D6C4] active:scale-95 text-[#4A3319] border border-[#D5C6B1] shadow-2xs cursor-pointer touch-manipulation'
@@ -720,16 +723,16 @@ export default function LibraryCardCatalog() {
 
                           {/* Sheet Indicator & Clickable Micro Pagination Dots */}
                           <div className="flex flex-col items-center shrink-0">
-                            <div className="flex items-center gap-0.5 sm:gap-1 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] font-bold text-[#6D4C33]">
+                            <div className="flex items-center gap-0.5 font-mono text-[8px] xs:text-[9px] sm:text-[10px] font-bold text-[#6D4C33]">
                               <span>Sheet</span>
-                              <span className="px-1 sm:px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
+                              <span className="px-1 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
                                 {pageIndex + 1}
                               </span>
                               <span>of</span>
                               <span>{cards.length}</span>
                             </div>
 
-                            <div className="hidden xs:flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1">
+                            <div className="hidden xs:flex items-center gap-0.5 mt-0.5">
                               {cards.map((_, dotIdx) => (
                                 <button
                                   key={dotIdx}
@@ -754,7 +757,7 @@ export default function LibraryCardCatalog() {
                             type="button"
                             onClick={() => handleTurnPage(1)}
                             aria-label="Turn page to next skill sheet"
-                            className="group/turn inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-[11px] sm:text-xs md:text-sm font-bold shadow-cozy transition-all cursor-pointer shrink-0 touch-manipulation"
+                            className="group/turn inline-flex items-center gap-1 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-[10px] xs:text-[11px] sm:text-xs md:text-sm font-bold shadow-cozy transition-all cursor-pointer shrink-0 touch-manipulation"
                           >
                             <span>{pageIndex === cards.length - 1 ? 'First Sheet' : 'Turn Page'}</span>
                             <svg
@@ -769,15 +772,8 @@ export default function LibraryCardCatalog() {
                           </button>
                         </div>
 
-                        {/* Sub-footer: Quick shortcuts */}
-                        <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
-                          <button
-                            type="button"
-                            onClick={handleBackToDrawer}
-                            className="hover:text-[#3B2212] cursor-pointer"
-                          >
-                            ← Back to drawer
-                          </button>
+                        {/* Sub-footer: Quick jump link */}
+                        <div className="flex items-center justify-end text-[8.5px] xs:text-[9px] sm:text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
                           <a
                             href={`#${currentDrawerDef.id}`}
                             onClick={handleCloseAll}

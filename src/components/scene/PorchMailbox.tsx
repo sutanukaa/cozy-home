@@ -10,7 +10,7 @@ type FormPhase = 'writing' | 'depositing' | 'zooming_out';
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
 // Mailbox position on the horizontal wooden bracket of the post (X: ~67.5%, Y: ~56.5%)
-const MAILBOX_POS = { left: '74.5%', top: '61.5%' };
+const MAILBOX_POS = { left: '67.5%', top: '56.5%' };
 const BUTTON_POS  = { left: '67.5%', top: '43%' };
 
 export default function PorchMailbox() {
@@ -258,156 +258,128 @@ export default function PorchMailbox() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ type: 'spring', damping: 24, stiffness: 280 }}
-                    className="relative z-10 w-full max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[92vh] flex flex-col items-center justify-center"
+                    className="relative z-10 w-full max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[94vh] flex flex-col items-center justify-center"
                   >
                     {/* Close Pill Button */}
                     <button
                       type="button"
                       onClick={handleClose}
                       aria-label="Put postcard back in mailbox"
-                      className="group absolute -top-3 right-0 sm:-top-5 sm:right-2 z-30 flex items-center gap-1 rounded-full border-2 border-pink-200/90 bg-white/95 px-3 py-1 font-display text-xs font-extrabold text-[#5B3A47] shadow-md transition-all hover:scale-105 active:scale-95 hover:bg-pink-50"
+                      className="group absolute -top-4 right-2 sm:-top-5 sm:right-3 z-30 flex items-center gap-1 rounded-full border-2 border-pink-200/90 bg-white/95 px-3 py-1 font-display text-xs font-extrabold text-[#5B3A47] shadow-md transition-all hover:scale-105 active:scale-95 hover:bg-pink-50"
                     >
                       <span>Put back in mailbox</span>
                       <span className="text-pink-500 font-bold ml-0.5">&times;</span>
                     </button>
 
-                    {/* Desktop / Tablet Postcard Layout */}
-                    <div className="relative w-full aspect-[3/2] hidden sm:block">
+                    {/* ================= DESKTOP / TABLET POSTCARD (Horizontal 3:2) ================= */}
+                    <form
+                      onSubmit={handleSubmit}
+                      className="relative w-full aspect-[3/2] hidden sm:block drop-shadow-[0_16px_36px_rgba(0,0,0,0.35)]"
+                    >
+                      {/* Illustrated Postcard Background Artwork */}
                       <img
                         src="/assets/objects/porch-postcard.png"
                         alt="Handmade Postcard Stationery"
-                        className="absolute inset-0 h-full w-full object-contain pointer-events-none drop-shadow-[0_16px_36px_rgba(0,0,0,0.35)]"
+                        className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
 
-                      {/* Interactive Form Layer Over Stationery */}
-                      <form
-                        onSubmit={handleSubmit}
-                        className="absolute inset-0 pt-[16%] pb-[10%] pl-[13%] pr-[13%] flex flex-col justify-between"
+                      {/* --- Section 1: Sender Name & Email (Top-Center, avoiding washi tape on left and stamp on right) --- */}
+                      <div
+                        className="absolute flex flex-col justify-center space-y-1"
+                        style={{
+                          left: '21%',
+                          top: '13%',
+                          width: '38%',
+                          height: '22%',
+                        }}
                       >
-                        {/* Top Row: Name and Email fields */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="relative">
-                            <label className="block font-hand text-sm font-bold text-pink-900/80 mb-0.5">
-                              From (Your Name)
-                            </label>
-                            <input
-                              type="text"
-                              required
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              placeholder="Ada Lovelace"
-                              className="w-full bg-transparent border-b-2 border-pink-300/70 pb-0.5 font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none focus:border-pink-500 transition-colors"
-                            />
-                          </div>
-
-                          <div className="relative">
-                            <label className="block font-hand text-sm font-bold text-pink-900/80 mb-0.5">
-                              Email (For Replies)
-                            </label>
-                            <input
-                              type="email"
-                              required
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              placeholder="ada@example.com"
-                              className="w-full bg-transparent border-b-2 border-pink-300/70 pb-0.5 font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none focus:border-pink-500 transition-colors"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Middle: Message Textarea */}
-                        <div className="relative mt-2 flex-1">
-                          <label className="sr-only">Your message</label>
-                          <textarea
+                        {/* Name Line */}
+                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
+                          <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">From:</span>
+                          <input
+                            type="text"
                             required
-                            rows={4}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Dear Sutanuka,&#10;Say hi, ask about a project, or tell me about a role..."
-                            className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 leading-[1.75rem] focus:outline-none"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Ada Lovelace"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
                           />
                         </div>
 
-                        {/* Quick chips & Action footer */}
-                        <div className="mt-2 pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-pink-200/60">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="font-hand text-xs font-bold text-pink-800/70">Quick stamps:</span>
-                            <button
-                              type="button"
-                              onClick={() => handleQuickNote('Saying a warm hello!')}
-                              className="rounded-full bg-pink-100/80 px-2 py-0.5 font-hand text-xs font-bold text-pink-800 transition-all hover:bg-pink-200 active:scale-95"
-                            >
-                              Saying hello 🌸
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
-                              className="rounded-full bg-pink-100/80 px-2 py-0.5 font-hand text-xs font-bold text-pink-800 transition-all hover:bg-pink-200 active:scale-95"
-                            >
-                              Work inquiry 💼
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleQuickNote('Would love to connect over tea!')}
-                              className="rounded-full bg-pink-100/80 px-2 py-0.5 font-hand text-xs font-bold text-pink-800 transition-all hover:bg-pink-200 active:scale-95"
-                            >
-                              Tea chat ☕
-                            </button>
-                          </div>
-
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="relative flex items-center gap-1.5 rounded-full border-2 border-white bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 px-4 py-1.5 font-display text-xs sm:text-sm font-extrabold text-white shadow-[0_4px_14px_rgba(225,29,72,0.4)] transition-all hover:scale-105 active:scale-95 disabled:opacity-70"
-                          >
-                            <span>Post in Mailbox</span>
-                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                          </button>
+                        {/* Email Line */}
+                        <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
+                          <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">Email:</span>
+                          <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="ada@example.com"
+                            className="w-full bg-transparent font-hand text-sm md:text-base font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
+                          />
                         </div>
+                      </div>
 
-                        {errorMessage && (
-                          <p className="mt-1 font-hand text-xs text-rose-600 font-bold text-right">
-                            {errorMessage}
-                          </p>
-                        )}
-                      </form>
-                    </div>
+                      {/* --- Section 2: Handwritten Message on Ruled Lines (Middle & Lower Portion) --- */}
+                      <div
+                        className="absolute"
+                        style={{
+                          left: '11%',
+                          top: '37%',
+                          width: '78%',
+                          height: '46%',
+                        }}
+                      >
+                        <textarea
+                          required
+                          rows={5}
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          placeholder="Dear Sutanuka,&#10;Say hi, ask about a project, or tell me about a role..."
+                          style={{
+                            lineHeight: '2.25rem', // Aligns neatly with the painted ruled lines on the card
+                          }}
+                          className="w-full h-full resize-none bg-transparent font-hand text-base md:text-lg font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
+                        />
+                      </div>
 
-                    {/* Mobile Postcard Layout (Vertical Card) */}
-                    <div className="relative w-full max-w-[340px] aspect-[2/3] block sm:hidden">
+                      {/* Hidden submit trigger for Enter key */}
+                      <button type="submit" className="hidden" tabIndex={-1} />
+                    </form>
+
+                    {/* ================= MOBILE POSTCARD (Vertical 2:3) ================= */}
+                    <form
+                      onSubmit={handleSubmit}
+                      className="relative w-full max-w-[340px] aspect-[2/3] block sm:hidden drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
+                    >
                       <img
                         src="/assets/objects/porch-postcard-mobile.png"
                         alt="Handmade Postcard Stationery Mobile"
-                        className="absolute inset-0 h-full w-full object-contain pointer-events-none drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
+                        className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
 
-                      <form
-                        onSubmit={handleSubmit}
-                        className="absolute inset-0 pt-[22%] pb-[14%] px-[12%] flex flex-col justify-between"
-                      >
-                        <div className="space-y-2">
-                          <div>
-                            <label className="block font-hand text-xs font-bold text-pink-900/80">From (Name)</label>
+                      <div className="absolute inset-0 pt-[24%] pb-[14%] px-[12%] flex flex-col justify-between">
+                        <div className="space-y-1.5">
+                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
+                            <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">From:</span>
                             <input
                               type="text"
                               required
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               placeholder="Ada Lovelace"
-                              className="w-full bg-transparent border-b-2 border-pink-300/70 pb-0.5 font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
                             />
                           </div>
-                          <div>
-                            <label className="block font-hand text-xs font-bold text-pink-900/80">Email</label>
+                          <div className="flex items-baseline gap-1 border-b border-pink-300/80 pb-0.5">
+                            <span className="font-hand text-xs font-bold text-pink-900/75 shrink-0">Email:</span>
                             <input
                               type="email"
                               required
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               placeholder="ada@example.com"
-                              className="w-full bg-transparent border-b-2 border-pink-300/70 pb-0.5 font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 focus:outline-none"
+                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/30 focus:outline-none"
                             />
                           </div>
                         </div>
@@ -419,32 +391,75 @@ export default function PorchMailbox() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Dear Sutanuka,&#10;Write a warm note here..."
-                            className="w-full h-full resize-none bg-transparent font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/40 leading-6 focus:outline-none"
+                            className="w-full h-full resize-none bg-transparent font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/35 leading-6 focus:outline-none"
                           />
                         </div>
+                      </div>
 
+                      <button type="submit" className="hidden" tabIndex={-1} />
+                    </form>
+
+                    {/* ================= ACTION BAR: POST IN MAILBOX & QUICK STAMPS (Cleanly placed below the card) ================= */}
+                    <div className="mt-3 w-full flex flex-col sm:flex-row items-center justify-between gap-2.5 px-2">
+                      {/* Quick starter stamps */}
+                      <div className="flex items-center gap-1.5 flex-wrap justify-center sm:justify-start">
+                        <span className="font-hand text-xs font-bold text-pink-200">Quick stamps:</span>
                         <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full mt-2 rounded-full border-2 border-white bg-gradient-to-r from-pink-500 to-rose-500 py-1.5 font-display text-xs font-extrabold text-white shadow-md transition-all active:scale-95"
+                          type="button"
+                          onClick={() => handleQuickNote('Saying a warm hello!')}
+                          className="rounded-full bg-white/90 border border-pink-200 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
                         >
-                          Post in Mailbox 📮
+                          Saying hello 🌸
                         </button>
-                      </form>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
+                          className="rounded-full bg-white/90 border border-pink-200 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
+                        >
+                          Work inquiry 💼
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Would love to connect over tea!')}
+                          className="rounded-full bg-white/90 border border-pink-200 px-2.5 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs transition-all hover:bg-pink-100 active:scale-95"
+                        >
+                          Tea chat ☕
+                        </button>
+                      </div>
+
+                      {/* The Big Wax Seal Send Button */}
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className="relative flex items-center gap-2 rounded-full border-2 border-white/95 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 px-5 py-2 font-display text-xs sm:text-sm font-extrabold text-white shadow-[0_4px_16px_rgba(225,29,72,0.45)] transition-all hover:scale-105 active:scale-95 disabled:opacity-70"
+                      >
+                        <span>Post in Mailbox</span>
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </button>
                     </div>
 
+                    {/* Error notice if needed */}
+                    {errorMessage && (
+                      <p className="mt-1 font-hand text-xs text-rose-300 font-bold text-center">
+                        {errorMessage}
+                      </p>
+                    )}
+
                     {/* Sutanuka's Quick Socials Bar */}
-                    <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                    <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
                       {site.socials.map((s) => (
                         <a
                           key={s.label}
                           href={s.href}
                           target={s.href.startsWith('http') ? '_blank' : undefined}
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-pink-300/80 bg-white/90 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-[#5B3A47] shadow-sm backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-50 active:scale-95"
+                          className="inline-flex items-center gap-1 rounded-full border border-pink-300/60 bg-white/85 px-3 py-0.5 font-hand text-xs font-bold text-[#5B3A47] shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-50 active:scale-95"
                         >
                           <span>{s.label}</span>
-                          <svg className="h-3 w-3 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="h-2.5 w-2.5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
@@ -453,10 +468,10 @@ export default function PorchMailbox() {
                         href="/resume.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-pink-400 bg-pink-100/90 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-pink-800 shadow-sm backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-200 active:scale-95"
+                        className="inline-flex items-center gap-1 rounded-full border border-pink-400/80 bg-pink-100/90 px-3 py-0.5 font-hand text-xs font-bold text-pink-800 shadow-xs backdrop-blur-xs transition-all hover:scale-105 hover:bg-pink-200 active:scale-95"
                       >
                         <span>Resume PDF</span>
-                        <svg className="h-3 w-3 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="h-2.5 w-2.5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
                       </a>

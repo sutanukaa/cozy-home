@@ -83,13 +83,13 @@ export default function LibraryTechnicalBook() {
         <div
           className="group absolute z-30 cursor-pointer select-none touch-manipulation"
           style={{
-            left: '79.5%',
-            top: '53.0%',
+            left: '80.0%',
+            top: '56.0%',
             width: '9.2%',
             maxWidth: '110px',
             minWidth: '52px',
             aspectRatio: '1535 / 1024',
-            transform: 'translate(-50%, -50%) rotate(-5deg)',
+            transform: 'translate(-50%, -50%) rotate(-4deg)',
           }}
           onClick={handleOpen}
           role="button"

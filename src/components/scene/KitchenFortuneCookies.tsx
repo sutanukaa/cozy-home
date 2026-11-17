@@ -159,9 +159,9 @@ export default function KitchenFortuneCookies() {
       </div>
 
       {/* ---------------- Fullscreen Fortune Cookie Overlay ---------------- */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 overflow-hidden select-none">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 overflow-hidden">
             {/* Backdrop with dark cozy warmth and heavy blur */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -169,7 +169,7 @@ export default function KitchenFortuneCookies() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={handleClose}
-              className="absolute inset-0 bg-[#1D1119]/80 backdrop-blur-md cursor-pointer"
+              className="absolute inset-0 bg-[#1D1119]/80 backdrop-blur-md cursor-pointer select-none"
             />
 
             {/* Top-right close button */}
@@ -279,7 +279,7 @@ export default function KitchenFortuneCookies() {
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 20 }}
                 transition={{ type: 'spring', damping: 24, stiffness: 220 }}
-                className="relative z-40 w-full max-w-4xl max-h-[92vh] sm:max-h-[88vh] flex flex-col rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
+                className="relative z-40 w-full max-w-4xl h-[90vh] sm:h-[86vh] flex flex-col rounded-2xl sm:rounded-3xl border-2 sm:border-[3px] border-[#E8D4C8] bg-[#FFFDF8] text-[#3D2633] shadow-[0_24px_60px_rgba(0,0,0,0.55),0_2px_8px_rgba(232,212,200,0.4)] overflow-hidden"
               >
                 {/* Vintage Washi Tape Strip at top center */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1.5 z-20 pointer-events-none select-none">
@@ -297,7 +297,7 @@ export default function KitchenFortuneCookies() {
                 />
 
                 {/* ---------------- Card Header: Bakery Tag & Meta ---------------- */}
-                <header className="relative shrink-0 px-4 pt-5 pb-3 sm:px-8 sm:pt-6 sm:pb-4 border-b border-[#F0E2D6] bg-gradient-to-b from-[#FFF9F2] to-[#FFFDF8]">
+                <header className="relative shrink-0 px-4 pt-5 pb-3 sm:px-8 sm:pt-6 sm:pb-4 border-b border-[#F0E2D6] bg-gradient-to-b from-[#FFF9F2] to-[#FFFDF8] select-none">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     {/* Cookie Tracker & Bakery Stamp */}
                     <div className="flex items-center gap-2">
@@ -358,7 +358,7 @@ export default function KitchenFortuneCookies() {
                 </header>
 
                 {/* ---------------- Scrollable Content Body ---------------- */}
-                <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-8 sm:py-6 space-y-5 sm:space-y-6 select-text">
+                <div className="flex-1 min-h-0 overflow-y-auto cookie-scroll px-4 py-4 sm:px-8 sm:py-6 space-y-5 sm:space-y-6 select-text overscroll-contain">
                   {/* Summary note box */}
                   {currentRecipe.summary && (
                     <div className="rounded-xl border border-pink-200/80 bg-gradient-to-r from-pink-50/70 to-amber-50/60 p-3.5 sm:p-4 text-xs sm:text-sm md:text-base leading-relaxed text-[#4A323E]">

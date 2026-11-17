@@ -65,54 +65,61 @@ export default function PorchMailbox() {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // 1. If Web3Forms Access Key is configured
-    if (web3formsKey) {
-      try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            access_key: web3formsKey,
-            name,
-            email,
-            message,
-            from_name: `${name} (Cozy Home Porch)`,
-            subject: `New Postcard from ${name}! 💌`,
-          }),
-        });
-        const data = await res.json();
-        if (!data.success) throw new Error(data.message || 'Submission failed');
-        triggerDepositAnimation();
-        return;
-      } catch {
-        setIsSubmitting(false);
-        setErrorMessage(`Could not send note. Try emailing ${site.email} directly!`);
-        return;
+    // 1. Send via secure server-side API route (/api/contact)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Submission failed');
       }
-    }
-
-    // 2. If Formspree ID is configured
-    if (formspreeId) {
-      try {
-        const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ name, email, message }),
-        });
-        if (!res.ok) throw new Error('bad response');
-        triggerDepositAnimation();
-        return;
-      } catch {
-        setIsSubmitting(false);
-        setErrorMessage(`Could not send note. Try emailing ${site.email} directly!`);
-        return;
+      triggerDepositAnimation();
+      return;
+    } catch (err: unknown) {
+      // 2. Client-side fallback if direct Web3Forms or Formspree key is available in client
+      if (web3formsKey) {
+        try {
+          const directRes = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: web3formsKey,
+              name,
+              email,
+              message,
+              from_name: `${name} (Cozy Home Porch)`,
+              subject: `New Postcard from ${name}! 💌`,
+            }),
+          });
+          const directData = await directRes.json();
+          if (directData.success) {
+            triggerDepositAnimation();
+            return;
+          }
+        } catch {}
       }
-    }
 
-    // 3. Fallback: If neither service is configured in .env.local, attempt mailto
-    const body = encodeURIComponent(`${message}\n\n— From: ${name} (${email})`);
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent('A postcard from your porch')}&body=${body}`;
-    triggerDepositAnimation();
+      if (formspreeId) {
+        try {
+          const formspreeRes = await fetch(`https://formspree.io/f/${formspreeId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ name, email, message }),
+          });
+          if (formspreeRes.ok) {
+            triggerDepositAnimation();
+            return;
+          }
+        } catch {}
+      }
+
+      setIsSubmitting(false);
+      const msg = err instanceof Error ? err.message : 'Could not send note.';
+      setErrorMessage(`${msg} Try emailing ${site.email} directly!`);
+    }
   };
 
   // Step 1: Show open mailbox with postcard inside

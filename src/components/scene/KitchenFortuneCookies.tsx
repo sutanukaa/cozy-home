@@ -414,24 +414,30 @@ export default function KitchenFortuneCookies() {
                         </svg>
                         Production Visual Artifacts
                       </h3>
-                      <div className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                      <div
+                        className={`mt-2.5 grid grid-cols-1 ${
+                          currentRecipe.screenshots.length >= 3
+                            ? 'sm:grid-cols-2 lg:grid-cols-3'
+                            : 'md:grid-cols-2'
+                        } gap-3 sm:gap-4`}
+                      >
                         {currentRecipe.screenshots.map((shot, sIdx) => (
                           <figure
                             key={sIdx}
-                            className="group flex flex-col overflow-hidden rounded-xl border-2 border-[#EADBCE] bg-white shadow-xs transition-shadow hover:shadow-md"
+                            className="group flex flex-col justify-between overflow-hidden rounded-xl border-2 border-[#EADBCE] bg-white shadow-xs transition-shadow hover:shadow-md"
                           >
-                            <div className="relative aspect-video w-full overflow-hidden bg-[#FAF6F0]">
+                            <div className="relative aspect-[4/3] sm:aspect-video w-full overflow-hidden bg-[#FAF6F0] flex items-center justify-center p-1">
                               <img
                                 src={shot.src}
                                 alt={shot.alt}
-                                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                className="h-full w-full object-contain rounded-md transition-transform duration-500 group-hover:scale-105"
                                 loading="lazy"
                               />
                               <div className="absolute top-2 left-2 rounded-full border border-pink-200 bg-white/95 px-2.5 py-0.5 text-[10px] font-display font-bold text-pink-700 shadow-xs backdrop-blur-xs">
                                 {shot.badge}
                               </div>
                             </div>
-                            <figcaption className="p-2.5 sm:p-3 text-[11px] sm:text-xs leading-relaxed text-[#5C3D4D] bg-[#FFFDF8]">
+                            <figcaption className="p-2.5 sm:p-3 text-[11px] sm:text-xs leading-relaxed text-[#5C3D4D] bg-[#FFFDF8] border-t border-[#F0E2D6]/60">
                               {shot.caption}
                             </figcaption>
                           </figure>

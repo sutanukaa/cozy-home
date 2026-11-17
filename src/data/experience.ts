@@ -177,30 +177,75 @@ export const recipes: Recipe[] = [
     period: 'January 2025 – June 2025',
     kind: 'work',
     category: 'Industry Experience',
-    tagline: 'High-performance responsive e-commerce storefront, catalog & seller dashboards',
+    tagline: 'React Native consumer mobile app & React seller web platform',
     summary:
-      'Spearheaded frontend architecture and user interface engineering for modern e-commerce storefronts and administrative portals.',
+      'Engineered the cross-platform React Native consumer e-commerce mobile application alongside the responsive React web platform for sellers and catalog management.',
+    screenshots: [
+      {
+        src: '/assets/work/buybox-seller-web.jpg',
+        alt: 'BuyBox Seller Web Platform',
+        badge: 'React · Seller & Storefront Web',
+        caption:
+          'BuyBox Seller & Storefront Web built with React: responsive product showcase, category discovery, merchant onboarding, and shopping services.',
+      },
+      {
+        src: '/assets/work/buybox-mobile-home.jpg',
+        alt: 'BuyBox Mobile App - Home',
+        badge: 'React Native · Mobile App',
+        caption:
+          'BuyBox Consumer Mobile App built with React Native: Skincare, fashion, and electronics campaign banners, curated departments, and 5-tab bottom navigation.',
+      },
+      {
+        src: '/assets/work/buybox-mobile-market.jpg',
+        alt: 'BuyBox Mobile App - Market & Groceries',
+        badge: 'React Native · Market & Catalog',
+        caption:
+          'BuyBox Mobile Market & Storefront built with React Native: Featured stores carousel, real-time groceries and food catalog, and rapid one-tap add-to-cart.',
+      },
+    ],
+    systemSections: [
+      {
+        title: 'Consumer E-Commerce Mobile App',
+        ownership: 'React Native · Cross-Platform Mobile',
+        badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+        summary:
+          'Built the native cross-platform mobile shopping application from scratch using React Native, delivering a smooth 60fps shopping experience across smartphones.',
+        achievements: [
+          'Engineered core shopping flows: interactive home feed with multi-tier campaign banners, curated department cards, and custom bottom-tab navigation.',
+          'Built the Market & Stores discovery hub: featured merchant carousels, category filtering (Groceries, Health & Beauty, Fashion), and rapid one-tap add-to-cart interactions.',
+          'Optimized virtualized product lists (FlatList) with image caching, skeleton loaders, and debounced search for sub-second rendering across diverse network conditions.',
+        ],
+        techTags: ['React Native', 'Mobile UI/UX', 'Cross-Platform', 'State Management', 'REST APIs'],
+      },
+      {
+        title: 'Seller & Storefront Web Platform',
+        ownership: 'React · Web Frontend',
+        badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+        summary:
+          'Built the responsive web application in React for merchant onboarding, catalog exploration, and seller operations.',
+        achievements: [
+          'Designed and implemented the high-conversion storefront landing and seller registration portal with pixel-perfect responsive layouts.',
+          'Modeled flexible product schemas and attribute filters, integrating real-time inventory synchronization with backend microservices.',
+          'Constructed dynamic seller dashboards for tracking live orders, customer analytics, and product restocking alerts.',
+        ],
+        techTags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'REST APIs'],
+      },
+    ],
     bullets: [
-      'Led the end-to-end design and responsive development of the e-commerce storefront for BuyBox, optimizing checkout flows, search discovery, and product detail pages.',
+      'Built the actual cross-platform consumer e-commerce mobile application using React Native, featuring campaign feeds, market store discovery, and one-tap checkout.',
+      'Developed the responsive seller website using React, enabling merchants to onboard, manage multi-category catalogs, and review sales telemetry.',
       'Modeled flexible product schemas and attribute filters, integrating real-time inventory synchronization with backend microservices.',
-      'Built responsive seller and admin dashboards featuring live order telemetry, inventory alerts, and customer analytics.',
-      'Engineered smooth 60fps micro-interactions, responsive mobile views, and sub-second page transitions using Next.js and Tailwind CSS.',
+      'Engineered smooth 60fps micro-interactions, responsive mobile views, and sub-second page transitions.',
     ],
-    keyProjects: [
-      {
-        name: 'Storefront Checkout & Catalog Flow',
-        description:
-          'Streamlined multi-step checkout with instant coupon validation, order summary calculations, and responsive mobile optimization.',
-        tags: ['Next.js', 'Tailwind CSS', 'Framer Motion'],
-      },
-      {
-        name: 'Seller Telemetry Dashboard',
-        description:
-          'Interactive seller portal displaying real-time revenue graphs, pending shipments, and inventory restocking triggers.',
-        tags: ['TypeScript', 'REST APIs', 'UI/UX'],
-      },
+    ingredients: [
+      'React Native',
+      'React',
+      'TypeScript',
+      'Tailwind CSS',
+      'Framer Motion',
+      'REST APIs',
+      'Git / GitHub',
     ],
-    ingredients: ['TypeScript', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'REST APIs', 'Git / GitHub'],
   },
   {
     id: 'rcciit',

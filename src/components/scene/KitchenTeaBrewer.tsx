@@ -4,7 +4,23 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { soundscape } from '@/lib/soundEngine';
 
-type BrewState = 'idle' | 'brewing' | 'pouring' | 'served' | 'enjoyed';
+type BrewState = 'idle' | 'brewing' | 'pouring' | 'served';
+
+/* ------------------------------------------------------------------ *
+ *  Stovetop burner positions (% of room-art width/height):
+ *
+ *  The pink stove's dark cooktop has 2 rows × 2 columns of burner
+ *  circles. We place the kettle on the front-left burner and the
+ *  teacup on the front-right burner so pouring looks natural.
+ *
+ *  Front-left burner  ≈ 24.5 %, 48 %
+ *  Front-right burner ≈ 32 %,  48 %
+ * ------------------------------------------------------------------ */
+
+const KETTLE_REST  = { left: '24.5%', top: '48%' };
+const CUP_POS      = { left: '32%',   top: '50%' };
+const KETTLE_POUR  = { left: '29%',   top: '42%' };   // tilted above the cup
+const BUTTON_POS   = { left: '24.5%', top: '40%' };   // just above the resting kettle
 
 export default function KitchenTeaBrewer() {
   const [brewState, setBrewState] = useState<BrewState>('idle');
@@ -33,39 +49,30 @@ export default function KitchenTeaBrewer() {
       // 3. Transition to served with cup & speech bubble (~2.3s)
       timerRef.current = setTimeout(() => {
         setBrewState('served');
+
+        // 4. Reset to idle after the visitor has had a moment to enjoy (~6s)
+        timerRef.current = setTimeout(() => {
+          setBrewState('idle');
+        }, 6000);
       }, 2300);
     }, 2800);
   };
 
-  const handleSipTea = () => {
-    if (brewState !== 'served') return;
-    soundscape.playClickSound();
-    setBrewState('enjoyed');
-
-    // Reset back to idle after gentle sip acknowledgement
-    timerRef.current = setTimeout(() => {
-      setBrewState('idle');
-    }, 2000);
-  };
-
   return (
     <>
-      {/* ---------------- 1. The Teacup (Appears on Countertop at left: 28.5%, top: 53.5%) ---------------- */}
+      {/* ---------------- 1. The Teacup (appears on right front burner) ---------------- */}
       <AnimatePresence>
-        {(brewState === 'pouring' || brewState === 'served' || brewState === 'enjoyed') && (
+        {(brewState === 'pouring' || brewState === 'served') && (
           <motion.div
             key="kitchen-teacup"
             initial={{ opacity: 0, scale: 0.6, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 6 }}
             transition={{ type: 'spring', damping: 20, stiffness: 260 }}
-            onClick={brewState === 'served' ? handleSipTea : undefined}
-            className={`absolute z-20 -translate-x-1/2 -translate-y-[85%] select-none ${
-              brewState === 'served' ? 'cursor-pointer group' : 'pointer-events-none'
-            }`}
-            style={{ left: '28.5%', top: '53.5%', width: '4.6%' }}
+            className="absolute z-20 -translate-x-1/2 -translate-y-[85%] select-none pointer-events-none"
+            style={{ ...CUP_POS, width: '4.6%' }}
           >
-            {/* Soft ground shadow for teacup on countertop */}
+            {/* Soft ground shadow on burner */}
             <div
               aria-hidden="true"
               className="absolute -bottom-1 left-1/2 h-2 w-4/5 -translate-x-1/2 rounded-full bg-[#5A3825]/35 blur-[2px]"
@@ -75,10 +82,10 @@ export default function KitchenTeaBrewer() {
             <img
               src="/assets/objects/kitchen-teacup.png"
               alt="Handmade Ceramic Ribbon Bow Teacup"
-              className="relative h-full w-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] transition-transform duration-200 group-hover:scale-105"
+              className="relative h-full w-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
             />
 
-            {/* Rising delicate steam from warm freshly poured tea */}
+            {/* Rising steam from freshly poured tea */}
             {(brewState === 'served' || brewState === 'pouring') && (
               <div className="pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 flex justify-center">
                 {[0, 1, 2].map((i) => (
@@ -103,7 +110,7 @@ export default function KitchenTeaBrewer() {
               </div>
             )}
 
-            {/* ---------------- Speech Bubble: "Here's a cup of tea for you !" ---------------- */}
+            {/* Speech Bubble: "Here's a cup of tea for you !" */}
             <AnimatePresence>
               {brewState === 'served' && (
                 <motion.div
@@ -111,10 +118,9 @@ export default function KitchenTeaBrewer() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 4 }}
                   transition={{ type: 'spring', damping: 22, stiffness: 300, delay: 0.15 }}
-                  className="pointer-events-auto absolute -top-16 left-1/2 -translate-x-1/2 z-40 whitespace-nowrap cursor-pointer"
-                  onClick={handleSipTea}
+                  className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 z-40 whitespace-nowrap"
                 >
-                  <div className="relative rounded-2xl border-2 border-pink-300/90 bg-[#FFFDF8]/95 px-3 py-1.5 sm:px-4 sm:py-2 text-center shadow-[0_8px_24px_rgba(214,70,118,0.28)] backdrop-blur-xs transition-transform hover:scale-105 active:scale-95">
+                  <div className="relative rounded-2xl border-2 border-pink-300/90 bg-[#FFFDF8]/95 px-3 py-1.5 sm:px-4 sm:py-2 text-center shadow-[0_8px_24px_rgba(214,70,118,0.28)] backdrop-blur-xs">
                     {/* Tiny speech bubble pointer arrow */}
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-0 w-0 border-x-8 border-x-transparent border-t-8 border-t-[#FFFDF8] drop-shadow-xs" />
 
@@ -131,24 +137,6 @@ export default function KitchenTeaBrewer() {
                         />
                       </svg>
                     </div>
-                    <span className="block font-hand text-[10.5px] sm:text-xs text-pink-700/80 font-bold mt-0.5">
-                      Warm &amp; sweet &bull; Click to take a sip
-                    </span>
-                  </div>
-                </motion.div>
-              )}
-
-              {brewState === 'enjoyed' && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.85 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="pointer-events-none absolute -top-14 left-1/2 -translate-x-1/2 z-40 whitespace-nowrap"
-                >
-                  <div className="rounded-2xl border-2 border-pink-400 bg-gradient-to-r from-pink-50 to-white px-3 py-1 text-center shadow-lg">
-                    <span className="font-display text-xs font-extrabold text-pink-700">
-                      Mmm, so warm &amp; cozy!
-                    </span>
                   </div>
                 </motion.div>
               )}
@@ -157,17 +145,17 @@ export default function KitchenTeaBrewer() {
         )}
       </AnimatePresence>
 
-      {/* ---------------- 2. The Tea Kettle (Resting on Front Burner or Pouring) ---------------- */}
+      {/* ---------------- 2. The Tea Kettle (rests on left front burner) ---------------- */}
       <motion.div
         key="kitchen-kettle"
         animate={{
-          left: brewState === 'pouring' ? '25.5%' : '19.8%',
-          top: brewState === 'pouring' ? '43.5%' : '47.2%',
+          left: brewState === 'pouring' ? KETTLE_POUR.left : KETTLE_REST.left,
+          top:  brewState === 'pouring' ? KETTLE_POUR.top  : KETTLE_REST.top,
           y: brewState === 'brewing' ? [-1, 1, -1] : 0,
         }}
         transition={{
           left: { type: 'spring', damping: 24, stiffness: 180 },
-          top: { type: 'spring', damping: 24, stiffness: 180 },
+          top:  { type: 'spring', damping: 24, stiffness: 180 },
           y: { repeat: brewState === 'brewing' ? Infinity : 0, duration: 0.16 },
         }}
         className="absolute z-20 -translate-x-1/2 -translate-y-[85%] select-none pointer-events-none"
@@ -200,7 +188,7 @@ export default function KitchenTeaBrewer() {
             />
           )}
 
-          {/* Steam wisps rising from kettle spout while boiling/brewing */}
+          {/* Steam wisps rising from kettle spout while boiling */}
           {brewState === 'brewing' && (
             <div className="absolute top-2 left-1 pointer-events-none">
               {[0, 1, 2, 3].map((w) => (
@@ -227,11 +215,11 @@ export default function KitchenTeaBrewer() {
         </div>
       </motion.div>
 
-      {/* ---------------- 3. Interactive Bubble Button on Kettle (Idle State) ---------------- */}
+      {/* ---------------- 3. Interactive Bubble Button (just above kettle) ---------------- */}
       {brewState === 'idle' && (
         <div
           className="absolute z-30 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none"
-          style={{ left: '19.8%', top: '38.5%' }}
+          style={BUTTON_POS}
         >
           <button
             type="button"

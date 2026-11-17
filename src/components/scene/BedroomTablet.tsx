@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import CozyBubbleButton from '@/components/ui/CozyBubbleButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { soundscape } from '@/lib/soundEngine';
@@ -230,28 +231,10 @@ export default function BedroomTablet() {
               className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
               style={{ top: '50%', left: '50%' }}
             >
-              <div className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center">
-                {/* Outer pulsing radiant halo */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 rounded-full bg-[#FF3377]/55 animate-ping-soft"
-                />
-
-                {/* Secondary breathing ring */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0.5 rounded-full bg-white/70 animate-pulse"
-                />
-
-                {/* Main vibrant rose-berry button */}
-                <span className="relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF4D88] via-[#E81E63] to-[#B7004B] text-white shadow-[0_0_12px_rgba(232,30,99,0.7),0_3px_8px_rgba(0,0,0,0.3)] transition-all duration-300 group-hover:scale-115 group-hover:shadow-[0_0_18px_rgba(255,77,136,0.95)]">
-                  {/* Glossy top-left bubble highlight */}
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute top-0.5 left-1 h-1.5 w-2 rounded-full bg-white/60 blur-[0.3px] -rotate-12"
-                  />
-
-                  {/* Matching Sparkle Tablet Icon */}
+              <CozyBubbleButton
+                label="Unlock Suto's Tablet"
+                showTooltip={false}
+                icon={
                   <svg
                     className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
                     viewBox="0 0 24 24"
@@ -270,8 +253,8 @@ export default function BedroomTablet() {
                       fillOpacity="0.45"
                     />
                   </svg>
-                </span>
-              </div>
+                }
+              />
             </div>
           </div>
         </div>

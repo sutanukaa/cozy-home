@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AssetImage from '@/components/ui/AssetImage';
 import CozyIcon from '@/components/ui/CozyIcon';
+import CozyBubbleButton from '@/components/ui/CozyBubbleButton';
 import { soundscape } from '@/lib/soundEngine';
 import { shelves, currentlyLearning } from '@/data/skills';
 import { SKILL_DEEP_DIVES, SkillDeepDive } from '@/data/skillSummaries';
@@ -215,25 +216,29 @@ export default function LibraryCardCatalog() {
           className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(20,10,15,0.45)] transition-transform duration-300 group-hover:scale-[1.015]"
         />
 
-        {/* Hotspot Bubble Button (Matches other rooms' pink pulsing bubble buttons) */}
+        {/* Hotspot Bubble Button (Canonical CozyBubbleButton matching all rooms) */}
         <div className="absolute left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 z-30">
-          <button
-            type="button"
+          <CozyBubbleButton
+            label="Open Card Catalog"
             onClick={handleOpenZoom}
-            aria-label="Inspect Card Catalog Cabinet"
-            className="group/btn relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-rose text-white shadow-cozy ring-4 ring-rose/30 transition-transform duration-200 hover:scale-110 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
-          >
-            {/* Animated Pulsing Ring */}
-            <span className="absolute -inset-1 rounded-full bg-rose/40 animate-ping pointer-events-none" />
-
-            {/* Bubble Icon */}
-            <CozyIcon name="library" size={22} className="relative drop-shadow-xs select-none" />
-
-            {/* Tooltip on Hover */}
-            <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100">
-              Open Card Catalog
-            </span>
-          </button>
+            icon={
+              <svg
+                className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                <path d="M9 10h6" />
+                <path d="M9 14h4" />
+              </svg>
+            }
+          />
         </div>
       </div>
 
@@ -446,43 +451,30 @@ export default function LibraryCardCatalog() {
                         transform: 'rotate(90deg)',
                       }}
                     >
-                      <button
-                        type="button"
+                      <CozyBubbleButton
+                        label="Inspect Skills Clipboard"
                         onClick={(e) => {
                           e.stopPropagation();
                           soundscape.playSparkleSound();
                           setIsClipboardZoomed(true);
                         }}
-                        aria-label={`Open ${currentDrawerDef.name} skills clipboard`}
-                        className="group/btn relative flex items-center justify-center cursor-pointer touch-manipulation"
-                      >
-                        {/* Outer Pulsing Glow Ring */}
-                        <span
-                          aria-hidden
-                          className="absolute -inset-2.5 rounded-full bg-pink-400/40 animate-ping opacity-75"
-                        />
-                        {/* Soft Ambient Halo */}
-                        <span
-                          aria-hidden
-                          className="absolute -inset-1.5 rounded-full bg-pink-300/60 blur-xs"
-                        />
-                        {/* Solid Center Hotspot Disc with SVG Sparkle */}
-                        <span className="relative flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-transform duration-200 group-hover/btn:scale-110 active:scale-95 border-2 border-white">
-                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                        icon={
+                          <svg
+                            className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm text-white"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                            <path d="m9 14 2 2 4-4" />
                           </svg>
-                        </span>
-
-                        {/* Tooltip on Hover (Desktop) */}
-                        <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/clip:opacity-100 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100 hidden sm:block">
-                          Inspect Clipboard
-                        </span>
-                      </button>
-
-                      {/* Touch label for mobile */}
-                      <span className="mt-1 block sm:hidden rounded-full bg-[#3D2111]/90 border border-[#8C5232] px-1.5 py-0.2 font-mono text-[7.5px] text-[#FFE8C2] font-bold whitespace-nowrap shadow-sm pointer-events-none">
-                        Tap clipboard
-                      </span>
+                        }
+                      />
                     </div>
                   </div>
                 </div>

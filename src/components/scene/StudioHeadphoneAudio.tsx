@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CozyBubbleButton from '@/components/ui/CozyBubbleButton';
 import { soundscape } from '@/lib/soundEngine';
 
 const YOUTUBE_VIDEO_ID = 'eu2h6mKAFTM';
@@ -86,7 +87,7 @@ export default function StudioHeadphoneAudio() {
 
       {/* Headphone Hotspot Button on the desk stand */}
       <div
-        className="group absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto select-none z-20"
+        className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto select-none z-20"
         style={{
           left: '37.0%',
           top: '48.0%',
@@ -94,35 +95,20 @@ export default function StudioHeadphoneAudio() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <button
-          type="button"
+        <CozyBubbleButton
+          label={isPlaying ? 'Pause lo-fi music' : 'Play lo-fi background music'}
           onClick={toggleMusic}
-          aria-label={isPlaying ? 'Stop lo-fi background music' : 'Play lo-fi background music'}
-          aria-pressed={isPlaying}
-          className="relative flex h-12 w-12 items-center justify-center focus:outline-none"
-        >
-          {/* Pulsing ring */}
-          <span
-            className={`absolute inset-0 rounded-full bg-white/70 transition-opacity duration-300 ${
-              isPlaying ? 'animate-ping opacity-75' : 'animate-ping-soft opacity-40 group-hover:opacity-80'
-            }`}
-          />
-
-          {/* Button circle */}
-          <span
-            className={`relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white shadow-lg transition-all duration-300 group-hover:scale-110 group-focus-visible:scale-110 ${
-              isPlaying
-                ? 'bg-rose text-white shadow-[0_0_16px_rgba(244,114,182,0.85)] scale-105'
-                : 'bg-blush/90 text-cocoa shadow-md'
-            }`}
-          >
-            {/* Crisp SVG Headphones Icon matching the cozy aesthetic */}
+          isActive={isPlaying}
+          showTooltip={false}
+          icon={
             <svg
-              className={`h-7 w-7 transition-transform duration-300 ${isPlaying ? 'scale-110' : 'group-hover:scale-105'}`}
+              className={`h-4 w-4 drop-shadow-sm text-white transition-transform duration-300 ${
+                isPlaying ? 'scale-110' : 'group-hover:scale-105'
+              }`}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden="true"
@@ -130,17 +116,17 @@ export default function StudioHeadphoneAudio() {
               <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
               <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
             </svg>
-
-            {/* Little animated audio equalizer bars when playing */}
-            {isPlaying && (
-              <span className="absolute bottom-1.5 flex items-end gap-0.5">
-                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.4s' }} />
-                <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.6s' }} />
-                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.5s' }} />
-              </span>
-            )}
-          </span>
-        </button>
+          }
+        >
+          {/* Animated audio equalizer bars when playing */}
+          {isPlaying && (
+            <span className="absolute bottom-1 flex items-end gap-0.5">
+              <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.4s' }} />
+              <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.6s' }} />
+              <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-white" style={{ animationDuration: '0.5s' }} />
+            </span>
+          )}
+        </CozyBubbleButton>
 
         {/* Hover / Status Tooltip Bubble */}
         <AnimatePresence>

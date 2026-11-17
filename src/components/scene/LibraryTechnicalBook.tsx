@@ -83,8 +83,8 @@ export default function LibraryTechnicalBook() {
         <div
           className="group absolute z-30 cursor-pointer select-none touch-manipulation"
           style={{
-            left: '80.0%',
-            top: '56.0%',
+            left: '81.8%',
+            top: '59.0%',
             width: '9.2%',
             maxWidth: '110px',
             minWidth: '52px',

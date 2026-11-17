@@ -12,6 +12,7 @@ const ICONS: Record<string, string> = {
 
   // Skills
   'skill-frontend': '/assets/icons/skill-frontend.png',
+  'skill-backend': '/assets/icons/skill-backend.png',
   'skill-ai': '/assets/icons/skill-ai.png',
   'skill-tools': '/assets/icons/skill-tools.png',
 };

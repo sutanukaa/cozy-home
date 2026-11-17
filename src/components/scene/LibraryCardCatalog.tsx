@@ -55,7 +55,6 @@ interface DrawerDef {
   id: string;
   name: string;
   shortLabel: string;
-  emoji: string;
   iconName: string;
   col: number; // 0 (left) or 1 (right)
   row: number; // 0 (top) or 1 (bottom)
@@ -63,10 +62,10 @@ interface DrawerDef {
 }
 
 const DRAWERS: DrawerDef[] = [
-  { id: 'shelf-frontend', name: 'Frontend & UI', shortLabel: 'Frontend', emoji: '🎀', iconName: 'skill-frontend', col: 0, row: 0, cardCount: 8 },
-  { id: 'shelf-backend', name: 'Backend & APIs', shortLabel: 'Backend', emoji: '🧁', iconName: 'skill-backend', col: 1, row: 0, cardCount: 9 },
-  { id: 'shelf-ai', name: 'AI & Data', shortLabel: 'AI & Data', emoji: '🪄', iconName: 'skill-ai', col: 0, row: 1, cardCount: 6 },
-  { id: 'shelf-tools', name: 'Tools & DevOps', shortLabel: 'Tools', emoji: '🧰', iconName: 'skill-tools', col: 1, row: 1, cardCount: 6 },
+  { id: 'shelf-frontend', name: 'Frontend & UI', shortLabel: 'Frontend', iconName: 'skill-frontend', col: 0, row: 0, cardCount: 8 },
+  { id: 'shelf-backend', name: 'Backend & APIs', shortLabel: 'Backend', iconName: 'skill-backend', col: 1, row: 0, cardCount: 9 },
+  { id: 'shelf-ai', name: 'AI & Data', shortLabel: 'AI & Data', iconName: 'skill-ai', col: 0, row: 1, cardCount: 6 },
+  { id: 'shelf-tools', name: 'Tools & DevOps', shortLabel: 'Tools', iconName: 'skill-tools', col: 1, row: 1, cardCount: 6 },
 ];
 
 export default function LibraryCardCatalog() {
@@ -204,11 +203,11 @@ export default function LibraryCardCatalog() {
             <span className="absolute -inset-1 rounded-full bg-rose/40 animate-ping pointer-events-none" />
 
             {/* Bubble Icon */}
-            <span className="relative text-base sm:text-lg">🗄️</span>
+            <CozyIcon name="library" size={22} className="relative drop-shadow-xs select-none" />
 
             {/* Tooltip on Hover */}
             <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100">
-              Open Card Catalog ✨
+              Open Card Catalog
             </span>
           </button>
         </div>
@@ -244,7 +243,7 @@ export default function LibraryCardCatalog() {
                 {/* Header Prompt Bar */}
                 <div className="flex items-center justify-between w-full mb-3 px-4 py-2.5 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl">🗄️</span>
+                    <CozyIcon name="library" size={28} className="drop-shadow-xs select-none" />
                     <div>
                       <h2 className="font-display text-base sm:text-xl font-bold text-[#FFE8C2] leading-tight">
                         Library Card Catalog
@@ -300,8 +299,8 @@ export default function LibraryCardCatalog() {
                       >
                         {/* 1. Category Heading Written at TOP of Each Drawer */}
                         <div className="w-full pt-0.5 sm:pt-1 px-1 text-center pointer-events-none">
-                          <div className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-md bg-[#422210]/25 group-hover:bg-[#422210]/40 transition-colors">
-                            <span className="text-xs sm:text-sm">{drawer.emoji}</span>
+                          <div className="inline-flex items-center justify-center gap-1.5 px-2 py-0.5 rounded-md bg-[#422210]/25 group-hover:bg-[#422210]/40 transition-colors">
+                            <CozyIcon name={drawer.iconName} size={22} className="drop-shadow-xs shrink-0 select-none" />
                             <span
                               className="font-hand text-xs sm:text-base md:text-lg font-bold text-[#3B2110] group-hover:text-[#241308] tracking-wide leading-tight whitespace-nowrap"
                               style={{
@@ -352,7 +351,7 @@ export default function LibraryCardCatalog() {
                 {/* Header Prompt Bar */}
                 <div className="flex items-center justify-between w-full mb-3 px-4 py-2.5 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl">{currentDrawerDef.emoji}</span>
+                    <CozyIcon name={currentDrawerDef.iconName} size={28} className="drop-shadow-xs shrink-0 select-none" />
                     <div>
                       <h2 id="drawer-title" className="font-display text-base sm:text-xl font-bold text-[#FFE8C2] leading-tight">
                         {currentDrawerDef.name} Drawer
@@ -439,14 +438,16 @@ export default function LibraryCardCatalog() {
                           aria-hidden
                           className="absolute -inset-1.5 rounded-full bg-pink-300/60 blur-xs"
                         />
-                        {/* Solid Center Hotspot Disc */}
+                        {/* Solid Center Hotspot Disc with SVG Sparkle */}
                         <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-transform duration-200 group-hover/btn:scale-110 active:scale-95 border-2 border-white">
-                          <span className="text-sm sm:text-base">✨</span>
+                          <svg className="w-4 h-4 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                          </svg>
                         </span>
 
                         {/* Tooltip on Hover */}
                         <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/clip:opacity-100 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100">
-                          Inspect Clipboard ✨
+                          Inspect Clipboard
                         </span>
                       </button>
                     </div>
@@ -480,9 +481,10 @@ export default function LibraryCardCatalog() {
                     <span>← Back to drawer</span>
                   </button>
 
-                  <span className="font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
-                    {currentDrawerDef.emoji} {currentDrawerDef.name}
-                  </span>
+                  <div className="flex items-center gap-1.5 font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
+                    <CozyIcon name={currentDrawerDef.iconName} size={18} className="shrink-0 select-none" />
+                    <span>{currentDrawerDef.name}</span>
+                  </div>
 
                   <button
                     type="button"
@@ -516,7 +518,7 @@ export default function LibraryCardCatalog() {
                     <div className="border-b-2 border-[#DAC8AD] pb-2 mb-2 flex items-center justify-between px-1">
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-base sm:text-lg">{currentDrawerDef.emoji}</span>
+                          <CozyIcon name={currentDrawerDef.iconName} size={24} className="drop-shadow-xs shrink-0 select-none" />
                           <h3
                             id="clipboard-title"
                             className="font-display text-sm sm:text-base md:text-lg font-bold text-[#3B2212] leading-tight"
@@ -529,7 +531,7 @@ export default function LibraryCardCatalog() {
                         </p>
                       </div>
                       <span className="rounded-md bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider">
-                        ✓ Verified
+                        VERIFIED
                       </span>
                     </div>
 

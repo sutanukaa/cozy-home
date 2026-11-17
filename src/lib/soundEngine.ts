@@ -459,6 +459,110 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play a gentle tea kettle simmering / gentle bubbling boil sound
+   */
+  public playTeaBoilSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const bufferSize = Math.floor(this.ctx.sampleRate * 1.8);
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = this.ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(450, now);
+      filter.frequency.exponentialRampToValueAtTime(750, now + 1.2);
+      filter.Q.setValueAtTime(3.5, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.06, now + 0.4);
+      gain.gain.linearRampToValueAtTime(0.05, now + 1.3);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+
+      whiteNoise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      whiteNoise.start(now);
+      whiteNoise.stop(now + 1.8);
+
+      // Low pleasant kettle hum
+      const osc = this.ctx.createOscillator();
+      const oscGain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.linearRampToValueAtTime(380, now + 1.6);
+      oscGain.gain.setValueAtTime(0.02, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+      osc.connect(oscGain);
+      oscGain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 1.7);
+    } catch {
+      // Safe catch
+    }
+  }
+
+  /**
+   * Play a gentle water pouring stream sound into a ceramic teacup
+   */
+  public playTeaPourSound(): void {
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const bufferSize = Math.floor(this.ctx.sampleRate * 1.6);
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = this.ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(950, now);
+      filter.frequency.exponentialRampToValueAtTime(1400, now + 1.4);
+      filter.Q.setValueAtTime(4.0, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.055, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+
+      whiteNoise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      whiteNoise.start(now);
+      whiteNoise.stop(now + 1.6);
+
+      // Soft ceramic clink chime
+      const clink = this.ctx.createOscillator();
+      const clinkGain = this.ctx.createGain();
+      clink.type = 'sine';
+      clink.frequency.setValueAtTime(1760, now + 1.2);
+      clinkGain.gain.setValueAtTime(0.035, now + 1.2);
+      clinkGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.55);
+      clink.connect(clinkGain);
+      clinkGain.connect(this.ctx.destination);
+      clink.start(now + 1.2);
+      clink.stop(now + 1.6);
+    } catch {
+      // Safe catch
+    }
+  }
+
+  /**
    * Starts or resumes the soundscape
    */
   public async start(): Promise<void> {

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import KitchenFortuneCookies from '@/components/scene/KitchenFortuneCookies';
+import KitchenTeaBrewer from '@/components/scene/KitchenTeaBrewer';
 
 export const metadata: Metadata = { title: 'Kitchen' };
 
@@ -9,6 +10,9 @@ export default function KitchenPage() {
   return (
     <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
       <RoomScene room="kitchen" fit="cover" stageOffsetY="-5.5%" stageScale={1.08}>
+        {/* Interactive Stovetop Tea Kettle & Brewing Micro-interaction */}
+        <KitchenTeaBrewer />
+
         {/* Interactive Fortune Cookie Tray on Countertop */}
         <KitchenFortuneCookies />
       </RoomScene>

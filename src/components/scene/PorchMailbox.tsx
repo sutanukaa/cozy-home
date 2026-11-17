@@ -240,7 +240,7 @@ export default function PorchMailbox() {
         createPortal(
           <AnimatePresence>
             {isOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 select-none overflow-y-auto">
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 pt-7 sm:p-5 select-none overflow-y-auto">
                 {/* Backdrop Blur & Scrim */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -258,17 +258,17 @@ export default function PorchMailbox() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ type: 'spring', damping: 24, stiffness: 280 }}
-                    className="relative z-10 w-full max-w-xl md:max-w-2xl lg:max-w-3xl flex flex-col items-center justify-center my-auto"
+                    className="relative z-10 w-full max-w-[340px] sm:max-w-xl md:max-w-2xl lg:max-w-3xl flex flex-col items-center justify-center my-auto"
                   >
-                    {/* Close Pill Button */}
+                    {/* Close Pill Button - Snug with top rim of the card */}
                     <button
                       type="button"
                       onClick={handleClose}
                       aria-label="Put postcard back in mailbox"
-                      className="group absolute -top-4 right-2 sm:-top-5 sm:right-3 z-30 flex items-center gap-1 rounded-full border-2 border-pink-200/90 bg-white/95 px-3 py-1 font-display text-xs font-extrabold text-[#5B3A47] shadow-md transition-all hover:scale-105 active:scale-95 hover:bg-pink-50"
+                      className="group absolute -top-2.5 right-2 sm:-top-2.5 sm:right-3 z-30 flex items-center gap-1.5 rounded-full border-2 border-pink-200/90 bg-white/95 px-3 py-1 font-display text-xs font-extrabold text-[#5B3A47] shadow-md transition-all hover:scale-105 active:scale-95 hover:bg-pink-50"
                     >
                       <span>Put back in mailbox</span>
-                      <span className="text-pink-500 font-bold ml-0.5">&times;</span>
+                      <span className="text-pink-500 font-bold ml-0.5 text-sm leading-none">&times;</span>
                     </button>
 
                     {/* ================= DESKTOP / TABLET POSTCARD (Horizontal 3:2) ================= */}
@@ -411,6 +411,7 @@ export default function PorchMailbox() {
                     {/* ================= MOBILE POSTCARD (Vertical 2:3) ================= */}
                     <form
                       onSubmit={handleSubmit}
+                      style={{ containerType: 'inline-size' }}
                       className="relative w-full max-w-[340px] aspect-[2/3] block sm:hidden drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
                     >
                       <img
@@ -419,51 +420,134 @@ export default function PorchMailbox() {
                         className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
 
-                      <div className="absolute inset-0 pt-[22%] pb-[12%] px-[12%] flex flex-col justify-between">
-                        <div className="space-y-1.5">
-                          <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
-                            <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">From:</span>
-                            <input
-                              type="text"
-                              required
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              placeholder="Your Name"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex items-baseline gap-1.5 border-b border-pink-300/80 pb-0.5">
-                            <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">Email:</span>
-                            <input
-                              type="email"
-                              required
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              placeholder="yourname@gmail.com"
-                              className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
-                            />
-                          </div>
-                        </div>
+                      {/* --- Section 1: Line 1 - From: Your Name (Sits right on ruled line 1 at Y=28.7%) --- */}
+                      <div
+                        className="absolute flex items-baseline gap-1.5"
+                        style={{
+                          left: '11%',
+                          width: '78%',
+                          top: '23.8%',
+                          height: '5.2%',
+                        }}
+                      >
+                        <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">From:</span>
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Your Name"
+                          className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                        />
+                      </div>
 
-                        <div className="relative mt-2 flex-1">
-                          <textarea
-                            required
-                            rows={5}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Dear Sutanuka,&#10;Write a warm note here..."
-                            className="w-full h-full resize-none bg-transparent font-hand text-sm font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 leading-6 focus:outline-none"
-                          />
-                        </div>
+                      {/* --- Section 2: Line 2 - Email: yourname@gmail.com (Sits right on ruled line 2 at Y=34.2%) --- */}
+                      <div
+                        className="absolute flex items-baseline gap-1.5"
+                        style={{
+                          left: '11%',
+                          width: '78%',
+                          top: '29.3%',
+                          height: '5.2%',
+                        }}
+                      >
+                        <span className="font-hand text-xs font-bold text-[#5B3A47] shrink-0">Email:</span>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="yourname@gmail.com"
+                          className="w-full bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
+                        />
+                      </div>
 
+                      {/* --- Section 3: Lines 3 to 8 - Handwritten Message Textarea (Aligned on ruled lines) --- */}
+                      <div
+                        className="absolute"
+                        style={{
+                          left: '11%',
+                          width: '78%',
+                          top: '35.0%',
+                          height: '35.5%',
+                        }}
+                      >
+                        <textarea
+                          required
+                          rows={5}
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          placeholder="Dear Sutanuka,&#10;Write a warm note here..."
+                          style={{
+                            lineHeight: '8.55cqw',
+                          }}
+                          className="w-full h-full resize-none bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none pt-1"
+                        />
+                      </div>
+
+                      {/* --- Section 4: Quick Stamps Row (Compact pills above submit button) --- */}
+                      <div
+                        className="absolute flex items-center justify-center gap-1.5"
+                        style={{
+                          left: '8%',
+                          width: '84%',
+                          top: '71.5%',
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Saying a warm hello!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
+                        >
+                          <span>Saying hello</span>
+                          <span className="ml-0.5">🌸</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
+                        >
+                          <span>Work inquiry</span>
+                          <span className="ml-0.5">💼</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickNote('Would love to connect over tea!')}
+                          className="rounded-full bg-white/95 border border-pink-300 px-2 py-0.5 font-hand text-[10px] font-bold text-[#5B3A47] shadow-2xs hover:bg-pink-50 active:scale-95"
+                        >
+                          <span>Tea chat</span>
+                          <span className="ml-0.5">☕</span>
+                        </button>
+                      </div>
+
+                      {/* --- Section 5: The Prominent "Post in Mailbox" Button (No emoji, centered) --- */}
+                      <div
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          left: '50%',
+                          top: '80.5%',
+                          transform: 'translateX(-50%)',
+                          width: '74%',
+                        }}
+                      >
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full mt-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] py-2 font-display text-xs font-extrabold text-white shadow-md transition-all active:scale-95"
+                          className="w-full flex items-center justify-center gap-2 rounded-full border-2 border-white bg-[#D64676] hover:bg-[#BE3460] py-2 font-display text-xs font-extrabold text-white shadow-[0_4px_16px_rgba(214,70,118,0.55)] transition-all active:scale-95 disabled:opacity-70 whitespace-nowrap"
                         >
-                          Post in Mailbox 📮
+                          <span>Post in Mailbox</span>
+                          <svg className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
                         </button>
                       </div>
+
+                      {/* Error notice if needed */}
+                      {errorMessage && (
+                        <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-[10px] text-rose-600 font-bold whitespace-nowrap">
+                          {errorMessage}
+                        </p>
+                      )}
                     </form>
 
                     {/* Sutanuka's Quick Socials Bar - Snug underneath the postcard with tactile microanimations */}

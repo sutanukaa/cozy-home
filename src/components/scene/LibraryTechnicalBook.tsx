@@ -13,6 +13,7 @@ export default function LibraryTechnicalBook() {
   const [mounted, setMounted] = useState(false);
   const [selectedBlogIndex, setSelectedBlogIndex] = useState(0);
   const [isCopied, setIsCopied] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const activeBlog: TechnicalBlog = technicalBlogs[selectedBlogIndex] ?? technicalBlogs[0];
 
@@ -29,6 +30,7 @@ export default function LibraryTechnicalBook() {
       document.body.classList.add('book-modal-open');
     } else {
       document.body.classList.remove('book-modal-open');
+      setIsMenuOpen(false);
     }
     return () => {
       document.body.classList.remove('book-modal-open');
@@ -38,11 +40,15 @@ export default function LibraryTechnicalBook() {
   // Keyboard shortcut: close with Escape
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        setIsOpen(false);
+      if (e.key === 'Escape') {
+        if (isMenuOpen) {
+          setIsMenuOpen(false);
+        } else if (isOpen) {
+          setIsOpen(false);
+        }
       }
     },
-    [isOpen]
+    [isOpen, isMenuOpen]
   );
 
   useEffect(() => {
@@ -59,6 +65,7 @@ export default function LibraryTechnicalBook() {
   const handleClose = () => {
     soundscape.playClickSound();
     setIsOpen(false);
+    setIsMenuOpen(false);
   };
 
   const handleCopyCode = (code: string, id: string) => {
@@ -467,11 +474,12 @@ export default function LibraryTechnicalBook() {
 
                 {/* ============================================================ */}
                 {/* MOBILE SCREEN: SINGLE-PAGE VIEW USING bedroom-diary-mobile   */}
+                {/* Fixed Header, Full Scroll Area, and Clean Bottom Controls     */}
                 {/* ============================================================ */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                  initial={{ opacity: 0, scale: 0.82, y: 15 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.85, y: 12 }}
+                  exit={{ opacity: 0, scale: 0.86, y: 12 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className="flex md:hidden relative z-10 w-full max-w-[390px] xs:max-w-[420px] aspect-[1372/1908] max-h-[92vh] items-center justify-center select-none"
                 >
@@ -512,105 +520,185 @@ export default function LibraryTechnicalBook() {
                     </svg>
                   </button>
 
-                  {/* Mobile Reading Surface: Bounds inside cream parchment safe-zone */}
-                  <div className="absolute inset-x-[11%] top-[9%] bottom-[12%] z-20 flex flex-col justify-between text-[#3D2517] select-text">
-                    {/* Top Bar with Category Selector */}
-                    <div>
-                      <div className="flex items-center justify-between pb-1 border-b border-[#D8C7B0]/80">
+                  {/* Mobile Reading Surface Bounded inside cream parchment safe zone */}
+                  <div className="absolute left-[10%] right-[12%] top-[8.5%] bottom-[12%] z-20 text-[#3D2517] select-text">
+                    {/* ---------------- FIXED TOP HEADER ---------------- */}
+                    <div className="absolute inset-x-0 top-0 h-[48px] border-b border-[#D8C7B0]/90 pb-1 flex flex-col justify-between">
+                      {/* Row 1: Brand + Hamburger Menu Toggle */}
+                      <div className="flex items-center justify-between">
                         <span className="font-hand text-sm font-bold text-rose-600">
-                          Engineering Deep Dive
+                          Technical Notes
                         </span>
-                        <span className="font-mono text-[9px] text-[#8C6D54]">
-                          {selectedBlogIndex + 1} of 2
-                        </span>
-                      </div>
 
-                      {/* 2 Category Switcher Pills */}
-                      <div className="mt-1 flex gap-1">
-                        {technicalBlogs.map((b, idx) => (
-                          <button
-                            key={b.slug}
-                            type="button"
-                            onClick={() => {
-                              soundscape.playClickSound();
-                              setSelectedBlogIndex(idx);
-                            }}
-                            className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold transition-all whitespace-nowrap cursor-pointer ${
-                              idx === selectedBlogIndex
-                                ? 'bg-[#E8507D] text-white shadow-xs'
-                                : 'bg-[#EFE5D7] text-[#6E4E36]'
-                            }`}
+                        {/* Hamburger Menu Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            soundscape.playClickSound();
+                            setIsMenuOpen(!isMenuOpen);
+                          }}
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[9.5px] font-sans font-bold shadow-2xs active:scale-95 transition-all cursor-pointer ${
+                            isMenuOpen
+                              ? 'bg-rose text-white border-rose'
+                              : 'bg-[#EFE5D7] hover:bg-[#E5D7C5] border-[#DECFBE] text-[#4A301D]'
+                          }`}
+                          aria-label="Toggle technical blog articles menu"
+                        >
+                          <svg
+                            className="w-3 h-3"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
                           >
-                            {b.category}
-                          </button>
-                        ))}
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                          </svg>
+                          <span>Articles</span>
+                        </button>
                       </div>
 
-                      {/* Header Title */}
-                      <div className="mt-1.5">
-                        <h2 className="font-display text-xs xs:text-sm font-extrabold text-[#2F1A0F] leading-tight">
-                          {activeBlog.title}
-                        </h2>
-                        <div className="mt-0.5 flex items-center gap-2 text-[8.5px] font-mono text-[#8C6B52]">
-                          <span>📅 {activeBlog.date}</span>
-                          <span>⏱️ {activeBlog.readTime}</span>
-                        </div>
+                      {/* Row 2: Category Badge & Read Time */}
+                      <div className="flex items-center justify-between text-[8.5px] font-mono text-[#8C6D54]">
+                        <span className="font-bold text-amber-800 uppercase">
+                          {activeBlog.category}
+                        </span>
+                        <span>{activeBlog.readTime} • Sheet {selectedBlogIndex + 1}/2</span>
                       </div>
                     </div>
 
-                    {/* Scrollable Mobile Article Body */}
-                    <div className="my-1.5 overflow-y-auto pr-1 text-[10px] xs:text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
-                      {/* Overview */}
-                      <div className="p-1.5 rounded-md bg-[#FAF4EB] border border-[#E8DAC9] text-[9.5px]">
-                        <strong className="block font-mono text-rose-600 font-bold mb-0.5 uppercase">
-                          Thesis
+                    {/* ---------------- HAMBURGER MENU DROPDOWN OVERLAY ---------------- */}
+                    <AnimatePresence>
+                      {isMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-x-0 top-[52px] z-50 rounded-xl bg-[#FFFDF8] border-2 border-[#E2D4C0] p-2 shadow-[0_12px_28px_rgba(0,0,0,0.4)] space-y-1.5 text-left select-none"
+                        >
+                          <div className="flex items-center justify-between pb-1 border-b border-[#E8DAC9] text-[9px] font-mono font-bold text-[#8C6D54] uppercase tracking-wider">
+                            <span>Select Engineering Deep Dive</span>
+                            <button
+                              type="button"
+                              onClick={() => setIsMenuOpen(false)}
+                              className="text-[#8C6D54] hover:text-black font-bold px-1 text-xs cursor-pointer"
+                              aria-label="Close menu"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          {technicalBlogs.map((b, idx) => (
+                            <button
+                              key={b.slug}
+                              type="button"
+                              onClick={() => {
+                                soundscape.playClickSound();
+                                setSelectedBlogIndex(idx);
+                                setIsMenuOpen(false);
+                              }}
+                              className={`w-full text-left p-2 rounded-lg transition-all flex items-start gap-2 cursor-pointer ${
+                                idx === selectedBlogIndex
+                                  ? 'bg-[#FBE8EF] border border-[#F482A5] shadow-xs'
+                                  : 'bg-[#F9F4EB] hover:bg-[#F0E6D8] border border-transparent'
+                              }`}
+                            >
+                              <span className="shrink-0 mt-0.5 text-xs">
+                                {idx === 0 ? '🤖' : '⚡'}
+                              </span>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span className="font-sans font-bold text-[9.5px] text-[#2F1A0F] truncate">
+                                    {b.category}
+                                  </span>
+                                  <span className="font-mono text-[8px] text-[#8C6D54] shrink-0">
+                                    {b.readTime}
+                                  </span>
+                                </div>
+                                <p className="font-display text-[10px] font-bold text-[#3D2517] leading-tight line-clamp-2 mt-0.5">
+                                  {b.title}
+                                </p>
+                              </div>
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* ---------------- MIDDLE FULLY SCROLLABLE ARTICLE BODY ---------------- */}
+                    {/* Absolutely positioned between top header and bottom controls so it ALWAYS scrolls smoothly */}
+                    <div className="absolute inset-x-0 top-[52px] bottom-[38px] overflow-y-auto px-1 py-1 space-y-2.5 cozy-scrollbar">
+                      {/* Article Title & Subtitle */}
+                      <div>
+                        <h2 className="font-display text-sm font-extrabold text-[#2F1A0F] leading-snug">
+                          {activeBlog.title}
+                        </h2>
+                        <p className="mt-0.5 font-hand text-[11px] text-[#7D5A42] leading-tight">
+                          {activeBlog.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Thesis Summary Card */}
+                      <div className="p-2 rounded-lg bg-[#FAF4EB] border border-[#E8DAC9] text-[10px] leading-relaxed">
+                        <strong className="block font-mono text-rose-600 font-bold mb-0.5 uppercase text-[8.5px]">
+                          Architecture Thesis
                         </strong>
                         {activeBlog.summary}
                       </div>
 
-                      {/* Problem Statement */}
+                      {/* 1. Problem Statement */}
                       <div className="space-y-1">
-                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
                           The Engineering Challenge
                         </h3>
                         {activeBlog.leftPage.problemStatement.map((p, idx) => (
-                          <p key={idx}>{p}</p>
+                          <p key={idx} className="text-[10px] leading-relaxed">{p}</p>
                         ))}
                       </div>
 
-                      {/* Architecture Diagram */}
+                      {/* 2. System Flowchart Diagram */}
                       <div className="rounded-lg bg-[#241B15] border border-[#443328] p-1.5 text-[#FFE8B2] shadow-xs">
-                        <span className="block text-[7.5px] font-mono font-bold text-amber-300 mb-1">
+                        <span className="block text-[8px] font-mono font-bold text-amber-300 mb-0.5">
                           📊 {activeBlog.leftPage.diagram.title}
                         </span>
                         <pre className="overflow-x-auto whitespace-pre font-mono text-[7px] leading-tight select-text py-0.5 scrollbar-none text-[#FDF4DF]">
                           <code>{activeBlog.leftPage.diagram.ascii}</code>
                         </pre>
+                        <p className="mt-0.5 text-[7px] text-[#A69080] italic">
+                          {activeBlog.leftPage.diagram.caption}
+                        </p>
                       </div>
 
-                      {/* Invariants */}
+                      {/* 3. Core Invariants */}
                       <div className="space-y-1">
-                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
                           Core Invariants
                         </h3>
-                        {activeBlog.leftPage.coreInvariants.map((inv, idx) => (
-                          <div
-                            key={idx}
-                            className="p-1 rounded bg-[#F5EBE0] border-l-2 border-rose-500 text-[9px]"
-                          >
-                            <span className="font-bold">{inv.title}:</span> {inv.description}
-                          </div>
-                        ))}
+                        <div className="space-y-1">
+                          {activeBlog.leftPage.coreInvariants.map((inv, idx) => (
+                            <div
+                              key={idx}
+                              className="p-1.5 rounded-md bg-[#F5EBE0] border-l-2 border-rose-500 text-[9.5px]"
+                            >
+                              <span className="font-bold font-mono text-[#4A2411]">
+                                #{idx + 1} {inv.title}:
+                              </span>{' '}
+                              <span className="text-[#593922]">{inv.description}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
-                      {/* Implementation & Code */}
+                      {/* 4. Implementation Sections & Code */}
                       {activeBlog.rightPage.implementationSections.map((sec, sIdx) => (
                         <div key={sIdx} className="space-y-1">
-                          <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
+                          <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
                             {sec.heading}
                           </h3>
                           {sec.paragraphs.map((p, pIdx) => (
-                            <p key={pIdx}>{p}</p>
+                            <p key={pIdx} className="text-[10px] leading-relaxed">{p}</p>
                           ))}
 
                           {sec.codeSnippet && (
@@ -625,21 +713,21 @@ export default function LibraryTechnicalBook() {
                                       `mob-${activeBlog.slug}-${sIdx}`
                                     )
                                   }
-                                  className="px-1 py-0.2 rounded bg-[#3B2C23] text-white"
+                                  className="px-1.5 py-0.5 rounded bg-[#3B2C23] text-white cursor-pointer"
                                 >
                                   {isCopied === `mob-${activeBlog.slug}-${sIdx}`
                                     ? '✓ Copied'
                                     : 'Copy'}
                                 </button>
                               </div>
-                              <pre className="overflow-x-auto whitespace-pre font-mono leading-relaxed select-text py-0.5 scrollbar-none">
+                              <pre className="overflow-x-auto whitespace-pre font-mono leading-relaxed select-text py-0.5 scrollbar-none text-[#FDF6E2]">
                                 <code>{sec.codeSnippet.code}</code>
                               </pre>
                             </div>
                           )}
 
                           {sec.callout && (
-                            <div className="p-1 rounded bg-amber-50 border-l-2 border-amber-500 text-[9px] text-[#553C18]">
+                            <div className="p-1.5 rounded bg-amber-50 border-l-2 border-amber-500 text-[9.5px] text-[#553C18]">
                               <span className="font-bold">{sec.callout.title}:</span>{' '}
                               {sec.callout.text}
                             </div>
@@ -647,10 +735,10 @@ export default function LibraryTechnicalBook() {
                         </div>
                       ))}
 
-                      {/* Benchmarks */}
+                      {/* 5. Benchmarks Matrix */}
                       <div className="space-y-1 pt-1 border-t border-[#DECFBE]">
-                        <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
-                          Benchmarks
+                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          Production Benchmarks
                         </h3>
                         <div className="grid grid-cols-1 gap-1">
                           {activeBlog.rightPage.benchmarksAndTradeoffs.map((item, bIdx) => (
@@ -666,30 +754,43 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* Bottom Navigation */}
-                    <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[10px] font-hand font-bold">
+                    {/* ---------------- FIXED BOTTOM CONTROLS ---------------- */}
+                    {/* Fixed single clean row that NEVER wraps or covers content */}
+                    <div className="absolute inset-x-0 bottom-0 h-[34px] border-t border-[#D8C7B0]/90 pt-1 flex items-center justify-between select-none">
                       <button
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
                           setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
-                        className="px-2 py-0.5 rounded bg-[#EAE0D1] text-[#4A301D]"
+                        className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] active:scale-95 text-[#4A301D] font-hand text-[11px] font-bold shadow-2xs transition-all touch-manipulation cursor-pointer"
                       >
-                        {selectedBlogIndex === 0 ? '← Next Deep Dive' : '← Prev Deep Dive'}
+                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span>Prev</span>
                       </button>
-                      <span className="font-mono text-[8.5px] text-[#8C6D54]">
-                        Sheet {selectedBlogIndex + 1} of 2
-                      </span>
+
+                      <div className="flex items-center gap-1 font-mono text-[9px] font-bold text-[#6D4C33]">
+                        <span>Sheet</span>
+                        <span className="px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
+                          {selectedBlogIndex + 1}
+                        </span>
+                        <span>of 2</span>
+                      </div>
+
                       <button
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
                           setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
-                        className="px-2.5 py-0.5 rounded bg-[#E8507D] text-white"
+                        className="inline-flex items-center gap-0.5 px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-[11px] font-bold shadow-cozy transition-all touch-manipulation cursor-pointer"
                       >
-                        {selectedBlogIndex === 0 ? 'Next Deep Dive →' : 'First Deep Dive →'}
+                        <span>Next</span>
+                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
                       </button>
                     </div>
                   </div>

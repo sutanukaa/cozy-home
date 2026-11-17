@@ -206,16 +206,16 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     <>
       {/* ------------------------------------------------------------------ */}
       {/* 1. RESTING STATE: Computer screen overlay on the Studio Desk       */}
-      {/*    Coordinates accurately centered over the monitor display        */}
+      {/*    Coordinates accurately centered over the monitor display glass  */}
       {/* ------------------------------------------------------------------ */}
       <div
         className={`pointer-events-auto absolute cursor-pointer select-none ${className}`}
         style={{
-          left: '50.1%',
-          top: '40.0%',
+          left: '50.0%',
+          top: '38.8%',
           transform: 'translate(-50%, -50%)',
-          width: '15.2%',
-          height: '14.0%',
+          width: '16.8%',
+          height: '13.2%',
         }}
         onClick={openComputer}
         role="button"

@@ -162,6 +162,69 @@ export default function StudioDeskPlant() {
       }}
     >
       <div className="relative h-full w-full cursor-pointer flex items-end justify-center">
+        {/* --- 0. GLOSSY BUBBLE BUTTON ABOVE PLANT --- */}
+        <div
+          className="absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 z-30 select-none cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleWater();
+          }}
+        >
+          <button
+            type="button"
+            aria-label="Water the studio desk plant"
+            className="group relative flex items-center justify-center focus:outline-none"
+          >
+            {/* Ambient glowing backdrop */}
+            <span
+              aria-hidden="true"
+              className="absolute -inset-1 rounded-full bg-pink-400/30 blur-md transition-all duration-300 group-hover:bg-pink-400/50 group-hover:blur-lg dark:bg-pink-500/20"
+            />
+
+            {/* Breathing ping ring */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-full bg-pink-300/50 opacity-60 transition-opacity duration-300 animate-ping-soft group-hover:opacity-90 dark:bg-pink-400/30"
+            />
+
+            {/* Rose-berry glossy bubble button */}
+            <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border-2 border-white/95 bg-gradient-to-br from-[#FFB8CE] via-[#F482A5] to-[#D64676] text-white shadow-[0_4px_14px_rgba(214,70,118,0.45)] backdrop-blur-xs transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_18px_rgba(244,114,182,0.85)] group-active:scale-95">
+              {/* Glossy top-left bubble highlight */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1 left-1.5 h-2 w-2.5 rounded-full bg-white/45 blur-[0.5px] -rotate-12"
+              />
+
+              {/* Water Droplet Icon */}
+              <svg
+                className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-white drop-shadow-xs transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+              </svg>
+            </span>
+
+            {/* Tooltip on hover */}
+            <span
+              role="tooltip"
+              className="pointer-events-none absolute bottom-full mb-1.5 flex flex-col items-center whitespace-nowrap rounded-xl border border-pink-200/90 bg-paper/95 px-2.5 py-0.5 font-sans text-[10px] font-bold text-ink opacity-0 shadow-md backdrop-blur-xs transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:-translate-y-0.5 dark:border-white/20 dark:bg-[#25182E]/95 dark:text-pink-100"
+            >
+              <span className="font-display text-[10px] text-pink-600 dark:text-pink-300 font-extrabold tracking-wide">
+                Water Plant 💧
+              </span>
+              <span className="font-hand text-[9px] text-ink-soft">
+                {stage === 2 ? 'Fully bloomed with love' : `Click to water (${watersInStage0}/3)`}
+              </span>
+            </span>
+          </button>
+        </div>
+
         {/* --- 1. SPEECH / TOOLTIP BUBBLE --- */}
         <AnimatePresence>
           {(isHovered || isWatering) && mounted && (

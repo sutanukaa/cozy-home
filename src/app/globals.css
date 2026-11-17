@@ -229,7 +229,11 @@ body.book-modal-open #sound-toggle,
 body.cookie-modal-open #site-header,
 body.cookie-modal-open #site-footer,
 body.cookie-modal-open .kitchen-heading,
-body.cookie-modal-open #sound-toggle {
+body.cookie-modal-open #sound-toggle,
+body.mailbox-modal-open #site-header,
+body.mailbox-modal-open #site-footer,
+body.mailbox-modal-open .porch-heading,
+body.mailbox-modal-open #sound-toggle {
   display: none !important;
 }
 

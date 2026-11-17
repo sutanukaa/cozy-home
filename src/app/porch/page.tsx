@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import PorchFireflies from '@/components/scene/PorchFireflies';
+import PorchMailbox from '@/components/scene/PorchMailbox';
 
 export const metadata: Metadata = { title: 'Porch' };
 
@@ -11,6 +12,9 @@ export default function PorchPage() {
       <RoomScene room="porch" fit="cover">
         {/* Nighttime glowing fireflies drifting around the porch garden */}
         <PorchFireflies />
+
+        {/* Interactive Cottage Mailbox & Handwritten Postcard Modal */}
+        <PorchMailbox />
       </RoomScene>
 
       {/* Bubble navigation arrows: left to Kitchen, right to Living Room (front door) */}

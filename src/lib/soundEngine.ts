@@ -563,6 +563,57 @@ class SoundscapeEngine {
   }
 
   /**
+   * Play an authentic, cozy wooden door double-knock ("tok-tok")
+   */
+  public async playKnockSound(): Promise<void> {
+    await this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const knocks = [
+        { time: now, freq: 155, clickFreq: 1150, gainVal: 0.16 },
+        { time: now + 0.16, freq: 170, clickFreq: 1300, gainVal: 0.18 },
+      ];
+
+      knocks.forEach(({ time, freq, clickFreq, gainVal }) => {
+        if (!this.ctx) return;
+
+        // 1. Resonant wooden door body (triangle oscillator pitching down)
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, time);
+        osc.frequency.exponentialRampToValueAtTime(50, time + 0.09);
+
+        gain.gain.setValueAtTime(gainVal, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.09);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.1);
+
+        // 2. Woody knuckle click (higher attack impulse)
+        const click = this.ctx.createOscillator();
+        const clickGain = this.ctx.createGain();
+        click.type = 'sine';
+        click.frequency.setValueAtTime(clickFreq, time);
+        click.frequency.exponentialRampToValueAtTime(260, time + 0.03);
+
+        clickGain.gain.setValueAtTime(gainVal * 0.75, time);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.03);
+
+        click.connect(clickGain);
+        clickGain.connect(this.ctx.destination);
+        click.start(time);
+        click.stop(time + 0.035);
+      });
+    } catch {
+      // Safe catch
+    }
+  }
+
+  /**
    * Starts or resumes the soundscape
    */
   public async start(): Promise<void> {

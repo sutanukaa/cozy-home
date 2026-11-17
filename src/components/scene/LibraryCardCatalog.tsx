@@ -262,11 +262,11 @@ export default function LibraryCardCatalog() {
 
                   {/* 4 Clickable Drawers with Category Headings at Top */}
                   {DRAWERS.map((drawer) => {
-                    // Exact percentage bounding box for 2x2 grid drawers in 1199x1312 image:
-                    const leftPct = drawer.col === 0 ? 16.5 : 52.0;
-                    const topPct = drawer.row === 0 ? 38.5 : 61.0;
-                    const widthPct = 32.5;
-                    const heightPct = 20.5;
+                    // Exact measured bounding box for each drawer face in 1199x1312 image:
+                    const leftPct = drawer.col === 0 ? 15.3 : 52.6;
+                    const topPct = drawer.row === 0 ? 40.2 : 60.4;
+                    const widthPct = 34.2;
+                    const heightPct = drawer.row === 0 ? 18.4 : 18.2;
                     const isHovered = hoveredDrawer === drawer.id;
 
                     return (
@@ -283,10 +283,10 @@ export default function LibraryCardCatalog() {
                           width: `${widthPct}%`,
                           height: `${heightPct}%`,
                         }}
-                        className="group absolute rounded-lg cursor-pointer transition-all duration-200 hover:bg-[#FFE8B3]/20 active:scale-98 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-400 p-1 flex flex-col justify-between"
+                        className="group absolute rounded-xl cursor-pointer transition-all duration-200 hover:bg-[#FFE8B3]/20 active:scale-98 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-400 p-1 flex flex-col justify-between"
                       >
                         {/* 1. Category Heading Written at TOP of Each Drawer */}
-                        <div className="w-full pt-1.5 sm:pt-2 px-1 text-center pointer-events-none">
+                        <div className="w-full pt-0.5 sm:pt-1 px-1 text-center pointer-events-none">
                           <div className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-md bg-[#422210]/25 group-hover:bg-[#422210]/40 transition-colors">
                             <span className="text-xs sm:text-sm">{drawer.emoji}</span>
                             <span
@@ -302,15 +302,15 @@ export default function LibraryCardCatalog() {
                         </div>
 
                         {/* 2. Drawer Pull Glow & Card Count Badge */}
-                        <div className="pb-1.5 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <span className="rounded-full bg-[#3D2111]/85 border border-[#8C5232] px-2 py-0.5 font-mono text-[9px] sm:text-[10px] text-[#FFE8C2] font-bold shadow-sm">
+                        <div className="pb-1 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <span className="rounded-full bg-[#3D2111]/90 border border-[#8C5232] px-2 py-0.5 font-mono text-[9px] sm:text-[10px] text-[#FFE8C2] font-bold shadow-sm">
                             {drawer.cardCount} cards ➔
                           </span>
                         </div>
 
                         {/* Golden Pull Gleam Border on Hover */}
                         <div
-                          className={`absolute inset-0 rounded-lg pointer-events-none transition-opacity duration-200 border-2 border-amber-300/60 shadow-[inset_0_0_15px_rgba(255,215,100,0.4)] ${
+                          className={`absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-200 border-2 border-amber-400/80 shadow-[inset_0_0_15px_rgba(255,215,100,0.35)] ${
                             isHovered ? 'opacity-100' : 'opacity-0'
                           }`}
                         />

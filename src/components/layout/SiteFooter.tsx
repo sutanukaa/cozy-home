@@ -12,7 +12,8 @@ export default function SiteFooter() {
     pathname === '/studio' ||
     pathname === '/bedroom' ||
     pathname === '/library' ||
-    pathname === '/kitchen'
+    pathname === '/kitchen' ||
+    pathname === '/porch'
   )
     return null;
 

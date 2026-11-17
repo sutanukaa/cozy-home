@@ -1,49 +1,44 @@
 import type { Metadata } from 'next';
 import RoomScene from '@/components/scene/RoomScene';
-import RoomHeading from '@/components/layout/RoomHeading';
-import PaperCard from '@/components/ui/PaperCard';
-import ContactForm from '@/components/rooms/ContactForm';
-import { site } from '@/data/site';
-import type { HotspotDef } from '@/components/ui/Hotspot';
+import RoomNavArrows from '@/components/ui/RoomNavArrows';
+import PorchFireflies from '@/components/scene/PorchFireflies';
 
 export const metadata: Metadata = { title: 'Porch' };
 
-const hotspots: HotspotDef[] = [
-  { id: 'mailbox', label: 'The mailbox', x: 78, y: 62, emoji: '📬', href: '#note' },
-];
-
 export default function PorchPage() {
   return (
-    <div>
-      <section className="relative h-screen w-full">
-        <RoomScene room="porch" hotspots={hotspots}>
-          <div className="pointer-events-none absolute inset-x-0 top-24 z-20 mx-auto max-w-xl px-4 text-center">
-            <RoomHeading room="porch" title="The porch" />
-          </div>
-        </RoomScene>
-      </section>
+    <div className="fixed inset-0 h-screen h-[100dvh] w-full overflow-hidden select-none">
+      <RoomScene room="porch" fit="cover">
+        {/* Nighttime glowing fireflies drifting around the porch garden */}
+        <PorchFireflies />
+      </RoomScene>
 
-      <div className="mx-auto max-w-6xl px-4 py-16">
-        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-[1fr_20rem]">
-          <PaperCard id="note" tape>
-            <h2 className="mb-4 font-display text-2xl font-semibold">Leave a note</h2>
-            <ContactForm />
-          </PaperCard>
+      {/* Bubble navigation arrows: left to Kitchen, right to Living Room (front door) */}
+      <RoomNavArrows
+        prev={{ name: 'Kitchen', href: '/kitchen' }}
+        next={{ name: 'Living room', href: '/' }}
+      />
 
-          <PaperCard tilt={1} className="self-start">
-            <h2 className="mb-3 font-hand text-3xl">Or find me here</h2>
-            <ul className="space-y-2 text-lg">
-              {site.socials.map((s) => (
-                <li key={s.label}>
-                  <a href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="inline-flex items-center gap-2 underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">
-                    <span aria-hidden>{s.emoji}</span>
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </PaperCard>
-        </div>
+      {/* Porch Room Heading */}
+      <div className="porch-heading pointer-events-none absolute bottom-6 right-4 sm:bottom-7 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 pr-14 sm:pr-16 md:pr-16 z-20 max-w-[300px] xs:max-w-xs sm:max-w-sm md:max-w-md text-right select-none">
+        <h1
+          className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md"
+          style={{
+            textShadow:
+              '0 3px 14px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 140, 180, 0.75), 0 2px 4px rgba(0,0,0,0.85)',
+          }}
+        >
+          The Porch
+        </h1>
+        <p
+          className="mt-1 font-hand text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white/95"
+          style={{
+            textShadow:
+              '0 2px 8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 200, 220, 0.5), 0 1px 3px rgba(0,0,0,0.75)',
+          }}
+        >
+          Come say hi, or leave a little note.
+        </p>
       </div>
     </div>
   );

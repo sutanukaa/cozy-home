@@ -73,6 +73,7 @@ export default function LibraryCardCatalog() {
   const [mounted, setMounted] = useState(false);
   const [isCabinetZoomed, setIsCabinetZoomed] = useState(false);
   const [activeDrawer, setActiveDrawer] = useState<string | null>(null);
+  const [isClipboardZoomed, setIsClipboardZoomed] = useState(false);
   const [hoveredDrawer, setHoveredDrawer] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
@@ -94,7 +95,9 @@ export default function LibraryCardCatalog() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (activeDrawer) {
+        if (isClipboardZoomed) {
+          setIsClipboardZoomed(false);
+        } else if (activeDrawer) {
           setActiveDrawer(null);
         } else if (isCabinetZoomed) {
           setIsCabinetZoomed(false);
@@ -103,30 +106,40 @@ export default function LibraryCardCatalog() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeDrawer, isCabinetZoomed]);
+  }, [activeDrawer, isCabinetZoomed, isClipboardZoomed]);
 
   const handleOpenZoom = () => {
     soundscape.playClickSound();
     setIsCabinetZoomed(true);
     setActiveDrawer(null);
+    setIsClipboardZoomed(false);
   };
 
   const handleCloseAll = () => {
     soundscape.playClickSound();
     setIsCabinetZoomed(false);
     setActiveDrawer(null);
+    setIsClipboardZoomed(false);
     setSelectedCard(null);
   };
 
   const handleOpenDrawer = (drawerId: string) => {
     soundscape.playClickSound();
     setActiveDrawer(drawerId);
+    setIsClipboardZoomed(false);
     setSelectedCard(null);
   };
 
   const handleBackToCabinet = () => {
     soundscape.playClickSound();
     setActiveDrawer(null);
+    setIsClipboardZoomed(false);
+    setSelectedCard(null);
+  };
+
+  const handleBackToDrawer = () => {
+    soundscape.playClickSound();
+    setIsClipboardZoomed(false);
     setSelectedCard(null);
   };
 
@@ -322,159 +335,265 @@ export default function LibraryCardCatalog() {
             )}
 
             {/* ============================================================ */}
-            {/* 3. OPEN DRAWER VIEW: The Vintage Manila Index Cards Tray    */}
+            {/* 2. OPEN DRAWER VIEW: Drawer pulled out with Clipboard inside */}
             {/* ============================================================ */}
-            {activeDrawer && (
+            {activeDrawer && !isClipboardZoomed && (
               <motion.div
-                key="drawer-cards-modal"
+                key="drawer-open-stage"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="drawer-title"
-                initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                initial={{ opacity: 0, scale: 0.88, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.94, y: 15 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="relative z-20 w-full max-w-2xl rounded-2xl sm:rounded-3xl border-4 border-[#7A4B29] bg-[#EFE3CF] shadow-[0_25px_60px_rgba(10,5,2,0.7)] overflow-hidden flex flex-col max-h-[88vh] my-auto"
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+                className="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl py-2 my-auto"
               >
-                {/* Antique Header with Drawer Title & Back Button */}
-                <div className="relative flex items-center justify-between px-4 sm:px-6 py-3 bg-[#4A2A1A] border-b-2 border-[#7A4B29] text-[#FFF5E6]">
-                  <div className="flex items-center gap-2.5">
-                    <button
-                      type="button"
-                      onClick={handleBackToCabinet}
-                      className="inline-flex items-center gap-1 rounded-lg bg-[#6B3D23] hover:bg-[#854D2C] px-2.5 py-1 text-xs font-hand font-bold text-[#FFE8C2] border border-[#9E5D36] transition-all active:scale-95 cursor-pointer"
-                    >
-                      <span>← Cabinet</span>
-                    </button>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{currentDrawerDef.emoji}</span>
-                      <h2 id="drawer-title" className="font-display text-lg sm:text-2xl font-bold tracking-tight text-[#FFE8C2]">
-                        {currentDrawerDef.name}
+                {/* Header Prompt Bar */}
+                <div className="flex items-center justify-between w-full mb-3 px-4 py-2.5 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl sm:text-2xl">{currentDrawerDef.emoji}</span>
+                    <div>
+                      <h2 id="drawer-title" className="font-display text-base sm:text-xl font-bold text-[#FFE8C2] leading-tight">
+                        {currentDrawerDef.name} Drawer
                       </h2>
+                      <p className="font-hand text-xs sm:text-sm text-[#E8C2A0] font-bold">
+                        A skills checklist clipboard is resting inside the drawer
+                      </p>
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleCloseAll}
-                    aria-label="Close card catalog"
-                    className="rounded-full p-1.5 text-[#E8C2A0] hover:text-white hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
-                  >
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleBackToCabinet}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                    >
+                      <span>← Back to cabinet</span>
+                    </button>
 
-                {/* 4 Category Tabs to Quickly Switch Drawers */}
-                <div className="flex items-center gap-1 px-3 sm:px-6 pt-2 bg-[#DFCEB3] border-b border-[#C8B395] overflow-x-auto no-scrollbar">
-                  {DRAWERS.map((d) => {
-                    const isActive = d.id === activeDrawer;
-                    return (
-                      <button
-                        key={d.id}
-                        type="button"
-                        onClick={() => handleOpenDrawer(d.id)}
-                        className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg font-hand text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
-                          isActive
-                            ? 'bg-[#FFFDF7] text-[#3D2514] shadow-sm -mb-px border-t-2 border-x-2 border-[#C8B395]'
-                            : 'bg-[#D4BF9F] text-[#69482F] hover:bg-[#DEC9A9] hover:text-[#3D2514]'
-                        }`}
-                      >
-                        <span>{d.emoji}</span>
-                        <span>{d.shortLabel}</span>
-                        <span className="ml-0.5 rounded-full bg-black/10 px-1 text-[9px] font-mono">
-                          {d.cardCount}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Cards Tray Grid */}
-                <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#EFE3CF] space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    {cards.map((card) => {
-                      const isSelected = selectedCard === card.title;
-                      return (
-                        <motion.div
-                          key={card.title}
-                          layout
-                          whileHover={{ y: -3, scale: 1.01 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => {
-                            soundscape.playSparkleSound();
-                            setSelectedCard(isSelected ? null : card.title);
-                          }}
-                          className={`group relative rounded-xl border-2 p-3.5 sm:p-4 bg-[#FFFDF7] transition-all cursor-pointer select-text ${
-                            isSelected
-                              ? 'border-pink-400 shadow-[0_6px_18px_rgba(214,70,118,0.22)] ring-2 ring-pink-300/60'
-                              : 'border-[#DAC8AD] hover:border-[#BF9E77] shadow-[0_2px_6px_rgba(40,20,10,0.08)]'
-                          }`}
-                          style={{
-                            backgroundImage:
-                              'repeating-linear-gradient(transparent, transparent 23px, rgba(180, 160, 140, 0.15) 24px)',
-                          }}
-                        >
-                          {/* Manila Card Header */}
-                          <div className="flex items-center justify-between border-b border-[#DAC8AD]/60 pb-1 mb-2">
-                            <span className="font-mono text-[9px] sm:text-[10px] font-bold text-[#8C6B4F] tracking-widest">
-                              {card.catalogCode}
-                            </span>
-                            <span
-                              className={`rounded-full px-2 py-0.5 font-mono text-[8.5px] sm:text-[9.5px] font-bold uppercase tracking-wider ${
-                                card.status === 'Daily Driver'
-                                  ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                  : card.status === 'Active'
-                                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                                  : 'bg-rose-100 text-rose-800 border border-rose-300'
-                              }`}
-                            >
-                              {card.status}
-                            </span>
-                          </div>
-
-                          {/* Technology Name */}
-                          <h3 className="font-display text-base sm:text-lg font-bold text-[#3B2212] group-hover:text-[#B84D6A] transition-colors">
-                            {card.title}
-                          </h3>
-
-                          {/* Description Note */}
-                          <p className="mt-1 font-hand text-xs sm:text-sm text-[#5C402B] leading-relaxed">
-                            {card.note}
-                          </p>
-
-                          {/* Vintage Verification Stamp */}
-                          <div className="mt-2.5 flex items-center justify-between text-[10px] text-[#A6886D] font-mono">
-                            <span>SECTION: {card.category}</span>
-                            <span className="text-[#C24B5E] font-bold opacity-80 uppercase tracking-tighter text-[9px]">
-                              ✓ CATALOGED
-                            </span>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
+                    <button
+                      type="button"
+                      onClick={handleCloseAll}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      aria-label="Close"
+                    >
+                      ✕
+                    </button>
                   </div>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#DFCEB3] border-t border-[#C8B395]">
+                {/* The Open Drawer Artwork with Clipboard laying inside */}
+                <div className="relative w-full max-w-[560px] aspect-[1725/1296] select-none drop-shadow-[0_25px_50px_rgba(0,0,0,0.65)]">
+                  <AssetImage
+                    src="/assets/objects/drawer-open.png"
+                    alt="Open wooden catalog drawer"
+                    className="w-full h-full object-contain pointer-events-none"
+                  />
+
+                  {/* The Clipboard laying inside the drawer cavity */}
+                  <div
+                    className="group/clip absolute cursor-pointer transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                    style={{
+                      left: '34%',
+                      top: '15%',
+                      width: '32%',
+                      aspectRatio: '958/1276',
+                    }}
+                    onClick={() => {
+                      soundscape.playSparkleSound();
+                      setIsClipboardZoomed(true);
+                    }}
+                  >
+                    <AssetImage
+                      src="/assets/objects/clipboard.png"
+                      alt="Clipboard resting in drawer"
+                      className="w-full h-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)] pointer-events-none"
+                    />
+
+                    {/* Pink Clickable Bubble Button right on the clipboard */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          soundscape.playSparkleSound();
+                          setIsClipboardZoomed(true);
+                        }}
+                        aria-label={`Open ${currentDrawerDef.name} skills clipboard`}
+                        className="group/btn relative flex items-center justify-center cursor-pointer"
+                      >
+                        {/* Outer Pulsing Glow Ring */}
+                        <span
+                          aria-hidden
+                          className="absolute -inset-2.5 rounded-full bg-pink-400/40 animate-ping opacity-75"
+                        />
+                        {/* Soft Ambient Halo */}
+                        <span
+                          aria-hidden
+                          className="absolute -inset-1.5 rounded-full bg-pink-300/60 blur-xs"
+                        />
+                        {/* Solid Center Hotspot Disc */}
+                        <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-transform duration-200 group-hover/btn:scale-110 active:scale-95 border-2 border-white">
+                          <span className="text-sm sm:text-base">✨</span>
+                        </span>
+
+                        {/* Tooltip on Hover */}
+                        <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/clip:opacity-100 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100">
+                          Inspect Clipboard ✨
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ============================================================ */}
+            {/* 3. ZOOMED CLIPBOARD VIEW: Skills rendered on paper canvas    */}
+            {/* ============================================================ */}
+            {activeDrawer && isClipboardZoomed && (
+              <motion.div
+                key="clipboard-zoom-stage"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="clipboard-title"
+                initial={{ opacity: 0, scale: 0.88, y: 25 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 15 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+                className="relative z-10 flex flex-col items-center justify-center w-full max-w-[460px] sm:max-w-[500px] py-1 my-auto"
+              >
+                {/* Header Navigation Bar */}
+                <div className="flex items-center justify-between w-full mb-2 px-3 py-2 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
                   <button
                     type="button"
-                    onClick={handleBackToCabinet}
-                    className="inline-flex items-center gap-1 font-hand text-xs sm:text-sm text-[#69482F] hover:text-[#3B2212] font-bold cursor-pointer"
+                    onClick={handleBackToDrawer}
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
                   >
-                    <span>← Back to all 4 drawers</span>
+                    <span>← Back to drawer</span>
                   </button>
 
-                  <a
-                    href={`#${currentDrawerDef.id}`}
+                  <span className="font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
+                    {currentDrawerDef.emoji} {currentDrawerDef.name}
+                  </span>
+
+                  <button
+                    type="button"
                     onClick={handleCloseAll}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#5A341B] hover:bg-[#724223] active:scale-95 px-3.5 py-1.5 font-hand text-xs sm:text-sm font-bold text-[#FFF5E6] shadow-sm transition-all"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                    aria-label="Close"
                   >
-                    <span>View shelf details</span>
-                    <span>↓</span>
-                  </a>
+                    ✕
+                  </button>
+                </div>
+
+                {/* The Fullscreen Clipboard Artwork with Text Canvas */}
+                <div className="relative w-full aspect-[958/1276] select-none drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)]">
+                  <AssetImage
+                    src="/assets/objects/clipboard.png"
+                    alt="Clipboard with skills paper"
+                    className="w-full h-full object-contain pointer-events-none"
+                  />
+
+                  {/* Writing Area on the Blank Paper of the Clipboard */}
+                  <div
+                    className="absolute flex flex-col select-text"
+                    style={{
+                      left: '11%',
+                      right: '11%',
+                      top: '16.5%',
+                      bottom: '9%',
+                    }}
+                  >
+                    {/* Paper Title Header */}
+                    <div className="border-b-2 border-[#DAC8AD] pb-2 mb-2 flex items-center justify-between px-1">
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-base sm:text-lg">{currentDrawerDef.emoji}</span>
+                          <h3
+                            id="clipboard-title"
+                            className="font-display text-sm sm:text-base md:text-lg font-bold text-[#3B2212] leading-tight"
+                          >
+                            {currentDrawerDef.name}
+                          </h3>
+                        </div>
+                        <p className="font-mono text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold">
+                          Engineering Skill Index • {cards.length} Recorded
+                        </p>
+                      </div>
+                      <span className="rounded-md bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider">
+                        ✓ Verified
+                      </span>
+                    </div>
+
+                    {/* Scrollable list of Skill cards on the paper */}
+                    <div className="flex-1 overflow-y-auto pr-1 space-y-2 select-text custom-scrollbar">
+                      {cards.map((card) => {
+                        const isSelected = selectedCard === card.title;
+                        return (
+                          <div
+                            key={card.title}
+                            onClick={() => {
+                              soundscape.playSparkleSound();
+                              setSelectedCard(isSelected ? null : card.title);
+                            }}
+                            className={`rounded-xl border p-2 sm:p-2.5 transition-all cursor-pointer ${
+                              isSelected
+                                ? 'border-pink-400 bg-pink-50/85 shadow-xs ring-1 ring-pink-300'
+                                : 'border-[#DAC8AD]/70 hover:border-[#BF9E77] bg-white/70 hover:bg-white/95 shadow-2xs'
+                            }`}
+                            style={{
+                              backgroundImage:
+                                'repeating-linear-gradient(transparent, transparent 21px, rgba(180, 160, 140, 0.12) 22px)',
+                            }}
+                          >
+                            <div className="flex items-center justify-between mb-0.5">
+                              <span className="font-mono text-[9px] sm:text-[10px] font-bold text-[#8C6B4F]">
+                                {card.catalogCode}
+                              </span>
+                              <span
+                                className={`rounded-full px-2 py-0.2 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider ${
+                                  card.status === 'Daily Driver'
+                                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                    : card.status === 'Active'
+                                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                    : 'bg-rose-100 text-rose-800 border border-rose-300'
+                                }`}
+                              >
+                                {card.status}
+                              </span>
+                            </div>
+
+                            <h4 className="font-display text-xs sm:text-sm font-bold text-[#3B2212]">
+                              {card.title}
+                            </h4>
+                            <p className="mt-0.5 font-hand text-xs sm:text-sm text-[#5C402B] leading-snug">
+                              {card.note}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Paper Footer with Back & Jump to shelf link */}
+                    <div className="pt-2 mt-1 border-t border-[#DAC8AD] flex items-center justify-between text-[11px] text-[#8C6B4F] font-hand font-bold px-1">
+                      <button
+                        type="button"
+                        onClick={handleBackToDrawer}
+                        className="hover:text-[#3B2212] cursor-pointer"
+                      >
+                        ← Back to drawer
+                      </button>
+                      <a
+                        href={`#${currentDrawerDef.id}`}
+                        onClick={handleCloseAll}
+                        className="text-pink-600 hover:text-pink-700 underline font-bold"
+                      >
+                        Jump to shelf ↓
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}

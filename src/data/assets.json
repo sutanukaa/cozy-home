@@ -155,14 +155,14 @@
     "size": "1199x1312, transparent"
   },
   {
-    "path": "public/assets/objects/catalog-drawer-open.png",
+    "path": "public/assets/objects/drawer-open.png",
     "kind": "object",
-    "size": "1200x800, transparent"
+    "size": "1725x1296, transparent"
   },
   {
-    "path": "public/assets/objects/skills-clipboard.png",
+    "path": "public/assets/objects/clipboard.png",
     "kind": "object",
-    "size": "1000x1400, transparent"
+    "size": "958x1276, transparent"
   },
   {
     "path": "public/assets/patterns/wallpaper-day.png",

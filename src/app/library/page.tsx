@@ -3,6 +3,7 @@ import RoomScene from '@/components/scene/RoomScene';
 import RoomNavArrows from '@/components/ui/RoomNavArrows';
 import LibraryCardCatalog from '@/components/scene/LibraryCardCatalog';
 import LibraryFairyLights from '@/components/scene/LibraryFairyLights';
+import LibraryTechnicalBook from '@/components/scene/LibraryTechnicalBook';
 
 export const metadata: Metadata = { title: 'Library' };
 
@@ -15,6 +16,9 @@ export default function LibraryPage() {
 
         {/* Vintage Wooden Library Card Catalog on Left Wall */}
         <LibraryCardCatalog />
+
+        {/* Technical Blogs Book Resting on Couch with Fullscreen Reader Overlay */}
+        <LibraryTechnicalBook />
       </RoomScene>
 
       {/* Pink bubble navigation arrows: left to Bedroom, right to Kitchen */}

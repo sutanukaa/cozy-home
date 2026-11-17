@@ -170,6 +170,16 @@
     "size": "958x1276, transparent"
   },
   {
+    "path": "public/assets/objects/library-book-closed.png",
+    "kind": "object",
+    "size": "1535x1024, transparent"
+  },
+  {
+    "path": "public/assets/objects/library-book-open.png",
+    "kind": "object",
+    "size": "1672x941, transparent"
+  },
+  {
     "path": "public/assets/icons/skill-backend.png",
     "kind": "icon",
     "size": "512x512, transparent"

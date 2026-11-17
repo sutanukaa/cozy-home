@@ -148,7 +148,10 @@ body.diary-modal-open .bedroom-heading,
 body.diary-modal-open #sound-toggle,
 body.tablet-modal-open header,
 body.tablet-modal-open .bedroom-heading,
-body.tablet-modal-open #sound-toggle {
+body.tablet-modal-open #sound-toggle,
+body.cabinet-modal-open header,
+body.cabinet-modal-open .library-heading,
+body.cabinet-modal-open #sound-toggle {
   display: none !important;
 }
 

@@ -209,6 +209,47 @@ die-cut sticker style with a thin white outline, centered, plain flat white back
 flat top-down view, plain white background.
 ```
 
+### 6.9 Library Card Catalog & Skills Assets
+Used in `/library` for interactive skills exploration.
+
+#### card-catalog (4-Drawer Card Catalog Cabinet)
+Output: `public/assets/objects/card-catalog.png` (~1200x1300, transparent PNG cutout).
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette of blush pink (#F9C6D3), cream (#FFF6EC), warm light honey oak wood, and antique brass gold. Cozy scrapbook feel, strictly NO text, NO letters, NO words, NO logos, NO people.
+
+A standalone vintage tabletop wooden card catalog apothecary cabinet with exactly 4 pull-out drawers arranged in a neat 2x2 grid (two drawers on top row, two drawers on bottom row).
+The cabinet is made of warm honey oak wood with soft rounded edges and four cute stubby rounded mid-century legs.
+On the top flat surface of the cabinet sits a small terracotta potted trailing plant with soft green leaves cascading down one side, and a small stack of two pastel books.
+Each of the 4 drawers has a smooth flat wooden front face with a centered antique brass cup pull handle (bin pull). The wood above each handle is smooth, clean, and empty with space for etched text.
+Centered front view, isolated on a solid plain white background with subtle gentle ambient drop shadow.
+```
+
+#### catalog-drawer-open (Open Drawer Top View)
+Output: `public/assets/objects/catalog-drawer-open.png` (~1200x800, transparent PNG cutout).
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette of blush pink (#F9C6D3), cream (#FFF6EC), warm light honey oak wood, and antique brass gold. Cozy scrapbook feel, strictly NO text, NO letters, NO words, NO logos, NO people.
+
+High-angle isometric top-down 3/4 view looking down into an open single wooden card catalog drawer that has been pulled out.
+The drawer is made of smooth warm golden-honey oak wood with neat vintage dovetail joints on the corners.
+On the front exterior face of the drawer sits a single centered antique brass cup pull handle (half-moon bin cup handle).
+The interior of the drawer is clean, open, and spacious: an empty wooden filing tray with smooth inner sides and a subtle wooden bottom track, designed to hold library index cards. The interior must be completely empty and clean, with no messy junk, no loose pens, no cluttered papers inside.
+Symmetrical, isolated on a solid plain white background with soft warm diffuse drop shadow underneath, high resolution.
+```
+
+#### skills-clipboard (Vintage Wooden Clipboard with Blank Stationery Paper)
+Output: `public/assets/objects/skills-clipboard.png` (~1000x1400, transparent PNG cutout).
+```
+Soft whimsical storybook illustration, hand-painted gouache and watercolor texture with subtle paper grain, rounded chunky shapes, gentle pastel palette dominated by warm cream (#FFF6EC), honey light wood, blush pink (#F9C6D3), and antique brass gold. Cozy scrapbook feel, strictly NO text, NO letters, NO words, NO logos, NO handwriting, NO scribbles, NO people.
+
+Direct straight-on flat top-down bird's-eye view of a charming vintage wooden clipboard holding a neat stack of blank stationery paper sheets.
+The clipboard has smooth rounded corners made of warm honey-toned masonite / light oak wood with a thin wooden border visible around the paper.
+At the top center of the clipboard is a cute vintage antique brass metal clamp / bulldog clip holding the papers securely, with a tiny decorative pastel pink heart or flower embossed on the clip.
+The paper clipped on the board is a thick, crisp, perfectly flat sheet of warm cream / soft ivory antique cardstock paper.
+CRITICAL: The central paper area must be 100% COMPLETELY BLANK, plain, empty, clean, and flat with ample clear writing space (strictly ZERO text, ZERO handwriting, ZERO lorem ipsum, ZERO lines, ZERO illustrations or drawings on the paper).
+Perfect smooth canvas for digital text display.
+Centered composition, flat lay perspective, isolated on a solid plain white background with subtle gentle ambient drop shadow.
+```
+
 ---
 
 ## 7. Patterns (seamless tiles)

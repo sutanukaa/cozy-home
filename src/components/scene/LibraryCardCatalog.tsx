@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AssetImage from '@/components/ui/AssetImage';
 import CozyIcon from '@/components/ui/CozyIcon';
@@ -69,10 +70,25 @@ const DRAWERS: DrawerDef[] = [
 ];
 
 export default function LibraryCardCatalog() {
+  const [mounted, setMounted] = useState(false);
   const [isCabinetZoomed, setIsCabinetZoomed] = useState(false);
   const [activeDrawer, setActiveDrawer] = useState<string | null>(null);
   const [hoveredDrawer, setHoveredDrawer] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Hide site navbar, library heading, and sound toggle when cabinet overlay is open
+  useEffect(() => {
+    if (isCabinetZoomed) {
+      document.body.classList.add('cabinet-modal-open');
+      return () => {
+        document.body.classList.remove('cabinet-modal-open');
+      };
+    }
+  }, [isCabinetZoomed]);
 
   // Close modals on Escape key
   useEffect(() => {
@@ -188,9 +204,11 @@ export default function LibraryCardCatalog() {
       {/* ============================================================== */}
       {/* 2. FULLSCREEN ZOOM VIEW: Large Cabinet with Category Headings   */}
       {/* ============================================================== */}
-      <AnimatePresence>
-        {isCabinetZoomed && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md select-none overflow-y-auto">
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {isCabinetZoomed && (
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md select-none overflow-y-auto">
             {/* Backdrop click to dismiss */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -462,7 +480,9 @@ export default function LibraryCardCatalog() {
             )}
           </div>
         )}
-      </AnimatePresence>
-    </>
-  );
+      </AnimatePresence>,
+      document.body
+    )}
+  </>
+);
 }

@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
-import { getRoom, type RoomSlug } from '@/data/rooms';
+import { getRoom, rooms, type RoomSlug } from '@/data/rooms';
 import { roomAsset } from '@/lib/assets';
+import { useTime } from '@/components/providers/TimeProvider';
 import AssetImage from '@/components/ui/AssetImage';
 import Hotspot, { type HotspotDef } from '@/components/ui/Hotspot';
 
@@ -27,6 +28,8 @@ export default function RoomScene({
   stageScale,
 }: Props) {
   const meta = getRoom(room);
+  const { theme } = useTime();
+  const isNight = theme === 'night';
   const [debug, setDebug] = useState(false);
   const [picked, setPicked] = useState<{ x: number; y: number } | null>(null);
   const [overflowX, setOverflowX] = useState(0);
@@ -37,6 +40,40 @@ export default function RoomScene({
   useEffect(() => {
     setDebug(new URLSearchParams(window.location.search).has('debug'));
   }, []);
+
+  // Preload adjacent room background images in the background after the current room renders
+  useEffect(() => {
+    const currentIndex = rooms.findIndex((r) => r.slug === room);
+    if (currentIndex === -1) return;
+
+    // Identify adjacent rooms (previous and next in room loop)
+    const prevSlug = rooms[(currentIndex - 1 + rooms.length) % rooms.length].slug;
+    const nextSlug = rooms[(currentIndex + 1) % rooms.length].slug;
+    const targetsToPreload: RoomSlug[] = [prevSlug, nextSlug];
+
+    // If on Living Room hub, also preload common destination rooms
+    if (room === 'living-room') {
+      targetsToPreload.push('studio', 'kitchen', 'porch');
+    }
+
+    const timer = setTimeout(() => {
+      const preload = () => {
+        targetsToPreload.forEach((slug) => {
+          const img = new window.Image();
+          // Preload active theme first (the one the user will see when clicking next)
+          img.src = roomAsset(slug, theme === 'night' ? 'night' : 'day');
+        });
+      };
+
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(preload);
+      } else {
+        preload();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [room, theme]);
 
   // Compute horizontal overflow for responsive panning when aspect ratio is taller than 16:9
   useEffect(() => {
@@ -126,9 +163,19 @@ export default function RoomScene({
             </div>
           </div>
 
-          {/* 2. day art, 3. night art (fades in via CSS when <html data-theme="night">) */}
-          <AssetImage src={roomAsset(room, 'day')} className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none" />
-          <AssetImage src={roomAsset(room, 'night')} className="variant-night absolute inset-0 h-full w-full object-cover object-center pointer-events-none" />
+          {/* 2. day art, 3. night art (prioritize active theme, lazy-load opposite theme) */}
+          <AssetImage
+            src={roomAsset(room, 'day')}
+            fetchPriority={isNight ? 'low' : 'high'}
+            loading={isNight ? 'lazy' : 'eager'}
+            className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
+          />
+          <AssetImage
+            src={roomAsset(room, 'night')}
+            fetchPriority={isNight ? 'high' : 'low'}
+            loading={isNight ? 'eager' : 'lazy'}
+            className="variant-night absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
+          />
 
           {/* 4. dawn / dusk tint */}
           <div className="phase-tint pointer-events-none absolute inset-0" />

@@ -466,19 +466,19 @@ export default function PorchMailbox() {
                           />
                         </div>
 
-                        {/* --- Section 3: Lines 3 to 9 - Handwritten Message Textarea (Moved a bit right & up) --- */}
+                        {/* --- Section 3: Lines 3 to 10 - Handwritten Message Textarea --- */}
                         <div
                           className="absolute"
                           style={{
                             left: '15.5%',
                             width: '72%',
                             top: '33.8%',
-                            bottom: '15%',
+                            bottom: '8.5%',
                           }}
                         >
                           <textarea
                             required
-                            rows={6}
+                            rows={7}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Dear Sutanuka,&#10;Write a warm note here..."
@@ -487,41 +487,6 @@ export default function PorchMailbox() {
                             }}
                             className="w-full h-full resize-none bg-transparent font-hand text-xs font-bold text-[#5B3A47] placeholder:text-[#5B3A47]/45 focus:outline-none"
                           />
-                        </div>
-
-                        {/* --- Section 4: Quick Stamps Row (Border-free, positioned in clean band above bottom border) --- */}
-                        <div
-                          className="absolute flex items-center justify-center gap-1.5"
-                          style={{
-                            left: '5%',
-                            width: '90%',
-                            bottom: '8.5%',
-                          }}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Saying a warm hello!')}
-                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
-                          >
-                            <span>Saying hello</span>
-                            <span className="ml-1">🌸</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Have an engineering role/project in mind!')}
-                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
-                          >
-                            <span>Work inquiry</span>
-                            <span className="ml-1">💼</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleQuickNote('Would love to connect over tea!')}
-                            className="whitespace-nowrap rounded-full bg-white/90 hover:bg-white px-2.5 py-1 font-hand text-[11px] font-bold text-[#5B3A47] shadow-xs transition-all hover:scale-105 active:scale-95"
-                          >
-                            <span>Tea chat</span>
-                            <span className="ml-1">☕</span>
-                          </button>
                         </div>
 
                         {/* Error notice if needed */}

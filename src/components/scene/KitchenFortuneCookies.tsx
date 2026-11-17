@@ -117,10 +117,10 @@ export default function KitchenFortuneCookies() {
   return (
     <>
       {/* ---------------- Hotspot on Cookie Tray in RoomScene ---------------- */}
-      {/* Situated directly on the fortune cookies baking tray on the countertop (X: ~52%, Y: ~71%) */}
+      {/* Situated directly on the fortune cookies baking tray on the countertop (X: ~69%, Y: ~51%) */}
       <div
         className="absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none"
-        style={{ left: '52%', top: '71%' }}
+        style={{ left: '69%', top: '51%' }}
       >
         <button
           type="button"

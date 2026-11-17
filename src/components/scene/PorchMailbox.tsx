@@ -10,8 +10,8 @@ type FormPhase = 'writing' | 'depositing' | 'zooming_out';
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
 // Mailbox position resting directly on the horizontal wooden bracket of the post (X: ~72%, Y: ~73.5%)
-const MAILBOX_POS = { left: '72%', top: '73.5%' };
-const BUTTON_POS  = { left: '70.5%', top: '60%' };
+const MAILBOX_POS = { left: '74.5%', top: '63.5%' };
+const BUTTON_POS  = { left: '73.5%', top: '50%' };
 
 export default function PorchMailbox() {
   const [isOpen, setIsOpen] = useState(false);

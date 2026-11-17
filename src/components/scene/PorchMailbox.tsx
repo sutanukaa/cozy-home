@@ -9,9 +9,9 @@ import { site } from '@/data/site';
 type FormPhase = 'writing' | 'depositing' | 'zooming_out';
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
-// Mailbox position on the horizontal wooden bracket of the post (X: ~67.5%, Y: ~56.5%)
-const MAILBOX_POS = { left: '67.5%', top: '56.5%' };
-const BUTTON_POS  = { left: '67.5%', top: '43%' };
+// Mailbox position resting directly on the horizontal wooden bracket of the post (X: ~72%, Y: ~73.5%)
+const MAILBOX_POS = { left: '72%', top: '73.5%' };
+const BUTTON_POS  = { left: '70.5%', top: '60%' };
 
 export default function PorchMailbox() {
   const [isOpen, setIsOpen] = useState(false);
@@ -384,7 +384,7 @@ export default function PorchMailbox() {
                         className="absolute flex items-center justify-center"
                         style={{
                           left: '50%',
-                          bottom: '8.5%',
+                          bottom: '14.5%',
                           transform: 'translateX(-50%)',
                         }}
                       >
@@ -554,8 +554,8 @@ export default function PorchMailbox() {
                         : {
                             // Zoom back out towards the wooden post on the porch!
                             scale: 0.18,
-                            x: '24vw',
-                            y: '10vh',
+                            x: '22vw',
+                            y: '23.5vh',
                             opacity: 0,
                           }
                     }

@@ -704,7 +704,7 @@ export default function LibraryCardCatalog() {
                       </div>
 
                       {/* Bottom Turn Page Controls Bar */}
-                      <div className="pt-1 sm:pt-1.5 border-t border-[#DAC8AD] mt-0.5 shrink-0 flex flex-col gap-0.5 select-none">
+                      <div className="pt-1 sm:pt-1.5 border-t border-[#DAC8AD] mt-0.5 shrink-0 select-none">
                         <div className="flex items-center justify-between gap-1 w-full">
                           {/* Previous Sheet Button */}
                           <button
@@ -775,16 +775,7 @@ export default function LibraryCardCatalog() {
                           </button>
                         </div>
 
-                        {/* Sub-footer: Quick jump link */}
-                        <div className="flex items-center justify-end text-[8.5px] xs:text-[9px] sm:text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
-                          <a
-                            href={`#${currentDrawerDef.id}`}
-                            onClick={handleCloseAll}
-                            className="text-pink-600 hover:text-pink-700 underline font-bold"
-                          >
-                            Jump to shelf ↓
-                          </a>
-                        </div>
+
                       </div>
                     </div>
                   </div>

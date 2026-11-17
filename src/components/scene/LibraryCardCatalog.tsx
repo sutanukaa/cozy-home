@@ -244,7 +244,7 @@ export default function LibraryCardCatalog() {
         createPortal(
           <AnimatePresence>
             {isCabinetZoomed && (
-              <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md select-none overflow-y-auto">
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 xs:p-3 sm:p-6 bg-black/85 backdrop-blur-md select-none overflow-y-auto">
             {/* Backdrop click to dismiss */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -262,18 +262,19 @@ export default function LibraryCardCatalog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 15 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-                className="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl py-2 my-auto"
+                className="relative z-10 flex flex-col items-center justify-center w-full max-w-[420px] xs:max-w-[480px] sm:max-w-xl md:max-w-2xl py-1 sm:py-2 my-auto"
               >
                 {/* Header Prompt Bar */}
-                <div className="flex items-center justify-between w-full mb-3 px-4 py-2.5 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
-                  <div className="flex items-center gap-2">
-                    <CozyIcon name="library" size={28} className="drop-shadow-xs select-none" />
-                    <div>
-                      <h2 className="font-display text-base sm:text-xl font-bold text-[#FFE8C2] leading-tight">
+                <div className="flex items-center justify-between w-full mb-2 sm:mb-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <CozyIcon name="library" size={24} className="drop-shadow-xs shrink-0 select-none sm:w-7 sm:h-7" />
+                    <div className="min-w-0">
+                      <h2 className="font-display text-sm sm:text-lg md:text-xl font-bold text-[#FFE8C2] leading-tight truncate">
                         Library Card Catalog
                       </h2>
-                      <p className="font-hand text-xs sm:text-sm text-[#E8C2A0] font-bold">
-                        Select any drawer to inspect the engineering index cards
+                      <p className="font-hand text-[11px] sm:text-xs md:text-sm text-[#E8C2A0] font-bold truncate">
+                        <span className="hidden sm:inline">Select any drawer to inspect the engineering index cards</span>
+                        <span className="sm:hidden">Tap any drawer to open</span>
                       </p>
                     </div>
                   </div>
@@ -281,9 +282,10 @@ export default function LibraryCardCatalog() {
                   <button
                     type="button"
                     onClick={handleCloseAll}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                   >
-                    <span>✕ Step back</span>
+                    <span className="hidden sm:inline">✕ Step back</span>
+                    <span className="sm:hidden">✕ Close</span>
                   </button>
                 </div>
 
@@ -319,14 +321,14 @@ export default function LibraryCardCatalog() {
                           width: `${widthPct}%`,
                           height: `${heightPct}%`,
                         }}
-                        className="group absolute rounded-xl cursor-pointer transition-all duration-200 hover:bg-[#FFE8B3]/20 active:scale-98 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-400 p-1 flex flex-col justify-between"
+                        className="group absolute rounded-lg sm:rounded-xl cursor-pointer transition-all duration-200 hover:bg-[#FFE8B3]/20 active:scale-98 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-400 p-0.5 sm:p-1 flex flex-col justify-between touch-manipulation"
                       >
                         {/* 1. Category Heading Written at TOP of Each Drawer */}
-                        <div className="w-full pt-0.5 sm:pt-1 px-1 text-center pointer-events-none">
-                          <div className="inline-flex items-center justify-center gap-1.5 px-2 py-0.5 rounded-md bg-[#422210]/25 group-hover:bg-[#422210]/40 transition-colors">
-                            <CozyIcon name={drawer.iconName} size={22} className="drop-shadow-xs shrink-0 select-none" />
+                        <div className="w-full pt-0.5 sm:pt-1 px-0.5 sm:px-1 text-center pointer-events-none">
+                          <div className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-1 sm:px-2 py-0.5 rounded-md bg-[#422210]/25 group-hover:bg-[#422210]/40 transition-colors max-w-full">
+                            <CozyIcon name={drawer.iconName} size={16} className="drop-shadow-xs shrink-0 select-none sm:w-5 sm:h-5" />
                             <span
-                              className="font-hand text-xs sm:text-base md:text-lg font-bold text-[#3B2110] group-hover:text-[#241308] tracking-wide leading-tight whitespace-nowrap"
+                              className="font-hand text-[10px] xs:text-xs sm:text-base md:text-lg font-bold text-[#3B2110] group-hover:text-[#241308] tracking-tight sm:tracking-wide leading-tight truncate"
                               style={{
                                 textShadow:
                                   '0 1px 1px rgba(255, 235, 205, 0.8), 0 -0.5px 0.5px rgba(50, 20, 5, 0.4)',
@@ -338,15 +340,15 @@ export default function LibraryCardCatalog() {
                         </div>
 
                         {/* 2. Drawer Pull Glow & Card Count Badge */}
-                        <div className="pb-1 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <span className="rounded-full bg-[#3D2111]/90 border border-[#8C5232] px-2 py-0.5 font-mono text-[9px] sm:text-[10px] text-[#FFE8C2] font-bold shadow-sm">
+                        <div className="pb-0.5 sm:pb-1 text-center pointer-events-none opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                          <span className="rounded-full bg-[#3D2111]/90 border border-[#8C5232] px-1.5 sm:px-2 py-0.2 sm:py-0.5 font-mono text-[8px] xs:text-[9px] sm:text-[10px] text-[#FFE8C2] font-bold shadow-sm whitespace-nowrap">
                             {drawer.cardCount} cards ➔
                           </span>
                         </div>
 
                         {/* Golden Pull Gleam Border on Hover */}
                         <div
-                          className={`absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-200 border-2 border-amber-400/80 shadow-[inset_0_0_15px_rgba(255,215,100,0.35)] ${
+                          className={`absolute inset-0 rounded-lg sm:rounded-xl pointer-events-none transition-opacity duration-200 border-2 border-amber-400/80 shadow-[inset_0_0_15px_rgba(255,215,100,0.35)] ${
                             isHovered ? 'opacity-100' : 'opacity-0'
                           }`}
                         />
@@ -370,35 +372,37 @@ export default function LibraryCardCatalog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-                className="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl py-2 my-auto"
+                className="relative z-10 flex flex-col items-center justify-center w-full max-w-[420px] xs:max-w-[480px] sm:max-w-xl md:max-w-2xl py-1 sm:py-2 my-auto"
               >
                 {/* Header Prompt Bar */}
-                <div className="flex items-center justify-between w-full mb-3 px-4 py-2.5 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
-                  <div className="flex items-center gap-2">
-                    <CozyIcon name={currentDrawerDef.iconName} size={28} className="drop-shadow-xs shrink-0 select-none" />
-                    <div>
-                      <h2 id="drawer-title" className="font-display text-base sm:text-xl font-bold text-[#FFE8C2] leading-tight">
+                <div className="flex items-center justify-between w-full mb-2 sm:mb-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <CozyIcon name={currentDrawerDef.iconName} size={24} className="drop-shadow-xs shrink-0 select-none sm:w-7 sm:h-7" />
+                    <div className="min-w-0">
+                      <h2 id="drawer-title" className="font-display text-sm sm:text-lg md:text-xl font-bold text-[#FFE8C2] leading-tight truncate">
                         {currentDrawerDef.name} Drawer
                       </h2>
-                      <p className="font-hand text-xs sm:text-sm text-[#E8C2A0] font-bold">
-                        A skills checklist clipboard is resting inside the drawer
+                      <p className="font-hand text-[11px] sm:text-xs md:text-sm text-[#E8C2A0] font-bold truncate">
+                        <span className="hidden sm:inline">A skills checklist clipboard is resting inside the drawer</span>
+                        <span className="sm:hidden">Tap clipboard to inspect skills</span>
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                     <button
                       type="button"
                       onClick={handleBackToCabinet}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
                     >
-                      <span>← Back to cabinet</span>
+                      <span className="hidden sm:inline">← Back to cabinet</span>
+                      <span className="sm:hidden">← Cabinet</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={handleCloseAll}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
                       aria-label="Close"
                     >
                       ✕
@@ -416,7 +420,7 @@ export default function LibraryCardCatalog() {
 
                   {/* The Clipboard laying horizontally inside the drawer cavity */}
                   <div
-                    className="group/clip absolute cursor-pointer transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                    className="group/clip absolute cursor-pointer transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98] touch-manipulation"
                     style={{
                       left: '50%',
                       top: '42%',
@@ -437,7 +441,7 @@ export default function LibraryCardCatalog() {
 
                     {/* Pink Clickable Bubble Button right on the clipboard (counter-rotated so button & tooltip stay upright) */}
                     <div
-                      className="absolute inset-0 flex items-center justify-center pointer-events-auto"
+                      className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto"
                       style={{
                         transform: 'rotate(90deg)',
                       }}
@@ -450,7 +454,7 @@ export default function LibraryCardCatalog() {
                           setIsClipboardZoomed(true);
                         }}
                         aria-label={`Open ${currentDrawerDef.name} skills clipboard`}
-                        className="group/btn relative flex items-center justify-center cursor-pointer"
+                        className="group/btn relative flex items-center justify-center cursor-pointer touch-manipulation"
                       >
                         {/* Outer Pulsing Glow Ring */}
                         <span
@@ -463,17 +467,22 @@ export default function LibraryCardCatalog() {
                           className="absolute -inset-1.5 rounded-full bg-pink-300/60 blur-xs"
                         />
                         {/* Solid Center Hotspot Disc with SVG Sparkle */}
-                        <span className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-transform duration-200 group-hover/btn:scale-110 active:scale-95 border-2 border-white">
-                          <svg className="w-4 h-4 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="currentColor">
+                        <span className="relative flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-transform duration-200 group-hover/btn:scale-110 active:scale-95 border-2 border-white">
+                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                           </svg>
                         </span>
 
-                        {/* Tooltip on Hover */}
-                        <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/clip:opacity-100 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100">
+                        {/* Tooltip on Hover (Desktop) */}
+                        <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-pink-300/80 bg-paper/95 px-3 py-1 font-hand text-xs sm:text-sm font-bold text-cocoa opacity-0 shadow-cozy backdrop-blur-md transition-opacity duration-200 group-hover/clip:opacity-100 group-hover/btn:opacity-100 dark:border-white/20 dark:bg-black/80 dark:text-pink-100 hidden sm:block">
                           Inspect Clipboard
                         </span>
                       </button>
+
+                      {/* Touch label for mobile */}
+                      <span className="mt-1 block sm:hidden rounded-full bg-[#3D2111]/90 border border-[#8C5232] px-1.5 py-0.2 font-mono text-[7.5px] text-[#FFE8C2] font-bold whitespace-nowrap shadow-sm pointer-events-none">
+                        Tap clipboard
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -507,27 +516,28 @@ export default function LibraryCardCatalog() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 15 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-                  className="relative z-10 flex flex-col items-center justify-center w-full max-w-[500px] sm:max-w-[540px] md:max-w-[560px] py-1 my-auto"
+                  className="relative z-10 flex flex-col items-center justify-center w-full max-w-[400px] xs:max-w-[460px] sm:max-w-[520px] md:max-w-[560px] py-1 my-auto"
                 >
                   {/* Top Header Navigation Bar */}
-                  <div className="flex items-center justify-between w-full mb-2 px-3 py-2 rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
+                  <div className="flex items-center justify-between w-full mb-1.5 sm:mb-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#4A2A1A]/95 border-2 border-[#8A522C] shadow-lg text-[#FFF5E6]">
                     <button
                       type="button"
                       onClick={handleBackToDrawer}
-                      className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-hand text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                     >
-                      <span>← Back to drawer</span>
+                      <span className="hidden sm:inline">← Back to drawer</span>
+                      <span className="sm:hidden">← Drawer</span>
                     </button>
 
-                    <div className="flex items-center gap-1.5 font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold">
-                      <CozyIcon name={currentDrawerDef.iconName} size={18} className="shrink-0 select-none" />
-                      <span>{currentDrawerDef.name}</span>
+                    <div className="flex items-center gap-1.5 font-hand text-xs sm:text-sm text-[#FFE8C2] font-bold min-w-0">
+                      <CozyIcon name={currentDrawerDef.iconName} size={16} className="shrink-0 select-none sm:w-[18px] sm:h-[18px]" />
+                      <span className="truncate">{currentDrawerDef.name}</span>
                     </div>
 
                     <button
                       type="button"
                       onClick={handleCloseAll}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer"
+                      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#6B3D23] hover:bg-[#854D2C] border border-[#9E5D36] text-[#FFE8C2] font-bold shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                       aria-label="Close"
                     >
                       ✕
@@ -546,35 +556,35 @@ export default function LibraryCardCatalog() {
                     <div
                       className="absolute flex flex-col justify-between select-text"
                       style={{
-                        left: '11%',
-                        right: '11%',
-                        top: '16.5%',
-                        bottom: '8.5%',
+                        left: '10.5%',
+                        right: '10.5%',
+                        top: '16.0%',
+                        bottom: '8.0%',
                       }}
                     >
                       {/* Fixed Top Paper Header (Pinned above turnable sheets) */}
-                      <div className="border-b-2 border-[#DAC8AD] pb-1.5 mb-1 flex items-start justify-between gap-2 px-1 shrink-0">
+                      <div className="border-b-2 border-[#DAC8AD] pb-1 sm:pb-1.5 mb-1 flex items-start justify-between gap-1.5 sm:gap-2 px-0.5 sm:px-1 shrink-0">
                         <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1 sm:gap-1.5">
                             <CozyIcon
                               name={skillData.iconName}
-                              size={22}
-                              className="drop-shadow-xs shrink-0 select-none"
+                              size={18}
+                              className="drop-shadow-xs shrink-0 select-none sm:w-[22px] sm:h-[22px]"
                             />
-                            <span className="font-mono text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold truncate">
+                            <span className="font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] text-[#8C6B4F] tracking-wider uppercase font-bold truncate">
                               {currentDrawerDef.name} • {skillData.catalogCode}
                             </span>
                           </div>
                           <h3
                             id="clipboard-title"
-                            className="font-display text-base sm:text-xl font-bold text-[#3B2212] leading-tight truncate mt-0.5"
+                            className="font-display text-sm xs:text-base sm:text-xl font-bold text-[#3B2212] leading-tight truncate mt-0.5"
                           >
                             {skillData.title}
                           </h3>
                         </div>
 
                         <span
-                          className={`shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${
+                          className={`shrink-0 rounded-full px-2 py-0.2 sm:px-2.5 sm:py-0.5 font-mono text-[8px] xs:text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider ${
                             skillData.status === 'Daily Driver'
                               ? 'bg-amber-100 text-amber-900 border border-amber-300'
                               : skillData.status === 'Active'
@@ -623,40 +633,40 @@ export default function LibraryCardCatalog() {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            className="absolute inset-0 flex flex-col justify-between overflow-y-auto pr-1 select-text custom-scrollbar space-y-2 py-0.5"
+                            className="absolute inset-0 flex flex-col justify-start overflow-y-auto pr-0.5 sm:pr-1 select-text custom-scrollbar space-y-1.5 sm:space-y-2 py-0.5"
                             style={{
                               transformOrigin: pageDirection > 0 ? 'left center' : 'right center',
                               transformStyle: 'preserve-3d',
                             }}
                           >
                             {/* Section 1: Proficiency & Mastery Summary */}
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                            <div className="space-y-0.5 sm:space-y-1">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
                                 <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
                                 <span>Proficiency & Technical Mastery</span>
                               </div>
-                              <p className="rounded-lg bg-[#FAF5EE]/95 border border-[#E8DAC5] p-2 font-sans text-[11px] sm:text-[12px] leading-relaxed text-[#4A3319] shadow-2xs">
+                              <p className="rounded-lg bg-[#FAF5EE]/95 border border-[#E8DAC5] p-1.5 sm:p-2 font-sans text-[10px] xs:text-[11px] sm:text-[12px] leading-relaxed text-[#4A3319] shadow-2xs">
                                 {skillData.masterySummary}
                               </p>
                             </div>
 
                             {/* Section 2: What I Built (Grounding from Real Repos) */}
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                            <div className="space-y-0.5 sm:space-y-1">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
                                 <svg className="w-2.5 h-2.5 text-amber-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
                                 <span>Production Work & Git History</span>
                               </div>
-                              <ul className="space-y-1">
+                              <ul className="space-y-0.5 sm:space-y-1">
                                 {skillData.whatIBuilt.map((item, bIdx) => (
                                   <li
                                     key={bIdx}
-                                    className="flex items-start gap-1.5 text-[10.5px] sm:text-[11.5px] leading-snug text-[#4A3319] bg-white/70 p-1.5 rounded-md border border-[#EDE2D3]/90 shadow-2xs"
+                                    className="flex items-start gap-1 sm:gap-1.5 text-[9.5px] xs:text-[10.5px] sm:text-[11.5px] leading-snug text-[#4A3319] bg-white/70 p-1 sm:p-1.5 rounded-md border border-[#EDE2D3]/90 shadow-2xs"
                                   >
-                                    <span className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-rose-400" />
+                                    <span className="shrink-0 mt-1 w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-400" />
                                     <span>{item}</span>
                                   </li>
                                 ))}
@@ -664,8 +674,8 @@ export default function LibraryCardCatalog() {
                             </div>
 
                             {/* Section 3: Key Architectural Highlights */}
-                            <div className="space-y-1 pb-1">
-                              <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
+                            <div className="space-y-0.5 sm:space-y-1 pb-1">
+                              <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] uppercase font-bold text-[#7A583B]">
                                 <svg className="w-2.5 h-2.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                                 </svg>
@@ -675,7 +685,7 @@ export default function LibraryCardCatalog() {
                                 {skillData.keyHighlights.map((hl, hlIdx) => (
                                   <span
                                     key={hlIdx}
-                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F2E7D8]/90 border border-[#DECFBA] text-[#5C3D24] text-[9.5px] sm:text-[10.5px] font-medium leading-tight"
+                                    className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md bg-[#F2E7D8]/90 border border-[#DECFBA] text-[#5C3D24] text-[8.5px] xs:text-[9.5px] sm:text-[10.5px] font-medium leading-tight"
                                   >
                                     <span className="w-1 h-1 rounded-full bg-amber-600 shrink-0" />
                                     {hl}
@@ -688,38 +698,38 @@ export default function LibraryCardCatalog() {
                       </div>
 
                       {/* Bottom Turn Page Controls Bar */}
-                      <div className="pt-2 border-t-2 border-[#DAC8AD] mt-1 shrink-0 flex flex-col gap-1.5 select-none">
-                        <div className="flex items-center justify-between gap-1">
+                      <div className="pt-1.5 sm:pt-2 border-t-2 border-[#DAC8AD] mt-1 shrink-0 flex flex-col gap-1 sm:gap-1.5 select-none">
+                        <div className="flex items-center justify-between gap-1 w-full">
                           {/* Previous Sheet Button */}
                           <button
                             type="button"
                             onClick={() => handleTurnPage(-1)}
                             disabled={pageIndex === 0}
                             aria-label="Previous skill sheet"
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-hand text-xs font-bold transition-all ${
+                            className={`inline-flex items-center gap-0.5 sm:gap-1 px-2 sm:px-2.5 py-1 rounded-lg font-hand text-[11px] sm:text-xs font-bold transition-all shrink-0 ${
                               pageIndex === 0
                                 ? 'opacity-40 cursor-not-allowed bg-[#ECE3D5] text-[#8C7A68]'
-                                : 'bg-[#ECE3D5] hover:bg-[#E2D6C4] active:scale-95 text-[#4A3319] border border-[#D5C6B1] shadow-2xs cursor-pointer'
+                                : 'bg-[#ECE3D5] hover:bg-[#E2D6C4] active:scale-95 text-[#4A3319] border border-[#D5C6B1] shadow-2xs cursor-pointer touch-manipulation'
                             }`}
                           >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                             </svg>
                             <span>Prev</span>
                           </button>
 
                           {/* Sheet Indicator & Clickable Micro Pagination Dots */}
-                          <div className="flex flex-col items-center">
-                            <div className="flex items-center gap-1 font-mono text-[9px] sm:text-[10px] font-bold text-[#6D4C33]">
+                          <div className="flex flex-col items-center shrink-0">
+                            <div className="flex items-center gap-0.5 sm:gap-1 font-mono text-[8.5px] xs:text-[9px] sm:text-[10px] font-bold text-[#6D4C33]">
                               <span>Sheet</span>
-                              <span className="px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
+                              <span className="px-1 sm:px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
                                 {pageIndex + 1}
                               </span>
                               <span>of</span>
                               <span>{cards.length}</span>
                             </div>
 
-                            <div className="flex items-center gap-1 mt-1">
+                            <div className="hidden xs:flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1">
                               {cards.map((_, dotIdx) => (
                                 <button
                                   key={dotIdx}
@@ -731,8 +741,8 @@ export default function LibraryCardCatalog() {
                                     }
                                   }}
                                   aria-label={`Jump to sheet ${dotIdx + 1}`}
-                                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                                    dotIdx === pageIndex ? 'w-3.5 bg-rose' : 'w-1.5 bg-[#CBB79F] hover:bg-rose-300'
+                                  className={`h-1 sm:h-1.5 rounded-full transition-all cursor-pointer ${
+                                    dotIdx === pageIndex ? 'w-2.5 sm:w-3.5 bg-rose' : 'w-1 sm:w-1.5 bg-[#CBB79F] hover:bg-rose-300'
                                   }`}
                                 />
                               ))}
@@ -744,11 +754,11 @@ export default function LibraryCardCatalog() {
                             type="button"
                             onClick={() => handleTurnPage(1)}
                             aria-label="Turn page to next skill sheet"
-                            className="group/turn inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-xs sm:text-sm font-bold shadow-cozy transition-all cursor-pointer"
+                            className="group/turn inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white font-hand text-[11px] sm:text-xs md:text-sm font-bold shadow-cozy transition-all cursor-pointer shrink-0 touch-manipulation"
                           >
                             <span>{pageIndex === cards.length - 1 ? 'First Sheet' : 'Turn Page'}</span>
                             <svg
-                              className="w-3.5 h-3.5 transition-transform group-hover/turn:translate-x-0.5"
+                              className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover/turn:translate-x-0.5"
                               viewBox="0 0 24 24"
                               fill="none"
                               stroke="currentColor"
@@ -760,7 +770,7 @@ export default function LibraryCardCatalog() {
                         </div>
 
                         {/* Sub-footer: Quick shortcuts */}
-                        <div className="flex items-center justify-between text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-[#8C6B4F] font-hand font-bold px-0.5">
                           <button
                             type="button"
                             onClick={handleBackToDrawer}

@@ -161,6 +161,7 @@ export default function LibraryTechnicalBook() {
 
                 {/* ============================================================ */}
                 {/* DESKTOP & TABLET: 16:9 TWO-PAGE SPREAD VIEW (md and up)     */}
+                {/* Both pages have FULL-HEIGHT smooth scrollable containers     */}
                 {/* ============================================================ */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.82, y: 15 }}
@@ -208,107 +209,105 @@ export default function LibraryTechnicalBook() {
 
                   {/* ========================================================== */}
                   {/* LEFT PAGE: STRICT SAFE WRITING ZONE                        */}
-                  {/* left: 12.0% (clears pink ribbon at 4-8%)                   */}
-                  {/* right: 53.5% (stops cleanly before center spine at 50%)    */}
-                  {/* top: 16.0% (clears washi tape & golden corner)             */}
-                  {/* bottom: 16.0% (clears bottom curve & corner)               */}
+                  {/* left: 12.0%, right: 53.5%, top: 15.5%, bottom: 15.5%       */}
+                  {/* FULL-HEIGHT SCROLLABLE FROM TITLE TO INVARIANTS            */}
                   {/* ========================================================== */}
                   <div
-                    className="absolute z-20 flex flex-col justify-between text-[#3D2517] select-text"
+                    className="absolute z-20 text-[#3D2517] select-text"
                     style={{
                       left: '12.0%',
                       right: '53.5%',
-                      top: '16.0%',
-                      bottom: '16.0%',
+                      top: '15.5%',
+                      bottom: '15.5%',
                     }}
                   >
-                    {/* Top Bar: Switcher Pills between the 2 Deep Dives */}
-                    <div className="shrink-0">
-                      <div className="flex items-center justify-between gap-1 pb-1 border-b border-[#D8C7B0]/80">
-                        <div className="flex items-center gap-1">
-                          {technicalBlogs.map((b, idx) => (
-                            <button
-                              key={b.slug}
-                              type="button"
-                              onClick={() => {
-                                soundscape.playClickSound();
-                                setSelectedBlogIndex(idx);
-                              }}
-                              className={`px-2 py-0.5 rounded-full text-[9px] lg:text-[10px] font-sans font-bold transition-all whitespace-nowrap cursor-pointer ${
-                                idx === selectedBlogIndex
-                                  ? 'bg-[#E8507D] text-white shadow-xs'
-                                  : 'bg-[#EFE5D7] text-[#6E4E36] hover:bg-[#E5D7C5]'
-                              }`}
-                            >
-                              {b.category}
-                            </button>
-                          ))}
-                        </div>
-                        <span className="text-[9px] font-mono text-[#8C6D54] font-semibold shrink-0">
-                          {activeBlog.date} • {activeBlog.readTime}
-                        </span>
+                    {/* Slim Fixed Top Bar: Category Switcher Pills */}
+                    <div className="absolute inset-x-0 top-0 h-[28px] flex items-center justify-between border-b border-[#D8C7B0]/80 pb-1 select-none">
+                      <div className="flex items-center gap-1">
+                        {technicalBlogs.map((b, idx) => (
+                          <button
+                            key={b.slug}
+                            type="button"
+                            onClick={() => {
+                              soundscape.playClickSound();
+                              setSelectedBlogIndex(idx);
+                            }}
+                            className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold transition-all whitespace-nowrap cursor-pointer ${
+                              idx === selectedBlogIndex
+                                ? 'bg-[#E8507D] text-white shadow-xs'
+                                : 'bg-[#EFE5D7] text-[#6E4E36] hover:bg-[#E5D7C5]'
+                            }`}
+                          >
+                            {b.category}
+                          </button>
+                        ))}
                       </div>
+                      <span className="text-[9px] font-mono text-[#8C6D54] font-semibold">
+                        {activeBlog.date} • {activeBlog.readTime}
+                      </span>
+                    </div>
 
-                      {/* Article Title & Subtitle */}
-                      <div className="mt-1.5">
+                    {/* FULLY SCROLLABLE LEFT PAGE CONTENT (From below the slim top bar down to the bottom) */}
+                    <div className="absolute inset-x-0 top-[32px] bottom-0 overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
+                      {/* Title, Subtitle & Badge */}
+                      <div>
                         <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[8px] font-mono font-bold text-amber-900 uppercase">
                           {activeBlog.badge}
                         </span>
-                        <h2 className="mt-0.5 font-display text-sm lg:text-base font-extrabold text-[#2F1A0F] leading-snug">
+                        <h2 className="mt-1 font-display text-base lg:text-lg font-extrabold text-[#2F1A0F] leading-snug">
                           {activeBlog.title}
                         </h2>
-                        <p className="mt-0.5 font-hand text-[11px] text-[#7D5A42] leading-tight">
+                        <p className="mt-0.5 font-hand text-xs text-[#7D5A42] leading-tight">
                           {activeBlog.subtitle}
                         </p>
                       </div>
 
-                      {/* Summary Callout Box */}
-                      <div className="mt-1.5 p-2 rounded-lg bg-[#FAF4EB]/90 border border-[#E8DAC9] text-[10px] leading-relaxed text-[#4A3223]">
+                      {/* Thesis Card */}
+                      <div className="p-2.5 rounded-lg bg-[#FAF4EB]/95 border border-[#E8DAC9] text-[10.5px] leading-relaxed text-[#4A3223] shadow-2xs">
                         <strong className="block text-[8.5px] uppercase font-mono text-rose-600 font-bold mb-0.5">
                           Architectural Thesis
                         </strong>
                         {activeBlog.summary}
                       </div>
-                    </div>
 
-                    {/* Left Page Scrollable Content: Problem Breakdown + Architecture Diagram + Invariants */}
-                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
-                      {/* 1. Problem Statement */}
-                      <div className="space-y-1">
-                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
-                          The Engineering Challenge
+                      {/* Problem Statement */}
+                      <div className="space-y-1.5">
+                        <h3 className="font-sans font-bold text-xs text-[#2A160C] flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                          <span>The Engineering Challenge</span>
                         </h3>
                         {activeBlog.leftPage.problemStatement.map((p, idx) => (
-                          <p key={idx}>{p}</p>
+                          <p key={idx} className="text-[10.5px] leading-relaxed">{p}</p>
                         ))}
                       </div>
 
-                      {/* 2. System Architecture Flow Diagram */}
-                      <div className="rounded-lg bg-[#241B15] border border-[#443328] p-2 text-[#FFE8B2] shadow-xs">
-                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8px] font-mono text-[#C4AC99]">
+                      {/* Architecture Flow Diagram */}
+                      <div className="rounded-lg bg-[#241B15] border border-[#443328] p-2.5 text-[#FFE8B2] shadow-xs">
+                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8.5px] font-mono text-[#C4AC99]">
                           <span className="font-bold text-amber-300">
                             📊 {activeBlog.leftPage.diagram.title}
                           </span>
-                          <span className="text-[7.5px] text-[#A69080]">Architecture Map</span>
+                          <span className="text-[7.5px] text-[#A69080]">Architecture Flow</span>
                         </div>
-                        <pre className="overflow-x-auto whitespace-pre font-mono text-[7.5px] lg:text-[8px] leading-tight select-text py-0.5 scrollbar-none text-[#FDF4DF]">
+                        <pre className="overflow-x-auto whitespace-pre font-mono text-[8px] leading-tight select-text py-1 scrollbar-none text-[#FDF4DF]">
                           <code>{activeBlog.leftPage.diagram.ascii}</code>
                         </pre>
-                        <p className="mt-1 text-[7.5px] font-sans text-[#B09985] italic">
+                        <p className="mt-1 text-[8px] font-sans text-[#B09985] italic">
                           {activeBlog.leftPage.diagram.caption}
                         </p>
                       </div>
 
-                      {/* 3. Core System Invariants */}
-                      <div className="space-y-1">
-                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
-                          Core Mathematical & System Invariants
+                      {/* Core System Invariants */}
+                      <div className="space-y-1.5">
+                        <h3 className="font-sans font-bold text-xs text-[#2A160C] flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+                          <span>Core Mathematical & System Invariants</span>
                         </h3>
-                        <div className="space-y-1">
+                        <div className="space-y-1.5">
                           {activeBlog.leftPage.coreInvariants.map((inv, idx) => (
                             <div
                               key={idx}
-                              className="p-1.5 rounded-md bg-[#F5EBE0] border-l-2 border-rose-500 text-[10px]"
+                              className="p-2 rounded-md bg-[#F5EBE0] border-l-3 border-rose-500 text-[10px]"
                             >
                               <span className="font-bold font-mono text-[#4A2411]">
                                 #{idx + 1} {inv.title}:
@@ -318,33 +317,31 @@ export default function LibraryTechnicalBook() {
                           ))}
                         </div>
                       </div>
-                    </div>
 
-                    {/* Left Page Footer Indicator */}
-                    <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[9px] font-mono text-[#8C6D54] shrink-0">
-                      <span>Deep Dive 1 of 2</span>
-                      <span>Turn right for implementation & code ➔</span>
+                      {/* Transition Note */}
+                      <div className="pt-2 pb-1 border-t border-[#D8C7B0]/60 flex items-center justify-between text-[9.5px] font-mono text-[#8C6D54]">
+                        <span>Deep Dive Part 1 of 2</span>
+                        <span>Turn right for implementation & code ➔</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* ========================================================== */}
                   {/* RIGHT PAGE: STRICT SAFE WRITING ZONE                       */}
-                  {/* left: 53.5% (starts cleanly after center spine at 50%)     */}
-                  {/* right: 12.0% (clears right golden corner at 88-100%)       */}
-                  {/* top: 16.0% (clears floral branch sticker & golden corner)  */}
-                  {/* bottom: 16.0% (clears bottom curve & corner)               */}
+                  {/* left: 53.5%, right: 12.0%, top: 15.5%, bottom: 15.5%       */}
+                  {/* FULL-HEIGHT SCROLLABLE FROM CODE TO BENCHMARKS             */}
                   {/* ========================================================== */}
                   <div
-                    className="absolute z-20 flex flex-col justify-between text-[#3D2517] select-text"
+                    className="absolute z-20 text-[#3D2517] select-text"
                     style={{
                       left: '53.5%',
                       right: '12.0%',
-                      top: '16.0%',
-                      bottom: '16.0%',
+                      top: '15.5%',
+                      bottom: '15.5%',
                     }}
                   >
-                    {/* Top Header of Right Page */}
-                    <div className="flex items-center justify-between pb-1 border-b border-[#D8C7B0]/80 shrink-0">
+                    {/* Slim Fixed Top Bar: Tags & Indicator */}
+                    <div className="absolute inset-x-0 top-0 h-[28px] flex items-center justify-between border-b border-[#D8C7B0]/80 pb-1 select-none">
                       <span className="font-hand text-sm font-bold text-[#6D4C35]">
                         Implementation Mechanics & Benchmarks
                       </span>
@@ -360,21 +357,22 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* Right Page Scrollable Content: Deep Dives + Code Snippets + Benchmarks */}
-                    <div className="my-1 overflow-y-auto pr-1 text-[10.5px] leading-relaxed text-[#4A3223] space-y-2 cozy-scrollbar flex-1">
+                    {/* FULLY SCROLLABLE RIGHT PAGE CONTENT (From below top bar to above bottom controls) */}
+                    <div className="absolute inset-x-0 top-[32px] bottom-[38px] overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
                       {/* Implementation Sections */}
                       {activeBlog.rightPage.implementationSections.map((sec, secIdx) => (
-                        <div key={secIdx} className="space-y-1">
-                          <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
-                            {sec.heading}
+                        <div key={secIdx} className="space-y-1.5">
+                          <h3 className="font-sans font-bold text-xs text-[#2A160C] flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                            <span>{sec.heading}</span>
                           </h3>
                           {sec.paragraphs.map((p, pIdx) => (
-                            <p key={pIdx}>{p}</p>
+                            <p key={pIdx} className="text-[10.5px] leading-relaxed">{p}</p>
                           ))}
 
                           {/* Code Snippet Box */}
                           {sec.codeSnippet && (
-                            <div className="my-1 rounded-md bg-[#231A14] text-[#FDF6E2] p-2 border border-[#48372B] font-mono text-[9px] relative group/code shadow-xs">
+                            <div className="my-1.5 rounded-lg bg-[#231A14] text-[#FDF6E2] p-2.5 border border-[#48372B] font-mono text-[9px] relative group/code shadow-xs">
                               <div className="flex items-center justify-between pb-1 mb-1 border-b border-[#3B2C23] text-[8px] text-[#A69080]">
                                 <span className="font-bold text-amber-200/90">
                                   {sec.codeSnippet.caption ?? 'Implementation'}
@@ -387,7 +385,7 @@ export default function LibraryTechnicalBook() {
                                       `${activeBlog.slug}-${secIdx}`
                                     )
                                   }
-                                  className="px-1.5 py-0.5 rounded bg-[#3B2C23] hover:bg-[#523E32] text-white transition-colors cursor-pointer text-[7.5px]"
+                                  className="px-2 py-0.5 rounded bg-[#3B2C23] hover:bg-[#523E32] text-white transition-colors cursor-pointer text-[7.5px]"
                                 >
                                   {isCopied === `${activeBlog.slug}-${secIdx}`
                                     ? '✓ Copied'
@@ -402,7 +400,7 @@ export default function LibraryTechnicalBook() {
 
                           {sec.callout && (
                             <div
-                              className={`p-1.5 rounded-md border-l-2 text-[10px] ${
+                              className={`p-2 rounded-md border-l-3 text-[10px] ${
                                 sec.callout.type === 'warning'
                                   ? 'bg-rose-50 border-rose-500 text-rose-900'
                                   : 'bg-amber-50 border-amber-500 text-[#553C18]'
@@ -418,17 +416,18 @@ export default function LibraryTechnicalBook() {
                       ))}
 
                       {/* Production Benchmarks & Trade-Offs Matrix */}
-                      <div className="space-y-1 pt-1 border-t border-[#E0D2C0]">
-                        <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
-                          Production Benchmarks & Verification
+                      <div className="space-y-1.5 pt-2 border-t border-[#E0D2C0]">
+                        <h3 className="font-sans font-bold text-xs text-[#2A160C] flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                          <span>Production Benchmarks & Verification</span>
                         </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
                           {activeBlog.rightPage.benchmarksAndTradeoffs.map((item, bIdx) => (
                             <div
                               key={bIdx}
-                              className="p-1.5 rounded-md bg-[#FDF9F2] border border-[#DECFBE] text-center"
+                              className="p-2 rounded-md bg-[#FDF9F2] border border-[#DECFBE] text-center shadow-2xs"
                             >
-                              <span className="block text-[8px] font-mono text-[#8C6D54] uppercase">
+                              <span className="block text-[8px] font-mono text-[#8C6D54] uppercase font-bold">
                                 {item.metric}
                               </span>
                               <span className="block text-xs font-bold font-mono text-rose-600 mt-0.5">
@@ -443,28 +442,32 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* Bottom Controls: Previous / Next Article */}
-                    <div className="pt-1 border-t border-[#D8C7B0]/80 flex items-center justify-between text-[10.5px] font-hand font-bold shrink-0">
+                    {/* Fixed Bottom Navigation Controls */}
+                    <div className="absolute inset-x-0 bottom-0 h-[34px] border-t border-[#D8C7B0]/90 pt-1 flex items-center justify-between text-[10.5px] font-hand font-bold select-none">
                       <button
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
                           setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
-                        className="px-2.5 py-0.5 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] text-[#4A301D] transition-colors cursor-pointer"
+                        className="px-2.5 py-1 rounded-lg bg-[#EAE0D1] hover:bg-[#E0D2C0] active:scale-95 text-[#4A301D] transition-all cursor-pointer shadow-2xs touch-manipulation"
                       >
                         {selectedBlogIndex === 0 ? '← Next: Socket Server' : '← Prev: Syntactiq'}
                       </button>
-                      <span className="font-mono text-[8.5px] text-[#8C6D54]">
-                        Deep Dive {selectedBlogIndex + 1} of 2
-                      </span>
+                      <div className="flex items-center gap-1 font-mono text-[9px] font-bold text-[#6D4C33]">
+                        <span>Deep Dive</span>
+                        <span className="px-1.5 py-0.2 rounded-md bg-[#F0E6D8] border border-[#D8C7B0] text-[#3B2212]">
+                          {selectedBlogIndex + 1}
+                        </span>
+                        <span>of 2</span>
+                      </div>
                       <button
                         type="button"
                         onClick={() => {
                           soundscape.playClickSound();
                           setSelectedBlogIndex((prev) => (prev === 0 ? 1 : 0));
                         }}
-                        className="px-3 py-0.5 rounded-lg bg-[#E8507D] hover:bg-[#D43D69] text-white transition-colors cursor-pointer shadow-2xs"
+                        className="px-3 py-1 rounded-lg bg-rose hover:bg-rose-600 active:scale-95 text-white transition-all cursor-pointer shadow-cozy touch-manipulation"
                       >
                         {selectedBlogIndex === 0 ? 'Read: Socket Server →' : 'Read: Syntactiq →'}
                       </button>
@@ -694,7 +697,7 @@ export default function LibraryTechnicalBook() {
                       {/* 4. Implementation Sections & Code */}
                       {activeBlog.rightPage.implementationSections.map((sec, sIdx) => (
                         <div key={sIdx} className="space-y-1">
-                          <h3 className="font-sans font-bold text-[11px] text-[#2A160C]">
+                          <h3 className="font-sans font-bold text-[10.5px] text-[#2A160C]">
                             {sec.heading}
                           </h3>
                           {sec.paragraphs.map((p, pIdx) => (

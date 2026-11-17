@@ -155,6 +155,11 @@
     "size": "1199x1312, transparent"
   },
   {
+    "path": "public/assets/objects/library-cabinet-night.png",
+    "kind": "object",
+    "size": "1873x2065, transparent"
+  },
+  {
     "path": "public/assets/objects/drawer-open.png",
     "kind": "object",
     "size": "1725x1296, transparent"

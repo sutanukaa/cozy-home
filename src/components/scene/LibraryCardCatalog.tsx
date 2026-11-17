@@ -209,12 +209,23 @@ export default function LibraryCardCatalog() {
         }}
         className="pointer-events-auto absolute z-20 select-none group"
       >
-        {/* Cabinet Illustration */}
-        <AssetImage
-          src="/assets/objects/card-catalog.png"
-          alt="Vintage wooden library card catalog cabinet"
-          className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(20,10,15,0.45)] transition-transform duration-300 group-hover:scale-[1.015]"
-        />
+        {/* Day Cabinet Illustration */}
+        <div className="only-day w-full h-full">
+          <AssetImage
+            src="/assets/objects/card-catalog.png"
+            alt="Vintage wooden library card catalog cabinet"
+            className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(20,10,15,0.45)] transition-transform duration-300 group-hover:scale-[1.015]"
+          />
+        </div>
+
+        {/* Night Cabinet Illustration */}
+        <div className="only-night w-full h-full">
+          <AssetImage
+            src="/assets/objects/library-cabinet-night.png"
+            alt="Vintage wooden library card catalog cabinet at night"
+            className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(10,5,15,0.65)] transition-transform duration-300 group-hover:scale-[1.015]"
+          />
+        </div>
 
         {/* Hotspot Bubble Button (Canonical CozyBubbleButton matching all rooms) */}
         <div className="absolute left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 z-30">

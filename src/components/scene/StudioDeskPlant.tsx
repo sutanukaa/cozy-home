@@ -225,42 +225,18 @@ export default function StudioDeskPlant() {
           </button>
         </div>
 
-        {/* --- 1. SPEECH / TOOLTIP BUBBLE --- */}
-        <AnimatePresence>
-          {(isHovered || isWatering) && mounted && (
-            <motion.div
-              initial={{ opacity: 0, y: 6, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 4, scale: 0.9 }}
-              transition={{ duration: 0.18 }}
-              className={`pointer-events-none absolute left-1/2 -translate-x-1/2 z-30 whitespace-nowrap ${
-                stage === 0 ? '-top-9 sm:-top-10' : '-top-10 sm:-top-12'
-              }`}
+        {/* --- Replant seed option when fully bloomed --- */}
+        {stage === 2 && (
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30 whitespace-nowrap">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="rounded-full border border-pink-300/80 bg-white/90 hover:bg-rose px-2 py-0.5 text-[8px] font-mono font-bold text-cocoa hover:text-white shadow-2xs backdrop-blur-xs transition-colors dark:bg-black/60 dark:text-pink-300"
             >
-              <div className="relative rounded-full border border-pink-300 bg-white/95 px-2.5 py-1 text-[10px] sm:text-xs font-mono font-bold text-accent shadow-md backdrop-blur-xs dark:border-pink-500/50 dark:bg-[#2A1828]/95 dark:text-pink-200">
-                <span>{getBubbleText()}</span>
-                {/* Speech Bubble Downward Triangle Arrow */}
-                <span
-                  aria-hidden
-                  className="absolute left-1/2 -bottom-1 -translate-x-1/2 h-2 w-2 rotate-45 border-r border-b border-pink-300 bg-white dark:border-pink-500/50 dark:bg-[#2A1828]"
-                />
-              </div>
-
-              {/* Reset option when fully bloomed */}
-              {stage === 2 && (
-                <div className="pointer-events-auto mt-1 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="rounded bg-pink-100/90 hover:bg-rose px-1.5 py-0.5 text-[8px] font-mono font-bold text-cocoa hover:text-white dark:bg-black/50 dark:text-pink-300"
-                  >
-                    [ replant seed ]
-                  </button>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+              [ replant seed ]
+            </button>
+          </div>
+        )}
 
         {/* --- 2. WATERING CAN SPRINKLER ANIMATION --- */}
         <AnimatePresence>

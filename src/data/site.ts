@@ -21,7 +21,7 @@ export const site = {
     funFacts: [
       'Won 1st place globally at the 100Agents Hackathon among 650+ teams.',
       '1st runner up at Hackfest’25 at IIT Dhanbad.',
-      '2nd runners up among 120 teams at Dev Nexus 1.0',
+      '2nd runners up among 300 teams at DevNexus',
     ],
   },
   mascot: {

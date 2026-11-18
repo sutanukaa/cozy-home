@@ -264,6 +264,48 @@ export const recipes: Recipe[] = [
     ],
   },
   {
+    id: 'rcciit',
+    title: 'Bachelor of Technology — Computer Science and Engineering',
+    org: 'RCC Institute of Information Technology (RCCIIT)',
+    location: 'Kolkata, India',
+    period: 'August 2023 – Present',
+    kind: 'education',
+    category: 'Education & Academics',
+    tagline: 'B.Tech in CSE · CGPA: 8.08 · Core CS, Data Structures, Algorithms & Systems',
+    summary:
+      'Pursuing Bachelor of Technology in Computer Science and Engineering at RCC Institute of Information Technology in Kolkata, with a cumulative 8.08 CGPA and a focus on software engineering, intelligent systems, and scalable backend design.',
+    metrics: [
+      {
+        value: '8.08',
+        label: 'Cumulative CGPA',
+        sublabel: 'Consistent academic standing',
+      },
+      {
+        value: '2027',
+        label: 'Expected Graduation',
+        sublabel: 'August 2023 – Present',
+      },
+      {
+        value: 'Kolkata',
+        label: 'Campus Location',
+        sublabel: 'West Bengal, India',
+      },
+    ],
+    bullets: [
+      'Pursuing Bachelor of Technology in Computer Science and Engineering (CSE) with a strong foundation in Data Structures, Algorithms, Operating Systems, Database Management Systems, and Object-Oriented Programming.',
+      'Maintaining a strong 8.08 CGPA while actively building production-grade software, leading hackathon-winning teams, and completing remote software engineering internships.',
+      'Active developer and hackathon competitor, representing the institute on national and global podiums.',
+    ],
+    ingredients: [
+      'Data Structures & Algorithms',
+      'Operating Systems',
+      'DBMS & SQL',
+      'Computer Networks',
+      'Software Engineering',
+      'Object-Oriented Design',
+    ],
+  },
+  {
     id: 'hackathons',
     title: 'Hackathon Champion & Podium Finisher',
     org: 'Global & National Competitive Circuits',

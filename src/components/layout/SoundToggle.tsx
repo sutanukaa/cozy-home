@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { soundscape } from '@/lib/soundEngine';
@@ -9,27 +9,112 @@ import { useTime } from '@/components/providers/TimeProvider';
 export default function SoundToggle() {
   const pathname = usePathname();
   const { theme } = useTime();
-  const [isPlaying, setIsPlaying] = useState(false);
+  // Sound is ON by default
+  const [isPlaying, setIsPlaying] = useState(true);
+  const initializedRef = useRef(false);
 
-  // In the studio, the desk headphone plays music instead, so hide the global sound button
+  // In the studio, the retro computer / headphones play sound, so mute ambient soundscape there
   const isStudio = pathname === '/studio' || pathname?.startsWith('/studio');
 
-  // If navigating into the studio while ambient sound is playing, stop ambient sound
+  // 1. Initial startup: Sound is ON by default unless visitor explicitly turned it off in localStorage
   useEffect(() => {
-    if (isStudio && isPlaying) {
+    let enabled = true;
+    try {
+      const stored = localStorage.getItem('cozy_sound_enabled');
+      if (stored === 'false') {
+        enabled = false;
+      }
+    } catch {}
+
+    if (!enabled) {
+      setIsPlaying(false);
+      return;
+    }
+
+    if (isStudio) {
+      setIsPlaying(false);
+      return;
+    }
+
+    setIsPlaying(true);
+
+    const startSound = async () => {
+      try {
+        await soundscape.start();
+        soundscape.updateTheme(theme);
+      } catch {
+        // Browser autoplay policy might defer until user gesture
+      }
+    };
+
+    startSound();
+
+    // If browser suspended AudioContext due to autoplay policy,
+    // unlock automatically on the visitor's very first interaction (click / tap / key)
+    const handleFirstGesture = async () => {
+      let stillEnabled = true;
+      try {
+        if (localStorage.getItem('cozy_sound_enabled') === 'false') {
+          stillEnabled = false;
+        }
+      } catch {}
+
+      if (stillEnabled && !isStudio) {
+        await soundscape.start();
+        soundscape.updateTheme(theme);
+        setIsPlaying(true);
+      }
+      cleanup();
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+      window.removeEventListener('touchstart', handleFirstGesture);
+    };
+
+    window.addEventListener('pointerdown', handleFirstGesture, { once: true });
+    window.addEventListener('keydown', handleFirstGesture, { once: true });
+    window.addEventListener('touchstart', handleFirstGesture, { once: true });
+
+    return () => cleanup();
+  }, [isStudio, theme]);
+
+  // 2. Room changes (stop when entering studio, resume when leaving studio if sound was enabled)
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      return;
+    }
+
+    if (isStudio) {
       soundscape.stop();
       setIsPlaying(false);
-    }
-  }, [isStudio, isPlaying]);
+    } else {
+      let enabled = true;
+      try {
+        if (localStorage.getItem('cozy_sound_enabled') === 'false') {
+          enabled = false;
+        }
+      } catch {}
 
-  // Sync theme changes with soundscape crossfade
+      if (enabled) {
+        soundscape.start().then(() => {
+          soundscape.updateTheme(theme);
+          setIsPlaying(true);
+        }).catch(() => {});
+      }
+    }
+  }, [isStudio, theme]);
+
+  // 3. Sync day/night theme crossfade with active soundscape
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && !isStudio) {
       soundscape.updateTheme(theme);
     }
-  }, [theme, isPlaying]);
+  }, [theme, isPlaying, isStudio]);
 
-  // Handle click toggle
+  // 4. Handle user clicking the toggle button
   const toggleSound = async () => {
     soundscape.playClickSound();
 
@@ -38,22 +123,18 @@ export default function SoundToggle() {
       setIsPlaying(false);
       try {
         localStorage.setItem('cozy_sound_enabled', 'false');
-      } catch {
-        // storage restricted
-      }
+      } catch {}
     } else {
       await soundscape.start();
       soundscape.updateTheme(theme);
       setIsPlaying(true);
       try {
         localStorage.setItem('cozy_sound_enabled', 'true');
-      } catch {
-        // storage restricted
-      }
+      } catch {}
     }
   };
 
-  // Do not render in the studio room
+  // Do not render button in the studio room (music takes over there)
   if (isStudio) {
     return null;
   }
@@ -65,8 +146,8 @@ export default function SoundToggle() {
       onClick={toggleSound}
       title={
         isPlaying
-          ? `Cozy sound ON (${theme === 'night' ? 'evening crickets & night breeze' : 'morning birds & breeze'}) • Click to mute`
-          : 'Cozy sound OFF • Click to play ambient sound'
+          ? `Cozy ambient sound ON (${theme === 'night' ? 'evening crickets & breeze' : 'morning birds & breeze'}) • Click to mute`
+          : 'Cozy ambient sound OFF • Click to turn on'
       }
       aria-label={isPlaying ? 'Mute cozy sound' : 'Play cozy ambient sound'}
       aria-pressed={isPlaying}
@@ -97,7 +178,7 @@ export default function SoundToggle() {
         )}
       </span>
 
-      {/* Tiny pulsing green / glowing indicator dot when audio is active */}
+      {/* Pulsing indicator dot when audio is active */}
       {isPlaying && (
         <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />

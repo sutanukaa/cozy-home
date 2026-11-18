@@ -38,14 +38,6 @@ export const metadata: Metadata = {
         type: 'image/jpeg',
         alt: `${site.name} — ${site.role}`,
       },
-      {
-        url: `${site.url}/assets/og/og-image.png`,
-        secureUrl: `${site.url}/assets/og/og-image.png`,
-        width: 1200,
-        height: 630,
-        type: 'image/png',
-        alt: `${site.name} — ${site.role}`,
-      },
     ],
     locale: 'en_US',
     type: 'website',
@@ -83,11 +75,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <meta property="og:image" content={`${site.url}/assets/og/og-image.jpg`} />
-        <meta property="og:image:secure_url" content={`${site.url}/assets/og/og-image.jpg`} />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link

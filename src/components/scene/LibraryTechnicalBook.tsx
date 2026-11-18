@@ -213,7 +213,7 @@ export default function LibraryTechnicalBook() {
                   {/* FULL-HEIGHT SCROLLABLE FROM TITLE TO INVARIANTS            */}
                   {/* ========================================================== */}
                   <div
-                    className="absolute z-20 text-[#3D2517] select-text"
+                    className="absolute z-20 flex flex-col text-[#3D2517] select-text"
                     style={{
                       left: '12.0%',
                       right: '53.5%',
@@ -221,9 +221,9 @@ export default function LibraryTechnicalBook() {
                       bottom: '15.5%',
                     }}
                   >
-                    {/* Slim Fixed Top Bar: Category Switcher Pills */}
-                    <div className="absolute inset-x-0 top-0 h-[28px] flex items-center justify-between border-b border-[#D8C7B0]/80 pb-1 select-none">
-                      <div className="flex items-center gap-1">
+                    {/* Top Bar: Category Switcher Pills */}
+                    <div className="shrink-0 flex flex-wrap items-center justify-between gap-1 border-b border-[#D8C7B0]/80 pb-1.5 mb-1.5 select-none">
+                      <div className="flex items-center gap-1 flex-wrap">
                         {technicalBlogs.map((b, idx) => (
                           <button
                             key={b.slug}
@@ -247,8 +247,8 @@ export default function LibraryTechnicalBook() {
                       </span>
                     </div>
 
-                    {/* FULLY SCROLLABLE LEFT PAGE CONTENT (From below the slim top bar down to the bottom) */}
-                    <div className="absolute inset-x-0 top-[32px] bottom-0 overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
+                    {/* FULLY SCROLLABLE LEFT PAGE CONTENT */}
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
                       {/* Title, Subtitle & Badge */}
                       <div>
                         <span className="inline-block px-1.5 py-0.2 rounded-md bg-[#F4E8D8] border border-[#DECFBE] text-[8px] font-mono font-bold text-amber-900 uppercase">
@@ -332,7 +332,7 @@ export default function LibraryTechnicalBook() {
                   {/* FULL-HEIGHT SCROLLABLE FROM CODE TO BENCHMARKS             */}
                   {/* ========================================================== */}
                   <div
-                    className="absolute z-20 text-[#3D2517] select-text"
+                    className="absolute z-20 flex flex-col text-[#3D2517] select-text"
                     style={{
                       left: '53.5%',
                       right: '12.0%',
@@ -340,16 +340,16 @@ export default function LibraryTechnicalBook() {
                       bottom: '15.5%',
                     }}
                   >
-                    {/* Slim Fixed Top Bar: Tags & Indicator */}
-                    <div className="absolute inset-x-0 top-0 h-[28px] flex items-center justify-between border-b border-[#D8C7B0]/80 pb-1 select-none">
-                      <span className="font-hand text-sm font-bold text-[#6D4C35]">
+                    {/* Top Bar: Tags & Indicator */}
+                    <div className="shrink-0 flex flex-wrap items-center justify-between gap-1 border-b border-[#D8C7B0]/80 pb-1.5 mb-1.5 select-none">
+                      <span className="font-hand text-sm font-bold text-[#6D4C35] leading-tight">
                         Implementation Mechanics & Benchmarks
                       </span>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 flex-wrap">
                         {activeBlog.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-1.5 py-0.2 rounded-md bg-[#EDE2D2] text-[8px] font-mono text-[#5C3E28]"
+                            className="px-1.5 py-0.5 rounded-md bg-[#EDE2D2] text-[8px] font-mono text-[#5C3E28]"
                           >
                             #{tag}
                           </span>
@@ -357,8 +357,8 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* FULLY SCROLLABLE RIGHT PAGE CONTENT (From below top bar to above bottom controls) */}
-                    <div className="absolute inset-x-0 top-[32px] bottom-[38px] overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
+                    {/* FULLY SCROLLABLE RIGHT PAGE CONTENT */}
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 cozy-scrollbar">
                       {/* Implementation Sections */}
                       {activeBlog.rightPage.implementationSections.map((sec, secIdx) => (
                         <div key={secIdx} className="space-y-1.5">
@@ -442,8 +442,8 @@ export default function LibraryTechnicalBook() {
                       </div>
                     </div>
 
-                    {/* Fixed Bottom Navigation Controls */}
-                    <div className="absolute inset-x-0 bottom-0 h-[34px] border-t border-[#D8C7B0]/90 pt-1 flex items-center justify-between text-[10.5px] font-hand font-bold select-none">
+                    {/* Bottom Navigation Controls */}
+                    <div className="shrink-0 pt-1.5 mt-1 border-t border-[#D8C7B0]/90 flex items-center justify-between text-[10.5px] font-hand font-bold select-none">
                       <button
                         type="button"
                         onClick={() => {

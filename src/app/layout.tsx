@@ -31,9 +31,19 @@ export const metadata: Metadata = {
     siteName: `${site.name}'s Cozy Home`,
     images: [
       {
-        url: '/assets/og/og-image.png',
+        url: `${site.url}/assets/og/og-image.jpg`,
+        secureUrl: `${site.url}/assets/og/og-image.jpg`,
         width: 1200,
         height: 630,
+        type: 'image/jpeg',
+        alt: `${site.name} — ${site.role}`,
+      },
+      {
+        url: `${site.url}/assets/og/og-image.png`,
+        secureUrl: `${site.url}/assets/og/og-image.png`,
+        width: 1200,
+        height: 630,
+        type: 'image/png',
         alt: `${site.name} — ${site.role}`,
       },
     ],
@@ -44,7 +54,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${site.name} | ${site.role}`,
     description: site.description,
-    images: ['/assets/og/og-image.png'],
+    images: [`${site.url}/assets/og/og-image.jpg`],
   },
 };
 
@@ -73,6 +83,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <meta property="og:image" content={`${site.url}/assets/og/og-image.jpg`} />
+        <meta property="og:image:secure_url" content={`${site.url}/assets/og/og-image.jpg`} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link

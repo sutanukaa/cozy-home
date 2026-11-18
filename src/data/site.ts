@@ -4,7 +4,7 @@ export const site = {
   role: 'Software Development Engineer',
   tagline: 'I build cozy, curious little things for the web.',
   description: 'The personal portfolio of Sutanuka Chakraborty, a software development engineer. Step inside and look around.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sutanukabuilds.vercel.app',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sutanukaa.vercel.app',
   email: 'sutanukachakraborty004@gmail.com',
   resumeUrl: '/resume.pdf',
   socials: [

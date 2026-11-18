@@ -212,7 +212,7 @@ export default function LibraryCardCatalog() {
         {/* Day Cabinet Illustration */}
         <div className="only-day w-full h-full">
           <AssetImage
-            src="/assets/objects/card-catalog.png"
+            src="/assets/objects/card-catalog.webp"
             alt="Vintage wooden library card catalog cabinet"
             className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(20,10,15,0.45)] transition-transform duration-300 group-hover:scale-[1.015]"
           />
@@ -221,7 +221,7 @@ export default function LibraryCardCatalog() {
         {/* Night Cabinet Illustration */}
         <div className="only-night w-full h-full">
           <AssetImage
-            src="/assets/objects/library-cabinet-night.png"
+            src="/assets/objects/library-cabinet-night.webp"
             alt="Vintage wooden library card catalog cabinet at night"
             className="w-full h-full object-contain pointer-events-none drop-shadow-[0_8px_16px_rgba(10,5,15,0.65)] transition-transform duration-300 group-hover:scale-[1.015]"
           />
@@ -309,7 +309,7 @@ export default function LibraryCardCatalog() {
                 <div className="relative w-full max-w-[540px] aspect-[1199/1312] select-none drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
                   {/* High-Res Cabinet Artwork */}
                   <AssetImage
-                    src="/assets/objects/card-catalog.png"
+                    src="/assets/objects/card-catalog.webp"
                     alt="Card catalog cabinet with 4 drawers"
                     className="w-full h-full object-contain pointer-events-none"
                   />
@@ -429,7 +429,7 @@ export default function LibraryCardCatalog() {
                 {/* The Open Drawer Artwork with Clipboard laying inside */}
                 <div className="relative w-full max-w-[560px] aspect-[1725/1296] select-none drop-shadow-[0_25px_50px_rgba(0,0,0,0.65)]">
                   <AssetImage
-                    src="/assets/objects/drawer-open.png"
+                    src="/assets/objects/drawer-open.webp"
                     alt="Open wooden catalog drawer"
                     className="w-full h-full object-contain pointer-events-none"
                   />
@@ -450,7 +450,7 @@ export default function LibraryCardCatalog() {
                     }}
                   >
                     <AssetImage
-                      src="/assets/objects/clipboard.png"
+                      src="/assets/objects/clipboard.webp"
                       alt="Clipboard resting horizontally in drawer"
                       className="w-full h-full object-contain drop-shadow-[0_10px_22px_rgba(0,0,0,0.35)] pointer-events-none"
                     />
@@ -550,7 +550,7 @@ export default function LibraryCardCatalog() {
                   {/* The Fullscreen Clipboard Artwork with Text Canvas */}
                   <div className="relative w-full aspect-[958/1276] select-none drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)]">
                     <AssetImage
-                      src="/assets/objects/clipboard.png"
+                      src="/assets/objects/clipboard.webp"
                       alt="Clipboard with skills paper sheet"
                       className="w-full h-full object-contain pointer-events-none"
                     />

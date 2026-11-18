@@ -133,7 +133,7 @@ export default function BedroomDiary() {
           {/* Closed diary book art */}
           <div className="relative h-full w-full transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1">
             <Image
-              src="/assets/objects/bedroom-diary-closed.png"
+              src="/assets/objects/bedroom-diary-closed.webp"
               alt="Suto's Diary resting on the nightstand"
               fill
               sizes="(max-width: 768px) 60px, 85px"
@@ -235,7 +235,7 @@ export default function BedroomDiary() {
               className="absolute z-50 w-[6.5%] max-w-[82px] min-w-[48px] aspect-[1140/1652]"
             >
               <Image
-                src="/assets/objects/bedroom-diary-closed.png"
+                src="/assets/objects/bedroom-diary-closed.webp"
                 alt="Suto's Diary floating"
                 fill
                 sizes="120px"
@@ -275,7 +275,7 @@ export default function BedroomDiary() {
                   {/* Background Open Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/bedroom-diary-open.png"
+                      src="/assets/objects/bedroom-diary-open.webp"
                       alt="Open diary spread"
                       fill
                       sizes="(max-width: 1024px) 95vw, 1100px"
@@ -456,7 +456,7 @@ export default function BedroomDiary() {
                   {/* Background Single-Page Mobile Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/bedroom-diary-mobile.png"
+                      src="/assets/objects/bedroom-diary-mobile.webp"
                       alt="Suto's Diary page"
                       fill
                       sizes="(max-width: 768px) 94vw, 420px"

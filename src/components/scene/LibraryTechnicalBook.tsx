@@ -108,7 +108,7 @@ export default function LibraryTechnicalBook() {
           {/* Book Image */}
           <div className="relative h-full w-full transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-translate-y-1">
             <Image
-              src="/assets/objects/library-book-closed.png"
+              src="/assets/objects/library-book-closed.webp"
               alt="Hardcover technical book resting on the star pillow"
               fill
               sizes="120px"
@@ -173,7 +173,7 @@ export default function LibraryTechnicalBook() {
                   {/* Background Open Book Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/library-book-open.png"
+                      src="/assets/objects/library-book-open.webp"
                       alt="Open technical book spread"
                       fill
                       sizes="(max-width: 1200px) 95vw, 1150px"
@@ -489,7 +489,7 @@ export default function LibraryTechnicalBook() {
                   {/* Background Single-Page Mobile Diary Image */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/bedroom-diary-mobile.png"
+                      src="/assets/objects/bedroom-diary-mobile.webp"
                       alt="Technical field notes page"
                       fill
                       sizes="(max-width: 768px) 94vw, 420px"

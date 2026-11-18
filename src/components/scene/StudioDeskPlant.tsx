@@ -117,12 +117,12 @@ export default function StudioDeskPlant() {
   const getPlantAsset = () => {
     switch (stage) {
       case 0:
-        return '/assets/objects/studio-plant-tiny.png';
+        return '/assets/objects/studio-plant-tiny.webp';
       case 1:
-        return '/assets/objects/studio-plant-growing.png';
+        return '/assets/objects/studio-plant-growing.webp';
       case 2:
       default:
-        return '/assets/objects/studio-plant-full.png';
+        return '/assets/objects/studio-plant-full.webp';
     }
   };
 
@@ -256,7 +256,7 @@ export default function StudioDeskPlant() {
               style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' }}
             >
               <Image
-                src="/assets/objects/studio-watering-can.png"
+                src="/assets/objects/studio-watering-can.webp"
                 alt="Pastel watering can"
                 width={100}
                 height={100}

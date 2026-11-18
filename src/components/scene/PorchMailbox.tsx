@@ -175,7 +175,7 @@ export default function PorchMailbox() {
         {/* Day Mailbox (Closed or Open) */}
         <div className="only-day relative h-full w-full">
           <img
-            src={isOpen && formPhase === 'writing' ? '/assets/objects/mailbox-open.png' : '/assets/objects/porch-mailbox.png'}
+            src={isOpen && formPhase === 'writing' ? '/assets/objects/mailbox-open.webp' : '/assets/objects/porch-mailbox.webp'}
             alt="Vintage Cherry Blossom Cottage Mailbox"
             className="h-full w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.18)]"
           />
@@ -184,7 +184,7 @@ export default function PorchMailbox() {
         {/* Night Mailbox (with warm lantern light reflection) */}
         <div className="only-night relative h-full w-full">
           <img
-            src={isOpen && formPhase === 'writing' ? '/assets/objects/mailbox-open.png' : '/assets/objects/porch-mailbox-night.png'}
+            src={isOpen && formPhase === 'writing' ? '/assets/objects/mailbox-open.webp' : '/assets/objects/porch-mailbox-night.webp'}
             alt="Vintage Cherry Blossom Cottage Mailbox at Night"
             className="h-full w-full object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
           />
@@ -316,7 +316,7 @@ export default function PorchMailbox() {
                     >
                       {/* Illustrated Postcard Background Artwork */}
                       <img
-                        src="/assets/objects/porch-postcard.png"
+                        src="/assets/objects/porch-postcard.webp"
                         alt="Handmade Postcard Stationery"
                         className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                       />
@@ -464,7 +464,7 @@ export default function PorchMailbox() {
                         className="relative w-full aspect-[2/3] drop-shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
                       >
                         <img
-                          src="/assets/objects/porch-postcard-mobile.png"
+                          src="/assets/objects/porch-postcard-mobile.webp"
                           alt="Handmade Postcard Stationery Mobile"
                           className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                         />
@@ -629,7 +629,7 @@ export default function PorchMailbox() {
                       />
 
                       <img
-                        src="/assets/objects/mailbox-open.png"
+                        src="/assets/objects/mailbox-open.webp"
                         alt="Letter placed inside the cherry blossom mailbox"
                         className="relative z-10 w-full h-full object-contain drop-shadow-[0_20px_48px_rgba(0,0,0,0.5)]"
                       />

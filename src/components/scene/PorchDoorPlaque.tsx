@@ -78,7 +78,7 @@ export default function PorchDoorPlaque() {
 
           {/* The Illustrated Plaque Graphic */}
           <img
-            src="/assets/objects/porch-plaque.png"
+            src="/assets/objects/porch-plaque.webp"
             alt="Suto's home door plaque"
             className="h-full w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.3)] pointer-events-none"
           />

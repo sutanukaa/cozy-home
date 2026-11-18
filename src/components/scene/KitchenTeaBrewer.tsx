@@ -80,7 +80,7 @@ export default function KitchenTeaBrewer() {
 
             {/* Teacup Graphic */}
             <img
-              src="/assets/objects/kitchen-teacup.png"
+              src="/assets/objects/kitchen-teacup.webp"
               alt="Handmade Ceramic Ribbon Bow Teacup"
               className="relative h-full w-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
             />
@@ -176,13 +176,13 @@ export default function KitchenTeaBrewer() {
             <motion.img
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              src="/assets/objects/kitchen-kettle-pour.png"
+              src="/assets/objects/kitchen-kettle-pour.webp"
               alt="Vintage Enamel Tea Kettle Pouring"
               className="h-full w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]"
             />
           ) : (
             <img
-              src="/assets/objects/kitchen-kettle.png"
+              src="/assets/objects/kitchen-kettle.webp"
               alt="Vintage Enamel Tea Kettle on Stove"
               className="h-full w-full object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.2)]"
             />

@@ -218,7 +218,7 @@ export default function BedroomTablet() {
           {/* Resting Tablet Art */}
           <div className="relative h-full w-full transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1">
             <Image
-              src="/assets/objects/bedroom-tablet.png"
+              src="/assets/objects/bedroom-tablet.webp"
               alt="Suto's iPad resting on the nightstand"
               fill
               sizes="(max-width: 768px) 60px, 85px"
@@ -323,7 +323,7 @@ export default function BedroomTablet() {
               className="absolute z-50 w-[82px] aspect-[1517/1070]"
             >
               <Image
-                src="/assets/objects/bedroom-tablet.png"
+                src="/assets/objects/bedroom-tablet.webp"
                 alt="Floating Tablet"
                 fill
                 className="object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
@@ -376,7 +376,7 @@ export default function BedroomTablet() {
                   {/* Tablet Frame Art */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/bedroom-tablet-open.png"
+                      src="/assets/objects/bedroom-tablet-open.webp"
                       alt="Open iPad frame"
                       fill
                       sizes="(max-width: 1024px) 96vw, 940px"
@@ -813,7 +813,7 @@ export default function BedroomTablet() {
                   {/* Mobile Tablet Frame Art */}
                   <div className="absolute inset-0 pointer-events-none select-none">
                     <Image
-                      src="/assets/objects/bedroom-tablet-mobile.png"
+                      src="/assets/objects/bedroom-tablet-mobile.webp"
                       alt="Open iPad mobile frame"
                       fill
                       sizes="(max-width: 768px) 94vw, 420px"

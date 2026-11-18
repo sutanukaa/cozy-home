@@ -2,19 +2,19 @@ import Image from 'next/image';
 
 const ICONS: Record<string, string> = {
   // Rooms
-  'home': '/assets/icons/home.png',
-  'living-room': '/assets/icons/home.png',
-  'studio': '/assets/icons/studio.png',
-  'bedroom': '/assets/icons/bedroom.png',
-  'library': '/assets/icons/library.png',
-  'kitchen': '/assets/icons/kitchen.png',
-  'porch': '/assets/icons/porch.png',
+  'home': '/assets/icons/home.webp',
+  'living-room': '/assets/icons/home.webp',
+  'studio': '/assets/icons/studio.webp',
+  'bedroom': '/assets/icons/bedroom.webp',
+  'library': '/assets/icons/library.webp',
+  'kitchen': '/assets/icons/kitchen.webp',
+  'porch': '/assets/icons/porch.webp',
 
   // Skills
-  'skill-frontend': '/assets/icons/skill-frontend.png',
-  'skill-backend': '/assets/icons/skill-backend.png',
-  'skill-ai': '/assets/icons/skill-ai.png',
-  'skill-tools': '/assets/icons/skill-tools.png',
+  'skill-frontend': '/assets/icons/skill-frontend.webp',
+  'skill-backend': '/assets/icons/skill-backend.webp',
+  'skill-ai': '/assets/icons/skill-ai.webp',
+  'skill-tools': '/assets/icons/skill-tools.webp',
 };
 
 interface CozyIconProps {

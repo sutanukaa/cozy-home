@@ -239,7 +239,7 @@ export default function KitchenFortuneCookies() {
                           <div className="absolute inset-0 -m-10 rounded-full bg-amber-400/25 blur-3xl" />
 
                           <img
-                            src="/assets/objects/fortune-cookie-whole.png"
+                            src="/assets/objects/fortune-cookie-whole.webp"
                             alt="Whole Golden Fortune Cookie"
                             className="relative h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-105"
                           />
@@ -275,7 +275,7 @@ export default function KitchenFortuneCookies() {
                           ))}
 
                           <img
-                            src="/assets/objects/fortune-cookie-cracked.png"
+                            src="/assets/objects/fortune-cookie-cracked.webp"
                             alt="Cracked Fortune Cookie"
                             className="relative h-48 w-56 sm:h-64 sm:w-80 md:h-72 md:w-96 object-contain drop-shadow-[0_20px_32px_rgba(0,0,0,0.6)]"
                           />

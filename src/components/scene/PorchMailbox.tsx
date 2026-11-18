@@ -65,43 +65,45 @@ export default function PorchMailbox() {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // 1. Send via secure server-side API route (/api/contact)
+    const accessKey =
+      web3formsKey ||
+      process.env.NEXT_PUBLIC_WEB3FORMS_KEY ||
+      '9dc75efb-08f7-4751-bcf9-12815c3cb113';
+
     try {
-      const res = await fetch('/api/contact', {
+      // 1. Submit directly from visitor's browser to Web3Forms API
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+          from_name: `${name.trim()} (Cozy Home Porch)`,
+          subject: `New Postcard from ${name.trim()}! 💌`,
+        }),
       });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Submission failed');
+
+      const text = await res.text();
+      let data: { success?: boolean; message?: string } = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error('Service response could not be read.');
       }
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Could not send note.');
+      }
+
       triggerDepositAnimation();
       return;
     } catch (err: unknown) {
-      // 2. Client-side fallback if direct Web3Forms or Formspree key is available in client
-      if (web3formsKey) {
-        try {
-          const directRes = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({
-              access_key: web3formsKey,
-              name,
-              email,
-              message,
-              from_name: `${name} (Cozy Home Porch)`,
-              subject: `New Postcard from ${name}! 💌`,
-            }),
-          });
-          const directData = await directRes.json();
-          if (directData.success) {
-            triggerDepositAnimation();
-            return;
-          }
-        } catch {}
-      }
-
+      // 2. Client-side fallback if Formspree is configured
       if (formspreeId) {
         try {
           const formspreeRes = await fetch(`https://formspree.io/f/${formspreeId}`, {
@@ -118,7 +120,7 @@ export default function PorchMailbox() {
 
       setIsSubmitting(false);
       const msg = err instanceof Error ? err.message : 'Could not send note.';
-      setErrorMessage(`${msg} Try emailing ${site.email} directly!`);
+      setErrorMessage(msg);
     }
   };
 
@@ -436,11 +438,18 @@ export default function PorchMailbox() {
                         </button>
                       </div>
 
-                      {/* Error notice if needed */}
+                      {/* Error notice banner */}
                       {errorMessage && (
-                        <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-xs text-rose-600 font-bold whitespace-nowrap">
-                          {errorMessage}
-                        </p>
+                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 rounded-full border border-rose-300 bg-white/95 px-4 py-1.5 shadow-md whitespace-nowrap">
+                          <span className="font-hand text-xs font-bold text-rose-700">{errorMessage}</span>
+                          <a
+                            href={`mailto:${site.email}?subject=${encodeURIComponent(`Postcard from ${name || 'your porch'}`)}&body=${encodeURIComponent(`${message}\n\n— From: ${name} (${email})`)}`}
+                            onClick={() => triggerDepositAnimation()}
+                            className="rounded-full bg-rose-500 hover:bg-rose-600 px-3 py-0.5 font-display text-[11px] font-bold text-white transition-all active:scale-95"
+                          >
+                            Send via Email App ✉
+                          </a>
+                        </div>
                       )}
                     </form>
 
@@ -525,11 +534,18 @@ export default function PorchMailbox() {
                           />
                         </div>
 
-                        {/* Error notice if needed */}
+                        {/* Error notice banner */}
                         {errorMessage && (
-                          <p className="absolute bottom-1 left-1/2 -translate-x-1/2 font-hand text-[10px] text-rose-600 font-bold whitespace-nowrap">
-                            {errorMessage}
-                          </p>
+                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 rounded-full border border-rose-300 bg-white/95 px-3 py-1 shadow-md whitespace-nowrap">
+                            <span className="font-hand text-[10px] font-bold text-rose-700">{errorMessage}</span>
+                            <a
+                              href={`mailto:${site.email}?subject=${encodeURIComponent(`Postcard from ${name || 'your porch'}`)}&body=${encodeURIComponent(`${message}\n\n— From: ${name} (${email})`)}`}
+                              onClick={() => triggerDepositAnimation()}
+                              className="rounded-full bg-rose-500 hover:bg-rose-600 px-2 py-0.5 font-display text-[10px] font-bold text-white transition-all active:scale-95"
+                            >
+                              Email App ✉
+                            </a>
+                          </div>
                         )}
                       </div>
 

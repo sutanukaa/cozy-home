@@ -186,55 +186,38 @@ async function generate() {
       border-radius: 1px;
     }
 
-    /* Tag / Eyebrow */
-    .tagline-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #FFE4EC;
-      color: #B83A62;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 8px 22px;
-      border-radius: 999px;
-      border: 2px solid #F9AFC4;
-      margin-bottom: 18px;
-      letter-spacing: 0.5px;
-    }
-
     /* Main Name */
     .name-title {
-      font-size: 68px;
+      font-size: 74px;
       font-weight: 700;
       color: #B83A62;
       letter-spacing: -0.5px;
       line-height: 1.1;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     }
 
     /* Role */
     .role-title {
-      font-size: 27px;
+      font-size: 29px;
       font-weight: 600;
       color: #5D434D;
       letter-spacing: 0.5px;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
 
     /* Gaegu handwritten note */
     .handwritten-note {
       font-family: 'Gaegu', cursive;
-      font-size: 38px;
+      font-size: 40px;
       font-weight: 700;
       color: #C2486E;
       background: #FFF2F6;
-      padding: 10px 36px;
+      padding: 12px 40px;
       border-radius: 20px;
       border: 2px dashed #F5A9BD;
       transform: rotate(-1deg);
       display: inline-block;
-      margin-top: 8px;
       letter-spacing: 0.5px;
     }
   </style>
@@ -266,16 +249,11 @@ async function generate() {
       <span class="post-stamp-label">PORTFOLIO</span>
     </div>
 
-    <div class="tagline-pill">
-      <span>🏡</span>
-      <span>A Cozy Animated Portfolio</span>
-    </div>
-
     <h1 class="name-title">Sutanuka Chakraborty</h1>
     <h2 class="role-title">Software Development Engineer</h2>
 
     <div class="handwritten-note">
-      “Step inside my little home and look around !”
+      “I build curious little things for the web”
     </div>
   </div>
 </body>
@@ -292,15 +270,24 @@ async function generate() {
   execSync(cmd, { stdio: 'inherit' });
 
   // Now optimize to public/assets/og/og-image.png under 300KB
-  const targetOgPath = path.resolve('public/assets/og/og-image.png');
+  const targetOgPngPath = path.resolve('public/assets/og/og-image.png');
   await sharp(rawScreenshotPath)
     .resize(1200, 630)
     .png({ quality: 90, compressionLevel: 9 })
-    .toFile(targetOgPath);
+    .toFile(targetOgPngPath);
 
-  const stats = fs.statSync(targetOgPath);
-  console.log(`Generated OG Image at ${targetOgPath}`);
-  console.log(`File size: ${(stats.size / 1024).toFixed(2)} KB (WhatsApp requirement: <300 KB)`);
+  // Also output high-performance JPEG
+  const targetOgJpgPath = path.resolve('public/assets/og/og-image.jpg');
+  await sharp(rawScreenshotPath)
+    .resize(1200, 630)
+    .jpeg({ quality: 92, mozjpeg: true })
+    .toFile(targetOgJpgPath);
+
+  const pngStats = fs.statSync(targetOgPngPath);
+  const jpgStats = fs.statSync(targetOgJpgPath);
+  console.log(`Generated OG Images:`);
+  console.log(`PNG: ${(pngStats.size / 1024).toFixed(2)} KB`);
+  console.log(`JPG: ${(jpgStats.size / 1024).toFixed(2)} KB`);
 }
 
 generate().catch(console.error);

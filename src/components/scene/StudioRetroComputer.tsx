@@ -101,21 +101,21 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const [showGame, setShowGame] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
-  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [exportMenuOpen, setExportMenuOpen] = useState<'titlebar' | 'actionbar' | null>(null);
   const [exportToast, setExportToast] = useState<string | null>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
 
   // Close export menu on outside click
   useEffect(() => {
-    if (!showExportMenu) return;
+    if (!exportMenuOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
       if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
-        setShowExportMenu(false);
+        setExportMenuOpen(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showExportMenu]);
+  }, [exportMenuOpen]);
 
   // Export handlers for Markdown, JSON, and Clipboard
   const triggerExport = async (type: 'md' | 'json' | 'copy') => {
@@ -133,7 +133,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
       const ok = await copyProjectMarkdown(activeProject);
       setExportToast(ok ? 'Copied Markdown to clipboard!' : 'Failed to copy to clipboard');
     }
-    setShowExportMenu(false);
+    setExportMenuOpen(null);
     setTimeout(() => setExportToast(null), 3000);
   };
 
@@ -221,7 +221,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
         setActiveProject(null);
         setShowReadme(false);
         setShowGame(false);
-        setShowExportMenu(false);
+        setExportMenuOpen(null);
         setExportToast(null);
       }
     };
@@ -244,7 +244,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     setActiveProject(null);
     setShowReadme(false);
     setShowGame(false);
-    setShowExportMenu(false);
+    setExportMenuOpen(null);
     setExportToast(null);
   }, []);
 
@@ -497,7 +497,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 setShowGame(false);
                                 setActiveExtraTab('none');
                                 setActiveBlueprintDiagram(1);
-                                setShowExportMenu(false);
+                                setExportMenuOpen(null);
                                 setExportToast(null);
                               }}
                               className={`group flex cursor-pointer flex-col items-center rounded-xl p-2 sm:p-2.5 text-center transition-all ${
@@ -549,43 +549,52 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                               {activeProject.slug}.app - {showBlueprints && hasBlueprints ? 'Architecture Blueprints' : 'Technical Specification'}
                             </span>
                           </div>
-                          <div className="relative flex items-center gap-1.5 sm:gap-2">
+                          <div className="relative z-50 flex items-center gap-1.5 sm:gap-2">
                             {/* Titlebar Export Button */}
                             <button
                               type="button"
                               onClick={() => {
                                 soundscape.playClickSound();
-                                setShowExportMenu(!showExportMenu);
+                                setExportMenuOpen(exportMenuOpen === 'titlebar' ? null : 'titlebar');
                               }}
                               title="Export Project Technical Specification"
-                              className="flex items-center gap-1 rounded-full border border-pink-300 bg-white/90 px-2.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold text-accent shadow-xs transition-colors hover:bg-accent hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-pink-300 dark:hover:bg-accent dark:hover:text-white"
+                              className="flex items-center gap-1 rounded-full border-2 border-pink-400 bg-white px-3 py-0.5 font-mono text-[10px] sm:text-xs font-bold text-accent shadow-xs transition-colors hover:bg-accent hover:text-white dark:border-pink-400/80 dark:bg-[#1C1222] dark:text-pink-200 dark:hover:bg-accent dark:hover:text-white"
                             >
                               <span>[ Export ▾ ]</span>
                             </button>
 
                             {/* Titlebar Export Popover */}
-                            {showExportMenu && (
+                            {exportMenuOpen === 'titlebar' && (
                               <div
                                 ref={exportMenuRef}
-                                className="absolute right-0 top-full mt-2 z-50 flex w-64 sm:w-72 flex-col gap-1 rounded-xl border-2 border-pink-300/90 bg-paper/98 p-2.5 font-mono text-xs shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#2B1B3A]/98"
+                                className="absolute right-0 top-full mt-2 z-50 flex w-72 sm:w-80 flex-col gap-2 rounded-2xl border-2 border-pink-400 bg-white p-3 font-mono text-xs shadow-2xl ring-4 ring-pink-400/20 dark:border-pink-500/80 dark:bg-[#1A1024] dark:ring-pink-500/30"
                               >
-                                <div className="flex items-center justify-between border-b border-pink-200/60 pb-1.5 px-1 dark:border-white/10">
-                                  <span className="font-bold text-[10px] uppercase tracking-wider text-accent dark:text-pink-300">
-                                    Export {activeProject.slug}
+                                <div className="flex items-center justify-between border-b border-pink-200/80 pb-2 px-1 dark:border-white/15">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="h-2 w-2 rounded-full bg-accent" />
+                                    <span className="font-bold text-[11px] uppercase tracking-wider text-accent dark:text-pink-300">
+                                      Export Specification
+                                    </span>
+                                  </div>
+                                  <span className="rounded bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                    {activeProject.slug}
                                   </span>
-                                  <span className="text-[10px] text-ink-soft dark:text-white/60">Specification</span>
                                 </div>
 
                                 <button
                                   type="button"
                                   onClick={() => triggerExport('md')}
-                                  className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                  className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                 >
-                                  <div className="flex flex-col">
-                                    <span className="text-xs">Technical Markdown</span>
-                                    <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">.md with Mermaid diagrams</span>
+                                  <div className="flex flex-col pr-2">
+                                    <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                      Technical Markdown
+                                    </span>
+                                    <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                      Complete .md file with Mermaid diagrams
+                                    </span>
                                   </div>
-                                  <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                  <span className="shrink-0 rounded-md border border-emerald-400/80 bg-emerald-100 px-2 py-1 text-[10px] font-extrabold text-emerald-800 dark:border-emerald-600 dark:bg-emerald-950 dark:text-emerald-300">
                                     .MD
                                   </span>
                                 </button>
@@ -593,13 +602,17 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 <button
                                   type="button"
                                   onClick={() => triggerExport('json')}
-                                  className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                  className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                 >
-                                  <div className="flex flex-col">
-                                    <span className="text-xs">Structured Data</span>
-                                    <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">.json full schema &amp; specs</span>
+                                  <div className="flex flex-col pr-2">
+                                    <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                      Structured JSON
+                                    </span>
+                                    <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                      Full project schema &amp; blueprint objects
+                                    </span>
                                   </div>
-                                  <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                  <span className="shrink-0 rounded-md border border-amber-400/80 bg-amber-100 px-2 py-1 text-[10px] font-extrabold text-amber-800 dark:border-amber-600 dark:bg-amber-950 dark:text-amber-300">
                                     .JSON
                                   </span>
                                 </button>
@@ -607,16 +620,25 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 <button
                                   type="button"
                                   onClick={() => triggerExport('copy')}
-                                  className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                  className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                 >
-                                  <div className="flex flex-col">
-                                    <span className="text-xs">Copy to Clipboard</span>
-                                    <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">Full formatted Markdown</span>
+                                  <div className="flex flex-col pr-2">
+                                    <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                      Copy to Clipboard
+                                    </span>
+                                    <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                      Markdown spec copied directly to clipboard
+                                    </span>
                                   </div>
-                                  <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                  <span className="shrink-0 rounded-md border border-pink-400/80 bg-pink-100 px-2 py-1 text-[10px] font-extrabold text-accent dark:border-pink-700 dark:bg-pink-950 dark:text-pink-300">
                                     COPY
                                   </span>
                                 </button>
+
+                                <div className="flex items-center justify-between border-t border-pink-200/60 pt-1.5 px-1 text-[9px] text-ink-soft/70 dark:border-white/10 dark:text-pink-200/50">
+                                  <span>Includes system architecture</span>
+                                  <span>Click to download or copy</span>
+                                </div>
                               </div>
                             )}
 
@@ -626,7 +648,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 setActiveProject(null);
                                 setShowBlueprints(false);
                                 setActiveExtraTab('none');
-                                setShowExportMenu(false);
+                                setExportMenuOpen(null);
                               }}
                               title="Close Window"
                               className="ml-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-pink-300 bg-white font-mono text-xs font-bold text-ink hover:bg-rose hover:text-white dark:border-white/20 dark:bg-black/40 dark:text-white"
@@ -805,35 +827,44 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                 type="button"
                                 onClick={() => {
                                   soundscape.playClickSound();
-                                  setShowExportMenu(!showExportMenu);
+                                  setExportMenuOpen(exportMenuOpen === 'actionbar' ? null : 'actionbar');
                                 }}
-                                className="flex items-center gap-1.5 rounded-full border border-pink-300 bg-white px-4 py-2 font-mono text-xs sm:text-sm font-bold text-ink shadow-xs transition-transform hover:scale-105 active:scale-95 dark:border-white/20 dark:bg-white/15 dark:text-white"
+                                className="flex items-center gap-1.5 rounded-full border-2 border-pink-300 bg-white px-4 py-2 font-mono text-xs sm:text-sm font-bold text-ink shadow-xs transition-transform hover:scale-105 hover:border-pink-400 active:scale-95 dark:border-white/20 dark:bg-[#1C1222] dark:text-white dark:hover:border-pink-400"
                               >
                                 <span>[ Export Specification ▾ ]</span>
                               </button>
 
-                              {showExportMenu && (
+                              {exportMenuOpen === 'actionbar' && (
                                 <div
                                   ref={exportMenuRef}
-                                  className="absolute left-0 bottom-full mb-2 z-50 flex w-64 sm:w-72 flex-col gap-1 rounded-xl border-2 border-pink-300/90 bg-paper/98 p-2.5 font-mono text-xs shadow-2xl backdrop-blur-md dark:border-white/20 dark:bg-[#2B1B3A]/98"
+                                  className="absolute left-0 bottom-full mb-2 z-50 flex w-72 sm:w-80 flex-col gap-2 rounded-2xl border-2 border-pink-400 bg-white p-3 font-mono text-xs shadow-2xl ring-4 ring-pink-400/20 dark:border-pink-500/80 dark:bg-[#1A1024] dark:ring-pink-500/30"
                                 >
-                                  <div className="flex items-center justify-between border-b border-pink-200/60 pb-1.5 px-1 dark:border-white/10">
-                                    <span className="font-bold text-[10px] uppercase tracking-wider text-accent dark:text-pink-300">
-                                      Export {activeProject.slug}
+                                  <div className="flex items-center justify-between border-b border-pink-200/80 pb-2 px-1 dark:border-white/15">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="h-2 w-2 rounded-full bg-accent" />
+                                      <span className="font-bold text-[11px] uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Export Specification
+                                      </span>
+                                    </div>
+                                    <span className="rounded bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-accent dark:bg-white/10 dark:text-pink-200">
+                                      {activeProject.slug}
                                     </span>
-                                    <span className="text-[10px] text-ink-soft dark:text-white/60">3 Formats</span>
                                   </div>
 
                                   <button
                                     type="button"
                                     onClick={() => triggerExport('md')}
-                                    className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                    className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                   >
-                                    <div className="flex flex-col">
-                                      <span className="text-xs">Technical Markdown</span>
-                                      <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">.md with Mermaid diagrams</span>
+                                    <div className="flex flex-col pr-2">
+                                      <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                        Technical Markdown
+                                      </span>
+                                      <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                        Complete .md file with Mermaid diagrams
+                                      </span>
                                     </div>
-                                    <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                    <span className="shrink-0 rounded-md border border-emerald-400/80 bg-emerald-100 px-2 py-1 text-[10px] font-extrabold text-emerald-800 dark:border-emerald-600 dark:bg-emerald-950 dark:text-emerald-300">
                                       .MD
                                     </span>
                                   </button>
@@ -841,13 +872,17 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                   <button
                                     type="button"
                                     onClick={() => triggerExport('json')}
-                                    className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                    className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                   >
-                                    <div className="flex flex-col">
-                                      <span className="text-xs">Structured Data</span>
-                                      <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">.json full schema &amp; specs</span>
+                                    <div className="flex flex-col pr-2">
+                                      <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                        Structured JSON
+                                      </span>
+                                      <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                        Full project schema &amp; blueprint objects
+                                      </span>
                                     </div>
-                                    <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                    <span className="shrink-0 rounded-md border border-amber-400/80 bg-amber-100 px-2 py-1 text-[10px] font-extrabold text-amber-800 dark:border-amber-600 dark:bg-amber-950 dark:text-amber-300">
                                       .JSON
                                     </span>
                                   </button>
@@ -855,16 +890,25 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                                   <button
                                     type="button"
                                     onClick={() => triggerExport('copy')}
-                                    className="flex items-center justify-between rounded-lg px-2.5 py-2 text-left font-bold text-ink transition-colors hover:bg-pink-100/80 dark:text-white dark:hover:bg-white/10"
+                                    className="group flex items-center justify-between rounded-xl border border-pink-200/90 bg-[#FFF7F9] p-2.5 text-left transition-all hover:border-pink-400 hover:bg-pink-100/90 active:scale-98 dark:border-white/15 dark:bg-white/5 dark:hover:border-pink-400 dark:hover:bg-white/10"
                                   >
-                                    <div className="flex flex-col">
-                                      <span className="text-xs">Copy to Clipboard</span>
-                                      <span className="text-[10px] font-normal text-ink-soft dark:text-white/70">Full formatted Markdown</span>
+                                    <div className="flex flex-col pr-2">
+                                      <span className="text-xs font-bold text-ink dark:text-white group-hover:text-accent dark:group-hover:text-pink-300">
+                                        Copy to Clipboard
+                                      </span>
+                                      <span className="text-[10px] text-ink-soft dark:text-pink-200/70">
+                                        Markdown spec copied directly to clipboard
+                                      </span>
                                     </div>
-                                    <span className="rounded bg-pink-200/70 px-1.5 py-0.5 text-[9px] font-bold text-accent dark:bg-pink-950 dark:text-pink-200">
+                                    <span className="shrink-0 rounded-md border border-pink-400/80 bg-pink-100 px-2 py-1 text-[10px] font-extrabold text-accent dark:border-pink-700 dark:bg-pink-950 dark:text-pink-300">
                                       COPY
                                     </span>
                                   </button>
+
+                                  <div className="flex items-center justify-between border-t border-pink-200/60 pt-1.5 px-1 text-[9px] text-ink-soft/70 dark:border-white/10 dark:text-pink-200/50">
+                                    <span>Includes system architecture</span>
+                                    <span>Click to download or copy</span>
+                                  </div>
                                 </div>
                               )}
                             </div>

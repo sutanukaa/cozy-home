@@ -55,7 +55,8 @@ export const projects: Project[] = [
       'Tailwind CSS',
     ],
     links: {
-      code: 'https://github.com/sutanukaa',
+      live: 'https://preflight-gold.vercel.app/',
+      code: 'https://github.com/sutanukaa/preflight',
     },
     status: 'Production',
   },

@@ -120,21 +120,27 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   // Export handlers for Markdown, JSON, and Clipboard
   const triggerExport = async (type: 'md' | 'json' | 'copy') => {
     if (!activeProject) return;
-    soundscape.playClickSound();
-    if (type === 'md') {
-      const md = generateProjectMarkdown(activeProject);
-      downloadFile(md, `${activeProject.slug}-spec.md`, 'text/markdown;charset=utf-8');
-      setExportToast(`Exported ${activeProject.slug}-spec.md`);
-    } else if (type === 'json') {
-      const json = generateProjectJson(activeProject);
-      downloadFile(json, `${activeProject.slug}-spec.json`, 'application/json;charset=utf-8');
-      setExportToast(`Exported ${activeProject.slug}-spec.json`);
-    } else if (type === 'copy') {
-      const ok = await copyProjectMarkdown(activeProject);
-      setExportToast(ok ? 'Copied Markdown to clipboard!' : 'Failed to copy to clipboard');
+    try {
+      soundscape.playClickSound();
+      if (type === 'md') {
+        const md = generateProjectMarkdown(activeProject);
+        downloadFile(md, `${activeProject.slug}-spec.md`, 'text/markdown;charset=utf-8');
+        setExportToast(`Downloaded ${activeProject.slug}-spec.md`);
+      } else if (type === 'json') {
+        const json = generateProjectJson(activeProject);
+        downloadFile(json, `${activeProject.slug}-spec.json`, 'application/json;charset=utf-8');
+        setExportToast(`Downloaded ${activeProject.slug}-spec.json`);
+      } else if (type === 'copy') {
+        const ok = await copyProjectMarkdown(activeProject);
+        setExportToast(ok ? 'Copied Markdown to clipboard!' : 'Failed to copy to clipboard');
+      }
+    } catch (err) {
+      console.error('Export error:', err);
+      setExportToast('Export failed. Check console.');
+    } finally {
+      setExportMenuOpen(null);
+      setTimeout(() => setExportToast(null), 3500);
     }
-    setExportMenuOpen(null);
-    setTimeout(() => setExportToast(null), 3000);
   };
 
   const isClarityAi = activeProject?.slug === 'clarity-ai';

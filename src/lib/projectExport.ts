@@ -196,15 +196,44 @@ export function generateProjectJson(project: Project): string {
  */
 export function downloadFile(content: string, filename: string, mimeType: string) {
   if (typeof window === 'undefined') return;
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  try {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename;
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click();
+    // Do NOT revokeObjectURL immediately! Give browser time to process the download
+    setTimeout(() => {
+      try {
+        if (a.parentNode) {
+          a.parentNode.removeChild(a);
+        }
+        URL.revokeObjectURL(url);
+      } catch {}
+    }, 15000);
+  } catch (err) {
+    console.warn('Blob download failed, trying data URI fallback', err);
+    try {
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = `data:${mimeType},${encodeURIComponent(content)}`;
+      a.download = filename;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        try {
+          if (a.parentNode) a.parentNode.removeChild(a);
+        } catch {}
+      }, 2000);
+    } catch (fallbackErr) {
+      console.error('All download methods failed:', fallbackErr);
+    }
+  }
 }
 
 /**

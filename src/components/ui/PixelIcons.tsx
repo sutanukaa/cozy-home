@@ -421,3 +421,49 @@ export function PixelGamepad({ size = 48, className = '' }: IconProps) {
     </svg>
   );
 }
+
+// 12. Pixel Video Camera / Camcorder (for ClarityAI)
+export function PixelVideoCamera({ size = 48, className = '' }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+    >
+      {/* Tally / Recording Light */}
+      <rect x="5" y="4" width="2" height="2" fill="#E86A92" />
+      <rect x="9" y="5" width="4" height="1" fill="#E86A92" />
+      {/* Main Camcorder Body */}
+      <rect x="3" y="6" width="12" height="12" fill="#FCE7EC" />
+      <rect x="2" y="7" width="14" height="10" fill="#FCE7EC" />
+      {/* Outer Border */}
+      <rect x="3" y="6" width="12" height="1" fill="#E86A92" />
+      <rect x="2" y="7" width="1" height="10" fill="#E86A92" />
+      <rect x="15" y="7" width="1" height="10" fill="#C95478" />
+      <rect x="3" y="18" width="12" height="1" fill="#C95478" />
+      {/* Viewfinder Screen / LCD Display */}
+      <rect x="4" y="8" width="7" height="6" fill="#3D2947" />
+      <rect x="5" y="9" width="5" height="4" fill="#6B4B75" />
+      {/* Glowing screen reflection */}
+      <rect x="6" y="10" width="2" height="2" fill="#FFE29A" />
+      <rect x="9" y="11" width="1" height="1" fill="#A9C7A0" />
+      {/* Control Buttons */}
+      <rect x="4" y="15" width="2" height="2" fill="#FF8BA7" />
+      <rect x="7" y="15" width="2" height="2" fill="#FFE29A" />
+      <rect x="10" y="15" width="2" height="2" fill="#A9C7A0" />
+      {/* Right-Side Projector Lens Cone */}
+      <rect x="16" y="9" width="2" height="6" fill="#FCE7EC" />
+      <rect x="16" y="9" width="2" height="1" fill="#E86A92" />
+      <rect x="16" y="14" width="2" height="1" fill="#C95478" />
+      <rect x="18" y="8" width="2" height="8" fill="#FCE7EC" />
+      <rect x="18" y="8" width="2" height="1" fill="#E86A92" />
+      <rect x="18" y="15" width="2" height="1" fill="#C95478" />
+      <rect x="20" y="7" width="2" height="10" fill="#E86A92" />
+      <rect x="21" y="8" width="1" height="8" fill="#3D2947" />
+      <rect x="21" y="11" width="1" height="2" fill="#FFE29A" />
+    </svg>
+  );
+}

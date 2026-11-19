@@ -12,8 +12,22 @@ import {
   PixelServer,
   PixelTicket,
   PixelDatabase,
+  PixelVideoCamera,
 } from '@/components/ui/PixelIcons';
 import { soundscape } from '@/lib/soundEngine';
+import {
+  clarityAiDiagrams,
+  clarityAiInteractions,
+  clarityAiFailureModes,
+  clarityAiTradeOffs,
+  clarityAiLatencyBudgets,
+  clarityAiConcurrencyGuarantees,
+  clarityAiRetryPolicies,
+  clarityAiIdempotencyKeys,
+  clarityAiStateGuarantees,
+  clarityAiIsolationRules,
+  clarityAiDbRelationships,
+} from '@/data/clarityAiArchitecture';
 import { ragDiagrams, ragConstants, type ArchitectureDiagram } from '@/data/ragArchitecture';
 import {
   syntactiqDiagrams,
@@ -73,12 +87,16 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
     | 'scrapbook-audio'
     | 'http-invariants'
     | 'http-transitions'
+    | 'clarity-latency'
+    | 'clarity-pipeline'
+    | 'clarity-isolation'
   >('none');
   const [showReadme, setShowReadme] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [currentTime, setCurrentTime] = useState('12:00 PM');
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
+  const isClarityAi = activeProject?.slug === 'clarity-ai';
   const isSyntactiq = activeProject?.slug === 'syntactiq';
   const isRag = activeProject?.slug === 'rag-document-qa';
   const isGithubEtl = activeProject?.slug === 'github-etl';
@@ -86,8 +104,11 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const isBloom = activeProject?.slug === 'bloom-for-youu';
   const isScrapbook = activeProject?.slug === 'a-little-scrapbook';
   const isHttpServer = activeProject?.slug === 'http-server';
-  const hasBlueprints = isSyntactiq || isRag || isGithubEtl || isTickease || isBloom || isScrapbook || isHttpServer;
+  const hasBlueprints =
+    isClarityAi || isSyntactiq || isRag || isGithubEtl || isTickease || isBloom || isScrapbook || isHttpServer;
 
+  const currentClarityAiBlueprint =
+    clarityAiDiagrams.find((d) => d.id === activeBlueprintDiagram) || clarityAiDiagrams[0];
   const currentSyntactiqBlueprint =
     syntactiqDiagrams.find((d) => d.id === activeBlueprintDiagram) || syntactiqDiagrams[0];
   const currentRagBlueprint =
@@ -103,7 +124,9 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   const currentHttpBlueprint =
     httpServerDiagrams.find((d) => d.id === activeBlueprintDiagram) || httpServerDiagrams[0];
 
-  const diagramCount = isSyntactiq
+  const diagramCount = isClarityAi
+    ? clarityAiDiagrams.length
+    : isSyntactiq
     ? syntactiqDiagrams.length
     : isRag
     ? ragDiagrams.length
@@ -183,6 +206,8 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
   // Map project slug to its custom pixel icon
   const getProjectPixelIcon = (slug: string, size = 44) => {
     switch (slug) {
+      case 'clarity-ai':
+        return <PixelVideoCamera size={size} />;
       case 'rag-document-qa':
         return <PixelRobot size={size} />;
       case 'syntactiq':
@@ -410,7 +435,7 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                       />
 
                       {/* Desktop Icons Grid - All Projects in a clean retro row */}
-                      <div className="relative z-20 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-7 md:gap-2.5">
+                      <div className="relative z-20 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3.5 md:grid-cols-4 lg:grid-cols-8 lg:gap-2">
                         {/* Project Icons */}
                         {projects.map((p) => {
                           const isSelected = selectedIcon === p.slug;
@@ -652,6 +677,401 @@ export default function StudioRetroComputer({ className = '' }: StudioRetroCompu
                               <span>[ Scratch this, game time! ]</span>
                             </button>
                           </div>
+
+                          {/* --- Expandable Architecture Blueprint Viewer: ClarityAI --- */}
+                          <AnimatePresence>
+                            {showBlueprints && isClarityAi && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4 flex flex-col gap-6 border-t-2 border-pink-200/80 pt-6 dark:border-white/10"
+                              >
+                                {/* Production Status Banner */}
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border-2 border-emerald-300/90 bg-emerald-50/95 p-4 font-mono text-xs shadow-xs dark:border-emerald-600/80 dark:bg-emerald-950/50">
+                                  <div className="flex items-start sm:items-center gap-3">
+                                    <span className="mt-0.5 sm:mt-0 flex h-3 w-3 shrink-0 rounded-full bg-emerald-500 animate-pulse" />
+                                    <div>
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-bold text-emerald-900 dark:text-emerald-200">
+                                          SYSTEM STATUS: PRODUCTION ARCHITECTURE
+                                        </span>
+                                        <span className="rounded bg-emerald-200/90 px-1.5 py-0.2 text-[9px] font-bold text-emerald-900 dark:bg-emerald-900/80 dark:text-emerald-100">
+                                          SHIPPED &amp; VERIFIED
+                                        </span>
+                                      </div>
+                                      <p className="mt-1 text-[11px] leading-relaxed text-emerald-900/90 dark:text-emerald-200/90">
+                                        Real-time WebRTC media routing, sentence-chunked neural voice synthesis (&lt;85 chars/chunk), durable Inngest 4-stage post-meeting pipeline, and multi-tenant specialist scoping.
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="shrink-0 flex items-center self-start sm:self-center">
+                                    <span className="rounded-md border border-emerald-300 bg-white/90 px-2.5 py-1 text-[10px] font-bold text-emerald-900 dark:border-emerald-700 dark:bg-black/40 dark:text-emerald-200">
+                                      4 BLUEPRINTS
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Section Title & Subheading */}
+                                <div className="flex flex-col items-center text-center gap-1.5">
+                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent dark:text-pink-300">
+                                    WebRTC Media Plane &amp; Event-Driven AI Pipeline
+                                  </span>
+                                  <h4 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-white">
+                                    ClarityAI Architecture &amp; Intelligence Suite
+                                  </h4>
+                                  <p className="max-w-2xl font-mono text-xs text-ink-soft dark:text-pink-200">
+                                    Four system diagrams covering full-stack system topology, real-time WebRTC media and sentence-chunked neural TTS, Inngest durable 4-stage post-meeting intelligence pipeline, and zero-trust multi-tenant specialist isolation.
+                                  </p>
+                                </div>
+
+                                {/* --- Choice Band in the Middle --- */}
+                                <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-center gap-1.5 rounded-2xl border-2 border-pink-200/80 bg-white/90 p-2 shadow-inner dark:border-white/15 dark:bg-black/40">
+                                  {clarityAiDiagrams.map((d) => {
+                                    const isActive = activeExtraTab === 'none' && activeBlueprintDiagram === d.id;
+                                    return (
+                                      <button
+                                        key={d.id}
+                                        type="button"
+                                        onClick={() => {
+                                          soundscape.playClickSound();
+                                          setActiveExtraTab('none');
+                                          setActiveBlueprintDiagram(d.id);
+                                        }}
+                                        className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                          isActive
+                                            ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                            : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                        }`}
+                                      >
+                                        <span>{d.tabLabel}</span>
+                                        <span className="ml-1 text-[9px] text-emerald-500">●</span>
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('clarity-latency');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'clarity-latency'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Latency &amp; Concurrency ]
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('clarity-pipeline');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'clarity-pipeline'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Inngest &amp; State Guarantees ]
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      soundscape.playClickSound();
+                                      setActiveExtraTab('clarity-isolation');
+                                    }}
+                                    className={`rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold transition-all ${
+                                      activeExtraTab === 'clarity-isolation'
+                                        ? 'border border-pink-400 bg-accent text-white shadow-sm ring-2 ring-accent/30 dark:border-pink-300'
+                                        : 'text-cocoa hover:bg-pink-100/70 dark:text-pink-100 dark:hover:bg-white/10'
+                                    }`}
+                                  >
+                                    [ Multi-Tenant Isolation &amp; Schema ]
+                                  </button>
+                                </div>
+
+                                {/* --- Display Area: Selected Diagram --- */}
+                                {activeExtraTab === 'none' && (
+                                  <div className="flex flex-col gap-5">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <div>
+                                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Diagram 0{currentClarityAiBlueprint.id} of 04
+                                        </span>
+                                        <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                          {currentClarityAiBlueprint.title}
+                                        </h5>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
+                                        <span className="rounded-md border border-pink-300/80 bg-pink-100/70 px-2.5 py-1 font-mono text-[11px] font-bold text-accent dark:border-pink-700/80 dark:bg-pink-950/60 dark:text-pink-200">
+                                          {currentClarityAiBlueprint.badge}
+                                        </span>
+                                        <span className="rounded-md border border-emerald-300/80 bg-emerald-100/80 px-2.5 py-1 font-mono text-[10px] font-bold text-emerald-900 dark:border-emerald-700/80 dark:bg-emerald-950/60 dark:text-emerald-200">
+                                          STATUS: BUILT &amp; VERIFIED
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    {/* Mermaid Vector Diagram */}
+                                    <div className="overflow-x-auto rounded-2xl border-2 border-pink-200/80 bg-white/95 p-4 shadow-sm dark:border-white/15 dark:bg-[#1A1220]/95">
+                                      <MermaidRenderer
+                                        code={currentClarityAiBlueprint.mermaid}
+                                        diagramId={`clarity-diagram-${currentClarityAiBlueprint.id}`}
+                                      />
+                                    </div>
+
+                                    {/* 3 Technical Deep-Dive Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Interactions &amp; Handshakes
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentClarityAiBlueprint.interactions}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Failure Modes &amp; Resilience
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentClarityAiBlueprint.failureModes}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex flex-col gap-2 rounded-xl border border-pink-200/70 bg-white/70 p-4 font-mono text-xs dark:border-white/10 dark:bg-black/25">
+                                        <span className="font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                          Production Trade-Offs
+                                        </span>
+                                        <p className="font-sans text-xs leading-relaxed text-ink/90 dark:text-white/85">
+                                          {currentClarityAiBlueprint.tradeOffs}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* --- Display Area: Latency & Concurrency View --- */}
+                                {activeExtraTab === 'clarity-latency' && (
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Real-Time Telemetry &amp; Latency Budgets
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        User-Perceived Path: Stop Speaking → First Agent Audio
+                                      </h5>
+                                      <p className="mt-1 font-mono text-xs text-ink-soft dark:text-pink-200">
+                                        Chunk 0 dominates perceived latency. The 85-character cap bounds worst-case time-to-first-audio on run-on sentences; all subsequent chunks synthesize concurrently while chunk 0 is actively playing.
+                                      </p>
+                                    </div>
+
+                                    {/* Latency Budgets Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Pipeline Segment</th>
+                                            <th className="px-4 py-2.5 font-bold">Design Target</th>
+                                            <th className="px-4 py-2.5 font-bold">Measured / Traced</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {clarityAiLatencyBudgets.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">{item.segment}</td>
+                                              <td className="px-4 py-2.5 text-accent dark:text-pink-300">{item.target}</td>
+                                              <td className="px-4 py-2.5 text-emerald-600 dark:text-emerald-400 font-bold">{item.measured}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Concurrency Guarantees Table */}
+                                    <div className="mt-2 border-b border-pink-200/60 pb-2 dark:border-white/10">
+                                      <h5 className="font-display text-base font-bold text-ink dark:text-white">
+                                        Audio Streaming &amp; Concurrency Guarantees
+                                      </h5>
+                                    </div>
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">System Guarantee</th>
+                                            <th className="px-4 py-2.5 font-bold">Architectural Enforcement Mechanism</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {clarityAiConcurrencyGuarantees.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">{item.guarantee}</td>
+                                              <td className="px-4 py-2.5 text-ink-soft dark:text-white/85">{item.mechanism}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* --- Display Area: Inngest & State Guarantees View --- */}
+                                {activeExtraTab === 'clarity-pipeline' && (
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Durable Execution &amp; Idempotency
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        Inngest Post-Meeting Pipeline Reliability &amp; Guarantees
+                                      </h5>
+                                    </div>
+
+                                    {/* Retry Policy Table */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Retry Aspect</th>
+                                            <th className="px-4 py-2.5 font-bold">Inngest Function Policy</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {clarityAiRetryPolicies.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">{item.aspect}</td>
+                                              <td className="px-4 py-2.5 text-ink-soft dark:text-white/85">{item.policy}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Idempotency Keys & State Guarantees */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex flex-col gap-3">
+                                        <h6 className="font-display text-sm font-bold text-ink dark:text-white">
+                                          Idempotency Keys &amp; Conflict Targets
+                                        </h6>
+                                        <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                          <table className="w-full text-left font-mono text-xs">
+                                            <thead>
+                                              <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                                <th className="px-3 py-2 font-bold">Layer</th>
+                                                <th className="px-3 py-2 font-bold">Key / Conflict</th>
+                                                <th className="px-3 py-2 font-bold">Effect</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                              {clarityAiIdempotencyKeys.map((item, i) => (
+                                                <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                  <td className="px-3 py-2 font-bold text-accent dark:text-pink-300">{item.layer}</td>
+                                                  <td className="px-3 py-2 text-ink dark:text-white font-mono text-[11px]">{item.key}</td>
+                                                  <td className="px-3 py-2 text-ink-soft dark:text-white/80 text-[11px]">{item.effect}</td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex flex-col gap-3">
+                                        <h6 className="font-display text-sm font-bold text-ink dark:text-white">
+                                          State Consistency Guarantees
+                                        </h6>
+                                        <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                          <table className="w-full text-left font-mono text-xs">
+                                            <thead>
+                                              <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                                <th className="px-3 py-2 font-bold">Guarantee</th>
+                                                <th className="px-3 py-2 font-bold">Enforcement Mechanism</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                              {clarityAiStateGuarantees.map((item, i) => (
+                                                <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                                  <td className="px-3 py-2 font-bold text-ink dark:text-white">{item.guarantee}</td>
+                                                  <td className="px-3 py-2 text-ink-soft dark:text-white/80 text-[11px]">{item.howItHolds}</td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* --- Display Area: Multi-Tenant Isolation & Schema View --- */}
+                                {activeExtraTab === 'clarity-isolation' && (
+                                  <div className="flex flex-col gap-6">
+                                    <div className="border-b border-pink-200/60 pb-3 dark:border-white/10">
+                                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-accent dark:text-pink-300">
+                                        Zero-Trust Multi-Tenancy
+                                      </span>
+                                      <h5 className="font-display text-lg sm:text-xl font-bold text-ink dark:text-white">
+                                        Specialist Visibility Predicate &amp; Database Relationships
+                                      </h5>
+                                    </div>
+
+                                    {/* Isolation Rules */}
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Data Isolation Rule</th>
+                                            <th className="px-4 py-2.5 font-bold">Architectural Enforcement</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {clarityAiIsolationRules.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">{item.rule}</td>
+                                              <td className="px-4 py-2.5 text-ink-soft dark:text-white/85">{item.enforcement}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                    {/* Drizzle Schema Relationships Table */}
+                                    <div className="mt-2 border-b border-pink-200/60 pb-2 dark:border-white/10">
+                                      <h5 className="font-display text-base font-bold text-ink dark:text-white">
+                                        Drizzle ORM Relational Schema &amp; Cascades
+                                      </h5>
+                                    </div>
+                                    <div className="overflow-x-auto rounded-xl border border-pink-200/80 bg-white/80 dark:border-white/10 dark:bg-black/30">
+                                      <table className="w-full text-left font-mono text-xs">
+                                        <thead>
+                                          <tr className="border-b border-pink-200/80 bg-paper/90 text-cocoa dark:border-white/10 dark:bg-white/5 dark:text-pink-200">
+                                            <th className="px-4 py-2.5 font-bold">Parent Table</th>
+                                            <th className="px-4 py-2.5 font-bold">Relationship</th>
+                                            <th className="px-4 py-2.5 font-bold">Child Table</th>
+                                            <th className="px-4 py-2.5 font-bold">Cascade &amp; Integrity Constraints</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-pink-100 dark:divide-white/5">
+                                          {clarityAiDbRelationships.map((item, i) => (
+                                            <tr key={i} className="hover:bg-pink-50/50 dark:hover:bg-white/5">
+                                              <td className="px-4 py-2.5 font-bold text-accent dark:text-pink-300">{item.parent}</td>
+                                              <td className="px-4 py-2.5 text-ink-soft dark:text-white/85 font-mono text-[11px]">{item.relationship}</td>
+                                              <td className="px-4 py-2.5 font-bold text-ink dark:text-white">{item.child}</td>
+                                              <td className="px-4 py-2.5 text-ink-soft dark:text-white/80 text-[11px]">{item.constraints}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
 
                           {/* --- Expandable Architecture Blueprint Viewer: Syntactiq --- */}
                           <AnimatePresence>

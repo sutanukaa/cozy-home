@@ -13,6 +13,53 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'clarity-ai',
+    title: 'ClarityAI',
+    tagline: 'Real-time WebRTC video calls with specialized AI personas, low-latency chunked neural TTS, and event-driven Inngest post-meeting intelligence suite.',
+    overview:
+      'A full-stack, real-time AI video interaction and automated meeting intelligence SaaS. Conduct live WebRTC video and voice conversations with specialized AI agents powered by Stream Video SFU, sub-second sentence-chunked neural TTS playback with zero-latency barge-in interruption, and real-time Web Audio API waveform visualizers. Post-call workflows are orchestrated via an event-driven Inngest pipeline featuring durable step-function retries, speaker diarization, Gemini 2.5 Flash topic segmentation, action item extraction, and meeting-scoped grounded Copilot RAG with millisecond timestamp jump links.',
+    architecture: [
+      'WebRTC Media Plane: Stream Video SFU cluster routing low-latency audio/video tracks over SRTP with Web Audio AnalyserNode waveform telemetry.',
+      'Chunked Neural Voice Synthesis: Concurrent sentence-split TTS synthesis (<85 chars per chunk) with client-side reorder buffer and atomic barge-in abort controllers.',
+      'Durable Inngest Intelligence Pipeline: 4-stage memoized workflow executing transcription, speaker diarization, topic segmentation, and atomic Drizzle ORM transaction persistence.',
+      'Multi-Tenant Scoping & Custom Specialists: Unified visibility predicate ensuring user-created agents remain strictly private while public catalog specialists are universally accessible.',
+      'Grounded Meeting Copilot: Meeting-scoped RAG retrieval with timestamped citation jump links and strict server-side JSON schema validation.',
+    ],
+    technicalHighlights: [
+      'Engineered sub-second perceived voice latency (1.0-1.8s time-to-first-audio) by parallelizing TTS chunk generation ahead of playback.',
+      'Durable 4-stage post-meeting pipeline with per-step memoization, ensuring zero re-transcription cost on downstream LLM retries.',
+      'Atomic database persistence via Drizzle ORM and Neon PostgreSQL, guaranteeing meetings never enter completed status without full transcripts.',
+      'Strict multi-tenant boundary: custom AI specialists and private meeting transcripts are cryptographically and query-scoped to the authenticated session owner.',
+    ],
+    keyFeatures: [
+      'Real-time WebRTC audio/video calls with interactive AI specialists',
+      'Sentence-chunked neural TTS streaming with reactive Web Audio waveform',
+      'Atomic user barge-in interruption with zero-delay buffer flushing',
+      'Event-driven Inngest post-call pipeline with 4-stage memoized retry DAG',
+      'Automated speaker diarization, topic segmentation, and action item extraction',
+      'Meeting-scoped grounded Copilot with direct timestamp jump links',
+      'Better-Auth session management with Google OAuth 2.0 and Polar SaaS billing',
+    ],
+    tags: [
+      'Next.js 15',
+      'React 19',
+      'Stream Video',
+      'WebRTC',
+      'Inngest',
+      'Google Gemini',
+      'OpenAI',
+      'Drizzle ORM',
+      'Neon PostgreSQL',
+      'Better-Auth',
+      'TypeScript',
+      'Tailwind CSS',
+    ],
+    links: {
+      code: 'https://github.com/sutanukaa',
+    },
+    status: 'Production',
+  },
+  {
     slug: 'syntactiq',
     title: 'Syntactiq Code Modernization',
     tagline: 'Autonomous multi-agent platform for AST-driven legacy codebase refactoring, sandbox verification, and automated PRs.',

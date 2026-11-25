@@ -1,13 +1,16 @@
 export interface Project {
   slug: string;
   title: string;
+  oneLiner: string;
   tagline: string;
+  year: number;
   overview: string;
   architecture: string[];
   technicalHighlights: string[];
   keyFeatures: string[];
   tags: string[];
   links: { live?: string; code?: string };
+  previewImage?: string;
   status: 'Production' | 'Shipped' | 'Active' | 'Currently Building';
 }
 
@@ -15,7 +18,9 @@ export const projects: Project[] = [
   {
     slug: 'clarity-ai',
     title: 'ClarityAI',
+    oneLiner: 'ClarityAI — Real-Time AI Video & Meeting Intelligence SaaS',
     tagline: 'Real-time WebRTC video calls with specialized AI personas, low-latency chunked neural TTS, and event-driven Inngest post-meeting intelligence suite.',
+    year: 2026,
     overview:
       'A full-stack, real-time AI video interaction and automated meeting intelligence SaaS. Conduct live WebRTC video and voice conversations with specialized AI agents powered by Stream Video SFU, sub-second sentence-chunked neural TTS playback with zero-latency barge-in interruption, and real-time Web Audio API waveform visualizers. Post-call workflows are orchestrated via an event-driven Inngest pipeline featuring durable step-function retries, speaker diarization, Gemini 2.5 Flash topic segmentation, action item extraction, and meeting-scoped grounded Copilot RAG with millisecond timestamp jump links.',
     architecture: [
@@ -58,12 +63,15 @@ export const projects: Project[] = [
       live: 'https://preflight-gold.vercel.app/',
       code: 'https://github.com/sutanukaa/preflight',
     },
+    previewImage: '/assets/previews/clarity-ai.png',
     status: 'Production',
   },
   {
     slug: 'syntactiq',
     title: 'Syntactiq Code Modernization',
+    oneLiner: 'Syntactiq — Autonomous AST-Driven Code Modernization Platform',
     tagline: 'Autonomous multi-agent platform for AST-driven legacy codebase refactoring, sandbox verification, and automated PRs.',
+    year: 2026,
     overview:
       'An autonomous multi-agent platform in active development designed to ingest legacy source repositories, analyze dependency graphs via Tree-sitter and NetworkX, modernize language idioms to Python 3.12+, synthesize unit tests in ephemeral Docker sandboxes, and open verified GitHub pull requests. Core LangGraph StateGraph workflows, dual-tier Docker sandboxing, and bounded self-healing retry loops are fully implemented and verified with 45 automated unit tests; distributed Celery clusters and GitHub Git Data API egress are actively being completed. Winner of the 100Agents Global Hackathon (1st out of 650 teams worldwide).',
     architecture: [
@@ -96,7 +104,9 @@ export const projects: Project[] = [
   {
     slug: 'rag-document-qa',
     title: 'RAG Document Q&A Engine',
+    oneLiner: 'RAG Document Q&A Engine — Citations-Grounded Retrieval Pipeline',
     tagline: 'End-to-end Retrieval-Augmented Generation pipeline built from scratch without LLM orchestration frameworks.',
+    year: 2026,
     overview:
       'A production-oriented Retrieval-Augmented Generation system built in plain Python and FastAPI, avoiding heavy abstraction frameworks like LangChain. Ingests heterogeneous PDF documents, generates semantic embeddings via the Gemini API, and performs vector similarity search in ChromaDB. Synthesizes answers grounded strictly in retrieved context chunks with verbatim source citations.',
     architecture: [
@@ -126,7 +136,9 @@ export const projects: Project[] = [
   {
     slug: 'github-etl',
     title: 'GitHub Activity ETL Pipeline',
+    oneLiner: 'GitHub Activity ETL Pipeline — Telemetry Ingestion & SQL Analytics',
     tagline: 'Automated batch ETL pipeline extracting GitHub telemetry with SQLite upserts and SQL analytics.',
+    year: 2026,
     overview:
       'A daily scheduled batch ETL pipeline engineered in Python and SQLite that extracts repository commits, pull requests, and engagement metrics from public GitHub repositories via REST APIs. Transforms nested JSON payloads into tidy relational tables with derived metrics such as hours_to_merge, enforces idempotent loads (INSERT OR IGNORE for commits, ON CONFLICT DO UPDATE for PRs), and executes analytical window function queries. Deployed with automated daily GitHub Actions cron workflows and paired with an interactive Next.js analytics dashboard.',
     architecture: [
@@ -159,7 +171,9 @@ export const projects: Project[] = [
   {
     slug: 'tickease',
     title: 'Tickease',
+    oneLiner: 'Tickease — Automated Event Site Builder & QR Ticketing Platform',
     tagline: 'Event management platform with automated site generation and embedded conversational AI assistants.',
+    year: 2025,
     overview:
       'A full-stack event lifecycle and ticketing platform designed for event organizers to launch, manage, and monetize events. Features automated dynamic landing page generation from event metadata schemas, embedded AI chatbots providing real-time attendee support and conversion telemetry, cryptographically secure QR ticket validation, and live analytics dashboards.',
     architecture: [
@@ -190,7 +204,9 @@ export const projects: Project[] = [
   {
     slug: 'bloom-for-youu',
     title: 'Bloom For You',
+    oneLiner: 'Bloom For You — Temporal Digital Flower & Secret Delivery App',
     tagline: 'State-driven digital flower lifecycle engine with tamper-proof temporal secret delivery.',
+    year: 2026,
     overview:
       'A full-stack web application exploring anticipation and temporal gifting. Users plant digital flowers embedded with secret encrypted messages that require 72 real-world hours to bloom. Employs deterministic elapsed-time state computation, ensuring confidential payloads remain server-side and inaccessible to client-side DOM inspection or network reverse-engineering until the target timestamp matures.',
     architecture: [
@@ -215,12 +231,15 @@ export const projects: Project[] = [
       live: 'https://bloom-for-youu.vercel.app/',
       code: 'https://github.com/sutanukaa/bloom-for-you',
     },
+    previewImage: '/assets/previews/bloom-for-youu.png',
     status: 'Shipped',
   },
   {
     slug: 'a-little-scrapbook',
     title: 'A Little Scrapbook',
+    oneLiner: 'A Little Scrapbook — Tactile Physics Canvas & Audio Export Studio',
     tagline: 'Tactile digital scrapbook engine with physics-driven spatial transforms, procedural Web Audio synthesis, and worker canvas export.',
+    year: 2026,
     overview:
       'A production-grade client-side application engineered with Next.js 15, React 19, TypeScript, and Framer Motion, delivering a tactile, scrapbook-inspired spatial canvas. Operates within rigorous budgets: 16.7ms (60 Hz) / 8.3ms (120 Hz) frame budget with zero layout reads during drag, a 48 MB bitmap memory cap with downscaled display variants, and a zero-asset procedural Web Audio synthesis graph that eliminates external audio network latency.',
     architecture: [
@@ -248,12 +267,15 @@ export const projects: Project[] = [
       live: 'https://a-little-scrapbook.vercel.app/',
       code: 'https://github.com/sutanukaa/digialbum',
     },
+    previewImage: '/assets/previews/a-little-scrapbook.png',
     status: 'Shipped',
   },
   {
     slug: 'http-server',
     title: 'Custom HTTP/1.1 Server in C',
+    oneLiner: 'Custom HTTP/1.1 Server in C — Zero-Copy Systems Web Server',
     tagline: 'High-performance, zero-allocation HTTP/1.1 server in C with DFA parser, openat2 sandbox & sendfile.',
+    year: 2025,
     overview:
       'A low-level HTTP/1.1 server engineered from scratch in C99/C11 with zero runtime dependencies beyond libc and pthreads. Features a deterministic finite automaton (DFA) protocol parser, bounded memory per worker (~88 KiB), openat2 kernel-level path containment, and zero-copy sendfile asset streaming.',
     architecture: [

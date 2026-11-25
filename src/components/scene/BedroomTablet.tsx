@@ -1,12 +1,185 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import CozyBubbleButton from '@/components/ui/CozyBubbleButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { soundscape } from '@/lib/soundEngine';
-import { tabletData, type PlaylistTrack, type BlogPost } from '@/data/tablet';
+import { tabletData, type PlaylistTrack, type BlogPost, type BlogBlock } from '@/data/tablet';
+
+/** Renders safe inline **bold** and *italic* emphasis inside blog copy. */
+function renderInlineEmphasis(text: string) {
+  const tokens = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return tokens.map((part, idx) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={idx} className="font-bold text-ink">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+      return (
+        <em key={idx} className="italic text-ink">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return <Fragment key={idx}>{part}</Fragment>;
+  });
+}
+
+function BlogArticleView({ blog, compact = false }: { blog: BlogPost; compact?: boolean }) {
+  const renderBlock = (block: BlogBlock, idx: number) => {
+    switch (block.type) {
+      case 'callout':
+        return (
+          <div
+            key={idx}
+            className={`rounded-xl border border-pink-200/90 border-l-4 border-l-accent bg-[#FFF5F8] ${
+              compact ? 'p-2.5 space-y-1' : 'p-3.5 sm:p-4 space-y-1.5'
+            }`}
+          >
+            {block.label && (
+              <p
+                className={`font-display font-bold text-accent ${
+                  compact ? 'text-[11px]' : 'text-xs sm:text-sm'
+                }`}
+              >
+                {block.label}
+              </p>
+            )}
+            <p className="font-sans text-xs sm:text-[13px] leading-relaxed text-ink">
+              {renderInlineEmphasis(block.text)}
+            </p>
+          </div>
+        );
+
+      case 'heading': {
+        const numMatch = block.text.match(/^(\d+\.)\s+(.*)$/);
+        return (
+          <h3
+            key={idx}
+            className={`font-display font-extrabold text-ink leading-snug border-b border-pink-100 pb-1 ${
+              compact ? 'pt-2.5 text-[13px]' : 'pt-3 sm:pt-4 text-sm sm:text-base md:text-[17px]'
+            }`}
+          >
+            {numMatch ? (
+              <>
+                <span className="mr-1.5 text-accent">{numMatch[1]}</span>
+                <span>{numMatch[2]}</span>
+              </>
+            ) : (
+              block.text
+            )}
+          </h3>
+        );
+      }
+
+      case 'bullets':
+        return (
+          <ul
+            key={idx}
+            className={`rounded-xl border border-pink-200/70 bg-white/90 ${
+              compact ? 'p-2.5 space-y-1.5' : 'p-3.5 space-y-2'
+            }`}
+          >
+            {block.items.map((item, itemIdx) => (
+              <li
+                key={itemIdx}
+                className="flex items-start gap-2 font-sans text-xs sm:text-[13px] leading-relaxed text-ink/90"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                />
+                <span>{renderInlineEmphasis(item)}</span>
+              </li>
+            ))}
+          </ul>
+        );
+
+      case 'paragraph':
+      default:
+        return (
+          <p key={idx} className="font-sans text-xs sm:text-[13px] leading-relaxed text-ink/90">
+            {renderInlineEmphasis(block.text)}
+          </p>
+        );
+    }
+  };
+
+  return (
+    <div className={compact ? 'space-y-2.5 max-w-full' : 'space-y-3 max-w-xl mx-auto w-full'}>
+      {/* Meta & Tags */}
+      <div className={`flex flex-wrap items-center ${compact ? 'gap-1.5' : 'gap-2'}`}>
+        <span
+          className={`rounded-full border border-pink-300/80 bg-[#FFF0F5] font-mono font-bold text-accent ${
+            compact ? 'px-2 py-0.5 text-[9px]' : 'px-2.5 py-0.5 text-[10px]'
+          }`}
+        >
+          {blog.tag}
+        </span>
+        <span className={`font-mono text-ink-soft ${compact ? 'text-[9px]' : 'text-[10px]'}`}>
+          {blog.date} · {blog.readTime}
+        </span>
+      </div>
+
+      {/* Title & Optional Editorial Standfirst */}
+      <div className="space-y-1.5">
+        <h2
+          className={`font-display font-extrabold text-ink leading-snug ${
+            compact ? 'text-base' : 'text-base sm:text-xl md:text-2xl'
+          }`}
+        >
+          {blog.title}
+        </h2>
+        {blog.subtitle && (
+          <p
+            className={`font-sans italic text-ink-soft leading-relaxed ${
+              compact ? 'text-[11px]' : 'text-xs sm:text-[13px]'
+            }`}
+          >
+            {blog.subtitle}
+          </p>
+        )}
+      </div>
+
+      {/* Divider with soft floral petal separator */}
+      <div className={`flex items-center gap-2 ${compact ? 'py-0.5' : 'py-1'}`}>
+        <div className="h-px bg-pink-200/80 flex-1" />
+        <span className="h-1.5 w-1.5 rounded-full bg-pink-300" />
+        <div className="h-px bg-pink-200/80 flex-1" />
+      </div>
+
+      {/* Structured Essay Blocks OR Legacy Plain Paragraphs */}
+      <div className={compact ? 'space-y-2' : 'space-y-3'}>
+        {blog.blocks
+          ? blog.blocks.map(renderBlock)
+          : blog.content?.map((p, idx) => (
+              <p key={idx} className="font-sans text-xs sm:text-[13px] leading-relaxed text-ink/90">
+                {p}
+              </p>
+            ))}
+      </div>
+
+      {/* Sign-off box */}
+      <div
+        className={`rounded-xl border border-pink-200/80 bg-[#FFF5F8] text-center ${
+          compact ? 'mt-3 p-2.5' : 'mt-4 p-3'
+        }`}
+      >
+        <p className={`font-hand font-bold text-ink ${compact ? 'text-sm' : 'text-sm sm:text-base'}`}>
+          Thanks for reading!
+        </p>
+        <p className={`font-sans text-ink-soft mt-0.5 ${compact ? 'text-[10px]' : 'text-[11px]'}`}>
+          More blogs &amp; essays will be posted here soon.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 interface SparkleParticle {
   id: number;
@@ -36,6 +209,13 @@ export default function BedroomTablet() {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(30);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const desktopReaderRef = useRef<HTMLDivElement | null>(null);
+  const mobileReaderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (desktopReaderRef.current) desktopReaderRef.current.scrollTop = 0;
+    if (mobileReaderRef.current) mobileReaderRef.current.scrollTop = 0;
+  }, [selectedBlogSlug, isOpen]);
 
   useEffect(() => {
     setMounted(true);
@@ -621,48 +801,12 @@ export default function BedroomTablet() {
                       </div>
 
                       {/* RIGHT MAIN PANE: Active Blog Reader Screen */}
-                      <div className="flex-1 p-3.5 sm:p-5 md:p-6 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0 relative">
+                      <div
+                        ref={desktopReaderRef}
+                        className="flex-1 p-3.5 sm:p-5 md:p-6 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0 relative"
+                      >
                         {selectedBlog ? (
-                          <div className="space-y-3 max-w-xl mx-auto w-full">
-                            {/* Meta & Tags */}
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2.5 py-0.5 font-mono text-[10px] font-bold text-accent">
-                                {selectedBlog.tag}
-                              </span>
-                              <span className="font-mono text-[10px] text-ink-soft">
-                                {selectedBlog.date} · {selectedBlog.readTime}
-                              </span>
-                            </div>
-
-                            {/* Title */}
-                            <h2 className="font-display text-base sm:text-xl md:text-2xl font-extrabold text-ink leading-snug">
-                              {selectedBlog.title}
-                            </h2>
-
-                            {/* Divider with soft floral petal separator */}
-                            <div className="flex items-center gap-2 py-1">
-                              <div className="h-px bg-pink-200/80 flex-1" />
-                              <span className="h-1.5 w-1.5 rounded-full bg-pink-300" />
-                              <div className="h-px bg-pink-200/80 flex-1" />
-                            </div>
-
-                            {/* Blog Content Paragraphs */}
-                            <div className="space-y-2.5 font-sans text-xs sm:text-sm leading-relaxed text-ink/90">
-                              {selectedBlog.content.map((p, idx) => (
-                                <p key={idx}>{p}</p>
-                              ))}
-                            </div>
-
-                            {/* Sign-off box */}
-                            <div className="mt-4 rounded-xl border border-pink-200/80 bg-[#FFF5F8] p-3 text-center">
-                              <p className="font-hand text-sm sm:text-base font-bold text-ink">
-                                Thanks for reading!
-                              </p>
-                              <p className="font-sans text-[11px] text-ink-soft mt-0.5">
-                                More blogs &amp; essays will be posted here soon.
-                              </p>
-                            </div>
-                          </div>
+                          <BlogArticleView blog={selectedBlog} />
                         ) : (
                           <div className="flex flex-col items-center justify-center h-full text-center text-ink-soft">
                             <p className="font-hand text-lg font-bold text-ink">
@@ -939,48 +1083,12 @@ export default function BedroomTablet() {
 
                     {/* Main Content Area: The Blog Post is directly shown on the screen! */}
                     <div className="relative flex-1 overflow-hidden min-h-0 flex flex-col">
-                      <div className="flex-1 p-3 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0">
+                      <div
+                        ref={mobileReaderRef}
+                        className="flex-1 p-3 overflow-y-auto diary-scroll bg-[#FFFDF8] flex flex-col min-h-0"
+                      >
                         {selectedBlog ? (
-                          <div className="space-y-2.5 max-w-full">
-                            {/* Meta & Tags */}
-                            <div className="flex items-center gap-1.5">
-                              <span className="rounded-full border border-pink-300/80 bg-[#FFF0F5] px-2 py-0.5 font-mono text-[9px] font-bold text-accent">
-                                {selectedBlog.tag}
-                              </span>
-                              <span className="font-mono text-[9px] text-ink-soft">
-                                {selectedBlog.date} · {selectedBlog.readTime}
-                              </span>
-                            </div>
-
-                            {/* Title */}
-                            <h2 className="font-display text-base font-extrabold text-ink leading-snug">
-                              {selectedBlog.title}
-                            </h2>
-
-                            {/* Divider */}
-                            <div className="flex items-center gap-2 py-0.5">
-                              <div className="h-px bg-pink-200/80 flex-1" />
-                              <span className="h-1.5 w-1.5 rounded-full bg-pink-300" />
-                              <div className="h-px bg-pink-200/80 flex-1" />
-                            </div>
-
-                            {/* Content */}
-                            <div className="space-y-2 font-sans text-xs leading-relaxed text-ink/90">
-                              {selectedBlog.content.map((p, idx) => (
-                                <p key={idx}>{p}</p>
-                              ))}
-                            </div>
-
-                            {/* Sign-off box */}
-                            <div className="mt-3 rounded-xl border border-pink-200/80 bg-[#FFF5F8] p-2.5 text-center">
-                              <p className="font-hand text-sm font-bold text-ink">
-                                Thanks for reading!
-                              </p>
-                              <p className="font-sans text-[10px] text-ink-soft mt-0.5">
-                                More blogs &amp; essays will be posted here soon.
-                              </p>
-                            </div>
-                          </div>
+                          <BlogArticleView blog={selectedBlog} compact />
                         ) : (
                           <div className="flex flex-col items-center justify-center h-full text-center text-ink-soft">
                             <p className="font-hand text-sm font-bold text-ink">

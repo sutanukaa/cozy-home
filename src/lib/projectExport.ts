@@ -192,53 +192,48 @@ export function generateProjectJson(project: Project): string {
 }
 
 /**
- * Triggers a browser download from an anchor href and cleans up afterwards.
- */
-function clickDownloadLink(href: string, filename: string, cleanupDelayMs: number, onCleanup?: () => void) {
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = href;
-  a.download = filename;
-  a.setAttribute('download', filename);
-  document.body.appendChild(a);
-  a.click();
-  // Defer cleanup so the browser completes reading object URLs before revocation
-  setTimeout(() => {
-    try {
-      if (a.parentNode) {
-        a.parentNode.removeChild(a);
-      }
-      onCleanup?.();
-    } catch {}
-  }, cleanupDelayMs);
-}
-
-/**
- * Triggers a browser download for a Blob payload, with an optional data-URI fallback.
- */
-export function downloadBlob(blob: Blob, filename: string, fallbackDataUri?: string) {
-  if (typeof window === 'undefined') return;
-  try {
-    const url = URL.createObjectURL(blob);
-    clickDownloadLink(url, filename, 15000, () => URL.revokeObjectURL(url));
-  } catch (err) {
-    console.warn('Blob download failed, trying fallback URI', err);
-    if (!fallbackDataUri) return;
-    try {
-      clickDownloadLink(fallbackDataUri, filename, 2000);
-    } catch (fallbackErr) {
-      console.error('All download methods failed:', fallbackErr);
-    }
-  }
-}
-
-/**
  * Triggers a browser file download for a string payload.
  */
 export function downloadFile(content: string, filename: string, mimeType: string) {
   if (typeof window === 'undefined') return;
-  const blob = new Blob([content], { type: mimeType });
-  downloadBlob(blob, filename, `data:${mimeType},${encodeURIComponent(content)}`);
+  try {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename;
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click();
+    // Do NOT revokeObjectURL immediately! Give browser time to process the download
+    setTimeout(() => {
+      try {
+        if (a.parentNode) {
+          a.parentNode.removeChild(a);
+        }
+        URL.revokeObjectURL(url);
+      } catch {}
+    }, 15000);
+  } catch (err) {
+    console.warn('Blob download failed, trying data URI fallback', err);
+    try {
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = `data:${mimeType},${encodeURIComponent(content)}`;
+      a.download = filename;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        try {
+          if (a.parentNode) a.parentNode.removeChild(a);
+        } catch {}
+      }, 2000);
+    } catch (fallbackErr) {
+      console.error('All download methods failed:', fallbackErr);
+    }
+  }
 }
 
 /**
